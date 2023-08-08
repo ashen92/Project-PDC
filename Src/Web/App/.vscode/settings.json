@@ -1,0 +1,16 @@
+{
+    "liveSassCompile.settings.forceBaseDirectory": "/src/wwwroot/scss",
+    "liveSassCompile.settings.formats": [
+        {
+            "format": "compressed",
+            "extensionName": ".css",
+            "savePath": "/web/css",
+            "savePathReplacementPairs": null
+        }
+    ],
+    "liveSassCompile.settings.includeItems": [
+        "/main.scss"
+    ],
+    "liveSassCompile.settings.watchOnLaunch": true,
+    "liveSassCompile.settings.showOutputWindowOn": "None"
+}
