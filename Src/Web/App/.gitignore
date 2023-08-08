@@ -1,18 +1,33 @@
 
-# Visual Studio Code
-.vscode/*
-!.vscode/settings.json
-!.vscode/php-start.code-snippets
-
-# Composer
+### Composer ###
+composer.phar
 /vendor/
 
-# SASS
+### PHPUnit ###
+# Covers PHPUnit
+# Reference: https://phpunit.de/
+
+# Generated files
+.phpunit.result.cache
+.phpunit.cache
+
+# PHPUnit
+/app/phpunit.xml
+/phpunit.xml
+
+# Build data
+/build/
+
+### Sass ###
+.sass-cache/
 *.css.map
 *.sass.map
 *.scss.map
 
-# Ignore compiled files
-*.phpc
-*.phpt
-
+### VisualStudioCode ###
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets
