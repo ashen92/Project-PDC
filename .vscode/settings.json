@@ -1,10 +1,10 @@
 {
-    "liveSassCompile.settings.forceBaseDirectory": "/src/wwwroot/scss",
+    "liveSassCompile.settings.forceBaseDirectory": "/Src/Web/App/src/App/wwwroot/scss",
     "liveSassCompile.settings.formats": [
         {
             "format": "compressed",
             "extensionName": ".css",
-            "savePath": "/web/css",
+            "savePath": "/Src/Web/App/public/css",
             "savePathReplacementPairs": null
         }
     ],
