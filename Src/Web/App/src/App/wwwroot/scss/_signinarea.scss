@@ -1,0 +1,11 @@
+#signin-area {
+    width: 300px;
+
+    input[type="submit"] {
+        grid-row: 2;
+    }
+
+    .submit {
+        justify-content: right;
+    }
+}

@@ -1,0 +1,92 @@
+@use 'input';
+@use 'signinarea';
+@use 'grid';
+
+$navbar-color: rgb(231, 211, 211);
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    color: blue;
+    text-decoration: none;
+}
+
+.header a:hover {
+    background-color: azure;
+}
+
+.wrapper {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    min-height: 100vh;
+}
+
+.header {
+    background-color: $navbar-color;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    min-height: 60px;
+}
+
+.header * {
+    display: inline-block;
+}
+
+.header a {
+    color: black;
+    padding: 20px;
+}
+
+.navbar-user-account {
+    text-align: right;
+}
+
+.text-title {
+    font-size: 45px;
+    padding: 20px;
+}
+
+.text-subtitle {
+    font-size: 35px;
+    padding: 20px;
+}
+
+.form-field {
+    display: grid;
+    grid-template-rows: 30px 30px;
+    padding: 5px 0px 5px 0px;
+}
+
+.form-field > input[type="submit"] {
+    min-width: auto;
+}
+
+.box {
+    padding: 20px;
+}
+
+.footer {
+    height: 60px;
+}
+
+.margin-top-60px {
+    margin-top: 60px;
+}
+
+.padding-x-60px {
+    padding-left: 80px;
+    padding-right: 80px;
+}
+
+.padding-y-15px {
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.color-green {
+    background-color: green;
+    color: white;
+}
