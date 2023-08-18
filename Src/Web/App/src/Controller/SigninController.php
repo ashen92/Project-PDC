@@ -5,11 +5,19 @@ namespace App\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Twig\Environment;
 
 class SigninController
 {
+    private $twig;
+
+    public function __construct(Environment $twig)
+    {
+        $this->twig = $twig;
+    }
+
     public function index(Request $request): Response
     {
-        return new Response('Hello from home');
+        return new Response($this->twig->render("index.html"));
     }
 }

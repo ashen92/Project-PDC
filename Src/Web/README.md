@@ -30,9 +30,15 @@ Download the installer from [here](https://dev.mysql.com/downloads/installer/) a
 [Install VSCode](https://code.visualstudio.com/) then install the following extensions
 - [PHP from DEVSENSE](https://marketplace.visualstudio.com/items?itemName=DEVSENSE.phptools-vscode)
 - [Live Sass Compiler](https://marketplace.visualstudio.com/items?itemName=glenn2223.live-sass)
+- [Twig braces helper](https://marketplace.visualstudio.com/items?itemName=zepich.twig-braces-helper)
+- [YAML](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml)
 
 `code --install-extension DEVSENSE.phptools-vscode`
 
 `code --install-extension glenn2223.live-sass`
+
+`code --install-extension zepich.twig-braces-helper`
+
+`code --install-extension redhat.vscode-yaml`
 
 Clone or copy the files in `App` folder to `C:\Apache24\htdocs` folder. Open that folder in VSCode to start developing.
