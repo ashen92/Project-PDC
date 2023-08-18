@@ -17,7 +17,7 @@ Download PHP from [here](https://windows.php.net/downloads/releases/php-8.2.8-Wi
 
 Copy `php.ini` file in the `Configs` to `C:\php` folder. Copy `httpd.conf` file to `C:\Apache24\conf` folder.
 
-To automatically start the Apache Server on Windows startup, open Windows PowerShell or Command Prompt and run the following command inside the `C:\Apache24\` folder.
+To automatically start the Apache Server on Windows startup, open Windows PowerShell or Command Prompt and run the following command inside the `C:\Apache24\bin` folder.
 
 `httpd.exe -k install`
 
