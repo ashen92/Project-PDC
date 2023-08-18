@@ -41,4 +41,6 @@ Download the installer from [here](https://dev.mysql.com/downloads/installer/) a
 
 `code --install-extension redhat.vscode-yaml`
 
-Clone or copy the files in `App` folder to `C:\Apache24\htdocs` folder. Open that folder in VSCode to start developing.
+Clone this whole repository to `C:\src` using `git clone https://ashenhasanka12@dev.azure.com/ashenhasanka12/GroupProject/_git/GroupProject`
+
+Open `C:\src\GroupProject` folder in VSCode to start developing.
