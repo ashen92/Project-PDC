@@ -1,0 +1,24 @@
+services:
+    # _defaults:
+    #     autowire: true
+    #     autoconfigure: true
+    #     public: false
+
+    twig.loader:
+        class: Twig\Loader\FilesystemLoader
+        arguments: ["../templates"]
+
+    twig:
+        class: Twig\Environment
+        arguments:
+            - "@twig.loader"
+            # - cache: "../cache/twig"
+
+    App\Controller\SigninController:
+        class: App\Controller\SigninController
+        arguments: ["@twig"]
+
+    # routing.loader.annotation:
+    #     class: Symfony\Component\Routing\Loader\AnnotationFileLoader
+    #     arguments: ["@file_locator", "@annotation_loader"]
+    #     tags: ["routing.loader"]

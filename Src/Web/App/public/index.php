@@ -4,31 +4,33 @@ declare(strict_types=1);
 require_once __DIR__ . "/../vendor/autoload.php";
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing;
-use Symfony\Component\HttpKernel\Controller\ControllerResolver;
+use Symfony\Component\Routing\Matcher\UrlMatcher;
+use Symfony\Component\Routing\RequestContext;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\HttpKernel\EventListener\RouterListener;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Controller\ArgumentResolver;
+use Symfony\Component\HttpKernel\HttpKernel;
+use Symfony\Component\HttpKernel\Controller\ContainerControllerResolver;
+
+require_once __DIR__.'/../vendor/autoload.php';
+
+$routes = include __DIR__.'/../src/app.php';
+$container = include __DIR__.'/../src/container.php';
 
 $request = Request::createFromGlobals();
-$routes = include __DIR__ . "/../src/app.php";
 
-$context = new Routing\RequestContext();
-$matcher = new Routing\Matcher\UrlMatcher($routes, $context);
+$matcher = new UrlMatcher($routes, new RequestContext());
 
-$controllerResolver = new ControllerResolver();
+$dispatcher = new EventDispatcher();
+$dispatcher->addSubscriber(new RouterListener($matcher, new RequestStack()));
+
+$controllerResolver = new ContainerControllerResolver($container);
 $argumentResolver = new ArgumentResolver();
 
-try {
-    $request->attributes->add($matcher->match($request->getPathInfo()));
+$kernel = new HttpKernel($dispatcher, $controllerResolver, new RequestStack(), $argumentResolver);
 
-    $controller = $controllerResolver->getController($request);
-    $arguments = $argumentResolver->getArguments($request, $controller);
-
-    $response = call_user_func_array($controller, $arguments);
-} catch (Routing\Exception\ResourceNotFoundException $exception) {
-    $response = new Response('Not Found', 404);
-} catch (Exception $exception) {
-    $response = new Response('An error occurred', 500);
-}
-
+$response = $kernel->handle($request);
 $response->send();
+
+$kernel->terminate($request, $response);
