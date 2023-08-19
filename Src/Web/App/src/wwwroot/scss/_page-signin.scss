@@ -1,0 +1,13 @@
+#signin-container {
+    align-items: center;
+    min-height: 100%;
+
+    &.grid {
+        grid-template-rows: 250px 500px;
+    }
+}
+
+#signin-area {
+    width: 300px;
+    padding: 20px;
+}

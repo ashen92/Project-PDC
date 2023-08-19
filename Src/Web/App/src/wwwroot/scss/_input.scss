@@ -1,26 +1,37 @@
 $text-field-padding: 6px 8px;
-$button-padding: 3px 16px;
+
+$button-padding: 10px 22px;
 
 label {
     padding: 6px 4px;
 }
 
-input[type="text"] {
-    padding: $text-field-padding;
-}
+input {
+    &[type="text"] {
+        padding: $text-field-padding;
+    }
+    
+    &[type="email"] {
+        padding: $text-field-padding;
+    }
+    
+    &[type="password"] {
+        padding: $text-field-padding;
+    }
+    
+    &[type="submit"] {
+        border: none;
+        padding: $button-padding;
+        color: white;
+        background-color: #0078d4;
 
-input[type="email"] {
-    padding: $text-field-padding;
-}
-
-input[type="password"] {
-    padding: $text-field-padding;
-}
-
-input[type="submit"] {
-    padding: $button-padding;
-}
-
-input[type="button"] {
-    padding: $button-padding;
+        &:hover {
+            color: white;
+        background-color: #0067b5;
+        }
+    }
+    
+    &[type="button"] {
+        padding: $button-padding;
+    }
 }
