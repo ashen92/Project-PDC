@@ -1,5 +1,5 @@
 {
-    "liveSassCompile.settings.forceBaseDirectory": "/Src/Web/App/src/App/wwwroot/scss",
+    "liveSassCompile.settings.forceBaseDirectory": "/Src/Web/App/src/wwwroot/scss",
     "liveSassCompile.settings.formats": [
         {
             "format": "compressed",

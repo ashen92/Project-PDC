@@ -5,30 +5,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="css/main.css" type="text/css" rel="stylesheet">
+    <meta http-equiv="cache-control" content="no-cache" />
     <title>{% block title %}{% endblock %}</title>
 </head>
 
 <body>
     <div class="wrapper">
-        <div class="header padding-x-60px">
-            <div>
-                <a href="/" class="navbar-logo">Hello World</a>
-            </div>
-            <nav>
-                <ul>
-                    <li><a href="/about">About</a></li>
-                    <li><a href="/help">Help</a></li>
-                </ul>
-            </nav>
-            <div class="navbar-user-account">
-                <a href="/signin">Sign in</a>
-            </div>
+        <div>
+            {% block header %}{% endblock %}
         </div>
         <div class="content padding-x-60px">
-            {% block content%}{% endblock %}
+            {% block content %}{% endblock %}
         </div>
-        <div class="footer padding-x-60px color-green">
-            <h1>Footer</h1>
+        <div class="footer padding-x-60px">
+            <div>Lorem ipsum dolor sit amet consectetur adipisicing elit.</div>
         </div>
     </div>
 </body>

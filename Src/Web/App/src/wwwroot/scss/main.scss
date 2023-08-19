@@ -1,6 +1,8 @@
 @use 'input';
-@use 'signinarea';
 @use 'grid';
+@use 'text';
+@use 'page-signin';
+@use 'form';
 
 $navbar-color: rgb(231, 211, 211);
 
@@ -44,36 +46,14 @@ a {
     text-align: right;
 }
 
-.text-title {
-    font-size: 45px;
-    padding: 20px;
-}
-
-.text-subtitle {
-    font-size: 35px;
-    padding: 20px;
-}
-
-.form-field {
-    display: grid;
-    grid-template-rows: 30px 30px;
-    padding: 5px 0px 5px 0px;
-}
-
-.form-field > input[type="submit"] {
-    min-width: auto;
-}
-
-.box {
-    padding: 20px;
-}
-
 .footer {
     height: 60px;
-}
+    background-color: gainsboro;
+    color: rgb(66, 66, 66);
 
-.margin-top-60px {
-    margin-top: 60px;
+    div {
+        padding: 20px 10px 20px 10px;
+    }
 }
 
 .padding-x-60px {
@@ -84,9 +64,4 @@ a {
 .padding-y-15px {
     padding-top: 15px;
     padding-bottom: 15px;
-}
-
-.color-green {
-    background-color: green;
-    color: white;
 }
