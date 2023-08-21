@@ -14,8 +14,8 @@ services:
             - "@twig.loader"
             # - cache: "../cache/twig"
 
-    App\Controller\SigninController:
-        class: App\Controller\SigninController
+    App\Controllers\SigninController:
+        class: App\Controllers\SigninController
         arguments: ["@twig"]
 
     # routing.loader.annotation:

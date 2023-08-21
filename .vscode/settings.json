@@ -12,5 +12,6 @@
         "/main.scss"
     ],
     "liveSassCompile.settings.watchOnLaunch": true,
-    "liveSassCompile.settings.showOutputWindowOn": "None"
+    "liveSassCompile.settings.showOutputWindowOn": "None",
+    "php.suggest.basic": false
 }
