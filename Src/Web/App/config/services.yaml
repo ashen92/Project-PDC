@@ -1,9 +1,6 @@
 services:
-    # _defaults:
-    #     autowire: true
-    #     autoconfigure: true
-    #     public: false
 
+    # Services
     twig.loader:
         class: Twig\Loader\FilesystemLoader
         arguments: ["../templates"]
@@ -14,11 +11,33 @@ services:
             - "@twig.loader"
             # - cache: "../cache/twig"
 
+    database.connection:
+        class: App\Services\MySQLConnection
+        arguments:
+            $host: "localhost"
+            $db: "pdc"
+            $user: "root"
+            $password: "root"
+
+    authentication.database:
+        class: App\Services\DBAuthenticationService
+        arguments: ["@database.connection"]
+
+    # DBContext
+    repository.user:
+        class: App\Models\UserRepository
+        arguments: ["@database.connection"]
+
+
+    # Controllers
     App\Controllers\SigninController:
         class: App\Controllers\SigninController
         arguments: ["@twig"]
 
-    # routing.loader.annotation:
-    #     class: Symfony\Component\Routing\Loader\AnnotationFileLoader
-    #     arguments: ["@file_locator", "@annotation_loader"]
-    #     tags: ["routing.loader"]
+    App\Controllers\HomeController:
+        class: App\Controllers\HomeController
+        arguments: ["@twig"]
+
+    App\Controllers\AuthenticationController:
+        class: App\Controllers\AuthenticationController
+        arguments: ["@authentication.database"]

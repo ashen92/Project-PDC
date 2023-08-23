@@ -16,11 +16,33 @@ $routes->add(
 );
 
 $routes->add(
-    "page.signin.post",
+    "page.home.get",
     new Routing\Route(
-        path: "/",
+        path: "/home",
         defaults: [
-            "_controller" => "App\Controllers\SigninController::login",
+            "_controller" => "App\Controllers\HomeController::index",
+        ],
+        methods: "GET"
+    )
+);
+
+$routes->add(
+    "login",
+    new Routing\Route(
+        path: "/login",
+        defaults: [
+            "_controller" => "App\Controllers\AuthenticationController::login",
+        ],
+        methods: "POST"
+    )
+);
+
+$routes->add(
+    "logout",
+    new Routing\Route(
+        path: "/logout",
+        defaults: [
+            "_controller" => "App\Controllers\AuthenticationController::logout",
         ],
         methods: "POST"
     )
