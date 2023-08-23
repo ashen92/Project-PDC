@@ -12,6 +12,8 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Controller\ArgumentResolver;
 use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\Controller\ContainerControllerResolver;
+use Symfony\Component\HttpFoundation\Session\Session;
+use App\EventListeners\AuthenticationListener;
 
 require_once __DIR__.'/../vendor/autoload.php';
 
@@ -19,11 +21,13 @@ $routes = include __DIR__.'/../src/app.php';
 $container = include __DIR__.'/../src/container.php';
 
 $request = Request::createFromGlobals();
+$request->setSession(new Session());
 
 $matcher = new UrlMatcher($routes, new RequestContext());
 
 $dispatcher = new EventDispatcher();
 $dispatcher->addSubscriber(new RouterListener($matcher, new RequestStack()));
+$dispatcher->addSubscriber(new AuthenticationListener());
 
 $controllerResolver = new ContainerControllerResolver($container);
 $argumentResolver = new ArgumentResolver();
