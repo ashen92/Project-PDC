@@ -55,7 +55,7 @@ $routes->add(
         defaults: [
             "_controller" => "App\Controllers\AuthenticationController::logout",
         ],
-        methods: "POST"
+        methods: "GET"
     )
 );
 

@@ -12,3 +12,10 @@
         padding-top: 20px;
     }
 }
+
+.px {
+    &-80 {
+        padding-left: 80px;
+        padding-right: 80px;
+    }
+}
