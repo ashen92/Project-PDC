@@ -16,6 +16,17 @@ $routes->add(
 );
 
 $routes->add(
+    "page.signup.get",
+    new Routing\Route(
+        path: "/signup",
+        defaults: [
+            "_controller" => "App\Controllers\SignupController::index",
+        ],
+        methods: "GET"
+    )
+);
+
+$routes->add(
     "page.home.get",
     new Routing\Route(
         path: "/home",

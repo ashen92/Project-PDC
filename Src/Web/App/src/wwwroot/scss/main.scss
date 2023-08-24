@@ -1,8 +1,9 @@
 @use 'input';
 @use 'grid';
 @use 'text';
-@use 'page-signin';
 @use 'form';
+@use 'padding';
+@use 'width';
 
 $navbar-color: rgb(231, 211, 211);
 
@@ -59,9 +60,4 @@ a {
 .padding-x-60px {
     padding-left: 80px;
     padding-right: 80px;
-}
-
-.padding-y-15px {
-    padding-top: 15px;
-    padding-bottom: 15px;
 }

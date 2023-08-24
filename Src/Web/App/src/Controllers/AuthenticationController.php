@@ -36,6 +36,11 @@ class AuthenticationController
 
     public function logout(Request $request)
     {
+        // todo
+    }
 
+    public function signup(Request $request)
+    {
+        // todo
     }
 }

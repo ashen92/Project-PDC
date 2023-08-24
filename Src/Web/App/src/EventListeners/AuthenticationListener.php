@@ -17,11 +17,12 @@ class AuthenticationListener implements EventSubscriberInterface
         $currentMethod = $request->getMethod();
 
         $excludedRoutes = [
-            "/" => "GET",
-            "/login" => "GET"
+            "/" => ["GET"],
+            "/login" => ["GET", "POST"],
+            "/signup" => ["GET"]
         ];
         if (array_key_exists($currentRoute, $excludedRoutes)) {
-            if ($excludedRoutes[$currentRoute] == $currentMethod)
+            if (in_array($currentMethod, $excludedRoutes[$currentRoute]))
                 return;
         }
 

@@ -34,6 +34,10 @@ services:
         class: App\Controllers\SigninController
         arguments: ["@twig"]
 
+    App\Controllers\SignupController:
+        class: App\Controllers\SignupController
+        arguments: ["@twig"]
+
     App\Controllers\HomeController:
         class: App\Controllers\HomeController
         arguments: ["@twig"]

@@ -4,13 +4,13 @@
 
 {% block content %}
 
-<div id="signin-container" class="grid">
+<div class="grid pt-100">
     <div class="text-title">
         Professional Development Centre at UCSC
     </div>
-    <div class="grid">
-        <div class="text-subtitle">Sign in</div>
-        <div id="signin-area" class="box">
+    <div class="grid pt-50">
+        <div class="text-subtitle grid">Sign in</div>
+        <div class="pt-25 mw-300">
             <form action="/login" method="post">
                 <div class="form-field">
                     <label for="email">Email</label>
@@ -24,7 +24,7 @@
                     <input type="submit" value="Sign in">
                 </div>
             </form>
-            <div class="padding-y-15px">Don't have an account? <a href="/signup">Create one!</a></div>
+            <div class="pt-20">Don't have an account? <a href="/signup">Create one!</a></div>
         </div>
     </div>
 </div>
