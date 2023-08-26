@@ -30,6 +30,10 @@ services:
 
 
     # Controllers
+    App\Controllers\AuthenticationController:
+        class: App\Controllers\AuthenticationController
+        arguments: ["@authentication.database"]
+
     App\Controllers\SigninController:
         class: App\Controllers\SigninController
         arguments: ["@twig"]
@@ -42,6 +46,6 @@ services:
         class: App\Controllers\HomeController
         arguments: ["@twig"]
 
-    App\Controllers\AuthenticationController:
-        class: App\Controllers\AuthenticationController
-        arguments: ["@authentication.database"]
+    App\Controllers\TechTalksController:
+        class: App\Controllers\TechTalksController
+        arguments: ["@twig"]

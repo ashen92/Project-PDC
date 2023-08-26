@@ -4,4 +4,10 @@
     grid-auto-columns: auto;
 
     justify-content: center;
+    justify-items: center;
+
+    &-row {
+        display: grid;
+        grid-auto-flow: column;
+    }
 }
