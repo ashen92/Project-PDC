@@ -3,7 +3,7 @@ services:
     # Services
     twig.loader:
         class: Twig\Loader\FilesystemLoader
-        arguments: ["../templates"]
+        arguments: ["../src/Pages"]
 
     twig:
         class: Twig\Environment
