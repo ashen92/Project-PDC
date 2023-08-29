@@ -5,8 +5,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
 $container = new ContainerBuilder();
-// $loader = new YamlFileLoader($container, new FileLocator(__DIR__."/../config"));
-// $loader->load('services.yaml');
 
 // Services
 $container->register(
