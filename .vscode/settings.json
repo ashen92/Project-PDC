@@ -11,6 +11,14 @@
     "liveSassCompile.settings.includeItems": [
         "/main.scss"
     ],
+    "liveSassCompile.settings.autoprefix": [
+        "defaults"
+    ],
     "liveSassCompile.settings.watchOnLaunch": true,
-    "liveSassCompile.settings.showOutputWindowOn": "None"
+    "liveSassCompile.settings.showOutputWindowOn": "None",
+    "liveSassCompile.settings.useNewCompiler": true,
+    "php.suggest.basic": false,
+    "git.autofetch": true,
+    "git.openRepositoryInParentFolders": "never",
+
 }
