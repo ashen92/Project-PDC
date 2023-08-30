@@ -71,4 +71,26 @@ $routes->add(
     )
 );
 
+$routes->add(
+    "page.internship.get",
+    new Routing\Route(
+        path: "/internship",
+        defaults: [
+            "_controller" => "App\Controllers\InternshipController::index",
+        ],
+        methods: "GET"
+    )
+);
+
+$routes->add(
+    "page.internship.view.get",
+    new Routing\Route(
+        path: "/internship/view",
+        defaults: [
+            "_controller" => "App\Controllers\InternshipController::viewInternships",
+        ],
+        methods: "GET"
+    )
+);
+
 return $routes;

@@ -66,4 +66,10 @@ $container->register(
 )
     ->setArguments([new Reference("twig")]);
 
+$container->register(
+    "App\Controllers\InternshipController",
+    App\Controllers\InternshipController::class
+)
+    ->setArguments([new Reference("twig")]);
+
 return $container;

@@ -1,0 +1,35 @@
+{% extends "shared/layout.html" %}
+
+{% block title %}Internship Program{% endblock %}
+
+{% block header %}
+{{ include ('shared/header.html') }}
+{% endblock %}
+
+{% block content %}
+
+<div class="grid justify-content-center pt-100">
+    <div class="grid-row justify-items-center text-center text-subtitle">
+        <div>
+            Internship Program
+        </div>
+    </div>
+    <div class="grid-row align-items-center mt-20">
+        <div class="p-10 border">Start internship cycle</div>
+        <div class="p-10">
+            <a href="/internship/start">
+                <input type="submit" value="Start">
+            </a>
+        </div>
+    </div>
+    <div class="grid-row align-items-center mt-20">
+        <div class="p-10 border">View received internships</div>
+        <div class="p-10">
+            <a href="/internship/view">
+                <input type="submit" value="View">
+            </a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

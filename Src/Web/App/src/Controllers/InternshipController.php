@@ -8,11 +8,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
 
-class TechTalksController implements IPageController
+class InternshipController implements IPageController
 {
     private $templateVariables = array(
-        "sectionDisplayName" => "TechTalks",
-        "sectionURL" => "techtalks"
+        "sectionDisplayName" => "Internship Program",
+        "sectionURL" => "internship"
     );
 
     public function __construct(private Environment $twig)
@@ -22,7 +22,12 @@ class TechTalksController implements IPageController
 
     public function index(Request $request): Response
     {
-        return new Response($this->render("techtalks.html"));
+        return new Response($this->render("internship/home.html"));
+    }
+
+    public function viewInternships(Request $request): Response
+    {
+        return new Response($this->render("internship/internships.html"));
     }
 
     public function render(string $template): string
