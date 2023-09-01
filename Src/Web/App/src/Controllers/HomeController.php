@@ -13,7 +13,7 @@ class HomeController extends PageControllerBase
     }
     
     protected function getSectionURL(): string {
-        return "home";
+        return "/home";
     }
 
     public function index(Request $request): Response

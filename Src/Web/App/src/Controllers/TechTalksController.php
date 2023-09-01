@@ -15,7 +15,7 @@ class TechTalksController extends PageControllerBase
 
     protected function getSectionURL(): string
     {
-        return "techtalks";
+        return "/techtalks";
     }
 
     public function index(Request $request): Response

@@ -15,7 +15,7 @@ class InternshipController extends PageControllerBase
 
     protected function getSectionURL(): string
     {
-        return "internship";
+        return "/internship";
     }
 
     public function index(Request $request): Response
