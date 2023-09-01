@@ -58,7 +58,7 @@ $container->register(
     "App\Controllers\AuthenticationController",
     App\Controllers\AuthenticationController::class
 )
-    ->setArguments([new Reference("authentication.service")]);
+    ->setArguments([new Reference("authentication.service"), new Reference("user.service")]);
 
 $container->register(
     "App\Controllers\AuthenticationPageController",

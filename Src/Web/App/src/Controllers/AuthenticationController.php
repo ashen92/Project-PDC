@@ -4,13 +4,16 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Interfaces\IAuthenticationService;
+use App\Services\UserService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class AuthenticationController
 {
-    public function __construct(private IAuthenticationService $authnService)
-    {
+    public function __construct(
+        private IAuthenticationService $authnService,
+        private UserService $userService
+    ) {
 
     }
 
@@ -36,6 +39,11 @@ class AuthenticationController
     }
 
     public function signup(Request $request)
+    {
+        // todo
+    }
+
+    public function register(Request $request)
     {
         // todo
     }
