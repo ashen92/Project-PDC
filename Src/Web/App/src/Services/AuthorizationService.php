@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-class AuthorizationService
+use App\Interfaces\IAuthorizationService;
+
+class AuthorizationService implements IAuthorizationService
 {
     public function __construct(private UserService $userService)
     {
@@ -12,7 +14,7 @@ class AuthorizationService
     public function isAuthorized($requiredRole)
     {
         $currentUser = $this->userService->getCurrentUser();
-        $userRoles = $currentUser->getRoles();  // Assume getRoles returns an array of roles
+        $userRoles = $currentUser->getRoles(); // Assume getRoles returns an array of roles
 
         return in_array($requiredRole, $userRoles);
     }
