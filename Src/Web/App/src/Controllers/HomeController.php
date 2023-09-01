@@ -5,17 +5,19 @@ namespace App\Controllers;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Twig\Environment;
 
-class HomeController
+class HomeController extends PageControllerBase
 {
-    public function __construct(private Environment $twig)
-    {
-
+    protected function getSectionName(): string {
+        return "Home";
+    }
+    
+    protected function getSectionURL(): string {
+        return "home";
     }
 
     public function index(Request $request): Response
     {
-        return new Response($this->twig->render("home.html"));
+        return $this->render("home.html");
     }
 }

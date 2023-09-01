@@ -6,14 +6,17 @@ namespace App\Controllers;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Twig\Environment;
 
-class SigninController
+class SigninController extends PageControllerBase
 {
-    public function __construct(private Environment $twig)
-    {
+    protected function getSectionName(): string {
+        return "";
     }
 
+    protected function getSectionURL(): string {
+        return "";
+    }
+    
     public function index(Request $request): Response|RedirectResponse
     {
         if ($request->getSession()->get("is_authenticated")) {
@@ -21,4 +24,5 @@ class SigninController
         }
         return new Response($this->twig->render("signin.html"));
     }
+
 }

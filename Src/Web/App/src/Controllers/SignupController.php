@@ -6,12 +6,15 @@ namespace App\Controllers;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Twig\Environment;
 
-class SignupController
+class SignupController extends PageControllerBase
 {
-    public function __construct(private Environment $twig)
-    {
+    protected function getSectionName(): string {
+        return "";
+    }
+    
+    protected function getSectionURL(): string {
+        return "";
     }
 
     public function index(Request $request): Response|RedirectResponse
@@ -21,4 +24,5 @@ class SignupController
         }
         return new Response($this->twig->render("signup.html"));
     }
+	
 }
