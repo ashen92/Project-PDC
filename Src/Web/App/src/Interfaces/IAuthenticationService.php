@@ -7,6 +7,6 @@ use App\Models\User;
 
 interface IAuthenticationService
 {
-    public function authenticate(string $username, string $password): User|null;
+    public function login(string $username, string $password): User|null;
     public function logout(): void;
 }
