@@ -32,7 +32,7 @@ $routes->add(
     new Routing\Route(
         path: "/",
         defaults: [
-            "_controller" => "App\Controllers\SigninController::index",
+            "_controller" => "App\Controllers\AuthenticationPageController::signin",
         ],
         methods: "GET"
     )
@@ -43,7 +43,18 @@ $routes->add(
     new Routing\Route(
         path: "/signup",
         defaults: [
-            "_controller" => "App\Controllers\SignupController::index",
+            "_controller" => "App\Controllers\AuthenticationPageController::signup",
+        ],
+        methods: "GET"
+    )
+);
+
+$routes->add(
+    "page.register.get",
+    new Routing\Route(
+        path: "/register",
+        defaults: [
+            "_controller" => "App\Controllers\AuthenticationPageController::register",
         ],
         methods: "GET"
     )

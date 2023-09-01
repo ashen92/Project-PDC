@@ -61,18 +61,10 @@ $container->register(
     ->setArguments([new Reference("authentication.service")]);
 
 $container->register(
-    "App\Controllers\SigninController",
-    App\Controllers\SigninController::class
+    "App\Controllers\AuthenticationPageController",
+    App\Controllers\AuthenticationPageController::class
 )
-    ->setArguments([new Reference("authorization.service"), new Reference("twig")]);
-
-
-$container->register(
-    "App\Controllers\SignupController",
-    App\Controllers\SignupController::class
-)
-    ->setArguments([new Reference("authorization.service"), new Reference("twig")]);
-
+    ->setArguments([new Reference("authorization.service"), new Reference("twig"), new Reference("authentication.service")]);
 
 $container->register(
     "App\Controllers\HomeController",
