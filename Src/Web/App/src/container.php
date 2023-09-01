@@ -35,7 +35,7 @@ $container->register(
     "authentication.service",
     App\Services\AuthenticationService::class
 )
-    ->setArguments([new Reference("user.repository")]);
+    ->setArguments([new Reference("user.repository"), new Reference("request.stack")]);
 
 $container->register(
     "authorization.service",

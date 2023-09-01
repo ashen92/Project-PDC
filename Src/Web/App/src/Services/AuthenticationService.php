@@ -6,17 +6,20 @@ namespace App\Services;
 use App\Interfaces\IAuthenticationService;
 use App\Models\User;
 use App\Repositories\UserRepository;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class AuthenticationService implements IAuthenticationService
 {
-    public function __construct(private UserRepository $userRepository)
+    public function __construct(private UserRepository $userRepository, private RequestStack $requestStack)
     {
 
     }
 
     public function isAuthenticated(): bool
     {
-        return true;
+        if ($this->requestStack->getSession()->get("is_authenticated"))
+            return true;
+        return false;
     }
 
     public function login(string $email, string $password): User|null

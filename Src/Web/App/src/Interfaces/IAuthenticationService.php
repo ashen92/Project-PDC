@@ -9,4 +9,5 @@ interface IAuthenticationService
 {
     public function login(string $username, string $password): User|null;
     public function logout(): void;
+    public function isAuthenticated(): bool;
 }
