@@ -3,14 +3,14 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
-use App\Services\AuthorizationService;
+use App\Interfaces\IAuthorizationService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
 
 abstract class PageControllerBase
 {
-    public function __construct(private AuthorizationService $authz, private Environment $twig)
+    public function __construct(private IAuthorizationService $authz, private Environment $twig)
     {
 
     }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Interfaces\IAuthenticationService;
-use App\Services\AuthorizationService;
+use App\Interfaces\IAuthorizationService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,7 +15,7 @@ class AuthenticationPageController extends PageControllerBase
     private IAuthenticationService $authn;
 
     public function __construct(
-        AuthorizationService $authz,
+        IAuthorizationService $authz,
         Environment $twig,
         IAuthenticationService $authn
     ) {
