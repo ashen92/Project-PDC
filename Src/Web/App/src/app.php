@@ -98,7 +98,7 @@ $routes->add(
     new Routing\Route(
         path: "/internship/view",
         defaults: [
-            "_controller" => "App\Controllers\InternshipController::viewInternships",
+            "_controller" => "App\Controllers\InternshipPageController::viewInternships",
         ],
         methods: "GET"
     )

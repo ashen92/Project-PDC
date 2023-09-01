@@ -22,22 +22,24 @@ class AuthenticationService implements IAuthenticationService
         return false;
     }
 
-    public function login(string $email, string $password): User|null
+    public function login(string $email, string $password): bool
     {
-        // authenticate against database. use UserRepository
-        // todo
-
         $user = $this->userRepository->findUserByEmail($email);
 
         // if (!$user || !password_verify($password, $user->getPasswordHash())) {
-        //     return null;
+        //     return false;
         // }
 
-        return $user;
+        $session = $this->requestStack->getSession();
+        $session->set("is_authenticated", true);
+        $session->set("user_id", "id");
+        $session->set("user_email", $user->getEmail());
+        $session->set("user_first_name", $user->getFirstName());
+        return true;
     }
 
     public function logout(): void
     {
-
+        $this->requestStack->getSession()->invalidate();
     }
 }

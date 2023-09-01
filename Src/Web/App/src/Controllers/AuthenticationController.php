@@ -9,25 +9,17 @@ use Symfony\Component\HttpFoundation\Request;
 
 class AuthenticationController
 {
-    public function __construct(private IAuthenticationService $authService)
+    public function __construct(private IAuthenticationService $authnService)
     {
 
     }
 
-    public function login(Request $request): RedirectResponse
+    public function login(): RedirectResponse
     {
         // get form data and validate
         // todo
 
-        $user = $this->authService->login("mail@mail.com", "12345");
-
-        if ($user) {
-            $session = $request->getSession();
-            $session->set("is_authenticated", true);
-            $session->set("user_id", "id");
-            $session->set("user_email", $user->getEmail());
-            $session->set("user_first_name", $user->getFirstName());
-
+        if ($this->authnService->login("mail@mail.com", "12345")) {
             return new RedirectResponse("/home");
         }
 
@@ -37,9 +29,10 @@ class AuthenticationController
         return new RedirectResponse("/");
     }
 
-    public function logout(Request $request)
+    public function logout(): RedirectResponse
     {
-        // todo
+        $this->authnService->logout();
+        return new RedirectResponse("/");
     }
 
     public function signup(Request $request)
