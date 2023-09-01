@@ -6,7 +6,7 @@ namespace App\Controllers;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class TechTalksController extends PageControllerBase
+class TechTalksPageController extends PageControllerBase
 {
     protected function getSectionName(): string
     {

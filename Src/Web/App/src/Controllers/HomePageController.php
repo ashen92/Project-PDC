@@ -6,7 +6,7 @@ namespace App\Controllers;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class HomeController extends PageControllerBase
+class HomePageController extends PageControllerBase
 {
     protected function getSectionName(): string {
         return "Home";

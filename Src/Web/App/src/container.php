@@ -67,21 +67,21 @@ $container->register(
     ->setArguments([new Reference("authorization.service"), new Reference("twig"), new Reference("authentication.service")]);
 
 $container->register(
-    "App\Controllers\HomeController",
-    App\Controllers\HomeController::class
+    "App\Controllers\HomePageController",
+    App\Controllers\HomePageController::class
 )
     ->setArguments([new Reference("authorization.service"), new Reference("twig")]);
 
 
 $container->register(
-    "App\Controllers\TechTalksController",
-    App\Controllers\TechTalksController::class
+    "App\Controllers\TechTalksPageController",
+    App\Controllers\TechTalksPageController::class
 )
     ->setArguments([new Reference("authorization.service"), new Reference("twig")]);
 
 $container->register(
-    "App\Controllers\InternshipController",
-    App\Controllers\InternshipController::class
+    "App\Controllers\InternshipPageController",
+    App\Controllers\InternshipPageController::class
 )
     ->setArguments([new Reference("authorization.service"), new Reference("twig")]);
 

@@ -65,7 +65,7 @@ $routes->add(
     new Routing\Route(
         path: "/home",
         defaults: [
-            "_controller" => "App\Controllers\HomeController::index",
+            "_controller" => "App\Controllers\HomePageController::index",
         ],
         methods: "GET"
     )
@@ -76,7 +76,7 @@ $routes->add(
     new Routing\Route(
         path: "/techtalks",
         defaults: [
-            "_controller" => "App\Controllers\TechTalksController::index",
+            "_controller" => "App\Controllers\TechTalksPageController::index",
         ],
         methods: "GET"
     )
@@ -87,7 +87,7 @@ $routes->add(
     new Routing\Route(
         path: "/internship",
         defaults: [
-            "_controller" => "App\Controllers\InternshipController::index",
+            "_controller" => "App\Controllers\InternshipPageController::index",
         ],
         methods: "GET"
     )
