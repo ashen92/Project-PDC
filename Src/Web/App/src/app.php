@@ -32,7 +32,7 @@ $routes->add(
     new Routing\Route(
         path: "/",
         defaults: [
-            "_controller" => "App\Controllers\AuthenticationPageController::signin",
+            "_controller" => "App\Controllers\PageControllers\AuthenticationPageController::signin",
         ],
         methods: "GET"
     )
@@ -43,7 +43,7 @@ $routes->add(
     new Routing\Route(
         path: "/signup",
         defaults: [
-            "_controller" => "App\Controllers\AuthenticationPageController::signup",
+            "_controller" => "App\Controllers\PageControllers\AuthenticationPageController::signup",
         ],
         methods: "GET"
     )
@@ -54,7 +54,7 @@ $routes->add(
     new Routing\Route(
         path: "/register",
         defaults: [
-            "_controller" => "App\Controllers\AuthenticationPageController::register",
+            "_controller" => "App\Controllers\PageControllers\AuthenticationPageController::register",
         ],
         methods: "GET"
     )
@@ -65,7 +65,7 @@ $routes->add(
     new Routing\Route(
         path: "/home",
         defaults: [
-            "_controller" => "App\Controllers\HomePageController::index",
+            "_controller" => "App\Controllers\PageControllers\HomePageController::index",
         ],
         methods: "GET"
     )
@@ -76,7 +76,7 @@ $routes->add(
     new Routing\Route(
         path: "/techtalks",
         defaults: [
-            "_controller" => "App\Controllers\TechTalksPageController::index",
+            "_controller" => "App\Controllers\PageControllers\TechTalksPageController::index",
         ],
         methods: "GET"
     )
@@ -87,7 +87,7 @@ $routes->add(
     new Routing\Route(
         path: "/internship",
         defaults: [
-            "_controller" => "App\Controllers\InternshipPageController::index",
+            "_controller" => "App\Controllers\PageControllers\InternshipPageController::index",
         ],
         methods: "GET"
     )
@@ -98,7 +98,7 @@ $routes->add(
     new Routing\Route(
         path: "/internship/view",
         defaults: [
-            "_controller" => "App\Controllers\InternshipPageController::viewInternships",
+            "_controller" => "App\Controllers\PageControllers\InternshipPageController::viewInternships",
         ],
         methods: "GET"
     )

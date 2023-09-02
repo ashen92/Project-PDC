@@ -26,27 +26,27 @@ $container->register(
     ->setArguments([new Reference("service.authentication"), new Reference("service.user")]);
 
 $container->register(
-    "App\Controllers\AuthenticationPageController",
-    App\Controllers\AuthenticationPageController::class
+    "App\Controllers\PageControllers\AuthenticationPageController",
+    App\Controllers\PageControllers\AuthenticationPageController::class
 )
     ->setArguments([new Reference("service.authorization"), new Reference("twig"), new Reference("service.authentication")]);
 
 $container->register(
-    "App\Controllers\HomePageController",
-    App\Controllers\HomePageController::class
+    "App\Controllers\PageControllers\HomePageController",
+    App\Controllers\PageControllers\HomePageController::class
 )
     ->setArguments([new Reference("service.authorization"), new Reference("twig")]);
 
 
 $container->register(
-    "App\Controllers\TechTalksPageController",
-    App\Controllers\TechTalksPageController::class
+    "App\Controllers\PageControllers\TechTalksPageController",
+    App\Controllers\PageControllers\TechTalksPageController::class
 )
     ->setArguments([new Reference("service.authorization"), new Reference("twig")]);
 
 $container->register(
-    "App\Controllers\InternshipPageController",
-    App\Controllers\InternshipPageController::class
+    "App\Controllers\PageControllers\InternshipPageController",
+    App\Controllers\PageControllers\InternshipPageController::class
 )
     ->setArguments([new Reference("service.authorization"), new Reference("twig"), new Reference("repository.internship")]);
 

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Controllers;
+namespace App\PageControllers\Controllers;
 
 use App\Interfaces\IAuthenticationService;
 use App\Interfaces\IAuthorizationService;
