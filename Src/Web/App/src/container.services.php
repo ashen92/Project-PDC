@@ -2,6 +2,21 @@
 declare(strict_types=1);
 
 use Symfony\Component\DependencyInjection\Reference;
+use Doctrine\DBAL\DriverManager;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\ORMSetup;
+
+$dbParams = require "doctrine-config.php";
+
+$config = ORMSetup::createAttributeMetadataConfiguration(
+    paths: array(__DIR__ . "/Entities"),
+    isDevMode: true,
+);
+
+$connection = DriverManager::getConnection($dbParams, $config);
+
+$container->register("doctrine.entity_manager", EntityManager::class)
+    ->setArguments([$connection, $config]);
 
 $container->register(
     "twig.loader",
@@ -38,4 +53,3 @@ $container->register(
     App\Services\UserService::class
 )
     ->setArguments([new Reference("request.stack"), new Reference("repository.user")]);
-
