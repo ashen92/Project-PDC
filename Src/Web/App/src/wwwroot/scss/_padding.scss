@@ -16,6 +16,12 @@
     }
 }
 
+.pb {
+    &-50 {
+        padding-bottom: 50px;
+    }
+}
+
 .px {
     &-80 {
         padding-left: 80px;
@@ -29,6 +35,10 @@
 }
 
 .py {
+    &-50 {
+        padding-top: 50px;
+        padding-bottom: 50px;
+    }
     &-30 {
         padding-top: 30px;
         padding-bottom: 30px;

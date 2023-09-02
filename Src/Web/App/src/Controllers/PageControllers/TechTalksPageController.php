@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\PageControllers\Controllers;
+namespace App\Controllers\PageControllers;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
