@@ -3,11 +3,22 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+use App\Interfaces\IAuthorizationService;
+use App\Repositories\InternshipRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Twig\Environment;
 
 class InternshipPageController extends PageControllerBase
 {
+    public function __construct(
+        IAuthorizationService $authz,
+        Environment $twig,
+        private InternshipRepository $internshipRepository
+    ) {
+        parent::__construct($authz, $twig);
+    }
+
     protected function getSectionName(): string
     {
         return "Internship Program";
@@ -27,5 +38,4 @@ class InternshipPageController extends PageControllerBase
     {
         return $this->render("internship/internships.html");
     }
-
 }

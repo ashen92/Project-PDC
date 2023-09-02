@@ -48,6 +48,6 @@ $container->register(
     "App\Controllers\InternshipPageController",
     App\Controllers\InternshipPageController::class
 )
-    ->setArguments([new Reference("service.authorization"), new Reference("twig")]);
+    ->setArguments([new Reference("service.authorization"), new Reference("twig"), new Reference("repository.internship")]);
 
 return $container;

@@ -32,7 +32,6 @@ class AuthenticationService implements IAuthenticationService
 
         $session = $this->requestStack->getSession();
         $session->set("is_authenticated", true);
-        $session->set("user_id", "id");
         $session->set("user_email", $user->getEmail());
         $session->set("user_first_name", $user->getFirstName());
         return true;

@@ -15,16 +15,26 @@ class UserRepository
 
     public function findUserByEmail($email): User|null
     {
-
         // Query the database to find a user by email
-        return new User("mail@mail.com", "Ashen", "12345");
+        // todo
+
+        if ($email == "admin@mail.com") {
+            return new User("admin@mail.com", "Ashen", "12345", ["admin"]);
+        }
+        if ($email == "pdc@mail.com") {
+            return new User("pdc@mail.com", "Ashen", "12345", ["admin"]);
+        }
+        if ($email == "partner@mail.com") {
+            return new User("partner@mail.com", "Ashen", "12345", ["partner"]);
+        }
+        return new User("user@mail.com", "Ashen", "12345", ["user"]);
     }
 
     public function findUserById($id): User|null
     {
 
         // Query the database to find a user by ID
-        return new User("mail@mail.com", "Ashen", "12345");
+        return null;
     }
 
     public function saveUser(User $user)

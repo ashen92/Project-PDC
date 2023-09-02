@@ -18,20 +18,26 @@ abstract class PageControllerBase
     abstract protected function getSectionName(): string;
     abstract protected function getSectionURL(): string;
 
+    protected function getAuthzService(): IAuthorizationService
+    {
+        return $this->authz;
+    }
+
     protected function redirect(string $url): RedirectResponse
     {
         return new RedirectResponse($url);
     }
 
-    protected function render(string $template): Response
+    protected function render(string $template, array $parameters = []): Response
     {
         return new Response(
             $this->twig->render(
                 $template,
-                [
+                array_merge([
                     "sectionName" => $this->getSectionName(),
-                    "sectionURL" => $this->getSectionURL()
-                ]
+                    "sectionURL" => $this->getSectionURL(),
+                    "userRoles" => $this->authz->getUserRoles()
+                ], $parameters)
             )
         );
     }

@@ -8,7 +8,8 @@ class User
     public function __construct(
         private string $email,
         private string $firstName,
-        private string $passwordHash
+        private string $passwordHash,
+        private array $roles
     ) {
 
     }
@@ -30,6 +31,6 @@ class User
 
     public function getRoles(): array
     {
-        return array("admin");
+        return $this->roles;
     }
 }
