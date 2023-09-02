@@ -32,7 +32,7 @@ $routes->add(
     new Routing\Route(
         path: "/",
         defaults: [
-            "_controller" => "App\Controllers\SigninController::index",
+            "_controller" => "App\Controllers\PageControllers\AuthenticationPageController::signin",
         ],
         methods: "GET"
     )
@@ -43,7 +43,18 @@ $routes->add(
     new Routing\Route(
         path: "/signup",
         defaults: [
-            "_controller" => "App\Controllers\SignupController::index",
+            "_controller" => "App\Controllers\PageControllers\AuthenticationPageController::signup",
+        ],
+        methods: "GET"
+    )
+);
+
+$routes->add(
+    "page.register.get",
+    new Routing\Route(
+        path: "/register",
+        defaults: [
+            "_controller" => "App\Controllers\PageControllers\AuthenticationPageController::register",
         ],
         methods: "GET"
     )
@@ -54,7 +65,7 @@ $routes->add(
     new Routing\Route(
         path: "/home",
         defaults: [
-            "_controller" => "App\Controllers\HomeController::index",
+            "_controller" => "App\Controllers\PageControllers\HomePageController::index",
         ],
         methods: "GET"
     )
@@ -65,7 +76,29 @@ $routes->add(
     new Routing\Route(
         path: "/techtalks",
         defaults: [
-            "_controller" => "App\Controllers\TechTalksController::index",
+            "_controller" => "App\Controllers\PageControllers\TechTalksPageController::index",
+        ],
+        methods: "GET"
+    )
+);
+
+$routes->add(
+    "page.internship.get",
+    new Routing\Route(
+        path: "/internship",
+        defaults: [
+            "_controller" => "App\Controllers\PageControllers\InternshipPageController::index",
+        ],
+        methods: "GET"
+    )
+);
+
+$routes->add(
+    "page.internship.view.get",
+    new Routing\Route(
+        path: "/internship/view",
+        defaults: [
+            "_controller" => "App\Controllers\PageControllers\InternshipPageController::viewInternships",
         ],
         methods: "GET"
     )

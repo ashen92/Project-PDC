@@ -3,11 +3,24 @@
     grid-auto-rows: auto;
     grid-auto-columns: auto;
 
-    justify-content: center;
-    justify-items: center;
-
     &-row {
         display: grid;
         grid-auto-flow: column;
     }
+
+    &-auto-col-max-content {
+        grid-auto-columns: max-content;
+    }
+}
+
+.justify-content-center {
+    justify-content: center;
+}
+
+.justify-items-center {
+    justify-items: center;
+}
+
+.align-items-center {
+    align-items: center;
 }
