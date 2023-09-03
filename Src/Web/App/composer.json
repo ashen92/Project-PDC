@@ -24,5 +24,8 @@
     },
     "require-dev": {
         "phpunit/phpunit": "^10.2"
+    },
+    "scripts": {
+        "doctrine": "php bin/doctrine.php"
     }
 }

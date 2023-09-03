@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Repositories;
 
 use App\Interfaces\IDatabaseConnection;
-use App\Models\User;
+use App\Entities\User;
 
 class UserRepository
 {

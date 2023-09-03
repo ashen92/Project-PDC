@@ -6,7 +6,7 @@ use Doctrine\DBAL\DriverManager;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\ORMSetup;
 
-$dbParams = require "doctrine-config.php";
+$dbParams = require_once "doctrine-config.php";
 
 $config = ORMSetup::createAttributeMetadataConfiguration(
     paths: array(__DIR__ . "/Entities"),

@@ -13,10 +13,10 @@ $container->register(
 );
 
 // Services
-include(__DIR__ . "/container.services.php");
+require_once __DIR__ . "/container.services.php";
 
 // Repositories
-include(__DIR__ . "/container.repositories.php");
+require_once __DIR__ . "/container.repositories.php";
 
 // Controllers
 $container->register(

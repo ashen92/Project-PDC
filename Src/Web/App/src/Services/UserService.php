@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use App\Models\User;
+use App\Entities\User;
 use App\Repositories\UserRepository;
 use Symfony\Component\HttpFoundation\RequestStack;
 
