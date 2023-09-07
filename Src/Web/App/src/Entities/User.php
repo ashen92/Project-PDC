@@ -7,7 +7,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: UserRepository::class)]
+#[ORM\Entity]
+#[ORM\Table(name: 'users')]
 class User
 {
     #[ORM\Id]
@@ -21,15 +22,11 @@ class User
     #[ORM\Column]
     private $firstName;
 
-    #[ORM\Column]
-    private $passwordHash;
-
     /**
      * Many Users have Many Groups.
      * @var Collection<int, Group>
      */
-    #[ORM\ManyToMany(targetEntity: Group::class, inversedBy: 'users')]
-    #[ORM\JoinTable(name: 'users_groups')]
+    #[ORM\ManyToMany(targetEntity: Group::class, mappedBy: 'users')]
     private Collection $groups;
 
     public function __construct()
@@ -37,23 +34,14 @@ class User
         $this->groups = new ArrayCollection();
     }
 
-    public function getEmail(): string
+    public function setDetails(string $email, string $firstName): void
     {
-        return $this->email;
+        $this->email = $email;
+        $this->firstName = $firstName;
     }
 
-    public function getFirstName(): string
+    public function addToGroup(Group $group): void
     {
-        return $this->firstName;
-    }
-
-    public function getPasswordHash(): string
-    {
-        return $this->passwordHash;
-    }
-
-    public function getRoles(): array
-    {
-        return array();
+        $this->groups[] = $group;
     }
 }
