@@ -26,7 +26,7 @@ class Role
 
     /**
      * Many Roles have Many Policies.
-     * @var Collection<int, Role>
+     * @var Collection<int, Policy>
      */
     #[ORM\ManyToMany(targetEntity: Policy::class, inversedBy: 'roles')]
     #[ORM\JoinTable(name: 'roles_policies')]

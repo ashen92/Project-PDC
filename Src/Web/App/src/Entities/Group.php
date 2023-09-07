@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
-#[ORM\Table(name: 'groups')]
+#[ORM\Table(name: 'groups_')]
 class Group
 {
     #[ORM\Id]

@@ -16,6 +16,9 @@ class Policy
     #[ORM\Column(type: "integer")]
     private int $id;
 
+    #[ORM\Column]
+    private $name;
+
     /**
      * Many Policies have Many Roles.
      * @var Collection<int, Role>
@@ -23,9 +26,13 @@ class Policy
     #[ORM\ManyToMany(targetEntity: Role::class, mappedBy: 'policies')]
     private Collection $roles;
 
-    public function __construct()
+    /**
+     * @param $name Should start with "Can", then the action. Eg. CanRemoveUser
+     */
+    public function __construct(string $name)
     {
-        $this->groups = new ArrayCollection();
+        $this->roles = new ArrayCollection();
+        $this->name = $name;
     }
 
     public function addToRole(Role $role): void

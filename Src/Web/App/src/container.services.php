@@ -22,7 +22,7 @@ $container->register(
     "twig.loader",
     Twig\Loader\FilesystemLoader::class
 )
-    ->setArguments(["../src/Pages"]);
+    ->setArguments([__DIR__ . "/Pages"]);
 
 $container->register(
     "twig",
