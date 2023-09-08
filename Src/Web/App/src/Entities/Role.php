@@ -35,10 +35,11 @@ class Role
     #[ORM\JoinTable(name: "roles_policies")]
     private Collection $policies;
 
-    public function __construct()
+    public function __construct(string $name)
     {
         $this->groups = new ArrayCollection();
         $this->policies = new ArrayCollection();
+        $this->name = $name;
     }
 
     public function addGroup(Group $group): void

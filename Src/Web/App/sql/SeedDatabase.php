@@ -9,22 +9,14 @@ require_once __DIR__ . "/../src/container.php";
 
 $entityManager = $container->get("doctrine.entity_manager");
 
-$user = new User();
-$user->setDetails("1@mail.com", "Green");
-$user1 = new User();
-$user1->setDetails("2@mail.com", "Admin");
-$user2 = new User();
-$user2->setDetails("3@mail.com", "Coordinator");
-$user3 = new User();
-$user3->setDetails("4@mail.com", "Wood");
-$user4 = new User();
-$user4->setDetails("5@mail.com", "Root");
-$user5 = new User();
-$user5->setDetails("5@mail.com", "Head");
-$user6 = new User();
-$user6->setDetails("6@mail.com", "Apple");
-$user7 = new User();
-$user7->setDetails("7@mail.com", "Orange");
+$user = new User("1@mail.com", "Green");
+$user1 = new User("2@mail.com", "Admin");
+$user2 = new User("3@mail.com", "Coordinator");
+$user3 = new User("4@mail.com", "Wood");
+$user4 = new User("5@mail.com", "Root");
+$user5 = new User("5@mail.com", "Head");
+$user6 = new User("6@mail.com", "Apple");
+$user7 = new User("7@mail.com", "Orange");
 
 $entityManager->persist($user);
 $entityManager->persist($user1);
@@ -38,11 +30,11 @@ $entityManager->flush();
 
 echo "Added users\n";
 
-$groupCoordinators = new Group();
-$groupPartners = new Group();
-$groupStudents = new Group();
-$groupThirdYearStudents = new Group();
-$groupFirstYearStudents = new Group();
+$groupCoordinators = new Group("Coordinators");
+$groupPartners = new Group("Partners");
+$groupStudents = new Group("Students");
+$groupThirdYearStudents = new Group("ThirdYearStudents");
+$groupFirstYearStudents = new Group("FirstYearStudents");
 
 $groupThirdYearStudents->addUser($user);
 $groupThirdYearStudents->addUser($user3);
@@ -66,10 +58,10 @@ $entityManager->flush();
 
 echo "Added groups\n";
 
-$roleCoordinator = new Role();
-$rolePartner = new Role();
-$roleStudent = new Role();
-$roleAdmin = new Role();
+$roleCoordinator = new Role("Coordinator");
+$rolePartner = new Role("Partner");
+$roleStudent = new Role("Student");
+$roleAdmin = new Role("Admin");
 
 $roleCoordinator->addGroup($groupCoordinators);
 $rolePartner->addGroup($groupPartners);

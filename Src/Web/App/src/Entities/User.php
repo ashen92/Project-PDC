@@ -29,13 +29,9 @@ class User
     #[ORM\ManyToMany(targetEntity: Group::class, mappedBy: "users")]
     private Collection $groups;
 
-    public function __construct()
+    public function __construct(string $email, string $firstName)
     {
         $this->groups = new ArrayCollection();
-    }
-
-    public function setDetails(string $email, string $firstName): void
-    {
         $this->email = $email;
         $this->firstName = $firstName;
     }

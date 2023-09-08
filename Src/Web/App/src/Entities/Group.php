@@ -34,10 +34,11 @@ class Group
     #[ORM\ManyToMany(targetEntity: Role::class, mappedBy: "groups")]
     private Collection $roles;
 
-    public function __construct()
+    public function __construct(string $name)
     {
         $this->users = new ArrayCollection();
         $this->roles = new ArrayCollection();
+        $this->name = $name;
     }
 
     public function addUser(User $user): void
