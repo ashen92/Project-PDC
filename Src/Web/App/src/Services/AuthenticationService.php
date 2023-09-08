@@ -24,7 +24,7 @@ class AuthenticationService implements IAuthenticationService
 
     public function login(string $email, string $password): bool
     {
-        $user = $this->userRepository->findUserByEmail($email);
+        // $user = $this->userRepository->findUserByEmail($email);
 
         // if (!$user || !password_verify($password, $user->getPasswordHash())) {
         //     return false;
@@ -32,8 +32,8 @@ class AuthenticationService implements IAuthenticationService
 
         $session = $this->requestStack->getSession();
         $session->set("is_authenticated", true);
-        $session->set("user_email", $user->getEmail());
-        $session->set("user_first_name", $user->getFirstName());
+        // $session->set("user_email", $user->getEmail());
+        // $session->set("user_first_name", $user->getFirstName());
         return true;
     }
 

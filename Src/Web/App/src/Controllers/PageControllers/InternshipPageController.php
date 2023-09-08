@@ -5,10 +5,11 @@ namespace App\Controllers\PageControllers;
 
 use App\Interfaces\IAuthorizationService;
 use App\Repositories\InternshipRepository;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
 
+#[Route("/internships", name: "internships_")]
 class InternshipPageController extends PageControllerBase
 {
     public function __construct(
@@ -26,16 +27,18 @@ class InternshipPageController extends PageControllerBase
 
     protected function getSectionURL(): string
     {
-        return "/internship";
+        return "/internships";
     }
 
-    public function index(Request $request): Response
+    #[Route("", name: "home")]
+    public function home(): Response
     {
-        return $this->render("internship/home.html");
+        return $this->render("internships/home.html");
     }
 
-    public function viewInternships(Request $request): Response
+    #[Route("/show/all", name: "show_all")]
+    public function show(): Response
     {
-        return $this->render("internship/internships.html");
+        return $this->render("internships/internships.html");
     }
 }

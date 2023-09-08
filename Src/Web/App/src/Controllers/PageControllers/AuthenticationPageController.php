@@ -44,7 +44,7 @@ class AuthenticationPageController extends PageControllerBase
     }
 
     #[Route("/signup", name: "signup")]
-    public function signup(Request $request): Response|RedirectResponse
+    public function signup(): Response|RedirectResponse
     {
         if ($this->authn->isAuthenticated()) {
             return $this->redirect("/home");
@@ -53,7 +53,7 @@ class AuthenticationPageController extends PageControllerBase
     }
 
     #[Route("/register", name: "register")]
-    public function register(Request $request): Response|RedirectResponse
+    public function register(): Response|RedirectResponse
     {
         if ($this->authn->isAuthenticated()) {
             return $this->redirect("/home");

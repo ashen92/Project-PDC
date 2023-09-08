@@ -6,7 +6,7 @@ use Symfony\Component\Routing\Loader\AnnotationDirectoryLoader;
 use App\Routing\CustomAnnotationClassLoader;
 use Symfony\Component\Routing\RouteCollection;
 
-$controllerDir = __DIR__ . "/Controllers/PageControllers";
+$controllerDir = __DIR__ . "/Controllers";
 
 $fileLocator = new FileLocator();
 

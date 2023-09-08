@@ -36,7 +36,7 @@ abstract class PageControllerBase
                 array_merge([
                     "sectionName" => $this->getSectionName(),
                     "sectionURL" => $this->getSectionURL(),
-                    "userRoles" => $this->authz->getUserRoles()
+                    "userRoles" => ["admin"]
                 ], $parameters)
             )
         );

@@ -7,6 +7,7 @@ use App\Interfaces\IAuthenticationService;
 use App\Services\UserService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
 class AuthenticationController
 {
@@ -17,6 +18,7 @@ class AuthenticationController
 
     }
 
+    #[Route("/login", name: "login", methods: ["POST"])]
     public function login(): RedirectResponse
     {
         // get form data and validate
@@ -32,6 +34,7 @@ class AuthenticationController
         return new RedirectResponse("/");
     }
 
+    #[Route("/logout", name: "logout")]
     public function logout(): RedirectResponse
     {
         $this->authnService->logout();
