@@ -15,9 +15,6 @@ $container->register(
 // Services
 require_once __DIR__ . "/container.services.php";
 
-// Repositories
-require_once __DIR__ . "/container.repositories.php";
-
 // Controllers
 $container->register(
     "App\Controllers\AuthenticationController",
@@ -48,6 +45,6 @@ $container->register(
     "App\Controllers\PageControllers\InternshipPageController",
     App\Controllers\PageControllers\InternshipPageController::class
 )
-    ->setArguments([new Reference("service.authorization"), new Reference("twig"), new Reference("repository.internship")]);
+    ->setArguments([new Reference("service.authorization"), new Reference("twig")]);
 
 return $container;

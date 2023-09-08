@@ -24,7 +24,7 @@ class AuthenticationController
         // get form data and validate
         // todo
 
-        if ($this->authnService->login("admin@mail.com", "12345")) {
+        if ($this->authnService->login("1@mail.com", "12345")) {
             return new RedirectResponse("/home");
         }
 

@@ -31,16 +31,10 @@ $container->register(
     ->setArguments([new Reference("twig.loader")]);
 
 $container->register(
-    "database.connection",
-    App\Services\MySQLConnection::class
-)
-    ->setArguments(["localhost", "pdc", "root", "root"]);
-
-$container->register(
     "service.authentication",
     App\Services\AuthenticationService::class
 )
-    ->setArguments([new Reference("repository.user"), new Reference("request.stack")]);
+    ->setArguments([new Reference("request.stack"), new Reference("doctrine.entity_manager")]);
 
 $container->register(
     "service.authorization",
@@ -52,4 +46,4 @@ $container->register(
     "service.user",
     App\Services\UserService::class
 )
-    ->setArguments([new Reference("request.stack"), new Reference("repository.user")]);
+    ->setArguments([new Reference("request.stack")]);

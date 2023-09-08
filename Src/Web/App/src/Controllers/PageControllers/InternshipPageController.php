@@ -3,23 +3,12 @@ declare(strict_types=1);
 
 namespace App\Controllers\PageControllers;
 
-use App\Interfaces\IAuthorizationService;
-use App\Repositories\InternshipRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Twig\Environment;
 
 #[Route("/internships", name: "internships_")]
 class InternshipPageController extends PageControllerBase
 {
-    public function __construct(
-        IAuthorizationService $authz,
-        Environment $twig,
-        private InternshipRepository $internshipRepository
-    ) {
-        parent::__construct($authz, $twig);
-    }
-
     protected function getSectionName(): string
     {
         return "Internship Program";

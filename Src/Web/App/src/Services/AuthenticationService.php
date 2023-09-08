@@ -5,12 +5,12 @@ namespace App\Services;
 
 use App\Interfaces\IAuthenticationService;
 use App\Entities\User;
-use App\Repositories\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 class AuthenticationService implements IAuthenticationService
 {
-    public function __construct(private UserRepository $userRepository, private RequestStack $requestStack)
+    public function __construct(private RequestStack $requestStack, private EntityManagerInterface $entityManager)
     {
 
     }
@@ -24,16 +24,20 @@ class AuthenticationService implements IAuthenticationService
 
     public function login(string $email, string $password): bool
     {
-        // $user = $this->userRepository->findUserByEmail($email);
+        $user = $this->entityManager->getRepository(User::class)->findUserByEmail($email);
 
         // if (!$user || !password_verify($password, $user->getPasswordHash())) {
         //     return false;
         // }
 
+        if (!$user) {
+            return false;
+        }
+
         $session = $this->requestStack->getSession();
         $session->set("is_authenticated", true);
-        // $session->set("user_email", $user->getEmail());
-        // $session->set("user_first_name", $user->getFirstName());
+        $session->set("user_email", $user->getEmail());
+        $session->set("user_first_name", $user->getFirstName());
         return true;
     }
 
