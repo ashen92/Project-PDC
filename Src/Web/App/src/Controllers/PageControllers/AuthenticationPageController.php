@@ -8,6 +8,7 @@ use App\Interfaces\IAuthorizationService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
 
 class AuthenticationPageController extends PageControllerBase
@@ -33,7 +34,8 @@ class AuthenticationPageController extends PageControllerBase
         return "";
     }
 
-    public function signin(Request $request): Response|RedirectResponse
+    #[Route("/", name: "signin")]
+    public function signin(): Response|RedirectResponse
     {
         if ($this->authn->isAuthenticated()) {
             return $this->redirect("/home");
@@ -41,6 +43,7 @@ class AuthenticationPageController extends PageControllerBase
         return $this->render("authentication/signin.html");
     }
 
+    #[Route("/signup", name: "signup")]
     public function signup(Request $request): Response|RedirectResponse
     {
         if ($this->authn->isAuthenticated()) {
@@ -49,6 +52,7 @@ class AuthenticationPageController extends PageControllerBase
         return $this->render("authentication/signup.html");
     }
 
+    #[Route("/register", name: "register")]
     public function register(Request $request): Response|RedirectResponse
     {
         if ($this->authn->isAuthenticated()) {

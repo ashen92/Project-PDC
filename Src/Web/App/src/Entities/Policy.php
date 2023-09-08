@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
-#[ORM\Table(name: 'policies')]
+#[ORM\Table(name: "policies")]
 class Policy
 {
     #[ORM\Id]
@@ -17,13 +17,13 @@ class Policy
     private int $id;
 
     #[ORM\Column]
-    private $name;
+    private string $name;
 
     /**
      * Many Policies have Many Roles.
      * @var Collection<int, Role>
      */
-    #[ORM\ManyToMany(targetEntity: Role::class, mappedBy: 'policies')]
+    #[ORM\ManyToMany(targetEntity: Role::class, mappedBy: "policies")]
     private Collection $roles;
 
     /**

@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
-#[ORM\Table(name: 'users')]
+#[ORM\Table(name: "users")]
 class User
 {
     #[ORM\Id]
@@ -17,16 +17,16 @@ class User
     private int $id;
 
     #[ORM\Column]
-    private $email;
+    private string $email;
 
     #[ORM\Column]
-    private $firstName;
+    private string $firstName;
 
     /**
      * Many Users have Many Groups.
      * @var Collection<int, Group>
      */
-    #[ORM\ManyToMany(targetEntity: Group::class, mappedBy: 'users')]
+    #[ORM\ManyToMany(targetEntity: Group::class, mappedBy: "users")]
     private Collection $groups;
 
     public function __construct()

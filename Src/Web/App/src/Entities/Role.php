@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
-#[ORM\Table(name: 'roles')]
+#[ORM\Table(name: "roles")]
 class Role
 {
     #[ORM\Id]
@@ -16,20 +16,23 @@ class Role
     #[ORM\Column(type: "integer")]
     private int $id;
 
+    #[ORM\Column]
+    private string $name;
+
     /**
      * Many Roles have Many Groups.
      * @var Collection<int, Group>
      */
-    #[ORM\ManyToMany(targetEntity: Group::class, inversedBy: 'roles')]
-    #[ORM\JoinTable(name: 'roles_groups')]
+    #[ORM\ManyToMany(targetEntity: Group::class, inversedBy: "roles")]
+    #[ORM\JoinTable(name: "roles_groups")]
     private Collection $groups;
 
     /**
      * Many Roles have Many Policies.
      * @var Collection<int, Policy>
      */
-    #[ORM\ManyToMany(targetEntity: Policy::class, inversedBy: 'roles')]
-    #[ORM\JoinTable(name: 'roles_policies')]
+    #[ORM\ManyToMany(targetEntity: Policy::class, inversedBy: "roles")]
+    #[ORM\JoinTable(name: "roles_policies")]
     private Collection $policies;
 
     public function __construct()
