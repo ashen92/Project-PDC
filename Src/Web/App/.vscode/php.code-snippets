@@ -15,7 +15,7 @@
 	// 	],
 	// 	"description": "Log output to console"
 	// }
-	"PHP Start": {
+	"start": {
 		"scope": "html",
 		"prefix": "php-start",
 		"body": [
@@ -26,7 +26,7 @@
 		]
 	},
 
-	"PHP Class": {
+	"class": {
 		"scope": "html",
 		"prefix": "php-class",
 		"body": [

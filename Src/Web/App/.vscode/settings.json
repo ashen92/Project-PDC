@@ -1,10 +1,10 @@
 {
-    "liveSassCompile.settings.forceBaseDirectory": "/Src/Web/App/src/wwwroot/scss",
+    "liveSassCompile.settings.forceBaseDirectory": "/src/wwwroot/scss",
     "liveSassCompile.settings.formats": [
         {
             "format": "compressed",
             "extensionName": ".css",
-            "savePath": "/Src/Web/App/public/css",
+            "savePath": "/public/css",
             "savePathReplacementPairs": null
         }
     ],
@@ -19,6 +19,5 @@
     "liveSassCompile.settings.useNewCompiler": true,
     "php.suggest.basic": false,
     "git.autofetch": true,
-    "git.openRepositoryInParentFolders": "never",
-
+    "git.openRepositoryInParentFolders": "always",
 }
