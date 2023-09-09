@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Controllers\PageControllers;
+namespace App\Controllers;
 
 use App\Interfaces\IAuthorizationService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -36,7 +36,6 @@ abstract class PageControllerBase
                 array_merge([
                     "sectionName" => $this->getSectionName(),
                     "sectionURL" => $this->getSectionURL(),
-                    "userRoles" => ["admin"]
                 ], $parameters)
             )
         );

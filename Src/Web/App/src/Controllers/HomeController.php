@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Controllers\PageControllers;
+namespace App\Controllers;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class HomePageController extends PageControllerBase
+class HomeController extends PageControllerBase
 {
     protected function getSectionName(): string {
         return "Home";

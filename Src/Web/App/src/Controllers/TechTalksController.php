@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Controllers\PageControllers;
+namespace App\Controllers;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route("/techtalks", name: "techtalks_")]
-class TechTalksPageController extends PageControllerBase
+class TechTalksController extends PageControllerBase
 {
     protected function getSectionName(): string
     {

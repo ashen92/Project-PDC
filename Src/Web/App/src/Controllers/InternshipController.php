@@ -1,13 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Controllers\PageControllers;
+namespace App\Controllers;
 
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route("/internships", name: "internships_")]
-class InternshipPageController extends PageControllerBase
+class InternshipController extends PageControllerBase
 {
     protected function getSectionName(): string
     {
@@ -20,9 +21,9 @@ class InternshipPageController extends PageControllerBase
     }
 
     #[Route("", name: "home")]
-    public function home(): Response
+    public function home(Request $request): Response
     {
-        return $this->render("internships/home.html");
+        return $this->render("internships/home.html", ["roles" => $request->attributes->get("user_roles")]);
     }
 
     #[Route("/show/all", name: "show_all")]

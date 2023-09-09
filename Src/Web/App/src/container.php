@@ -16,34 +16,29 @@ $container->register(
 require_once __DIR__ . "/container.services.php";
 
 // Controllers
-$container->register(
-    "App\Controllers\AuthenticationController",
-    App\Controllers\AuthenticationController::class
-)
-    ->setArguments([new Reference("service.authentication"), new Reference("service.user")]);
 
 $container->register(
-    "App\Controllers\PageControllers\AuthenticationPageController",
-    App\Controllers\PageControllers\AuthenticationPageController::class
+    "App\Controllers\AuthenticationController",
+    \App\Controllers\AuthenticationController::class
 )
     ->setArguments([new Reference("service.authorization"), new Reference("twig"), new Reference("service.authentication")]);
 
 $container->register(
-    "App\Controllers\PageControllers\HomePageController",
-    App\Controllers\PageControllers\HomePageController::class
+    "App\Controllers\HomeController",
+    \App\Controllers\HomeController::class
 )
     ->setArguments([new Reference("service.authorization"), new Reference("twig")]);
 
 
 $container->register(
-    "App\Controllers\PageControllers\TechTalksPageController",
-    App\Controllers\PageControllers\TechTalksPageController::class
+    "App\Controllers\TechTalksController",
+    \App\Controllers\TechTalksController::class
 )
     ->setArguments([new Reference("service.authorization"), new Reference("twig")]);
 
 $container->register(
-    "App\Controllers\PageControllers\InternshipPageController",
-    App\Controllers\PageControllers\InternshipPageController::class
+    "App\Controllers\InternshipController",
+    \App\Controllers\InternshipController::class
 )
     ->setArguments([new Reference("service.authorization"), new Reference("twig")]);
 
