@@ -4,6 +4,7 @@ declare(strict_types=1);
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Cache\Adapter\ApcuAdapter;
 
 $container = new ContainerBuilder();
 
@@ -11,6 +12,12 @@ $container->register(
     "request.stack",
     RequestStack::class
 );
+
+$container->register(
+    "app.cache",
+    ApcuAdapter::class
+)
+    ->setArguments(["app"]);
 
 // Services
 require_once __DIR__ . "/container.services.php";

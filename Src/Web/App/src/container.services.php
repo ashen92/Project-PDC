@@ -41,7 +41,7 @@ $container->register(
     "service.user",
     App\Services\UserService::class
 )
-    ->setArguments([new Reference("doctrine.entity_manager")]);
+    ->setArguments([new Reference("doctrine.entity_manager"), new Reference("app.cache")]);
 
 $container->register(
     "listener.authorization",

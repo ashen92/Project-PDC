@@ -11,6 +11,9 @@ composer.phar
 .phpunit.result.cache
 .phpunit.cache
 
+# Cache
+cache
+
 # PHPUnit
 /app/phpunit.xml
 /phpunit.xml

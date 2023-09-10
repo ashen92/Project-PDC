@@ -6,11 +6,13 @@ namespace App\Services;
 use App\Entities\User;
 use App\Interfaces\IUserService;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Contracts\Cache\CacheInterface;
 
 class UserService implements IUserService
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
+        private CacheInterface $cache
     ) {
     }
 
@@ -19,6 +21,11 @@ class UserService implements IUserService
      */
     public function getUserRoles(int $userId): array
     {
-        return $this->entityManager->getRepository(User::class)->getUserRoles($userId);
+        $cacheKey = "user_roles_" . $userId;
+
+        $roles = $this->cache->get($cacheKey, function () use ($userId) {
+            return $this->entityManager->getRepository(User::class)->getUserRoles($userId);
+        });
+        return $roles;
     }
 }
