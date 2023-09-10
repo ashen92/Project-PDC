@@ -4,32 +4,21 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Entities\User;
-use Symfony\Component\HttpFoundation\RequestStack;
+use App\Interfaces\IUserService;
+use Doctrine\ORM\EntityManagerInterface;
 
-class UserService
+class UserService implements IUserService
 {
-    public function __construct(private RequestStack $requestStack)
-    {
+    public function __construct(
+        private EntityManagerInterface $entityManager,
+    ) {
     }
 
-    public function registerUser($username, $password)
+    /**
+     * @return array An array of strings
+     */
+    public function getUserRoles(int $userId): array
     {
-        // $encryptedPassword = "";
-        // // Perform validations, encrypt password, etc.
-        // $user = new User($username, $encryptedPassword);
-
-        // // Save to database
-        // $this->userRepository->saveUser($user);
-    }
-
-    public function getCurrentUser()
-    {
-        // Fetch the current user, possibly from the session
-        // Can add more logic here, e.g., caching, transformations, etc.
-
-        $session = $this->requestStack->getSession();
-        $email = $session->get("user_email");
-
-        return new User("user@mail.com", "Ashen");
+        return $this->entityManager->getRepository(User::class)->getUserRoles($userId);
     }
 }

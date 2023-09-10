@@ -5,6 +5,7 @@ use Symfony\Component\DependencyInjection\Reference;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\ORMSetup;
+use App\EventListeners\AuthorizationListener;
 
 $dbParams = require_once "doctrine-config.php";
 
@@ -37,13 +38,13 @@ $container->register(
     ->setArguments([new Reference("request.stack"), new Reference("doctrine.entity_manager")]);
 
 $container->register(
-    "service.authorization",
-    App\Services\AuthorizationService::class
-)
-    ->setArguments([new Reference("service.user")]);
-
-$container->register(
     "service.user",
     App\Services\UserService::class
 )
-    ->setArguments([new Reference("request.stack")]);
+    ->setArguments([new Reference("doctrine.entity_manager")]);
+
+$container->register(
+    "listener.authorization",
+    AuthorizationListener::class
+)
+    ->setArguments([new Reference("service.user"), new Reference("service.authentication")]);

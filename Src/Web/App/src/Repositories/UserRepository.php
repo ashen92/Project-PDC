@@ -14,8 +14,19 @@ class UserRepository extends EntityRepository
         return $query->setMaxResults(1)->getOneOrNullResult();
     }
 
-    public function saveUser(User $user)
+    /**
+     * @return array An array of strings
+     */
+    public function getUserRoles(int $userId): array
     {
-        // Save the user object to the database
+        $queryBuilder = $this->createQueryBuilder("u");
+        $queryBuilder
+            ->select("r.name")
+            ->innerJoin("u.groups", "g")
+            ->innerJoin("g.roles", "r")
+            ->where("u.id = :userId")
+            ->setParameter("userId", $userId);
+
+        return $queryBuilder->getQuery()->getSingleColumnResult();
     }
 }

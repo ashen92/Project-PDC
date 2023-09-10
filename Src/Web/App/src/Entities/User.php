@@ -37,6 +37,11 @@ class User
         $this->firstName = $firstName;
     }
 
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
     public function getEmail(): string
     {
         return $this->email;

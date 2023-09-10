@@ -1,0 +1,9 @@
+<?php
+declare(strict_types=1);
+
+namespace App\Interfaces;
+
+interface IUserService
+{
+    public function getUserRoles(int $userId): array;
+}

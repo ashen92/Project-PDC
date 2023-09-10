@@ -1,0 +1,36 @@
+<?php
+declare(strict_types=1);
+
+namespace App\EventListeners;
+
+use App\Interfaces\IAuthenticationService;
+use App\Interfaces\IUserService;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
+use Symfony\Component\HttpKernel\KernelEvents;
+
+class AuthorizationListener implements EventSubscriberInterface
+{
+    public function __construct(
+        private IUserService $userService,
+        private IAuthenticationService $authn
+    ) {
+    }
+
+    public function onKernelRequest(RequestEvent $event)
+    {
+        if ($this->authn->isAuthenticated()) {
+            $userId = (int) $event->getRequest()->getSession()->get("user_id");
+            $roles = $this->userService->getUserRoles($userId);
+            $event->getRequest()->attributes->set('user_roles', $roles);
+            // logic for permissions
+        }
+    }
+
+    public static function getSubscribedEvents()
+    {
+        return [
+            KernelEvents::REQUEST => "onKernelRequest",
+        ];
+    }
+}

@@ -9,6 +9,8 @@ require_once __DIR__ . "/../src/container.php";
 
 $entityManager = $container->get("doctrine.entity_manager");
 
+echo "Adding users... ";
+
 $user = new User("1@mail.com", "Green");
 $user1 = new User("2@mail.com", "Admin");
 $user2 = new User("3@mail.com", "Coordinator");
@@ -28,7 +30,7 @@ $entityManager->persist($user6);
 $entityManager->persist($user7);
 $entityManager->flush();
 
-echo "Added users\n";
+echo "Done.\nAdding groups...";
 
 $groupCoordinators = new Group("Coordinators");
 $groupPartners = new Group("Partners");
@@ -56,12 +58,13 @@ $entityManager->persist($groupFirstYearStudents);
 $entityManager->persist($groupThirdYearStudents);
 $entityManager->flush();
 
-echo "Added groups\n";
+echo "Done.\nAdding roles...";
 
-$roleCoordinator = new Role("Coordinator");
-$rolePartner = new Role("Partner");
-$roleStudent = new Role("Student");
-$roleAdmin = new Role("Admin");
+$roleCoordinator = new Role("ROLE_COORDINATOR");
+$rolePartner = new Role("ROLE_PARTNER");
+$roleStudent = new Role("ROLE_STUDENT");
+$roleAdmin = new Role("ROLE_ADMIN");
+$roleUser = new Role("ROLE_USER");
 
 $roleCoordinator->addGroup($groupCoordinators);
 $rolePartner->addGroup($groupPartners);
@@ -74,7 +77,7 @@ $entityManager->persist($roleStudent);
 $entityManager->persist($roleAdmin);
 $entityManager->flush();
 
-echo "Added roles\n";
+echo "Done.\nAdding policies...";
 
 $policyCanEditUsers = new Policy("CanEditUsers");
 $policyCanDeleteUsers = new Policy("CanDeleteUsers");
@@ -89,4 +92,4 @@ $entityManager->persist($policyCanDeleteUsers);
 $entityManager->persist($policyCanViewUsers);
 $entityManager->flush();
 
-echo "Added policies\n";
+echo "Done.\n";

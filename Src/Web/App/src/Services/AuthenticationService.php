@@ -10,14 +10,15 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 class AuthenticationService implements IAuthenticationService
 {
-    public function __construct(private RequestStack $requestStack, private EntityManagerInterface $entityManager)
-    {
-
+    public function __construct(
+        private RequestStack $requestStack,
+        private EntityManagerInterface $entityManager
+    ) {
     }
 
     public function isAuthenticated(): bool
     {
-        if ($this->requestStack->getSession()->get("is_authenticated"))
+        if ($this->requestStack->getSession()->has("is_authenticated"))
             return true;
         return false;
     }
@@ -36,6 +37,7 @@ class AuthenticationService implements IAuthenticationService
 
         $session = $this->requestStack->getSession();
         $session->set("is_authenticated", true);
+        $session->set("user_id", $user->getId());
         $session->set("user_email", $user->getEmail());
         $session->set("user_first_name", $user->getFirstName());
         return true;
