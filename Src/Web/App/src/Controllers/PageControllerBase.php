@@ -10,7 +10,7 @@ use Twig\Environment;
 
 abstract class PageControllerBase
 {
-    public function __construct(private IAuthorizationService $authz, private Environment $twig)
+    public function __construct(private Environment $twig)
     {
 
     }

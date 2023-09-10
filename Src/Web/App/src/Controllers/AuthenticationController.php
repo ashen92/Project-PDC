@@ -15,12 +15,11 @@ class AuthenticationController extends PageControllerBase
     private IAuthenticationService $authn;
 
     public function __construct(
-        IAuthorizationService $authz,
         Environment $twig,
         IAuthenticationService $authn
     ) {
         $this->authn = $authn;
-        parent::__construct($authz, $twig);
+        parent::__construct($twig);
     }
 
     protected function getSectionName(): string

@@ -21,25 +21,25 @@ $container->register(
     "App\Controllers\AuthenticationController",
     \App\Controllers\AuthenticationController::class
 )
-    ->setArguments([new Reference("service.authorization"), new Reference("twig"), new Reference("service.authentication")]);
+    ->setArguments([new Reference("twig"), new Reference("service.authentication")]);
 
 $container->register(
     "App\Controllers\HomeController",
     \App\Controllers\HomeController::class
 )
-    ->setArguments([new Reference("service.authorization"), new Reference("twig")]);
+    ->setArguments([new Reference("twig")]);
 
 
 $container->register(
     "App\Controllers\TechTalksController",
     \App\Controllers\TechTalksController::class
 )
-    ->setArguments([new Reference("service.authorization"), new Reference("twig")]);
+    ->setArguments([new Reference("twig")]);
 
 $container->register(
     "App\Controllers\InternshipController",
     \App\Controllers\InternshipController::class
 )
-    ->setArguments([new Reference("service.authorization"), new Reference("twig")]);
+    ->setArguments([new Reference("twig")]);
 
 return $container;
