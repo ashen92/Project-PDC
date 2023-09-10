@@ -16,9 +16,9 @@ $user1 = new User("2@mail.com", "Admin");
 $user2 = new User("3@mail.com", "Coordinator");
 $user3 = new User("4@mail.com", "Wood");
 $user4 = new User("5@mail.com", "Root");
-$user5 = new User("5@mail.com", "Head");
-$user6 = new User("6@mail.com", "Apple");
-$user7 = new User("7@mail.com", "Orange");
+$user5 = new User("6@mail.com", "Head");
+$user6 = new User("7@mail.com", "Apple");
+$user7 = new User("8@mail.com", "Orange");
 
 $entityManager->persist($user);
 $entityManager->persist($user1);

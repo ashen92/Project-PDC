@@ -20,4 +20,19 @@
     "php.suggest.basic": false,
     "git.autofetch": true,
     "git.openRepositoryInParentFolders": "always",
+    "sqltools.connections": [
+        {
+            "mysqlOptions": {
+                "authProtocol": "default",
+                "enableSsl": "Disabled"
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 3306,
+            "driver": "MySQL",
+            "name": "MySQL-GroupProject",
+            "database": "pdc",
+            "username": "root"
+        }
+    ]
 }
