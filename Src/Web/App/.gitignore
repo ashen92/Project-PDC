@@ -32,3 +32,4 @@ composer.phar
 !.vscode/launch.json
 !.vscode/extensions.json
 !.vscode/*.code-snippets
+!.vscode/App.code-workspace

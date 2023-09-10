@@ -64,11 +64,13 @@ and password.
 
 [Install VSCode](https://code.visualstudio.com/) then install the following extensions
 - [PHP from DEVSENSE](https://marketplace.visualstudio.com/items?itemName=DEVSENSE.phptools-vscode)
+- [SQLTools](https://marketplace.visualstudio.com/items?itemName=mtxr.sqltools)
 - [Live Sass Compiler](https://marketplace.visualstudio.com/items?itemName=glenn2223.live-sass)
 - [Twig braces helper](https://marketplace.visualstudio.com/items?itemName=zepich.twig-braces-helper)
 
 ```
 code --install-extension DEVSENSE.phptools-vscode
+code --install-extension mtxr.sqltools
 code --install-extension glenn2223.live-sass
 code --install-extension zepich.twig-braces-helper
 ```
