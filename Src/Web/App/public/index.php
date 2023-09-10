@@ -35,7 +35,10 @@ $argumentResolver = new ArgumentResolver();
 
 $kernel = new HttpKernel($dispatcher, $controllerResolver, $requestStack, $argumentResolver);
 
-$response = $kernel->handle($request);
-$response->send();
+try {
+    $response = $kernel->handle($request);
+    $response->send();  
+    $kernel->terminate($request, $response);
+} catch (Exception $e) {
 
-$kernel->terminate($request, $response);
+}
