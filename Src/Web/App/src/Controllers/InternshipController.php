@@ -23,7 +23,7 @@ class InternshipController extends PageControllerBase
     #[Route("", name: "home")]
     public function home(Request $request): Response
     {
-        return $this->render("internships/home.html", ["roles" => $request->attributes->get("user_roles")]);
+        return $this->render("internships/home.html");
     }
 
     #[Route("/show/all", name: "show_all")]

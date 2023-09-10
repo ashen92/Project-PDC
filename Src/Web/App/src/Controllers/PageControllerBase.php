@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
-use App\Interfaces\IAuthorizationService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
@@ -17,11 +16,6 @@ abstract class PageControllerBase
 
     abstract protected function getSectionName(): string;
     abstract protected function getSectionURL(): string;
-
-    protected function getAuthzService(): IAuthorizationService
-    {
-        return $this->authz;
-    }
 
     protected function redirect(string $url): RedirectResponse
     {

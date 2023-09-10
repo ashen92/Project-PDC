@@ -47,4 +47,4 @@ $container->register(
     "listener.authorization",
     AuthorizationListener::class
 )
-    ->setArguments([new Reference("service.user"), new Reference("service.authentication")]);
+    ->setArguments([new Reference("twig"), new Reference("service.user"), new Reference("service.authentication")]);
