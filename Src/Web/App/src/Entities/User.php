@@ -23,6 +23,9 @@ class User
     #[ORM\Column]
     private string $firstName;
 
+    #[ORM\Column]
+    private string $passwordHash;
+
     /**
      * Many Users have Many Groups.
      * @var Collection<int, Group>
@@ -30,11 +33,12 @@ class User
     #[ORM\ManyToMany(targetEntity: Group::class, mappedBy: "users")]
     private Collection $groups;
 
-    public function __construct(string $email, string $firstName)
+    public function __construct(string $email, string $firstName, string $passwordHash)
     {
         $this->groups = new ArrayCollection();
         $this->email = $email;
         $this->firstName = $firstName;
+        $this->passwordHash = $passwordHash;
     }
 
     public function getId(): int
@@ -46,9 +50,15 @@ class User
     {
         return $this->email;
     }
+
     public function getFirstName(): string
     {
         return $this->firstName;
+    }
+
+    public function getPasswordHash(): string
+    {
+        return $this->passwordHash;
     }
 
     public function addToGroup(Group $group): void

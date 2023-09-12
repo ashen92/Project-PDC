@@ -23,15 +23,11 @@ class AuthenticationService implements IAuthenticationService
         return false;
     }
 
-    public function login(string $email, string $password): bool
+    public function authenticate(string $email, string $password): bool
     {
         $user = $this->entityManager->getRepository(User::class)->findUserByEmail($email);
 
-        // if (!$user || !password_verify($password, $user->getPasswordHash())) {
-        //     return false;
-        // }
-
-        if (!$user) {
+        if (!$user || !password_verify($password, $user->getPasswordHash())) {
             return false;
         }
 
