@@ -6,4 +6,5 @@ namespace App\Interfaces;
 interface IUserService
 {
     public function getUserRoles(int $userId): array;
+    public function invalidateUserCache(int $userId): void;
 }
