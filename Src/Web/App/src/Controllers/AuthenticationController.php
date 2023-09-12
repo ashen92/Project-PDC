@@ -5,6 +5,7 @@ namespace App\Controllers;
 
 use App\Interfaces\IAuthenticationService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
@@ -59,17 +60,20 @@ class AuthenticationController extends PageControllerBase
     }
 
     #[Route("/login", name: "login", methods: ["POST"])]
-    public function login(): RedirectResponse
+    public function login(Request $request): RedirectResponse
     {
-        // get form data and validate
+        $req = $request->request;
+        $email = $req->get("email", "");
+        $passwordHash = $req->get("password", "");
+        
+        // validate form data
         // todo
 
-        if ($this->authn->authenticate("6@mail.com", "12345")) {
+        if ($this->authn->authenticate($email, $passwordHash)) {
             return new RedirectResponse("/home");
         }
 
-        // set errors
-        // todo
+        $request->getSession()->getFlashBag()->add("signin_error", "Invalid Email or Password");
 
         return new RedirectResponse("/");
     }

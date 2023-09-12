@@ -24,6 +24,8 @@ $request->setSession(new Session());
 
 $requestStack->push($request);
 
+$container->get("twig")->addGlobal("app", ["session" => $request->getSession()]);
+
 $matcher = new UrlMatcher($routes, new RequestContext());
 
 $dispatcher = new EventDispatcher();
