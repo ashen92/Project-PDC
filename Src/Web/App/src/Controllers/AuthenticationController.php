@@ -33,29 +33,32 @@ class AuthenticationController extends PageControllerBase
     }
 
     #[Route("/", name: "signin")]
-    public function signin(): Response|RedirectResponse
+    public function signin(): Response
     {
-        if ($this->authn->isAuthenticated()) {
-            return $this->redirect("/home");
-        }
         return $this->render("authentication/signin.html");
     }
 
     #[Route("/signup", name: "signup")]
-    public function signup(): Response|RedirectResponse
+    public function signup(): Response
     {
-        if ($this->authn->isAuthenticated()) {
-            return $this->redirect("/home");
-        }
         return $this->render("authentication/signup.html");
     }
 
-    #[Route("/register", name: "register")]
-    public function register(): Response|RedirectResponse
+    #[Route("/signup/details", name: "signup.details", methods: ["POST"])]
+    public function signupDetails(): Response
     {
-        if ($this->authn->isAuthenticated()) {
-            return $this->redirect("/home");
-        }
+        return $this->render("authentication/signup.details.html");
+    }
+
+    #[Route("/signup/submit", name: "signup.submit", methods: ["POST"])]
+    public function signupSubmit(): Response|RedirectResponse
+    {
+        return new RedirectResponse("/");
+    }
+
+    #[Route("/register", name: "register")]
+    public function register(): Response
+    {
         return $this->render("authentication/register.html");
     }
 
@@ -65,7 +68,7 @@ class AuthenticationController extends PageControllerBase
         $req = $request->request;
         $email = $req->get("email", "");
         $passwordHash = $req->get("password", "");
-        
+
         // validate form data
         // todo
 

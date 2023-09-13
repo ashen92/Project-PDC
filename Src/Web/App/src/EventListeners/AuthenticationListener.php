@@ -13,25 +13,29 @@ class AuthenticationListener implements EventSubscriberInterface
     public function onKernelRequest(RequestEvent $event)
     {
         $request = $event->getRequest();
+        $session = $request->getSession();
+
         $currentRoute = $request->getPathInfo();
         $currentMethod = $request->getMethod();
 
-        $excludedRoutes = [
+        $specialRoutes = [
             "/" => ["GET"],
             "/login" => ["GET", "POST"],
             "/signup" => ["GET"],
+            "/signup/details" => ["POST"],
+            "/signup/submit" => ["POST"],
             "/register" => ["GET"],
         ];
-        if (array_key_exists($currentRoute, $excludedRoutes)) {
-            if (in_array($currentMethod, $excludedRoutes[$currentRoute]))
-                return;
-        }
-
-        $session = $request->getSession();
-
-        if (!$session || !$session->get("is_authenticated")) {
-            $response = new RedirectResponse("/");
-            $event->setResponse($response);
+        if (array_key_exists($currentRoute, $specialRoutes)) {
+            if (in_array($currentMethod, $specialRoutes[$currentRoute])){
+                if (!$session || !$session->get("is_authenticated")) {
+                    return;
+                }
+                else {
+                    $response = new RedirectResponse("/home");
+                    $event->setResponse($response);
+                }
+            }
         }
     }
 
