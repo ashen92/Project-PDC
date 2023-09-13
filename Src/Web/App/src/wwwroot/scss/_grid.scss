@@ -11,6 +11,16 @@
     &-auto-col-max-content {
         grid-auto-columns: max-content;
     }
+
+    &-col-3 {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    &-row-2-1fr-2fr {
+        display: grid;
+        grid-template-rows: 1fr 2fr;
+    }
 }
 
 .justify-content-center {

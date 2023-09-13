@@ -8,15 +8,16 @@
 
 {% block content %}
 
-<div class="grid pt-100">
-    <div class="justify-content-center text-center text-title">
+<div class="grid-row-2-1fr-2fr">
+    <div class="text-center text-title h-100">
         Hello from Home
     </div>
-    <div>
+    <div class="grid-col-3 justify-items-center">
         <a href="/techtalks">Go to TechTalks</a>
-    </div>
-    <div>
         <a href="/internships">Go to Internships</a>
+        {% if "ROLE_ADMIN" in roles %}
+        <a href="/internships">Manage Users</a>
+        {% endif %}
     </div>
 </div>
 
