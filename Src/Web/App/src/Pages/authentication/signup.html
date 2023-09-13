@@ -14,29 +14,13 @@
     <div class="grid justify-items-center pt-50">
         <div class="text-subtitle text-center">Create an account</div>
         <div class="pt-25 w-300">
-            <form action="/signup" method="post">
+            <form action="/signup/details" method="post">
                 <div class="form-field">
-                    <label for="firstname">First name</label>
-                    <input type="text" name="firstname" id="firstname" required>
-                </div>
-                <div class="form-field">
-                    <label for="lastname">Last name</label>
-                    <input type="text" name="lastname" id="lastname" required>
-                </div>
-                <div class="form-field">
-                    <label for="email">Email</label>
-                    <input type="email" name="email" id="email" required>
-                </div>
-                <div class="form-field">
-                    <label for="password">Password</label>
-                    <input type="password" name="password" id="password" required>
-                </div>
-                <div class="form-field">
-                    <label for="repassword">Re-enter Password</label>
-                    <input type="password" name="repassword" id="repassword" required>
+                    <label for="reg-number">Your Registration Number</label>
+                    <input type="text" name="reg-number" id="reg-number" required>
                 </div>
                 <div class="form-field-submit">
-                    <input type="submit" value="Submit">
+                    <input type="submit" value="Next">
                 </div>
             </form>
             <div class="py-50 text-center">Already have an account? <a href="/">Sign in</a></div>
