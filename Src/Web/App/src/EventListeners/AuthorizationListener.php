@@ -40,14 +40,13 @@ class AuthorizationListener implements EventSubscriberInterface
         $controller = $event->getController();
         $controller = is_array($controller) ? get_class($controller[0]) : get_class($controller);
 
-        $cacheKey = 'roles_for_' . md5($controller);
+        $cacheKey = "roles_for_" . md5($controller);
         $cachedRole = $this->cache->get($cacheKey, function () use ($controller) {
             $controllerReflection = new \ReflectionClass($controller);
             $attributes = $controllerReflection->getAttributes(RequiredRole::class);
             $requiredRole = "";
             if (!empty($attributes)) {
-                $attribute = $attributes[0]->newInstance();
-                $requiredRole = $attribute->role;
+                $requiredRole = $attributes[0]->newInstance()->role;
             }
             return $requiredRole;
         });
