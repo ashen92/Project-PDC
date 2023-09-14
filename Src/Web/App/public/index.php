@@ -43,5 +43,5 @@ try {
     $response->send();  
     $kernel->terminate($request, $response);
 } catch (Exception $e) {
-
+    echo $e;
 }

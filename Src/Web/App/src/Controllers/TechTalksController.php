@@ -19,7 +19,7 @@ class TechTalksController extends PageControllerBase
         return "/techtalks";
     }
 
-    #[Route("", name: "home")]
+    #[Route(["", "/"], name: "home")]
     public function home(): Response
     {
         return $this->render("techtalks.html");

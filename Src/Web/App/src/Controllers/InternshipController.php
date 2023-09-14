@@ -20,7 +20,7 @@ class InternshipController extends PageControllerBase
         return "/internships";
     }
 
-    #[Route("", name: "home")]
+    #[Route(["", "/"], name: "home")]
     public function home(Request $request): Response
     {
         return $this->render("internships/home.html");
