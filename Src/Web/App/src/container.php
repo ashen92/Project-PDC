@@ -30,7 +30,7 @@ $connection = Doctrine\DBAL\DriverManager::getConnection($dbParams, $config);
 
 $container->register(
     "doctrine.entity_manager",
-    Doctrine\ORM\EntityManagerEntityManager::class
+    Doctrine\ORM\EntityManager::class
 )
     ->setArguments([$connection, $config]);
 
