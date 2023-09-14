@@ -1,8 +1,10 @@
-FROM ubuntu/apache2:latest
+FROM php:8.1-apache
 RUN apt-get update && apt-get install -y
 
-RUN apt-get install -y php libapache2-mod-php php-mysql php-apcu
-RUN apt-get install -y php-common php-curl php-mbstring
+RUN docker-php-ext-install pdo pdo_mysql
+
+RUN pecl install apcu \
+    && docker-php-ext-enable apcu
 
 RUN a2enmod rewrite
 
