@@ -47,10 +47,15 @@ a {
         height: 60px;
 
         padding: 0 15px 0 15px;
+        transition: background-color .1s cubic-bezier(0.02, 1, 1, 1);
     }
 
     a:hover {
         background-color: #007dce;
+    }
+
+    a:active {
+        background-color: #008fee;
     }
 }
 

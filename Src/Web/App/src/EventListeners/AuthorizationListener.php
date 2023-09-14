@@ -38,12 +38,7 @@ class AuthorizationListener implements EventSubscriberInterface
     {
         $session = $event->getRequest()->getSession();
         $controller = $event->getController();
-        // if (is_array($controller)) {
-        //     $controller = $controller[0];
-        // }
-
         $controller = is_array($controller) ? get_class($controller[0]) : get_class($controller);
-
 
         $cacheKey = 'roles_for_' . md5($controller);
         $cachedRole = $this->cache->get($cacheKey, function () use ($controller) {

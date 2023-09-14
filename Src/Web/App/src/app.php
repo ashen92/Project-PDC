@@ -10,9 +10,8 @@ $controllerDir = __DIR__ . "/Controllers";
 
 $fileLocator = new FileLocator();
 
-$annotationLoader = new CustomAnnotationClassLoader();
-
-$annotationDirectoryLoader = new AnnotationDirectoryLoader($fileLocator, $annotationLoader);
+$routeAnnotationLoader = new CustomAnnotationClassLoader();
+$annotationDirectoryLoader = new AnnotationDirectoryLoader($fileLocator, $routeAnnotationLoader);
 
 $routes = new RouteCollection();
 $routes->addCollection($annotationDirectoryLoader->load($controllerDir));

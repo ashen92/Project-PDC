@@ -10,7 +10,6 @@ use Symfony\Component\HttpKernel\Controller\ArgumentResolver;
 use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\Controller\ContainerControllerResolver;
 use Symfony\Component\HttpFoundation\Session\Session;
-use App\EventListeners\AuthenticationListener;
 
 require_once __DIR__ . "/../vendor/autoload.php";
 
@@ -30,7 +29,7 @@ $matcher = new UrlMatcher($routes, new RequestContext());
 
 $dispatcher = new EventDispatcher();
 $dispatcher->addSubscriber(new RouterListener($matcher, $requestStack));
-$dispatcher->addSubscriber(new AuthenticationListener());
+$dispatcher->addSubscriber($container->get("listener.authentication"));
 $dispatcher->addSubscriber($container->get("listener.authorization"));
 
 $controllerResolver = new ContainerControllerResolver($container);

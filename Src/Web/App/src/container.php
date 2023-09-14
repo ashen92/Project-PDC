@@ -3,24 +3,76 @@ declare(strict_types=1);
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Cache\Adapter\ApcuAdapter;
 
 $container = new ContainerBuilder();
 
 $container->register(
     "request.stack",
-    RequestStack::class
+    Symfony\Component\HttpFoundation\RequestStack::class
 );
 
 $container->register(
     "app.cache",
-    ApcuAdapter::class
+    Symfony\Component\Cache\Adapter\ApcuAdapter::class
 )
     ->setArguments(["app"]);
 
 // Services
-require_once __DIR__ . "/container.services.php";
+
+$dbParams = require_once "doctrine-config.php";
+
+$config = Doctrine\ORM\ORMSetup::createAttributeMetadataConfiguration(
+    paths: array(__DIR__ . "/Entities"),
+    isDevMode: true,
+);
+
+$connection = Doctrine\DBAL\DriverManager::getConnection($dbParams, $config);
+
+$container->register(
+    "doctrine.entity_manager",
+    Doctrine\ORM\EntityManagerEntityManager::class
+)
+    ->setArguments([$connection, $config]);
+
+$container->register(
+    "twig.loader",
+    Twig\Loader\FilesystemLoader::class
+)
+    ->setArguments([__DIR__ . "/Pages"]);
+
+$container->register(
+    "twig",
+    Twig\Environment::class
+)
+    ->setArguments([new Reference("twig.loader")]);
+
+$container->register(
+    "service.authentication",
+    App\Services\AuthenticationService::class
+)
+    ->setArguments([new Reference("request.stack"), new Reference("doctrine.entity_manager")]);
+
+$container->register(
+    "service.user",
+    App\Services\UserService::class
+)
+    ->setArguments([new Reference("doctrine.entity_manager"), new Reference("app.cache")]);
+
+$container->register(
+    "listener.authentication",
+    App\EventListeners\AuthenticationListener::class
+);
+
+$container->register(
+    "listener.authorization",
+    App\EventListeners\AuthorizationListener::class
+)
+    ->setArguments([
+        new Reference("twig"),
+        new Reference("service.user"),
+        new Reference("service.authentication"),
+        new Reference("app.cache")
+    ]);
 
 // Controllers
 
