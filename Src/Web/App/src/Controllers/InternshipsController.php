@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route("/internships", name: "internships_")]
-class InternshipController extends PageControllerBase
+class InternshipsController extends PageControllerBase
 {
     protected function getSectionName(): string
     {
