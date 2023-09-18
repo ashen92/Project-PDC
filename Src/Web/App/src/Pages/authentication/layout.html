@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/css/main.css" type="text/css" rel="stylesheet">
+    <title>{% block title %}{% endblock %}</title>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div></div>
+        <div class="content px-80">
+            <div class="grid-row container-signin">
+                <div class="pt-100">
+                    <div class="text-center">Image</div>
+                    <div class="text-subtitle text-center">
+                        Professional Development Centre at UCSC
+                    </div>
+                </div>
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+        <div class="footer px-80">
+            <div>Lorem ipsum dolor sit amet consectetur adipisicing elit.</div>
+        </div>
+    </div>
+</body>
+
+</html>

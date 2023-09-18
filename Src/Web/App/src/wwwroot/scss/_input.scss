@@ -1,21 +1,24 @@
-$text-field-padding: 6px 8px;
+$text-field-padding: 8px 12px;
 
 $button-padding: 10px 22px;
+
+$button-transition: background-color .1s cubic-bezier(0.02, 1, 1, 1);
 
 input {
     &[type="text"] {
         padding: $text-field-padding;
     }
-    
+
     &[type="email"] {
         padding: $text-field-padding;
     }
-    
+
     &[type="password"] {
         padding: $text-field-padding;
     }
-    
+
     &[type="submit"] {
+        cursor: pointer;
         border: none;
         padding: $button-padding;
         color: white;
@@ -23,10 +26,33 @@ input {
 
         &:hover {
             color: white;
-        background-color: #0067b5;
+            background-color: #0067b5;
         }
+        &:active {
+            color: white;
+            background-color: #004e8a;
+        }
+        transition: $button-transition;
     }
-    
+
+    &[type="reset"] {
+        cursor: pointer;
+        border: none;
+        padding: $button-padding;
+        color: white;
+        background-color: #838383;
+
+        &:hover {
+            columns: white;
+            background-color: #616161;
+        }
+        &:active {
+            columns: white;
+            background-color: #4d4d4d;
+        }
+        transition: $button-transition;
+    }
+
     &[type="button"] {
         padding: $button-padding;
     }

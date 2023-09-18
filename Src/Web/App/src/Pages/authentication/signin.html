@@ -1,41 +1,33 @@
-{% extends "shared/layout.html" %}
+{% extends "authentication/layout.html" %}
 
-{% block title %}Professional Development Centre{% endblock %}
+{% block title %}Sign in{% endblock %}
 
 {% block content %}
 
-<div class="grid-row container-signin">
-    <div class="pt-100">
-        <div class="text-center">Image</div>
-        <div class="text-subtitle text-center">
-            Professional Development Centre at UCSC
-        </div>
-    </div>
-    <div class="grid justify-items-center pt-50">
-        <div class="text-subtitle grid text-center">Sign in</div>
-        <div class="pt-25 w-300">
-            <form action="/login" method="post">
-                {% for message in app.session.flashbag.get("signin_error") %}
-                <div class="alert alert-error">
-                    {{ message }}
-                </div>
-                {% endfor %}
-                <div class="form-field">
-                    <label for="email">Email</label>
-                    <input type="email" name="email" id="email" required>
-                </div>
-                <div class="form-field">
-                    <label for="password">Password</label>
-                    <input type="password" name="password" id="password" required>
-                </div>
-                <div class="form-field-submit">
-                    <input type="submit" value="Sign in">
-                </div>
-            </form>
-            <div class="pt-50 text-center">Don't have an account? <a href="/signup">Create one!</a></div>
-            <div class="pt-30 pb-50 text-center">Want to register with our Partner Program? <a href="/register">Click
-                    here!</a></div>
-        </div>
+<div class="grid justify-items-center">
+    <div class="text-subtitle grid text-center">Sign in</div>
+    <div class="pt-25 w-300">
+        <form action="/login" method="post">
+            {% for message in app.session.flashbag.get("signin_error") %}
+            <div class="alert alert-error">
+                {{ message }}
+            </div>
+            {% endfor %}
+            <div class="field">
+                <label for="email">Email</label>
+                <input type="email" name="email" id="email" required>
+            </div>
+            <div class="field">
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" required>
+            </div>
+            <div class="submit-field">
+                <input type="submit" value="Sign in">
+            </div>
+        </form>
+        <div class="pt-50 text-center">Don't have an account? <a href="/signup">Create one!</a></div>
+        <div class="pt-30 pb-50 text-center">Want to register with our Partner Program? <a href="/register">Click
+                here!</a></div>
     </div>
 </div>
 
