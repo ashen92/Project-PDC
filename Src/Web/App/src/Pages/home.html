@@ -1,6 +1,6 @@
 {% extends "shared/layout.html" %}
 
-{% block title %}Professional Development Centre{% endblock %}
+{% block title %}Home{% endblock %}
 
 {% block header %}
 {{ include ('shared/header.html') }}
@@ -8,15 +8,15 @@
 
 {% block content %}
 
-<div class="grid-row-2-1fr-2fr">
-    <div class="text-center text-title h-100">
+<div>
+    <div class="text-center text-title">
         Hello from Home
     </div>
-    <div class="grid-col-3 justify-items-center">
-        <a href="/techtalks">Go to TechTalks</a>
-        <a href="/internships">Go to Internships</a>
+    <div class="card-container justify-items-center">
+        <a class="card" href="/techtalks">Go to TechTalks</a>
+        <a class="card" href="/internships">Go to Internships</a>
         {% if "ROLE_ADMIN" in roles %}
-        <a href="/users">Manage Users</a>
+        <a class="card" href="/users">Manage Users</a>
         {% endif %}
     </div>
 </div>

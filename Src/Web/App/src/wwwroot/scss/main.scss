@@ -1,17 +1,18 @@
-@use 'input';
-@use 'grid';
-@use 'text';
-@use 'form';
-@use 'spacing';
-@use 'sizing';
-@use 'border';
-@use 'signinpage';
-@use 'alert';
+@use "input";
+@use "grid";
+@use "text";
+@use "form";
+@use "spacing";
+@use "sizing";
+@use "border";
+@use "alert";
+@use "pages/authenticationpage";
+@use "pages/homepage";
 
 * {
     margin: 0;
     padding: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 a {
@@ -32,11 +33,11 @@ a {
 
     & &-links {
         display: grid;
-        grid-template-columns: 100px minmax(100px,auto) 1fr 100px;
+        grid-template-columns: 100px minmax(100px, auto) 1fr 100px;
         grid-template-rows: 100%;
         min-height: 60px;
     }
-    
+
     a {
         color: white;
         display: grid;
@@ -67,7 +68,7 @@ a {
 
 .footer {
     min-height: 60px;
-    background-color: gainsboro;
+    background-color: #f2f2f2;
     color: #424242;
 
     div {
