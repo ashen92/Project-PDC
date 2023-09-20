@@ -6,8 +6,11 @@
 @use "sizing";
 @use "border";
 @use "alert";
-@use "pages/authenticationpage";
-@use "pages/homepage";
+@use "list-view";
+@use "box-shadows";
+@use "colors";
+@use "pages/authentication";
+@use "pages/home";
 
 * {
     margin: 0;
@@ -24,6 +27,11 @@ a {
     display: grid;
     grid-template-rows: auto 1fr auto;
     min-height: 100vh;
+
+    >.content {
+        padding-top: 50px;
+        padding-bottom: 50px;
+    }
 }
 
 .header {
@@ -58,12 +66,6 @@ a {
     a:active {
         background-color: #008fee;
     }
-}
-
-.content {
-    display: grid;
-    padding-top: 50px;
-    padding-bottom: 50px;
 }
 
 .footer {
