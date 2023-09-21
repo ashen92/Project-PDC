@@ -1,25 +1,22 @@
 .grid {
     display: grid;
-    grid-auto-rows: min-content;
-    grid-auto-columns: auto;
+    grid-auto-rows: max-content;
+    grid-auto-columns: max-content;
 
-    &-row {
-        display: grid;
+    &-flow-row {
+        grid-auto-flow: row;
+    }
+
+    &-flow-col {
         grid-auto-flow: column;
     }
 
-    &-auto-col-max-content {
-        grid-auto-columns: max-content;
+    &-cols-2 {
+        grid-template-columns: max-content max-content;
     }
 
-    &-col-3 {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-    }
-
-    &-row-2-1fr-2fr {
-        display: grid;
-        grid-template-rows: 1fr 2fr;
+    &-rows-2 {
+        grid-template-rows: max-content max-content;
     }
 }
 
