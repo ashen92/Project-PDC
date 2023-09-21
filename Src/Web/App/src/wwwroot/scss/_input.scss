@@ -1,3 +1,4 @@
+
 $text-field-padding: 8px 12px;
 
 $button-padding: 10px 22px;
@@ -64,6 +65,7 @@ input {
 
 .checkbox {
     margin-bottom: 5px;
+    padding: 5px 10px;
 
     input[type="checkbox"] {
         width: 20px;
@@ -77,4 +79,5 @@ input {
         user-select: none;
         cursor: pointer;
     }
+
 }
