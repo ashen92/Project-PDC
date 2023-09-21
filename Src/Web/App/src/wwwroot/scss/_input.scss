@@ -1,3 +1,4 @@
+@use "colors";
 
 $text-field-padding: 8px 12px;
 
@@ -16,6 +17,14 @@ input {
 
     &[type="password"] {
         padding: $text-field-padding;
+    }
+
+    &[type="date"] {
+        padding: 5px 10px;
+
+        &:focus {
+            background-color: colors.$active;
+        }
     }
 
     &[type="submit"] {
