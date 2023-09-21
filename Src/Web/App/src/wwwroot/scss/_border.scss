@@ -1,2 +1,10 @@
-
 $br-5px: 5px;
+$br-10px: 10px;
+
+.br-5 {
+    border-radius: $br-5px;
+}
+
+.br-10 {
+    border-radius: $br-10px;
+}

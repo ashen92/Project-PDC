@@ -1,7 +1,7 @@
 .grid {
     display: grid;
-    grid-auto-rows: max-content;
-    grid-auto-columns: max-content;
+    grid-auto-rows: auto;
+    grid-auto-columns: auto;
 
     &-flow-row {
         grid-auto-flow: row;
@@ -12,11 +12,11 @@
     }
 
     &-cols-2 {
-        grid-template-columns: max-content max-content;
+        grid-template-columns: auto auto;
     }
 
     &-rows-2 {
-        grid-template-rows: max-content max-content;
+        grid-template-rows: auto auto;
     }
 }
 

@@ -1,12 +1,12 @@
 {% extends "authentication/layout.html" %}
 
-{% block title %}Sign in{% endblock %}
+{% block title %}Professional Development Centre{% endblock %}
 
 {% block content %}
 
-<div class="grid justify-items-center">
-    <div class="text-subtitle grid text-center">Sign in</div>
-    <div class="pt-25 w-300">
+<div class="grid p-50 bs-style-2 br-10">
+    <div class="font-size-4 bold pb-10">Sign in</div>
+    <div class="pt-15 w-300">
         <form action="/login" method="post">
             {% for message in app.session.flashbag.get("signin_error") %}
             <div class="alert alert-error">
@@ -26,7 +26,7 @@
             </div>
         </form>
         <div class="pt-50 text-center">Don't have an account? <a href="/signup">Create one!</a></div>
-        <div class="pt-30 pb-50 text-center">Want to register with our Partner Program? <a href="/register">Click
+        <div class="pt-30 text-center">Want to register with our Partner Program? <a href="/register">Click
                 here!</a></div>
     </div>
 </div>
