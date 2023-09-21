@@ -8,48 +8,42 @@
 
 {% block content %}
 
-<div class="text-title">
+<div class="text-title text-center">
     Internship Program
 </div>
-<div>
+
+<div class="grid grid-cols-1 justify-content-center mt-50">
     {% if "ROLE_ADMIN" in roles %}
-    <div class="grid grid-flow-row grid-cols-2 mt-20">
-        <div class="p-10 border">Start internship cycle</div>
-        <div class="p-10">
-            <a href="/internships/show/all">
-                <input type="submit" value="Start">
-            </a>
-        </div>
+    <div class="row grid grid-cols-2 grid-flow-column align-items-baseline justify-content-space-between">
+        <div class="p-10">Start internship cycle</div>
+        <a class="p-10" href="/internships/show/all">
+            <input type="submit" value="Start">
+        </a>
     </div>
-    <div class="grid grid-flow-row grid-cols-2 mt-20">
-        <div class="p-10 border">View All internships</div>
-        <div class="p-10">
-            <a href="/internships/show/all">
-                <input type="submit" value="View">
-            </a>
-        </div>
+
+    <div class="row grid grid-cols-2 grid-flow-column align-items-baseline justify-content-space-between">
+        <div class="p-10">View All internships</div>
+        <a class="p-10" href="/internships/show/all">
+            <input type="submit" value="View">
+        </a>
     </div>
     {% endif %}
 
     {% if "ROLE_PARTNER" in roles %}
-    <div class=" grid grid-flow-row grid-cols-2 mt-20">
-        <div class="p-10 border">Show internships you submitted</div>
-        <div class="p-10">
-            <a href="/internships/show/all">
-                <input type="submit" value="View">
-            </a>
-        </div>
+    <div class="row grid grid-cols-2 grid-flow-column align-items-baseline justify-content-space-between">
+        <div>Show internships you submitted</div>
+        <a href="/internships/show/all">
+            <input type="submit" value="View">
+        </a>
     </div>
     {% endif %}
 
     {% if "ROLE_STUDENT" in roles %}
-    <div class="grid grid-flow-row grid-cols-2 mt-20">
-        <div class="p-10 border">Show all available internships for students</div>
-        <div class="p-10">
-            <a href="/internships/show/all">
-                <input type="submit" value="View">
-            </a>
-        </div>
+    <div class="row grid grid-cols-2 grid-flow-column align-items-baseline justify-content-space-between">
+        <div>Show all available internships for students</div>
+        <a href="/internships/show/all">
+            <input type="submit" value="View">
+        </a>
     </div>
     {% endif %}
 </div>

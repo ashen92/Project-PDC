@@ -1,0 +1,14 @@
+@use "box-shadows";
+@use "border";
+@use "colors";
+
+.row {
+    box-shadow: box-shadows.$bs-style-2;
+    border-radius: border.$br-5px;
+    padding: 10px 25px;
+    margin-bottom: 15px;
+
+    &:hover {
+        background-color: colors.$list-item-hover;
+    }
+}
