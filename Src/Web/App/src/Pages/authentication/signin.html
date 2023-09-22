@@ -4,9 +4,9 @@
 
 {% block content %}
 
-<div class="grid p-50 bs-style-2 br-10">
-    <div class="font-size-4 bold pb-10">Sign in</div>
-    <div class="pt-15 w-300">
+<div class="grid p-50 bs-2 br-10">
+    <div class="fs-3 fw-6 pb-10">Sign in</div>
+    <div class="w-300 mt-20">
         <form action="/login" method="post">
             {% for message in app.session.flashbag.get("signin_error") %}
             <div class="alert alert-error">

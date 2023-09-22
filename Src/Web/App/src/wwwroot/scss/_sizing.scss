@@ -1,4 +1,12 @@
 .max-w {
+    &-800 {
+        max-width: 800px;
+    }
+
+    &-600 {
+        max-width: 600px;
+    }
+    
     &-300 {
         max-width: 300px;
     }

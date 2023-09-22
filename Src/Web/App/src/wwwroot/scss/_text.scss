@@ -1,3 +1,5 @@
+$fw-6: 600;
+
 $title-padding: 20px;
 
 .text-title {
@@ -10,18 +12,22 @@ $title-padding: 20px;
     padding: $title-padding;
 }
 
-.font-size-3 {
+.fs-3 {
     font-size: 25px;
 }
 
-.font-size-4 {
+.fs-4 {
     font-size: 23px;
 }
 
-.bold {
-    font-weight: bold;
+.fs-6 {
+    font-size: 18px;
 }
 
 .text-center {
     text-align: center;
+}
+
+.fw-6 {
+    font-weight: $fw-6;
 }
