@@ -33,8 +33,14 @@ class InternshipsController extends PageControllerBase
     }
 
     #[Route("/show/all", name: "show_all")]
-    public function show(): Response
+    public function show_all(): Response
     {
-        return $this->render("internships/internships.html");
+        return $this->render("internships/show_all.html");
+    }
+
+    #[Route("/show/{id}", name: "show_one")]
+    public function show_one(int $id): Response
+    {
+        return $this->render("internships/show_one.html", ["id" => $id]);
     }
 }
