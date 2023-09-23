@@ -20,11 +20,37 @@
     }
 
     &-cols-2 {
-        grid-template-columns: minmax(min-content, max-content) minmax(min-content, max-content);
+        grid-template-columns: repeat(2, minmax(min-content, max-content));
+    }
+
+    &-cols-3 {
+        grid-template-columns: repeat(3, minmax(min-content, max-content));
     }
 
     &-rows-2 {
-        grid-template-rows: minmax(min-content, max-content) minmax(min-content, max-content);
+        grid-template-rows: repeat(2, minmax(min-content, max-content));
+    }
+}
+
+.col-gap {
+    &-1 {
+        column-gap: 10px;
+    }
+
+    &-2 {
+        column-gap: 20px;
+    }
+
+    &-3 {
+        column-gap: 30px;
+    }
+
+    &-4 {
+        column-gap: 40px;
+    }
+
+    &-5 {
+        column-gap: 50px;
     }
 }
 

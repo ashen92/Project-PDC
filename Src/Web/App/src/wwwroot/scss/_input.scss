@@ -1,4 +1,4 @@
-@use "colors";
+@use "colours";
 
 $text-field-padding: 8px 12px;
 
@@ -23,7 +23,7 @@ input {
         padding: 5px 10px;
 
         &:focus {
-            background-color: colors.$active;
+            background-color: colours.$active-light-blue;
         }
     }
 

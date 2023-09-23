@@ -12,6 +12,10 @@ $title-padding: 20px;
     padding: $title-padding;
 }
 
+.text-center {
+    text-align: center;
+}
+
 .fs-3 {
     font-size: 25px;
 }
@@ -24,10 +28,27 @@ $title-padding: 20px;
     font-size: 18px;
 }
 
-.text-center {
-    text-align: center;
-}
-
 .fw-6 {
     font-weight: $fw-6;
+    color: #2d2d2d;
+}
+
+.fc-light {
+    color: #666666;
+}
+
+.fc-blue {
+    color: #0a66c2;
+}
+
+.fc-black {
+    color: #000000;
+}
+
+.fc-dark {
+    color: #2d2d2d;
+}
+
+.italic {
+    font-style: italic;
 }
