@@ -20,7 +20,11 @@ input {
     }
 
     &[type="date"] {
-        padding: 5px 10px;
+        padding: 5px 12px;
+
+        &:hover {
+            background-color: colours.$active-light-blue;
+        }
 
         &:focus {
             background-color: colours.$active-light-blue;
