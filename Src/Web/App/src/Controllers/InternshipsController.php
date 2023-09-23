@@ -43,4 +43,10 @@ class InternshipsController extends PageControllerBase
     {
         return $this->render("internships/show_one.html", ["id" => $id]);
     }
+
+    #[Route("/add", name: "add")]
+    public function add(): Response
+    {
+        return $this->render("internships/add.html");
+    }
 }

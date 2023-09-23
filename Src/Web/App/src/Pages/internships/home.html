@@ -31,8 +31,15 @@
 
     {% if "ROLE_PARTNER" in roles %}
     <div class="row grid grid-cols-2 grid-flow-column align-items-baseline justify-content-space-between">
-        <div>Show internships you submitted</div>
-        <a href="/internships/show/all">
+        <div class="p-10">Add an internship</div>
+        <a class="p-10" href="/internships/add">
+            <input type="submit" value="Add">
+        </a>
+    </div>
+    
+    <div class="row grid grid-cols-2 grid-flow-column align-items-baseline justify-content-space-between">
+        <div class="p-10">Show internships you submitted</div>
+        <a class="p-10" href="/internships/show/all">
             <input type="submit" value="View">
         </a>
     </div>
@@ -40,8 +47,8 @@
 
     {% if "ROLE_STUDENT" in roles %}
     <div class="row grid grid-cols-2 grid-flow-column align-items-baseline justify-content-space-between">
-        <div>Show all available internships for students</div>
-        <a href="/internships/show/all">
+        <div class="p-10">Show all available internships for students</div>
+        <a class="p-10" href="/internships/show/all">
             <input type="submit" value="View">
         </a>
     </div>

@@ -48,11 +48,11 @@
 			"xdebug.php-debug",
 			"mtxr.sqltools",
 			"mtxr.sqltools-driver-mysql",
-			"zepich.twig-braces-helper",
 			"glenn2223.live-sass",
 			"mhutchie.git-graph",
 			"redhat.vscode-yaml",
-			"davidanson.vscode-markdownlint"
+			"davidanson.vscode-markdownlint",
+			"bajdzis.vscode-twig-pack"
 		]
 	}
 }

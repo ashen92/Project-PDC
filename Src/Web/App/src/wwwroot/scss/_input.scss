@@ -90,3 +90,15 @@ input {
     }
 
 }
+
+select {
+    padding: 8px 10px;
+    font-size: 14px;
+}
+
+textarea {
+    padding: 20px;
+    width: auto;
+    height: auto;
+    resize: vertical;
+}
