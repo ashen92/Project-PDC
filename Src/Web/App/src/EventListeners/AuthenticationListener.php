@@ -27,14 +27,18 @@ class AuthenticationListener implements EventSubscriberInterface
             "/register" => ["GET"],
         ];
         if (array_key_exists($currentRoute, $specialRoutes)) {
-            if (in_array($currentMethod, $specialRoutes[$currentRoute])){
+            if (in_array($currentMethod, $specialRoutes[$currentRoute])) {
                 if (!$session || !$session->get("is_authenticated")) {
                     return;
-                }
-                else {
+                } else {
                     $response = new RedirectResponse("/home");
                     $event->setResponse($response);
                 }
+            }
+        } else {
+            if (!$session || !$session->get("is_authenticated")) {
+                $response = new RedirectResponse("/");
+                $event->setResponse($response);
             }
         }
     }

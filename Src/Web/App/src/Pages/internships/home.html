@@ -15,17 +15,25 @@
 <div class="grid grid-cols-1 row-gap-1 justify-content-center mt-50">
     {% if "ROLE_ADMIN" in roles %}
     <div
-        class="grid grid-cols-2 grid-flow-column align-items-baseline justify-content-space-between b-1 br-5 hov-bg-grey">
-        <div class="p-10">Start internship cycle</div>
-        <a class="p-10" href="/internships/cycle">
+        class="grid grid-cols-2 grid-flow-column align-items-baseline justify-content-space-between col-gap-3 px-20 py-10 b-1 br-5">
+        <div>Start internship cycle</div>
+        <a href="/internships/cycle">
             <input type="submit" value="Start">
         </a>
     </div>
 
     <div
-        class="grid grid-cols-2 grid-flow-column align-items-baseline justify-content-space-between b-1 br-5 hov-bg-grey">
-        <div class="p-10">View All internships</div>
-        <a class="p-10" href="/internships/show/all">
+        class="grid grid-cols-2 grid-flow-column align-items-baseline justify-content-space-between col-gap-3 px-20 py-10 b-1 br-5">
+        <div>View All internships</div>
+        <a href="/internships/show/all">
+            <input type="submit" value="View">
+        </a>
+    </div>
+
+    <div
+        class="grid grid-cols-2 grid-flow-column align-items-baseline justify-content-space-between col-gap-3 px-20 py-10 b-1 br-5">
+        <div>View internships that needs approval</div>
+        <a href="/internships/show/all?=pending">
             <input type="submit" value="View">
         </a>
     </div>
@@ -33,7 +41,7 @@
 
     {% if "ROLE_PARTNER" in roles %}
     <div
-        class="grid grid-cols-2 grid-flow-column align-items-baseline justify-content-space-between b-1 br-5 hov-bg-grey">
+        class="grid grid-cols-2 grid-flow-column align-items-baseline justify-content-space-between col-gap-3 px-20 py-10 b-1 br-5">
         <div class="p-10">Add an internship</div>
         <a class="p-10" href="/internships/add">
             <input type="submit" value="Add">
@@ -41,7 +49,7 @@
     </div>
 
     <div
-        class="grid grid-cols-2 grid-flow-column align-items-baseline justify-content-space-between b-1 br-5 hov-bg-grey">
+        class="grid grid-cols-2 grid-flow-column align-items-baseline justify-content-space-between col-gap-3 px-20 py-10 b-1 br-5">
         <div class="p-10">Show internships you submitted</div>
         <a class="p-10" href="/internships/show/all">
             <input type="submit" value="View">
@@ -51,7 +59,7 @@
 
     {% if "ROLE_STUDENT" in roles %}
     <div
-        class="grid grid-cols-2 grid-flow-column align-items-baseline justify-content-space-between b-1 br-5 hov-bg-grey">
+        class="grid grid-cols-2 grid-flow-column align-items-baseline justify-content-space-between col-gap-3 px-20 py-10 b-1 br-5">
         <div class="p-10">Show all available internships for students</div>
         <a class="p-10" href="/internships/show/all">
             <input type="submit" value="View">
