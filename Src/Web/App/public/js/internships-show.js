@@ -1,1 +1,1 @@
-(()=>{})();
+(()=>{var i=document.getElementById("filters");i.addEventListener("click",function(c){let e=c.target;for(;e!==null&&!e.matches("input[type='checkbox']");)e=e.parentElement;if(e){let o=e.checked,a=e.value,n=e.closest(".data-category").getAttribute("data-category"),t=new URLSearchParams(window.location.search);o?t.append(`${n}[]`,a):t.delete(`${n}[]`,a),window.location.href=`${window.location.pathname}?${t.toString()}`}});})();

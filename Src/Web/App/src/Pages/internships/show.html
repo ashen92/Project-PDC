@@ -14,59 +14,41 @@
 
 <div class="grid grid-cols-2 col-gap-2 justify-content-center mt-50">
     <div>
-        <div class="p-20 b-1 bg-colour-light-grey br-5">
+        <div class="p-20 b-1 bg-colour-light-grey br-5" id="filters">
             <div class="fs-6">Filter by</div>
             <div class="my-15">
                 <div class="fw-6 mb-5">Job Roles</div>
-                <div class="px-5">
+                <div class="px-5 data-category" data-category="Job Role">
+                    {% for role in jobRoles %}
                     <div class="checkbox">
-                        <input type="checkbox" id="check1">
-                        <label for="check1">
-                            Software Engineer
+                        <input type="checkbox" id="role-{{ role.id }}" value="{{ role.id }}" {% if role.id in
+                            queryJobRoles %} checked {% endif %}>
+                        <label for="role-{{ role.id }}">
+                            {{ role.name }}
                         </label>
                     </div>
-                    <div class="checkbox">
-                        <input type="checkbox" id="check2">
-                        <label for="check2">
-                            Data Scientist
-                        </label>
-                    </div>
-                    <div class="checkbox">
-                        <input type="checkbox" id="check3">
-                        <label for="check3">
-                            Network Administrator
-                        </label>
-                    </div>
+                    {% endfor %}
                 </div>
             </div>
             <div class="my-15">
                 <div class="fw-6 mb-5">Company</div>
-                <div class="px-5">
+                <div class="px-5 data-category" data-category="Company">
+                    {% for company in companies %}
                     <div class="checkbox">
-                        <input type="checkbox" id="check4">
-                        <label for="check4">
-                            LSEG
+                        <input type="checkbox" id="company-{{ company.id }}" value="{{ company.id }}" {% if company.id
+                            in queryCompanies %} checked {% endif %}>
+                        <label for="company-{{ company.id }}">
+                            {{ company.name }}
                         </label>
                     </div>
-                    <div class="checkbox">
-                        <input type="checkbox" id="check5">
-                        <label for="check5">
-                            WSO2
-                        </label>
-                    </div>
-                    <div class="checkbox">
-                        <input type="checkbox" id="check6">
-                        <label for="check6">
-                            IFS
-                        </label>
-                    </div>
+                    {% endfor %}
                 </div>
             </div>
         </div>
     </div>
     <div class="w-600">
         <div class="grid grid-cols-2 grid-flow-column px-25 py-20 mb-10 b-1 br-5 hov-bg-grey act-bg-blue">
-            <a class="hov-underline" href="1">
+            <a class="hov-underline" href="show/1">
                 <div class="fw-6 pb-10">Internship Name or Position. Lorem ipsum dolor sit amet consectetur
                     adipisicing elit. Voluptate modi</div>
                 <div><span class="italic fc-light">at </span>Company</div>
@@ -76,7 +58,7 @@
             </div>
         </div>
         <div class="grid grid-cols-2 grid-flow-column px-25 py-20 mb-10 b-1 br-5 hov-bg-grey act-bg-blue">
-            <a class="hov-underline" href="2">
+            <a class="hov-underline" href="show/2">
                 <div class="fw-6 pb-10">Internship Name or Position. Lorem ipsum dolor sit amet consectetur
                     adipisicing elit. Voluptate modi</div>
                 <div><span class="italic fc-light">at </span>Company</div>
@@ -86,7 +68,7 @@
             </div>
         </div>
         <div class="grid grid-cols-2 grid-flow-column px-25 py-20 mb-10 b-1 br-5 hov-bg-grey act-bg-blue">
-            <a class="hov-underline" href="3">
+            <a class="hov-underline" href="show/3">
                 <div class="fw-6 pb-10">Internship Name or Position. Lorem ipsum dolor sit amet consectetur
                     adipisicing elit. Voluptate modi</div>
                 <div><span class="italic fc-light">at </span>Company</div>
@@ -101,5 +83,5 @@
 {% endblock %}
 
 {% block js %}
-    <script src="/js/internships-show.js"></script>
+<script src="/js/internships-show.js" type="text/javascript"></script>
 {% endblock js %}

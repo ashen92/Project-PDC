@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+use App\Entities\Company;
+use App\Entities\JobRole;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -32,10 +34,35 @@ class InternshipsController extends PageControllerBase
         return $this->render("internships/cycle.html");
     }
 
-    #[Route("/show/all", name: "show_all")]
-    public function show_all(): Response
+    #[Route("/show", name: "show")]
+    public function show(Request $request): Response
     {
-        return $this->render("internships/show_all.html");
+        $jobRoles = [
+            new JobRole(1, "Software Engineer"),
+            new JobRole(2, "Data Scientist"),
+            new JobRole(3, "Network Administrator")
+        ];
+
+        $companies = [
+            new Company(1, "LSEG"),
+            new Company(2, "WSO2"),
+            new Company(3, "IFS")
+        ];
+
+        $queryParams = $request->query->all();
+
+        $queryJobRoles = $queryParams["Job_Role"] ?? [];
+        $queryCompanies = $queryParams["Company"] ?? [];
+
+        return $this->render(
+            "internships/show.html",
+            array_merge(
+                ["jobRoles" => $jobRoles],
+                ["companies" => $companies],
+                ["queryJobRoles" => $queryJobRoles],
+                ["queryCompanies" => $queryCompanies]
+            )
+        );
     }
 
     #[Route("/show/{id}", name: "show_one")]
