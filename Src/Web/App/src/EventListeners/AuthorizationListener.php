@@ -29,7 +29,7 @@ class AuthorizationListener implements EventSubscriberInterface
         if ($this->authn->isAuthenticated()) {
             $userId = (int) $event->getRequest()->getSession()->get("user_id");
             $roles = $this->userService->getUserRoles($userId);
-            $this->twig->addGlobal("roles", $roles);
+            $this->twig->addGlobal("user_roles", $roles);
             // logic for permissions
         }
     }

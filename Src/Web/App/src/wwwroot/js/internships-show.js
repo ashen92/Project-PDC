@@ -8,19 +8,16 @@ parentFilters.addEventListener("click", function (event) {
     }
 
     if (targetElement) {
-        const isChecked = targetElement.checked;
-        const checkboxValue = targetElement.value;
-
         const category = targetElement.closest(".data-category").getAttribute("data-category");
 
         // console.log(`You clicked on a checkbox in category ${category}. Checked: ${isChecked}, Value: ${checkboxValue}`);
 
         const params = new URLSearchParams(window.location.search);
 
-        if (isChecked) {
-            params.append(`${category}[]`, checkboxValue);
-        }else {
-            params.delete(`${category}[]`, checkboxValue);
+        if (targetElement.checked) {
+            params.append(`${category}[]`, targetElement.value);
+        } else {
+            params.delete(`${category}[]`, targetElement.value);
         }
 
         window.location.href = `${window.location.pathname}?${params.toString()}`;

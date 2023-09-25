@@ -13,7 +13,7 @@
 </div>
 
 <div class="grid grid-cols-1 row-gap-1 justify-content-center mt-50">
-    {% if "ROLE_ADMIN" in roles %}
+    {% if "ROLE_ADMIN" in user_roles %}
     <div
         class="grid grid-cols-2 grid-flow-column align-items-baseline justify-content-space-between col-gap-3 px-20 py-10 b-1 br-5">
         <div>Start internship cycle</div>
@@ -33,13 +33,13 @@
     <div
         class="grid grid-cols-2 grid-flow-column align-items-baseline justify-content-space-between col-gap-3 px-20 py-10 b-1 br-5">
         <div>View internships that needs approval</div>
-        <a href="/internships/show?status=pending">
+        <a href="/internships/show?Internship+Status%5B%5D=Pending+Approval">
             <input type="submit" value="View">
         </a>
     </div>
     {% endif %}
 
-    {% if "ROLE_PARTNER" in roles %}
+    {% if "ROLE_PARTNER" in user_roles %}
     <div
         class="grid grid-cols-2 grid-flow-column align-items-baseline justify-content-space-between col-gap-3 px-20 py-10 b-1 br-5">
         <div class="p-10">Add an internship</div>
@@ -57,7 +57,7 @@
     </div>
     {% endif %}
 
-    {% if "ROLE_STUDENT" in roles %}
+    {% if "ROLE_STUDENT" in user_roles %}
     <div
         class="grid grid-cols-2 grid-flow-column align-items-baseline justify-content-space-between col-gap-3 px-20 py-10 b-1 br-5">
         <div class="p-10">Show all available internships for students</div>

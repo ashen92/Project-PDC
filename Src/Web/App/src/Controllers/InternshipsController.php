@@ -49,18 +49,23 @@ class InternshipsController extends PageControllerBase
             new Company(3, "IFS")
         ];
 
-        $queryParams = $request->query->all();
+        $internshipStatus = [
+            "Approved",
+            "Pending Approval",
+            "Rejected"
+        ];
 
-        $queryJobRoles = $queryParams["Job_Role"] ?? [];
-        $queryCompanies = $queryParams["Company"] ?? [];
+        $queryParams = $request->query->all();
 
         return $this->render(
             "internships/show.html",
             array_merge(
                 ["jobRoles" => $jobRoles],
                 ["companies" => $companies],
-                ["queryJobRoles" => $queryJobRoles],
-                ["queryCompanies" => $queryCompanies]
+                ["queryJobRoles" => $queryParams["Job_Role"] ?? []],
+                ["queryCompanies" => $queryParams["Company"] ?? []],
+                ["internshipStatus" => $internshipStatus],
+                ["queryInternshipStatus" => $queryParams["Internship_Status"] ?? []],
             )
         );
     }

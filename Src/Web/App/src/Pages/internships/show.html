@@ -30,6 +30,7 @@
                     {% endfor %}
                 </div>
             </div>
+            {% if ("ROLE_ADMIN" in user_roles) or ("ROLE_STUDENT" in user_roles) %}
             <div class="my-15">
                 <div class="fw-6 mb-5">Company</div>
                 <div class="px-5 data-category" data-category="Company">
@@ -44,6 +45,23 @@
                     {% endfor %}
                 </div>
             </div>
+            {% endif %}
+            {% if ("ROLE_ADMIN" in user_roles) or ("ROLE_PARTNER" in user_roles) %}
+            <div class="my-15">
+                <div class="fw-6 mb-5">Internship Status</div>
+                <div class="px-5 data-category" data-category="Internship Status">
+                    {% for status in internshipStatus %}
+                    <div class="checkbox">
+                        <input type="checkbox" id="status-{{ status }}" value="{{ status }}" {% if status in
+                            queryInternshipStatus %} checked {% endif %}>
+                        <label for="status-{{ status }}">
+                            {{ status }}
+                        </label>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
         </div>
     </div>
     <div class="w-600">
