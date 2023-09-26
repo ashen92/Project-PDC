@@ -11,6 +11,7 @@
 		"liveSassCompile.settings.watchOnLaunch": true,
 		"liveSassCompile.settings.showOutputWindowOn": "None",
 		"liveSassCompile.settings.forceBaseDirectory": "/src/wwwroot/scss",
+		"liveSassCompile.settings.generateMap": false,
 		"liveSassCompile.settings.formats": [
 			{
 				"format": "compressed",
