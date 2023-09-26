@@ -53,7 +53,8 @@
 			"mhutchie.git-graph",
 			"redhat.vscode-yaml",
 			"davidanson.vscode-markdownlint",
-			"bajdzis.vscode-twig-pack"
+			"bajdzis.vscode-twig-pack",
+			"dbaeumer.vscode-eslint"
 		]
 	}
 }
