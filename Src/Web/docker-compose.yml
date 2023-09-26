@@ -6,12 +6,6 @@ services:
       - "8080:80"
     depends_on:
       - db
-    environment:
-      - DATABASE_HOST=db
-      - DATABASE_USER=root
-      - DATABASE_PASSWORD=root
-      - DATABASE_NAME=pdc
-      - DATABASE_DRIVER=pdo_mysql
 
   db:
     image: mysql
