@@ -36,3 +36,6 @@ cache
 !.vscode/extensions.json
 !.vscode/*.code-snippets
 !.vscode/App.code-workspace
+
+# Dev dependencies
+node_modules/

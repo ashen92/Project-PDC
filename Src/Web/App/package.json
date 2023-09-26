@@ -1,0 +1,10 @@
+{
+    "name": "app",
+    "version": "0.1.0",
+    "author": "Ashen Sandaruwan",
+    "license": "UNLICENSED",
+    "private": true,
+    "devDependencies": {
+        "eslint": "^8.50.0"
+    }
+}
