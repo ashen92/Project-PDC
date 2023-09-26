@@ -5,6 +5,6 @@ return [
     "dbname" => "pdc",
     "user" => "root",
     "password" => "root",
-    "host" => "db",
+    "host" => "localhost",
     "driver" => "pdo_mysql",
 ];
