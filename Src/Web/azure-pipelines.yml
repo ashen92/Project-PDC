@@ -36,4 +36,7 @@ stages:
         inputs:
           azureSubscription: 'Azure subscription 1(cd17a9df-d623-4250-8ab2-34441652222d)'
           appName: 'webappgroupproject'
+          deployToSlotOrASE: true
+          resourceGroupName: 'group-project'
+          slotName: 'production'
           multicontainerConfigFile: '**/docker-compose.yml'
