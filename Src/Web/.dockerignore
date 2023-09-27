@@ -11,5 +11,8 @@
 **/docker-compose.yaml
 **/docker-compose.yml
 **/Dockerfile
-tests/
-vendor/
+./App/tests/
+./App/vendor/
+./App/node_modules/
+**/package-lock.json
+**/package.json
