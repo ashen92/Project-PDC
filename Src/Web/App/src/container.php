@@ -71,10 +71,17 @@ $container->register(
         new Reference("twig"),
         new Reference("service.user"),
         new Reference("service.authentication"),
-        new Reference("app.cache")
+        new Reference("app.cache"),
+        new Reference("App\Controllers\ErrorController")
     ]);
 
 // Controllers
+
+$container->register(
+    "App\Controllers\ErrorController",
+    \App\Controllers\ErrorController::class
+)
+    ->setArguments([new Reference("twig")]);
 
 $container->register(
     "App\Controllers\AuthenticationController",

@@ -22,7 +22,7 @@ abstract class PageControllerBase
         return new RedirectResponse($url);
     }
 
-    protected function render(string $template, array $parameters = []): Response
+    protected function render(string $template, array $parameters = [], int $responseStatus = 200): Response
     {
         return new Response(
             $this->twig->render(
@@ -31,7 +31,8 @@ abstract class PageControllerBase
                     "sectionName" => $this->getSectionName(),
                     "sectionURL" => $this->getSectionURL(),
                 ], $parameters)
-            )
+            ),
+            $responseStatus
         );
     }
 }

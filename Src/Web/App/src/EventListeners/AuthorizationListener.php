@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\EventListeners;
 
 use App\Attributes\RequiredRole;
+use App\Controllers\ErrorController;
 use App\Interfaces\IAuthenticationService;
 use App\Interfaces\IUserService;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -20,7 +21,8 @@ class AuthorizationListener implements EventSubscriberInterface
         private Environment $twig,
         private IUserService $userService,
         private IAuthenticationService $authn,
-        private CacheInterface $cache
+        private CacheInterface $cache,
+        private ErrorController $errorController
     ) {
     }
 
@@ -52,7 +54,7 @@ class AuthorizationListener implements EventSubscriberInterface
         });
 
         if (!$this->userService->hasRequiredRole((int) $session->get("user_id"), $cachedRole)) {
-            $event->setController(fn() => new Response("Page Not Found", 404));
+            $event->setController(fn() => $this->errorController->notFound());
         }
     }
 
