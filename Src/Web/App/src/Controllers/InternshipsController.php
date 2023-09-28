@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Entities\Company;
+use App\Entities\Internship;
 use App\Entities\JobRole;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -57,9 +58,38 @@ class InternshipsController extends PageControllerBase
 
         $queryParams = $request->query->all();
 
+        $internships = [
+            new Internship(
+                1,
+                "Internship Name or Position. Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate modi",
+                "Company 1"
+            ),
+            new Internship(
+                2,
+                "Internship Name or Position. Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate modi",
+                "Company 1"
+            ),
+            new Internship(
+                3,
+                "Internship Name or Position. Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate modi",
+                "Company 1"
+            ),
+            new Internship(
+                4,
+                "Internship Name or Position. Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate modi",
+                "Company 1"
+            ),
+            new Internship(
+                5,
+                "Internship Name or Position. Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate modi",
+                "Company 1"
+            ),
+        ];
+
         return $this->render(
             "internships/show.html",
             array_merge(
+                ["internships" => $internships],
                 ["jobRoles" => $jobRoles],
                 ["companies" => $companies],
                 ["queryJobRoles" => $queryParams["Job_Role"] ?? []],
@@ -74,6 +104,19 @@ class InternshipsController extends PageControllerBase
     public function show_one(int $id): Response
     {
         return $this->render("internships/show_one.html", ["id" => $id]);
+    }
+
+    #[Route("/show/{id}/applicants", name: "show_one_applicants")]
+    public function show_one_applicants(int $id): Response
+    {
+        return $this->render("internships/show_one_applicants.html", ["applicants" => [
+            "Ashen",
+            "Smith",
+            "James",
+            "Green",
+            "Head",
+            "Jimmy",
+        ]]);
     }
 
     #[Route("/add", name: "add")]

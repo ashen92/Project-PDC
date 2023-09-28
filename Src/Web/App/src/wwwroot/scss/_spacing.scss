@@ -59,6 +59,22 @@
         }
     }
 
+    &s {
+        @for $i from 1 through 10 {
+            &-#{$i * 5} {
+                padding-left: #{$i * 5}px;
+            }
+        }
+    }
+
+    &e {
+        @for $i from 1 through 10 {
+            &-#{$i * 5} {
+                padding-right: #{$i * 5}px;
+            }
+        }
+    }
+
     &x {
         @for $i from 1 through 20 {
             &-#{$i * 5} {

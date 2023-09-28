@@ -2,9 +2,14 @@
 
 $text-field-padding: 8px 12px;
 
-$button-padding: 10px 22px;
+$btn-padding: 10px 22px;
 
-$button-transition: background-color .1s cubic-bezier(0.02, 1, 1, 1);
+$btn-transition: background-color .1s cubic-bezier(0.02, 1, 1, 1);
+
+$btn-primary-colour: white;
+$btn-primary-bg-colour: #0078d4;
+$btn-primary-hov-bg-colour: #0067b5;
+$btn-primary-act-bg-colour: #004e8a;
 
 input {
     &[type="text"] {
@@ -34,27 +39,27 @@ input {
     &[type="submit"] {
         cursor: pointer;
         border: none;
-        padding: $button-padding;
-        color: white;
-        background-color: #0078d4;
+        padding: $btn-padding;
+        color: $btn-primary-colour;
+        background-color: $btn-primary-bg-colour;
 
         &:hover {
-            color: white;
-            background-color: #0067b5;
+            color: $btn-primary-colour;
+            background-color: $btn-primary-hov-bg-colour;
         }
 
         &:active {
-            color: white;
-            background-color: #004e8a;
+            color: $btn-primary-colour;
+            background-color: $btn-primary-act-bg-colour;
         }
 
-        transition: $button-transition;
+        transition: $btn-transition;
     }
 
     &[type="reset"] {
         cursor: pointer;
         border: none;
-        padding: $button-padding;
+        padding: $btn-padding;
         color: white;
         background-color: #838383;
 
@@ -68,11 +73,27 @@ input {
             background-color: #4d4d4d;
         }
 
-        transition: $button-transition;
+        transition: $btn-transition;
     }
 
     &[type="button"] {
-        padding: $button-padding;
+        cursor: pointer;
+        border: none;
+        padding: $btn-padding;
+        color: $btn-primary-colour;
+        background-color: $btn-primary-bg-colour;
+
+        &:hover {
+            color: $btn-primary-colour;
+            background-color: $btn-primary-hov-bg-colour;
+        }
+
+        &:active {
+            color: $btn-primary-colour;
+            background-color: $btn-primary-act-bg-colour;
+        }
+
+        transition: $btn-transition;
     }
 }
 

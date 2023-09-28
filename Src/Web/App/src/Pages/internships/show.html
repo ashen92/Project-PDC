@@ -65,36 +65,28 @@
         </div>
     </div>
     <div class="w-600">
-        <div class="grid grid-cols-2 grid-flow-column px-25 py-20 mb-10 b-1 br-5 hov-bg-grey act-bg-blue">
-            <a class="hov-underline" href="show/1">
-                <div class="fw-6 pb-10">Internship Name or Position. Lorem ipsum dolor sit amet consectetur
-                    adipisicing elit. Voluptate modi</div>
-                <div><span class="italic fc-light">at </span>Company</div>
+        {% for item in internships %}
+        <div class="grid grid-cols-2 grid-flow-column col-gap-2 px-25 py-20 mb-10 b-1 br-5 hov-bg-grey act-bg-blue justify-content-space-between">
+            <a class="hov-underline" href="show/{{ item.id }}">
+                <div class="fw-6 pb-10">{{ item.description }}</div>
+                <div><span class="italic fc-light">at </span>{{item.company}}</div>
             </a>
+
+            {% if "ROLE_PARTNER" in user_roles %}
             <div>
-                <input type="submit" value="Apply">
+                <a href="show/{{ item.id }}/applicants">
+                    <input type="button" value="Applicants">
+                </a>
             </div>
-        </div>
-        <div class="grid grid-cols-2 grid-flow-column px-25 py-20 mb-10 b-1 br-5 hov-bg-grey act-bg-blue">
-            <a class="hov-underline" href="show/2">
-                <div class="fw-6 pb-10">Internship Name or Position. Lorem ipsum dolor sit amet consectetur
-                    adipisicing elit. Voluptate modi</div>
-                <div><span class="italic fc-light">at </span>Company</div>
-            </a>
+            {% endif %}
+
+            {% if "ROLE_STUDENT" in user_roles %}
             <div>
-                <input type="submit" value="Apply">
+                <input type="button" value="Apply">
             </div>
+            {% endif %}
         </div>
-        <div class="grid grid-cols-2 grid-flow-column px-25 py-20 mb-10 b-1 br-5 hov-bg-grey act-bg-blue">
-            <a class="hov-underline" href="show/3">
-                <div class="fw-6 pb-10">Internship Name or Position. Lorem ipsum dolor sit amet consectetur
-                    adipisicing elit. Voluptate modi</div>
-                <div><span class="italic fc-light">at </span>Company</div>
-            </a>
-            <div>
-                <input type="submit" value="Apply">
-            </div>
-        </div>
+        {% endfor %}
     </div>
 </div>
 
