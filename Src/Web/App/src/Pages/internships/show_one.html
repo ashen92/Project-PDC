@@ -29,7 +29,20 @@
             explicabo tempora mollitia autem nam iusto quisquam adipisci provident at.
         </div>
         <div class="text-align-right mt-25">
+
+            {% if ("ROLE_PARTNER" in user_roles) or ("ROLE_ADMIN" in user_roles) %}
+            <a href="{{ id }}/applicants">
+                <input type="button" value="Applicants">
+            </a>
+            <a href="{{ id }}/edit">
+                <input type="button" value="Edit">
+            </a>
+            <input type="button" value="Remove">
+            {% endif %}
+
+            {% if "ROLE_STUDENT" in user_roles %}
             <input type="button" value="Apply">
+            {% endif %}
         </div>
     </div>
 </div>
