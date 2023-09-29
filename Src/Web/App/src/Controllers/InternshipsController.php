@@ -35,8 +35,8 @@ class InternshipsController extends PageControllerBase
         return $this->render("internships/cycle.html");
     }
 
-    #[Route("/show", name: "show")]
-    public function show(Request $request): Response
+    #[Route("/show", name: "internships")]
+    public function internships(Request $request): Response
     {
         $jobRoles = [
             new JobRole(1, "Software Engineer"),
@@ -87,7 +87,7 @@ class InternshipsController extends PageControllerBase
         ];
 
         return $this->render(
-            "internships/show.html",
+            "internships/internships.html",
             array_merge(
                 ["internships" => $internships],
                 ["jobRoles" => $jobRoles],
@@ -100,23 +100,31 @@ class InternshipsController extends PageControllerBase
         );
     }
 
-    #[Route("/show/{id}", name: "show_one")]
-    public function show_one(int $id): Response
+    #[Route("/show/{id}", name: "internship")]
+    public function internship(int $id): Response
     {
-        return $this->render("internships/show_one.html", ["id" => $id]);
+        return $this->render("internships/internship.html", ["id" => $id]);
     }
 
-    #[Route("/show/{id}/applicants", name: "show_one_applicants")]
-    public function show_one_applicants(int $id): Response
+    #[Route("/show/{id}/applicants", name: "internshipApplicants")]
+    public function internshipApplicants(int $id): Response
     {
-        return $this->render("internships/show_one_applicants.html", ["applicants" => [
-            "Ashen",
-            "Smith",
-            "James",
-            "Green",
-            "Head",
-            "Jimmy",
-        ]]);
+        return $this->render("internships/internship_applicants.html", [
+            "applicants" => [
+                "Ashen",
+                "Smith",
+                "James",
+                "Green",
+                "Head",
+                "Jimmy",
+            ]
+        ]);
+    }
+
+    #[Route("/show/{id}/edit", name: "edit")]
+    public function edit(int $id): Response
+    {
+        return $this->render("internships/edit.html");
     }
 
     #[Route("/add", name: "add")]

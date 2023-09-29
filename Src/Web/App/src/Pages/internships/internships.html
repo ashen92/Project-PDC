@@ -66,7 +66,8 @@
     </div>
     <div class="w-600">
         {% for item in internships %}
-        <div class="grid grid-cols-2 grid-flow-column col-gap-2 px-25 py-20 mb-10 b-1 br-5 hov-bg-grey act-bg-blue justify-content-space-between">
+        <div
+            class="grid grid-cols-2 grid-flow-column col-gap-2 px-25 py-20 mb-10 b-1 br-5 hov-bg-grey act-bg-blue justify-content-space-between">
             <a class="hov-underline" href="show/{{ item.id }}">
                 <div class="fw-6 pb-10">{{ item.description }}</div>
                 <div><span class="italic fc-light">at </span>{{item.company}}</div>
