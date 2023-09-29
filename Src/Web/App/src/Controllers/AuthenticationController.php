@@ -44,13 +44,13 @@ class AuthenticationController extends PageControllerBase
         return $this->render("authentication/signup.html");
     }
 
-    #[Route("/signup/details", name: "signup.details", methods: ["POST"])]
+    #[Route("/signup/details", name: "signup_details", methods: ["POST"])]
     public function signupDetails(): Response
     {
-        return $this->render("authentication/signup.details.html");
+        return $this->render("authentication/signup_details.html");
     }
 
-    #[Route("/signup/submit", name: "signup.submit", methods: ["POST"])]
+    #[Route("/signup/submit", name: "signup_submit", methods: ["POST"])]
     public function signupSubmit(): Response|RedirectResponse
     {
         return new RedirectResponse("/");
