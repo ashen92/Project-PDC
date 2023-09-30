@@ -66,17 +66,22 @@
     </div>
     <div class="w-600">
         {% for item in internships %}
-        <div
-            class="grid grid-cols-2 grid-flow-column col-gap-2 px-25 py-20 mb-10 b-1 br-5 hov-bg-grey act-bg-blue justify-content-space-between">
+        <div class="grid grid-cols-1 grid-rows-2 grid-flow-row px-25 py-20 mb-10 b-1 br-5 hov-bg-grey act-bg-blue">
             <a class="hov-underline" href="show/{{ item.id }}">
                 <div class="fw-6 pb-10">{{ item.description }}</div>
                 <div><span class="italic fc-light">at </span>{{item.company}}</div>
             </a>
 
-            {% if "ROLE_PARTNER" in user_roles %}
-            <div>
+            {% if ("ROLE_PARTNER" in user_roles) or ("ROLE_ADMIN" in user_roles) %}
+            <div class="text-align-right pt-5">
                 <a href="show/{{ item.id }}/applicants">
                     <input type="button" value="Applicants">
+                </a>
+                <a href="show/{{ item.id }}/edit">
+                    <input type="button" value="Edit">
+                </a>
+                <a href="">
+                    <input type="button" value="Remove">
                 </a>
             </div>
             {% endif %}
