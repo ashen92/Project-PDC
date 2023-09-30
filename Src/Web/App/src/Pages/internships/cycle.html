@@ -8,61 +8,58 @@
 
 {% block content %}
 
-<div class="text-title text-align-centre">
-    Start a Internship Cycle
-</div>
-
-<div class="mt-50">
-    <div class="br-5 b-1 p-30">
-        <form>
-            <div class="mb-40">
-                <div class="fs-6 fw-6 pb-20">Internship Gathering Phase</div>
-                <div
-                    class="grid grid-cols-2 grid-flow-column align-items-baseline justify-content-space-between px-20 py-10 b-1 br-5 mb-5">
-                    <div>Start date</div>
-                    <input type="date" required>
-                </div>
-                <div
-                    class="grid grid-cols-2 grid-flow-column align-items-baseline justify-content-space-between px-20 py-10 b-1 br-5 mb-5">
-                    <div>End date</div>
-                    <input type="date" required>
-                </div>
-                <div
-                    class="grid grid-cols-2 grid-flow-column align-items-baseline justify-content-space-between px-20 py-10 b-1 br-5 mb-5">
-                    <div>Automatically send emails to partners when the start date is reached.</div>
-                    <div class="checkbox">
-                        <input type="checkbox" id="check1">
-                    </div>
-                </div>
-            </div>
-            <div class="mb-20">
-                <div class="fs-6 fw-6 pb-20">Internship Phase</div>
-                <div
-                    class="grid grid-cols-2 grid-flow-column align-items-baseline justify-content-space-between px-20 py-10 b-1 br-5 mb-5">
-                    <div>Start date</div>
-                    <input type="date" required>
-                </div>
-                <div
-                    class="grid grid-cols-2 grid-flow-column align-items-baseline justify-content-space-between px-20 py-10 b-1 br-5 mb-5">
-                    <div>End date</div>
-                    <input type="date" required>
-                </div>
-                <div
-                    class="grid grid-cols-2 grid-flow-column align-items-baseline justify-content-space-between px-20 py-10 b-1 br-5 mb-5">
-                    <div>Automatically send emails to Undergraduates when the start date is reached.</div>
-                    <div class="checkbox">
-                        <input type="checkbox" id="check1">
-                    </div>
-                </div>
-            </div>
-            <div class="mb-20">
-                <div class="text-align-right mt-25">
-                    <input type="submit" value="Confirm">
-                    <input type="reset" value="Reset">
-                </div>
-            </div>
-        </form>
+<div class="w-800 br-5 b-1 p-30">
+    <div class="fs-4 fw-6 pb-20">
+        Start a Internship Cycle
     </div>
+    <form>
+        <div class="mb-40">
+            <div class="fs-6 fw-6 pb-20">Internship Gathering Phase</div>
+            <div
+                class="grid grid-cols-2 grid-flow-column align-items-baseline justify-content-space-between px-20 py-10 b-1 br-5 mb-5">
+                <div>Start date</div>
+                <input type="date" required>
+            </div>
+            <div
+                class="grid grid-cols-2 grid-flow-column align-items-baseline justify-content-space-between px-20 py-10 b-1 br-5 mb-5">
+                <div>End date</div>
+                <input type="date" required>
+            </div>
+            <div
+                class="grid grid-cols-2 grid-flow-column align-items-baseline justify-content-space-between px-20 py-10 b-1 br-5 mb-5">
+                <div>Automatically send emails to partners when the start date is reached.</div>
+                <div class="checkbox">
+                    <input type="checkbox" id="check1">
+                </div>
+            </div>
+        </div>
+        <div class="mb-20">
+            <div class="fs-6 fw-6 pb-20">Internship Phase</div>
+            <div
+                class="grid grid-cols-2 grid-flow-column align-items-baseline justify-content-space-between px-20 py-10 b-1 br-5 mb-5">
+                <div>Start date</div>
+                <input type="date" required>
+            </div>
+            <div
+                class="grid grid-cols-2 grid-flow-column align-items-baseline justify-content-space-between px-20 py-10 b-1 br-5 mb-5">
+                <div>End date</div>
+                <input type="date" required>
+            </div>
+            <div
+                class="grid grid-cols-2 grid-flow-column align-items-baseline justify-content-space-between px-20 py-10 b-1 br-5 mb-5">
+                <div>Automatically send emails to Undergraduates when the start date is reached.</div>
+                <div class="checkbox">
+                    <input type="checkbox" id="check1">
+                </div>
+            </div>
+        </div>
+        <div class="mb-20">
+            <div class="text-align-right mt-25">
+                <input type="submit" value="Confirm">
+                <input type="reset" value="Reset">
+            </div>
+        </div>
+    </form>
 </div>
 
 {% endblock %}
