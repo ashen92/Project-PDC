@@ -1,10 +1,18 @@
 // Margin
 .m {
+    &-auto {
+        margin: auto;
+    }
+
     &t {
         @for $i from 1 through 10 {
             &-#{$i * 5} {
                 margin-top: #{$i * 5}px;
             }
+        }
+
+        &-auto {
+            margin-top: auto;
         }
     }
 
@@ -13,6 +21,10 @@
             &-#{$i * 5} {
                 margin-bottom: #{$i * 5}px;
             }
+        }
+
+        &-auto {
+            margin-bottom: auto;
         }
     }
 
@@ -23,6 +35,11 @@
                 margin-right: #{$i * 5}px;
             }
         }
+
+        &-auto {
+            margin-left: auto;
+            margin-right: auto;
+        }
     }
 
     &y {
@@ -31,6 +48,11 @@
                 margin-top: #{$i * 5}px;
                 margin-bottom: #{$i * 5}px;
             }
+        }
+
+        &-auto {
+            margin-top: auto;
+            margin-bottom: auto;
         }
     }
 }
