@@ -1,0 +1,33 @@
+{% extends "shared/layout.html" %}
+
+{% block title %}User Management{% endblock %}
+
+{% block header %}
+{{ include ("shared/header.html") }}
+{% endblock %}
+
+{% block content %}
+
+<div class="text-title text-align-centre">
+    User Management
+</div>
+
+<div class="grid grid-cols-1 row-gap-1 justify-content-centre mt-50">
+    <div
+        class="grid grid-cols-2 grid-flow-column align-items-baseline justify-content-space-between col-gap-3 px-20 py-10 b-1 br-5">
+        <div>Show Students</div>
+        <a href="">
+            <input type="button" value="View">
+        </a>
+    </div>
+
+    <div
+        class="grid grid-cols-2 grid-flow-column align-items-baseline justify-content-space-between col-gap-3 px-20 py-10 b-1 br-5">
+        <div>Show Partners</div>
+        <a href="">
+            <input type="button" value="View">
+        </a>
+    </div>
+</div>
+
+{% endblock %}

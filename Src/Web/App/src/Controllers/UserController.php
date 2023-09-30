@@ -13,7 +13,7 @@ class UserController extends PageControllerBase
 {
 	protected function getSectionName(): string
 	{
-		return "Users";
+		return "User Management";
 	}
 
 	protected function getSectionURL(): string
@@ -24,6 +24,6 @@ class UserController extends PageControllerBase
 	#[Route("", name: "home")]
 	public function home(): Response
 	{
-		return new Response("Hello from users");
+		return $this->render("users/home.html");
 	}
 }
