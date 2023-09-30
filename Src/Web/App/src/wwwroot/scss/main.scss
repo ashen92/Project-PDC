@@ -48,7 +48,10 @@ a {
 }
 
 .header {
-    background-color: #006bbd;
+    &-bg {
+        background-color: #006bbd;
+    }
+
     min-height: 60px;
     height: 60px;
 
@@ -82,8 +85,11 @@ a {
 }
 
 .footer {
+    &-bg {
+        background-color: #f2f2f2;
+    }
+
     min-height: 60px;
-    background-color: #f2f2f2;
     color: #424242;
 
     div {

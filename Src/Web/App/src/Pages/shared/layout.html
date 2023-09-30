@@ -11,15 +11,30 @@
 
 <body>
     <div class="wrapper">
-        <div>
-            {% block header %}{% endblock %}
+        <div class="header-bg">
+            <div class="header mx-auto max-w-1220 px-50">
+                <div class="header-links">
+                    <a href="/" class="logo">PDC</a>
+                    {% if sectionURL %}
+                    <a href="{{ sectionURL }}">{{ sectionName }}</a>
+                    {% else %}
+                    <div></div>
+                    {% endif %}
+                    <div></div>
+                    <a href="/logout">Sign out</a>
+                </div>
+            </div>
         </div>
-        <div class="content mx-auto max-w-1120 px-50">
+        <div class="content mx-auto max-w-1220 px-50">
             {% block content %}{% endblock %}
             {% block js %}{% endblock js %}
         </div>
-        <div class="footer px-50">
-            <div>Lorem ipsum dolor sit amet consectetur adipisicing elit.</div>
+        <div class="footer-bg">
+            <div class="footer mx-auto max-w-1220 px-50">
+                <div>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                </div>
+            </div>
         </div>
     </div>
 </body>
