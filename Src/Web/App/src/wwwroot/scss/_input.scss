@@ -2,16 +2,22 @@
 
 $text-field-padding: 8px 12px;
 
-$btn-padding: 10px 22px;
+$btn-padding: 9px 24px;
 
 $btn-transition: background-color .1s cubic-bezier(0.02, 1, 1, 1);
 
-$btn-primary-colour: white;
-$btn-primary-bg-colour: #0078d4;
-$btn-primary-hov-bg-colour: #0067b5;
-$btn-primary-act-bg-colour: #004e8a;
+$btn-primary-border: 1px solid colours.$btn-primary-border;
+$btn-primary-bg-hov-border: 1px solid colours.$btn-primary-bg-hov-border;
+$btn-primary-bg-act-border: 1px solid colours.$btn-primary-bg-act-border;
+$btn-secondary-border: 1px solid colours.$btn-secondary-border;
+
+$btn-border-radius: 3px;
+
+$btn-font-weight: 600;
 
 input {
+    font-size: inherit;
+
     &[type="text"] {
         padding: $text-field-padding;
     }
@@ -41,17 +47,22 @@ input {
         cursor: pointer;
         border: none;
         padding: $btn-padding;
-        color: $btn-primary-colour;
-        background-color: $btn-primary-bg-colour;
+        color: colours.$btn-primary;
+        background-color: colours.$btn-primary-bg;
+        border: $btn-primary-border;
+        border-radius: $btn-border-radius;
+        font-weight: $btn-font-weight;
 
         &:hover {
-            color: $btn-primary-colour;
-            background-color: $btn-primary-hov-bg-colour;
+            color: colours.$btn-primary;
+            background-color: colours.$btn-primary-bg-hov;
+            border: $btn-primary-bg-hov-border;
         }
 
         &:active {
-            color: $btn-primary-colour;
-            background-color: $btn-primary-act-bg-colour;
+            color: colours.$btn-primary;
+            background-color: colours.$btn-primary-bg-act;
+            border: $btn-primary-bg-act-border;
         }
 
         transition: $btn-transition;
@@ -61,17 +72,18 @@ input {
         cursor: pointer;
         border: none;
         padding: $btn-padding;
-        color: white;
-        background-color: #838383;
+        color: colours.$btn-secondary;
+        background-color: colours.$btn-secondary-bg;
+        border: $btn-secondary-border;
+        border-radius: $btn-border-radius;
+        font-weight: $btn-font-weight;
 
         &:hover {
-            columns: white;
-            background-color: #616161;
+            background-color: colours.$btn-secondary-bg-hov;
         }
 
         &:active {
-            columns: white;
-            background-color: #4d4d4d;
+            background-color: colours.$btn-secondary-bg-act;
         }
 
         transition: $btn-transition;
@@ -81,17 +93,19 @@ input {
         cursor: pointer;
         border: none;
         padding: $btn-padding;
-        color: $btn-primary-colour;
-        background-color: $btn-primary-bg-colour;
+        color: colours.$btn-primary;
+        background-color: colours.$btn-primary-bg;
+        border-radius: $btn-border-radius;
+        font-weight: $btn-font-weight;
 
         &:hover {
-            color: $btn-primary-colour;
-            background-color: $btn-primary-hov-bg-colour;
+            color: colours.$btn-primary;
+            background-color: colours.$btn-primary-bg-hov;
         }
 
         &:active {
-            color: $btn-primary-colour;
-            background-color: $btn-primary-act-bg-colour;
+            color: colours.$btn-primary;
+            background-color: colours.$btn-primary-bg-act;
         }
 
         transition: $btn-transition;
@@ -123,8 +137,9 @@ select {
 }
 
 textarea {
+    font-size: inherit;
     padding: 20px;
     width: auto;
     height: auto;
-    resize: vertical;
+    resize: none;
 }

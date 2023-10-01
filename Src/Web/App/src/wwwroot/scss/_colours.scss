@@ -3,14 +3,24 @@ $active-light-blue: #deecf9;
 
 $link: #0067b8;
 
-.colour-link {
-    color: $link;
-}
-
-.bg-colour-grey {
-    background-color: #dcdcdc;
-}
-
-.bg-colour-light-grey {
+.bg-light-grey {
     background-color: #ebebeb;
 }
+
+// Buttons
+
+$btn-primary: #ffffff;
+$btn-primary-bg: #006fc9;
+$btn-primary-bg-hov: #0064b5;
+$btn-primary-bg-act: #005499;
+
+$btn-primary-border: #006fc9;
+$btn-primary-bg-hov-border: #0064b5;
+$btn-primary-bg-act-border: #005499;
+
+$btn-secondary: #323130;
+$btn-secondary-bg: #ffffff;
+$btn-secondary-bg-hov: #e8e8e8;
+$btn-secondary-bg-act: #dedede;
+
+$btn-secondary-border: #8a8886;
