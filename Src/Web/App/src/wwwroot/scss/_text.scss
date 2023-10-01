@@ -7,12 +7,14 @@ $title-padding: 20px;
     padding: $title-padding;
 }
 
-.text-align-centre {
-    text-align: center;
-}
+.text {
+    &-centre {
+        text-align: center;
+    }
 
-.text-align-right {
-    text-align: right;
+    &-right {
+        text-align: right;
+    }
 }
 
 .fs-1 {
