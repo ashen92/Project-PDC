@@ -1,13 +1,25 @@
 $hover-light-grey: #f8f8f8;
+$hover-grey: #c9c9c9;
 $active-light-blue: #deecf9;
 
 $link: #0067b8;
 
-.bg-light-grey {
-    background-color: #ebebeb;
+// Background Colours
+
+.bg {
+    &-light-grey {
+        background-color: #ebebeb;
+    }
+
+    // Hover state
+    &-hov {
+        &-lightblue:hover {
+            background-color: #deecf9;
+        }
+    }
 }
 
-// Buttons
+// Button Colours
 
 $btn-primary: #ffffff;
 $btn-primary-bg: #006fc9;

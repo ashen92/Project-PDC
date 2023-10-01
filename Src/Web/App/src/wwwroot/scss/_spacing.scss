@@ -59,9 +59,9 @@
 
 // Padding
 .p {
-    @for $i from 1 through 10 {
-        &-#{$i * 10} {
-            padding: #{$i * 10}px;
+    @for $i from 1 through 20 {
+        &-#{$i * 5} {
+            padding: #{$i * 5}px;
         }
     }
 

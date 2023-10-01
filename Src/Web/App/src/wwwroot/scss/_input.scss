@@ -1,6 +1,7 @@
 @use "colours";
 
 $text-field-padding: 8px 12px;
+$textarea-padding: 20px;
 
 $btn-padding: 9px 24px;
 
@@ -51,7 +52,6 @@ input {
         background-color: colours.$btn-primary-bg;
         border: $btn-primary-border;
         border-radius: $btn-border-radius;
-        font-weight: $btn-font-weight;
 
         &:hover {
             color: colours.$btn-primary;
@@ -96,7 +96,6 @@ input {
         color: colours.$btn-primary;
         background-color: colours.$btn-primary-bg;
         border-radius: $btn-border-radius;
-        font-weight: $btn-font-weight;
 
         &:hover {
             color: colours.$btn-primary;
@@ -138,8 +137,8 @@ select {
 
 textarea {
     font-size: inherit;
-    padding: 20px;
-    width: auto;
-    height: auto;
+    padding: $textarea-padding;
+    width: 100%;
     resize: none;
+    border: none;
 }

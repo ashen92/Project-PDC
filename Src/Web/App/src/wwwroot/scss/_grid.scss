@@ -33,6 +33,10 @@
 }
 
 .col-gap {
+    &-pt5 {
+        column-gap: 5px;
+    }
+
     &-1 {
         column-gap: 10px;
     }
