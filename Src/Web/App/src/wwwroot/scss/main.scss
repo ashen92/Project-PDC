@@ -27,6 +27,28 @@ a {
     text-decoration: none;
 }
 
+.sidebar {
+    border-radius: 10px;
+    border: border.$b-1;
+    padding: 20px 15px;
+    display: grid;
+    row-gap: 5px;
+    background-color: #faf9f8;
+}
+
+.sidebar-item {
+    padding: 10px 25px;
+    border-radius: 5px;
+
+    &:hover {
+        background-color: #e6e5e5;
+    }
+
+    &.active {
+        background-color: #e6e5e5;
+    }
+}
+
 .link {
     color: colours.$link;
 

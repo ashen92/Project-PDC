@@ -1,0 +1,1 @@
+(()=>{var t=new URLSearchParams(document.location.search),e=t.get("view");e==null||e=="internship-cycle"?document.getElementById("internship-cycle").classList.add("active"):document.getElementById(e).classList.add("active");})();
