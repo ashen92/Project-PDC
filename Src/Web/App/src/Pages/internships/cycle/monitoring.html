@@ -13,49 +13,72 @@
         {{ include("internships/cycle/sidebar.html") }}
     </div>
     <div class="col-span-3 br-5 p-30">
-        <form>
-            <div class="mb-40">
-                <div class="fs-6 fw-6 pb-20">Internship Gathering Phase</div>
-                <div class="grid grid-cols-4 align-items-baseline px-20 py-10 b-1 br-5 mb-5">
-                    <div class="col-span-3">Start date</div>
-                    <input type="date" required>
-                </div>
-                <div class="grid grid-cols-4 align-items-baseline px-20 py-10 b-1 br-5 mb-5">
-                    <div class="col-span-3">End date</div>
-                    <input type="date" required>
-                </div>
-                <div class="grid grid-cols-4 align-items-baseline px-20 pt-10 pb-15 b-1 br-5 mb-5">
-                    <div class="col-span-3">Automatically send emails to partners when the start date is reached.</div>
-                    <div class="checkbox text-right">
-                        <input type="checkbox" id="check1">
-                    </div>
-                </div>
+        {% if internship_cycle_status == "active" %}
+        <div class="grid grid-cols-5 px-20 py-15 mb-20 b-1 br-5 align-items-baseline">
+            <div class="col-span-4">
+                Internship Contracts
             </div>
-            <div class="mb-20">
-                <div class="fs-6 fw-6 pb-20">Internship Phase</div>
-                <div class="grid grid-cols-4 align-items-baseline px-20 py-10 b-1 br-5 mb-5">
-                    <div class="col-span-3">Start date</div>
-                    <input type="date" required>
-                </div>
-                <div class="grid grid-cols-4 align-items-baseline px-20 py-10 b-1 br-5 mb-5">
-                    <div class="col-span-3">End date</div>
-                    <input type="date" required>
-                </div>
-                <div class="grid grid-cols-4 align-items-baseline px-20 py-10 b-1 br-5 mb-5">
-                    <div class="col-span-3">Automatically send emails to Undergraduates when the start date is reached.
-                    </div>
-                    <div class="checkbox text-right">
-                        <input type="checkbox" id="check1">
-                    </div>
-                </div>
+            <a class="link" href="monitoring/contracts">
+                <input type="button" value="View">
+            </a>
+        </div>
+
+        <div class="grid grid-cols-5 px-20 py-15 mb-20 b-1 br-5 align-items-baseline">
+            <div class="col-span-4">
+                Monthly Progress Reports
             </div>
-            <div class="mb-20">
-                <div class="text-right mt-25">
-                    <input type="submit" value="Confirm">
-                    <input type="reset" value="Reset">
-                </div>
+            <a class="link" href="monitoring/progress-report">
+                <input type="button" value="View">
+            </a>
+        </div>
+
+        <div class="grid grid-cols-5 px-20 py-15 mb-20 b-1 br-5 align-items-baseline">
+            <div class="col-span-4">
+                Feedback about Students
             </div>
-        </form>
+            <a class="link" href="monitoring/feedback">
+                <input type="button" value="View">
+            </a>
+        </div>
+
+        <div class="grid grid-cols-5 px-20 py-15 mb-20 b-1 br-5 align-items-baseline">
+            <div class="col-span-4">
+                Feedback about Companies
+            </div>
+            <a class="link" href="monitoring/feedback">
+                <input type="button" value="View">
+            </a>
+        </div>
+
+        <div class="grid grid-cols-5 px-20 py-15 mb-20 b-1 br-5 align-items-baseline">
+            <div class="col-span-4">
+                Final Reports
+            </div>
+            <a class="link" href="monitoring/feedback">
+                <input type="button" value="View">
+            </a>
+        </div>
+
+        <div class="grid grid-cols-5 px-20 py-15 mb-20 b-1 br-5 align-items-baseline">
+            <div class="col-span-4">
+                Final Presentations
+            </div>
+            <a class="link" href="monitoring/feedback">
+                <input type="button" value="View">
+            </a>
+        </div>
+
+        <div class="grid grid-cols-5 px-20 py-15 mb-20 b-1 br-5 align-items-baseline">
+            <div class="col-span-4">
+                Service Letters
+            </div>
+            <a class="link" href="monitoring/feedback">
+                <input type="button" value="View">
+            </a>
+        </div>
+        {% else %}
+        <div class="grid fs-6 fw-6 justify-items-centre">There is no internship cycle to monitor.</div>
+        {% endif %}
     </div>
 </div>
 

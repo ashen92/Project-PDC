@@ -32,19 +32,22 @@ class InternshipsController extends PageControllerBase
     #[Route("/cycle", name: "cycle")]
     public function cycle(Request $request): Response
     {
-        return $this->render("internships/cycle/cycle.html", ["contentSection" => "cycle"]);
+        return $this->render("internships/cycle/cycle.html", ["section" => "cycle"]);
     }
 
     #[Route("/cycle/create", name: "cycle_create")]
     public function cycleCreate(Request $request): Response
     {
-        return $this->render("internships/cycle/create.html", ["contentSection" => "cycle"]);
+        return $this->render("internships/cycle/create.html", ["section" => "cycle"]);
     }
 
     #[Route("/cycle/monitoring", name: "cycle_monitoring")]
     public function cycleMonitoring(Request $request): Response
     {
-        return $this->render("internships/cycle/monitoring.html", ["contentSection" => "monitoring"]);
+        return $this->render("internships/cycle/monitoring.html", [
+            "section" => "monitoring",
+            "internship_cycle_status" => "active"
+        ]);
     }
 
     #[Route("/show", name: "internships")]
