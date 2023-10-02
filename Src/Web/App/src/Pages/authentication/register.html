@@ -4,36 +4,38 @@
 
 {% block content %}
 
-<div class="grid p-50 bs-2 br-10">
-    <div class="fs-3 fw-6 pb-10">Apply for Partner Program</div>
-    <div class="w-300 mt-20">
-        <form action="/register" method="post">
-            <div class="field">
-                <label for="firstname">First name</label>
-                <input type="text" name="firstname" id="firstname" required>
-            </div>
-            <div class="field">
-                <label for="lastname">Last name</label>
-                <input type="text" name="lastname" id="lastname" required>
-            </div>
-            <div class="field">
-                <label for="email">Email</label>
-                <input type="email" name="email" id="email" required>
-            </div>
-            <div class="field">
-                <label for="password">Password</label>
-                <input type="password" name="password" id="password" required>
-            </div>
-            <div class="field">
-                <label for="repassword">Re-enter Password</label>
-                <input type="password" name="repassword" id="repassword" required>
-            </div>
-            <div class="text-right mt-30">
-                <input type="submit" value="Submit">
-                <input type="reset" value="Reset">
-            </div>
-        </form>
-        <div class="pt-50 text-centre">Already have an account? <a class="link" href="/">Sign in</a></div>
+<div class="grid grid-cols-3">
+    <div class="col-start-2 bs-2 br-10 p-50">
+        <div class="fs-3 fw-6 pb-10">Apply for Partner Program</div>
+        <div class="mt-20">
+            <form action="/register" method="post">
+                <div class="field">
+                    <label for="firstname">First name</label>
+                    <input type="text" name="firstname" id="firstname" required>
+                </div>
+                <div class="field">
+                    <label for="lastname">Last name</label>
+                    <input type="text" name="lastname" id="lastname" required>
+                </div>
+                <div class="field">
+                    <label for="email">Email</label>
+                    <input type="email" name="email" id="email" required>
+                </div>
+                <div class="field">
+                    <label for="password">Password</label>
+                    <input type="password" name="password" id="password" required>
+                </div>
+                <div class="field">
+                    <label for="repassword">Re-enter Password</label>
+                    <input type="password" name="repassword" id="repassword" required>
+                </div>
+                <div class="text-right mt-30">
+                    <input type="submit" value="Submit">
+                    <input type="reset" value="Reset">
+                </div>
+            </form>
+            <div class="pt-50 text-centre">Already have an account? <a class="link" href="/">Sign in</a></div>
+        </div>
     </div>
 </div>
 
