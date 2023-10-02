@@ -8,38 +8,36 @@
 
 {% block content %}
 
-<div class="w-800 br-5 b-1 p-30">
-    <div class="fs-4 fw-6 pb-20">
-        Add an Internship
-    </div>
-    <form>
-        <div class="field">
-            <label for="title">Title</label>
-            <input name="title" id="title" type="text" maxlength="75" placeholder="Internship name or position">
-        </div>
-
-        <div class="field">
-            <label for="job-role">Select Job Role</label>
-            <select name="job-role" id="job-role">
-                <option value="Role1">Role1</option>
-                <option value="Role2">Role2</option>
-                <option value="Role3">Role3</option>
-                <option value="Role4">Role4</option>
-            </select>
-        </div>
-
-        <div class="field">
-            <label for="description">Description</label>
-            {% include "shared/textarea.html" with {
-            "name": "description",
-            "maxlength": "2000"
-            } %}
-        </div>
-
-        <div class="text-right mt-25">
-            <input type="submit" value="Add">
-        </div>
-    </form>
+<div class="fs-3 fw-6 pb-20">
+    Add an Internship
 </div>
+<form>
+    <div class="field">
+        <label for="title">Title</label>
+        <input name="title" id="title" type="text" maxlength="75" placeholder="Internship name or position">
+    </div>
+
+    <div class="field">
+        <label for="job-role">Select Job Role</label>
+        <select name="job-role" id="job-role">
+            <option value="Role1">Role1</option>
+            <option value="Role2">Role2</option>
+            <option value="Role3">Role3</option>
+            <option value="Role4">Role4</option>
+        </select>
+    </div>
+
+    <div class="field">
+        <label for="description">Description</label>
+        {% include "shared/textarea.html" with {
+        "name": "description",
+        "maxlength": "2000"
+        } %}
+    </div>
+
+    <div class="text-right mt-25">
+        <input type="submit" value="Add">
+    </div>
+</form>
 
 {% endblock %}

@@ -12,7 +12,7 @@
     Browse Internships
 </div>
 
-<div class="grid grid-cols-2 col-gap-2">
+<div class="grid grid-cols-4 col-gap-1">
     <div>
         <div class="p-20 b-1 bg-light-grey br-5" id="filters">
             <div class="fs-6">Filter by</div>
@@ -64,31 +64,33 @@
             {% endif %}
         </div>
     </div>
-    <div>
+    <div class="col-span-3">
         {% for item in internships %}
-        <div class="grid grid-cols-1 grid-rows-2 grid-flow-row px-25 py-20 mb-10 b-1 br-5 hov-bg-lightgrey act-bg-blue">
+        <div class="px-25 py-20 mb-10 b-1 br-5 hov-bg-lightgrey act-bg-blue">
             <a class="hov-underline" href="show/{{ item.id }}">
                 <div class="fw-6 pb-10">{{ item.description }}</div>
                 <div><span class="italic fc-light">at </span>{{item.company}}</div>
             </a>
 
             {% if ("ROLE_PARTNER" in user_roles) or ("ROLE_ADMIN" in user_roles) %}
-            <div class="text-right pt-5">
-                <a href="show/{{ item.id }}/applicants">
+            <div class="grid grid-cols-6 col-gap-1 pt-5">
+                <a class="col-start-4" href="show/{{ item.id }}/applicants">
                     <input type="button" value="Applicants">
                 </a>
-                <a href="show/{{ item.id }}/edit">
+                <a class="col-start-5" href="show/{{ item.id }}/edit">
                     <input type="button" value="Edit">
                 </a>
-                <a href="">
+                <a class="col-start-6" href="">
                     <input type="button" value="Remove">
                 </a>
             </div>
             {% endif %}
 
             {% if "ROLE_STUDENT" in user_roles %}
-            <div>
-                <input type="button" value="Apply">
+            <div class="grid grid-cols-6 col-gap-1 pt-5">
+                <a class="col-start-6" href="">
+                    <input type="button" value="Apply">
+                </a>
             </div>
             {% endif %}
         </div>
