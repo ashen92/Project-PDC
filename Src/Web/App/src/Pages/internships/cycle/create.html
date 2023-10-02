@@ -8,19 +8,11 @@
 
 {% block content %}
 
-{# <div class="fs-2 fw-6 b-1 br-10 p-30 mb-20">
-    Internship Cycle
-</div> #}
 <div class="grid grid-cols-4 col-gap-1">
     <div>
-        <div class="sidebar">
-            <a class="sidebar-item" href="?view=internship-cycle" id="internship-cycle">Internship Cycle</a>
-            <a class="sidebar-item" href="?view=students" id="students">Students</a>
-            <a class="sidebar-item" href="?view=partners" id="partners">Partners</a>
-            <a class="sidebar-item" href="?view=monitoring" id="monitoring">Monitoring</a>
-        </div>
+        {{ include("internships/cycle/sidebar.html") }}
     </div>
-    <div class="col-span-3 br-5 b-1 p-30">
+    <div class="col-span-3 br-5 p-30">
         <form>
             <div class="mb-40">
                 <div class="fs-6 fw-6 pb-20">Internship Gathering Phase</div>
@@ -68,7 +60,3 @@
 </div>
 
 {% endblock %}
-
-{% block js %}
-<script src="/js/internships-cycle.js" type="text/javascript"></script>
-{% endblock js %}

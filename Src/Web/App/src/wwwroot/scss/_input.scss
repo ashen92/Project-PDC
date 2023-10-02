@@ -16,6 +16,12 @@ $btn-border-radius: 3px;
 
 $btn-font-weight: 600;
 
+a {
+    &>input[type="button"] {
+        min-width: 100%;
+    }
+}
+
 input {
     font-size: inherit;
 

@@ -1,0 +1,33 @@
+{% extends "shared/layout.html" %}
+
+{% block title %}Internship Program{% endblock %}
+
+{% block header %}
+{{ include ("shared/header.html") }}
+{% endblock %}
+
+{% block content %}
+
+<div class="grid grid-cols-4 col-gap-1">
+    <div>
+        {{ include("internships/cycle/sidebar.html") }}
+    </div>
+    <div class="col-span-3 br-5 p-30">
+        <div class="grid grid-cols-5 px-20 py-15 b-1 br-5 mb-20">
+            <div class="col-span-4">
+                Current Internship Cycle
+            </div>
+            <div class="text-centre">Not Found</div>
+        </div>
+        <div class="grid grid-cols-5 px-20 py-15 b-1 br-5 align-items-baseline">
+            <div class="col-span-4">
+                Create new internship cycle
+            </div>
+            <a class="link" href="cycle/create">
+                <input type="button" value="Create">
+            </a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

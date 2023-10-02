@@ -1,0 +1,62 @@
+{% extends "shared/layout.html" %}
+
+{% block title %}Internship Program{% endblock %}
+
+{% block header %}
+{{ include ("shared/header.html") }}
+{% endblock %}
+
+{% block content %}
+
+<div class="grid grid-cols-4 col-gap-1">
+    <div>
+        {{ include("internships/cycle/sidebar.html") }}
+    </div>
+    <div class="col-span-3 br-5 p-30">
+        <form>
+            <div class="mb-40">
+                <div class="fs-6 fw-6 pb-20">Internship Gathering Phase</div>
+                <div class="grid grid-cols-4 align-items-baseline px-20 py-10 b-1 br-5 mb-5">
+                    <div class="col-span-3">Start date</div>
+                    <input type="date" required>
+                </div>
+                <div class="grid grid-cols-4 align-items-baseline px-20 py-10 b-1 br-5 mb-5">
+                    <div class="col-span-3">End date</div>
+                    <input type="date" required>
+                </div>
+                <div class="grid grid-cols-4 align-items-baseline px-20 pt-10 pb-15 b-1 br-5 mb-5">
+                    <div class="col-span-3">Automatically send emails to partners when the start date is reached.</div>
+                    <div class="checkbox text-right">
+                        <input type="checkbox" id="check1">
+                    </div>
+                </div>
+            </div>
+            <div class="mb-20">
+                <div class="fs-6 fw-6 pb-20">Internship Phase</div>
+                <div class="grid grid-cols-4 align-items-baseline px-20 py-10 b-1 br-5 mb-5">
+                    <div class="col-span-3">Start date</div>
+                    <input type="date" required>
+                </div>
+                <div class="grid grid-cols-4 align-items-baseline px-20 py-10 b-1 br-5 mb-5">
+                    <div class="col-span-3">End date</div>
+                    <input type="date" required>
+                </div>
+                <div class="grid grid-cols-4 align-items-baseline px-20 py-10 b-1 br-5 mb-5">
+                    <div class="col-span-3">Automatically send emails to Undergraduates when the start date is reached.
+                    </div>
+                    <div class="checkbox text-right">
+                        <input type="checkbox" id="check1">
+                    </div>
+                </div>
+            </div>
+            <div class="mb-20">
+                <div class="text-right mt-25">
+                    <input type="submit" value="Confirm">
+                    <input type="reset" value="Reset">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
