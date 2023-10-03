@@ -2,6 +2,7 @@ $br-5px: 5px;
 $br-10px: 10px;
 
 $b-1: 1px solid #d4d2d0;
+$bb-1: 1px solid #d4d2d0;
 
 .br-5 {
     border-radius: $br-5px;
@@ -15,6 +16,10 @@ $b-1: 1px solid #d4d2d0;
     border: 1px solid #d4d2d0;
 }
 
+.bb-1 {
+    border-bottom: $bb-1;
+}
+
 .b-2 {
-    border: 1px solid #000000;
+    border: 1px solid #4f4f4f;
 }
