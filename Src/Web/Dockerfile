@@ -1,13 +1,12 @@
 FROM php:apache
 RUN apt-get update && apt-get install -y
-RUN apt-get install git libzip-dev -y
+RUN apt-get install git libzip-dev dos2unix -y
 
+RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 RUN docker-php-ext-install zip pdo pdo_mysql
 
 RUN pecl install apcu \
     && docker-php-ext-enable apcu
-
-RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 
 RUN a2enmod rewrite
 RUN a2enmod headers
@@ -27,6 +26,7 @@ RUN composer install --no-dev --optimize-autoloader
 # Configure SSH for Azure Web Service
 
 COPY ./.docker/entrypoint.sh ./
+RUN dos2unix ./entrypoint.sh
 # Start and enable SSH
 RUN apt-get install -y --no-install-recommends dialog
 RUN apt-get install -y --no-install-recommends openssh-server
