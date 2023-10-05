@@ -1,0 +1,21 @@
+@use "colours";
+
+.hov {
+    &-underline:hover {
+        text-decoration: underline;
+    }
+
+    &-bg {
+        &-lightgrey:hover {
+            background-color: colours.$hover-light-grey;
+        }
+    }
+}
+
+.act {
+    &-bg {
+        &-blue:active {
+            background-color: colours.$active-light-blue;
+        }
+    }
+}

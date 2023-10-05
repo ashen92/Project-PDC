@@ -5,19 +5,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/css/main.css" type="text/css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="/favicon.png">
     <title>{% block title %}{% endblock %}</title>
 </head>
 
 <body>
     <div class="wrapper">
-        <div>
-            {% block header %}{% endblock %}
+        <div class="header-bg">
+            <div class="header mx-auto xxl-max-w px-50">
+                <div class="header-links">
+                    <a href="/" class="logo">PDC</a>
+                    {% if sectionURL %}
+                    <a href="{{ sectionURL }}">{{ sectionName }}</a>
+                    {% else %}
+                    <div></div>
+                    {% endif %}
+                    <div></div>
+                    <a href="/logout">Sign out</a>
+                </div>
+            </div>
         </div>
-        <div class="content px-80">
+        <div class="content mx-auto xxl-max-w px-50">
             {% block content %}{% endblock %}
+            {% block js %}{% endblock js %}
         </div>
-        <div class="footer px-80">
-            <div>Lorem ipsum dolor sit amet consectetur adipisicing elit.</div>
+        <div class="footer-bg">
+            <div class="footer mx-auto xxl-max-w px-50">
+                <div>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                </div>
+            </div>
         </div>
     </div>
 </body>

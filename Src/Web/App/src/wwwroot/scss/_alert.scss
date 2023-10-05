@@ -1,0 +1,10 @@
+@use "text";
+
+.alert {
+    text-align: center;
+
+    &-error {
+        color: red;
+        font-weight: text.$fw-6;
+    }
+}

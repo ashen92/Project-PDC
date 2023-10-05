@@ -1,22 +1,23 @@
 {% extends "shared/layout.html" %}
 
-{% block title %}Professional Development Centre{% endblock %}
+{% block title %}Home{% endblock %}
 
 {% block header %}
-{{ include ('shared/header.html') }}
+{{ include ("shared/header.html") }}
 {% endblock %}
 
 {% block content %}
 
-<div class="grid pt-100">
-    <div class="justify-content-center text-center text-title">
-        Hello from Home
+<div>
+    <div class="fs-1 fw-6 p-30 b-1 br-10 text-centre">
+        Professional Development Centre
     </div>
-    <div>
-        <a href="/techtalks">Go to TechTalks</a>
-    </div>
-    <div>
-        <a href="/internship">Go to Internship</a>
+    <div class="card-container">
+        <a class="card" href="/techtalks">Go to TechTalks</a>
+        <a class="card" href="/internships">Go to Internships</a>
+        {% if "ROLE_ADMIN" in user_roles %}
+        <a class="card" href="/users">Manage Users</a>
+        {% endif %}
     </div>
 </div>
 

@@ -1,15 +1,63 @@
+$fw-6: 600;
+
 $title-padding: 20px;
 
-.text-title {
-    font-size: 45px;
-    padding: $title-padding;
-}
-
 .text-subtitle {
-    font-size: 35px;
+    font-size: 30px;
     padding: $title-padding;
 }
 
-.text-center {
-    text-align: center;
+.text {
+    &-centre {
+        text-align: center;
+    }
+
+    &-right {
+        text-align: right;
+    }
+}
+
+.fs-1 {
+    font-size: 33px;
+}
+
+.fs-2 {
+    font-size: 28px;
+}
+
+.fs-3 {
+    font-size: 25px;
+}
+
+.fs-4 {
+    font-size: 23px;
+}
+
+.fs-6 {
+    font-size: 18px;
+}
+
+.fw-6 {
+    font-weight: $fw-6;
+    color: #2d2d2d;
+}
+
+.fc-light {
+    color: #666666;
+}
+
+.fc-blue {
+    color: #0a66c2;
+}
+
+.fc-black {
+    color: #000000;
+}
+
+.fc-dark {
+    color: #2d2d2d;
+}
+
+.italic {
+    font-style: italic;
 }

@@ -1,0 +1,85 @@
+{% extends "shared/layout.html" %}
+
+{% block title %}Internship Program{% endblock %}
+
+{% block header %}
+{{ include ("shared/header.html") }}
+{% endblock %}
+
+{% block content %}
+
+<div class="grid grid-cols-4 col-gap-1">
+    <div>
+        {{ include("internships/cycle/sidebar.html") }}
+    </div>
+    <div class="col-span-3 br-5 p-30">
+        {% if internship_cycle_status == "active" %}
+        <div class="grid grid-cols-5 px-20 py-15 mb-20 b-1 br-5 align-items-baseline">
+            <div class="col-span-4">
+                Internship Contracts
+            </div>
+            <a class="link" href="monitoring/contracts">
+                <input type="button" value="View">
+            </a>
+        </div>
+
+        <div class="grid grid-cols-5 px-20 py-15 mb-20 b-1 br-5 align-items-baseline">
+            <div class="col-span-4">
+                Monthly Progress Reports
+            </div>
+            <a class="link" href="monitoring/progress-report">
+                <input type="button" value="View">
+            </a>
+        </div>
+
+        <div class="grid grid-cols-5 px-20 py-15 mb-20 b-1 br-5 align-items-baseline">
+            <div class="col-span-4">
+                Feedback about Students
+            </div>
+            <a class="link" href="monitoring/feedback">
+                <input type="button" value="View">
+            </a>
+        </div>
+
+        <div class="grid grid-cols-5 px-20 py-15 mb-20 b-1 br-5 align-items-baseline">
+            <div class="col-span-4">
+                Feedback about Companies
+            </div>
+            <a class="link" href="monitoring/feedback">
+                <input type="button" value="View">
+            </a>
+        </div>
+
+        <div class="grid grid-cols-5 px-20 py-15 mb-20 b-1 br-5 align-items-baseline">
+            <div class="col-span-4">
+                Final Reports
+            </div>
+            <a class="link" href="monitoring/feedback">
+                <input type="button" value="View">
+            </a>
+        </div>
+
+        <div class="grid grid-cols-5 px-20 py-15 mb-20 b-1 br-5 align-items-baseline">
+            <div class="col-span-4">
+                Final Presentations
+            </div>
+            <a class="link" href="monitoring/feedback">
+                <input type="button" value="View">
+            </a>
+        </div>
+
+        <div class="grid grid-cols-5 px-20 py-15 mb-20 b-1 br-5 align-items-baseline">
+            <div class="col-span-4">
+                Service Letters
+            </div>
+            <a class="link" href="monitoring/feedback">
+                <input type="button" value="View">
+            </a>
+        </div>
+        {% else %}
+        <div class="grid fs-6 fw-6 text-centre">There is no internship cycle to monitor.</div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

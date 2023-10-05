@@ -1,0 +1,44 @@
+{% extends "shared/layout.html" %}
+
+{% block title %}Internship Program{% endblock %}
+
+{% block header %}
+{{ include ("shared/header.html") }}
+{% endblock %}
+
+{% block content %}
+
+<div class="fs-1 fw-6 p-30 b-1 br-10 text-centre">
+    Internship Program
+</div>
+
+<div class="card-container">
+    {% if "ROLE_ADMIN" in user_roles %}
+    <a class="card" href="/internships/cycle">
+        Start internship cycle
+    </a>
+    <a class="card" href="/internships/show">
+        View All internships
+    </a>
+    <a class="card" href="/internships/show?Internship+Status%5B%5D=Pending+Approval">
+        View internships that needs approval
+    </a>
+    {% endif %}
+
+    {% if "ROLE_PARTNER" in user_roles %}
+    <a class="card" href="/internships/add">
+        Add an internship
+    </a>
+    <a class="card" href="/internships/show">
+        Show internships you submitted
+    </a>
+    {% endif %}
+
+    {% if "ROLE_STUDENT" in user_roles %}
+    <a class="card" href="/internships/show">
+        Show all available internships for students
+    </a>
+    {% endif %}
+</div>
+
+{% endblock %}

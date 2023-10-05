@@ -4,47 +4,87 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Interfaces\IAuthenticationService;
-use App\Services\UserService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+use Twig\Environment;
 
-class AuthenticationController
+class AuthenticationController extends PageControllerBase
 {
-    public function __construct(
-        private IAuthenticationService $authnService,
-        private UserService $userService
-    ) {
+    private IAuthenticationService $authn;
 
+    public function __construct(
+        Environment $twig,
+        IAuthenticationService $authn
+    ) {
+        $this->authn = $authn;
+        parent::__construct($twig);
     }
 
-    public function login(): RedirectResponse
+    protected function getSectionName(): string
     {
-        // get form data and validate
+        return "";
+    }
+
+    protected function getSectionURL(): string
+    {
+        return "";
+    }
+
+    #[Route("/", name: "signin")]
+    public function signin(): Response
+    {
+        return $this->render("authentication/signin.html");
+    }
+
+    #[Route("/signup", name: "signup")]
+    public function signup(): Response
+    {
+        return $this->render("authentication/signup.html");
+    }
+
+    #[Route("/signup/details", name: "signup_details", methods: ["POST"])]
+    public function signupDetails(): Response
+    {
+        return $this->render("authentication/signup_details.html");
+    }
+
+    #[Route("/signup/submit", name: "signup_submit", methods: ["POST"])]
+    public function signupSubmit(): Response|RedirectResponse
+    {
+        return new RedirectResponse("/");
+    }
+
+    #[Route("/register", name: "register")]
+    public function register(): Response
+    {
+        return $this->render("authentication/register.html");
+    }
+
+    #[Route("/login", name: "login", methods: ["POST"])]
+    public function login(Request $request): RedirectResponse
+    {
+        $req = $request->request;
+        $email = $req->get("email", "");
+        $passwordHash = $req->get("password", "");
+
+        // validate form data
         // todo
 
-        if ($this->authnService->login("admin@mail.com", "12345")) {
+        if ($this->authn->authenticate($email, $passwordHash)) {
             return new RedirectResponse("/home");
         }
 
-        // set errors
-        // todo
+        $request->getSession()->getFlashBag()->add("signin_error", "Invalid Email or Password");
 
         return new RedirectResponse("/");
     }
 
+    #[Route("/logout", name: "logout")]
     public function logout(): RedirectResponse
     {
-        $this->authnService->logout();
+        $this->authn->logout();
         return new RedirectResponse("/");
-    }
-
-    public function signup(Request $request)
-    {
-        // todo
-    }
-
-    public function register(Request $request)
-    {
-        // todo
     }
 }

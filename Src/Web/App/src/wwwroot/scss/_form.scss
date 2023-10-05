@@ -1,11 +1,13 @@
-.form-field {
-    display: grid;
-    grid-template-rows: 30px 30px;
-    padding: 5px 0px 5px 0px;
-}
+form {
+    .field {
+        display: grid;
+        grid-template-rows: auto auto;
+        row-gap: 5px;
 
-.form-field-submit {
-    text-align: right;
-    max-height: 70px;
-    padding-top: 25px;
+        margin-bottom: 15px;
+
+        label {
+            padding: 8px 8px 8px 10px;
+        }
+    }
 }

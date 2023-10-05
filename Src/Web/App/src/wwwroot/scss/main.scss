@@ -1,62 +1,139 @@
-@use 'input';
-@use 'grid';
-@use 'text';
-@use 'form';
-@use 'padding';
-@use 'margin';
-@use 'width';
-@use 'border';
+@use "input";
+@use "grid";
+@use "text";
+@use "form";
+@use "spacing";
+@use "sizing";
+@use "border";
+@use "alert";
+@use "box-shadows";
+@use "colours";
+@use "element-state";
+@use "cards";
+@use "variables";
 
 * {
     margin: 0;
     padding: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    height: 100%;
+    width: 100%;
 }
 
 a {
-    color: blue;
+    color: black;
     text-decoration: none;
+}
+
+.sidebar {
+    border-radius: 10px;
+    border: border.$b-1;
+    padding: 20px 15px;
+    display: grid;
+    row-gap: 2px;
+    background-color: #F5F5F5;
+}
+
+.sidebar-item {
+    padding: 10px 25px;
+    border-radius: 5px;
+
+    transition-duration: 100ms;
+    transition-property: background, border, color;
+    transition-timing-function: cubic-bezier(0.33,0,0.67,1);;
+
+    &:hover {
+        background-color: #DEDEDE;
+    }
+
+    &:active {
+        background-color: #D4D4D4;
+    }
+
+    &.active {
+        background-color: #D9D9D9 ;
+    }
+}
+
+.link {
+    color: colours.$link;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+.box-border {
+    box-sizing: border-box;
 }
 
 .wrapper {
     display: grid;
     grid-template-rows: auto 1fr auto;
     min-height: 100vh;
+    width: 100%;
+    // background-color: #f9f9fb;
+
+    >.content {
+        padding-top: 50px;
+        padding-bottom: 50px;
+        width: 100%;
+
+        box-sizing: border-box;
+
+        & .bg-fill-content {
+            background-color: #ffffff;
+        }
+    }
 }
 
 .header {
-    background-color: #006bbd;
+    &-bg {
+        background-color: #006bbd;
+    }
+
     min-height: 60px;
     height: 60px;
 
     & &-links {
         display: grid;
-        grid-template-columns: 100px minmax(100px,auto) 1fr 100px;
+        grid-template-columns: 100px minmax(100px, auto) 1fr 100px;
         grid-template-rows: 100%;
         min-height: 60px;
     }
-    
+
     a {
         color: white;
         display: grid;
         justify-items: center;
         align-items: center;
-        font-weight: 500;
+        font-weight: 600;
         min-width: 70px;
         height: 60px;
 
         padding: 0 15px 0 15px;
+        transition: background-color .1s cubic-bezier(0.02, 1, 1, 1);
     }
 
     a:hover {
         background-color: #007dce;
     }
+
+    a:active {
+        background-color: #008fee;
+    }
 }
 
 .footer {
+    &-bg {
+        background-color: #f2f2f2;
+    }
+
     min-height: 60px;
-    background-color: gainsboro;
-    color: rgb(66, 66, 66);
+    color: #424242;
 
     div {
         padding: 20px 10px 20px 10px;

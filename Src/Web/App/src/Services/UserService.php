@@ -3,43 +3,47 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use App\Models\User;
-use App\Repositories\UserRepository;
-use Symfony\Component\HttpFoundation\RequestStack;
+use App\Entities\User;
+use App\Interfaces\IUserService;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Contracts\Cache\CacheInterface;
+use Symfony\Contracts\Cache\ItemInterface;
 
-class UserService
+class UserService implements IUserService
 {
-    public function __construct(private RequestStack $requestStack, private UserRepository $userRepository)
-    {
+    public function __construct(
+        private EntityManagerInterface $entityManager,
+        private CacheInterface $cache
+    ) {
     }
 
-    public function registerUser($username, $password)
+    /**
+     * @return array An array of strings
+     */
+    public function getUserRoles(int $userId): array
     {
-        // $encryptedPassword = "";
-        // // Perform validations, encrypt password, etc.
-        // $user = new User($username, $encryptedPassword);
+        $cacheKey = "user_roles_" . $userId;
 
-        // // Save to database
-        // $this->userRepository->saveUser($user);
+        return $this->cache->get($cacheKey, function (ItemInterface $item) use ($userId) {
+            $item->expiresAfter(3600);
+            return $this->entityManager->getRepository(User::class)->getUserRoles($userId);
+        });
     }
 
-    public function getCurrentUser()
+    public function invalidateUserCache(int $userId): void
     {
-        // Fetch the current user, possibly from the session
-        // Can add more logic here, e.g., caching, transformations, etc.
-
-        $session = $this->requestStack->getSession();
-        $email = $session->get("user_email");
-
-        if ($email == "admin@mail.com") {
-            return new User("admin@mail.com", "Ashen", "12345", ["admin"]);
-        }
-        if ($email == "pdc@mail.com") {
-            return new User("pdc@mail.com", "Ashen", "12345", ["admin"]);
-        }
-        if ($email == "partner@mail.com") {
-            return new User("partner@mail.com", "Ashen", "12345", ["partner"]);
-        }
-        return new User("user@mail.com", "Ashen", "12345", ["user"]);
+        $this->invalidateUserRolesCache($userId);
     }
+
+    public function invalidateUserRolesCache(int $userId): void
+    {
+        $this->cache->delete("user_roles_" . $userId);
+    }
+
+	public function hasRequiredRole(int $userId, string $requiredRole): bool {
+        if ($requiredRole == "") return true;
+        $roles = $this->getUserRoles($userId);
+        if (in_array($requiredRole, $roles)) return true;
+        return false;
+	}
 }

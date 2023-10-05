@@ -11,6 +11,9 @@ composer.phar
 .phpunit.result.cache
 .phpunit.cache
 
+# Cache
+cache
+
 # PHPUnit
 /app/phpunit.xml
 /phpunit.xml
@@ -32,3 +35,7 @@ composer.phar
 !.vscode/launch.json
 !.vscode/extensions.json
 !.vscode/*.code-snippets
+!.vscode/App.code-workspace
+
+# Dev dependencies
+node_modules/

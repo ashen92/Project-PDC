@@ -3,42 +3,30 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
-use App\Interfaces\IDatabaseConnection;
-use App\Models\User;
+use App\Entities\User;
+use Doctrine\ORM\EntityRepository;
 
-class UserRepository
+class UserRepository extends EntityRepository
 {
-    public function __construct(private IDatabaseConnection $dbConnection)
+    public function findUserByEmail(string $email): User|null
     {
-
+        $query = $this->createQueryBuilder("u")->where("u.email = :email")->setParameter(":email", $email)->getQuery();
+        return $query->setMaxResults(1)->getOneOrNullResult();
     }
 
-    public function findUserByEmail($email): User|null
+    /**
+     * @return array An array of strings
+     */
+    public function getUserRoles(int $userId): array
     {
-        // Query the database to find a user by email
-        // todo
+        $queryBuilder = $this->createQueryBuilder("u");
+        $queryBuilder
+            ->select("r.name")
+            ->innerJoin("u.groups", "g")
+            ->innerJoin("g.roles", "r")
+            ->where("u.id = :userId")
+            ->setParameter("userId", $userId);
 
-        if ($email == "admin@mail.com") {
-            return new User("admin@mail.com", "Ashen", "12345", ["admin"]);
-        }
-        if ($email == "pdc@mail.com") {
-            return new User("pdc@mail.com", "Ashen", "12345", ["admin"]);
-        }
-        if ($email == "partner@mail.com") {
-            return new User("partner@mail.com", "Ashen", "12345", ["partner"]);
-        }
-        return new User("user@mail.com", "Ashen", "12345", ["user"]);
-    }
-
-    public function findUserById($id): User|null
-    {
-
-        // Query the database to find a user by ID
-        return null;
-    }
-
-    public function saveUser(User $user)
-    {
-        // Save the user object to the database
+        return $queryBuilder->getQuery()->getSingleColumnResult();
     }
 }

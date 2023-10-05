@@ -3,51 +3,115 @@ declare(strict_types=1);
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\HttpFoundation\RequestStack;
 
 $container = new ContainerBuilder();
 
 $container->register(
     "request.stack",
-    RequestStack::class
+    Symfony\Component\HttpFoundation\RequestStack::class
 );
 
-// Services
-include(__DIR__ . "/container.services.php");
+$container->register(
+    "app.cache",
+    Symfony\Component\Cache\Adapter\ApcuAdapter::class
+)
+    ->setArguments(["app"]);
 
-// Repositories
-include(__DIR__ . "/container.repositories.php");
+// Services
+
+$dbParams = require_once "doctrine-config.php";
+
+$config = Doctrine\ORM\ORMSetup::createAttributeMetadataConfiguration(
+    paths: array(__DIR__ . "/Entities"),
+    isDevMode: true,
+);
+
+$connection = Doctrine\DBAL\DriverManager::getConnection($dbParams, $config);
+
+$container->register(
+    "doctrine.entity_manager",
+    Doctrine\ORM\EntityManager::class
+)
+    ->setArguments([$connection, $config]);
+
+$container->register(
+    "twig.loader",
+    Twig\Loader\FilesystemLoader::class
+)
+    ->setArguments([__DIR__ . "/Pages"]);
+
+$container->register(
+    "twig",
+    Twig\Environment::class
+)
+    ->setArguments([new Reference("twig.loader")]);
+
+$container->register(
+    "service.authentication",
+    App\Services\AuthenticationService::class
+)
+    ->setArguments([new Reference("request.stack"), new Reference("doctrine.entity_manager")]);
+
+$container->register(
+    "service.user",
+    App\Services\UserService::class
+)
+    ->setArguments([new Reference("doctrine.entity_manager"), new Reference("app.cache")]);
+
+$container->register(
+    "listener.authentication",
+    App\EventListeners\AuthenticationListener::class
+);
+
+$container->register(
+    "listener.authorization",
+    App\EventListeners\AuthorizationListener::class
+)
+    ->setArguments([
+        new Reference("twig"),
+        new Reference("service.user"),
+        new Reference("service.authentication"),
+        new Reference("app.cache"),
+        new Reference("App\Controllers\ErrorController")
+    ]);
 
 // Controllers
+
+$container->register(
+    "App\Controllers\ErrorController",
+    \App\Controllers\ErrorController::class
+)
+    ->setArguments([new Reference("twig")]);
+
 $container->register(
     "App\Controllers\AuthenticationController",
-    App\Controllers\AuthenticationController::class
+    \App\Controllers\AuthenticationController::class
 )
-    ->setArguments([new Reference("service.authentication"), new Reference("service.user")]);
+    ->setArguments([new Reference("twig"), new Reference("service.authentication")]);
 
 $container->register(
-    "App\Controllers\PageControllers\AuthenticationPageController",
-    App\Controllers\PageControllers\AuthenticationPageController::class
+    "App\Controllers\HomeController",
+    \App\Controllers\HomeController::class
 )
-    ->setArguments([new Reference("service.authorization"), new Reference("twig"), new Reference("service.authentication")]);
-
-$container->register(
-    "App\Controllers\PageControllers\HomePageController",
-    App\Controllers\PageControllers\HomePageController::class
-)
-    ->setArguments([new Reference("service.authorization"), new Reference("twig")]);
+    ->setArguments([new Reference("twig")]);
 
 
 $container->register(
-    "App\Controllers\PageControllers\TechTalksPageController",
-    App\Controllers\PageControllers\TechTalksPageController::class
+    "App\Controllers\TechTalksController",
+    \App\Controllers\TechTalksController::class
 )
-    ->setArguments([new Reference("service.authorization"), new Reference("twig")]);
+    ->setArguments([new Reference("twig")]);
 
 $container->register(
-    "App\Controllers\PageControllers\InternshipPageController",
-    App\Controllers\PageControllers\InternshipPageController::class
+    "App\Controllers\InternshipsController",
+    \App\Controllers\InternshipsController::class
 )
-    ->setArguments([new Reference("service.authorization"), new Reference("twig"), new Reference("repository.internship")]);
+    ->setArguments([new Reference("twig")]);
+
+$container->register(
+    "App\Controllers\UserController",
+    \App\Controllers\UserController::class
+)
+    ->setArguments([new Reference("twig")]);
 
 return $container;

@@ -1,26 +1,90 @@
+@use "variables";
+@use "mixins";
+
 .grid {
-    display: grid;
-    grid-auto-rows: auto;
-    grid-auto-columns: auto;
+    @include mixins.grid-grid;
+}
 
-    &-row {
-        display: grid;
-        grid-auto-flow: column;
+.col {
+    @include mixins.grid-col;
+}
+
+.row {
+    @include mixins.grid-row;
+}
+
+.align-items {
+    &-baseline {
+        align-items: baseline;
+    }
+}
+
+@media (min-width: variables.$breakpoint-sm) {
+    .sm-grid {
+        @include mixins.grid-grid;
     }
 
-    &-auto-col-max-content {
-        grid-auto-columns: max-content;
+    .sm-col {
+        @include mixins.grid-col;
+    }
+
+    .sm-row {
+        @include mixins.grid-row;
     }
 }
 
-.justify-content-center {
-    justify-content: center;
+@media (min-width: variables.$breakpoint-md) {
+    .md-grid {
+        @include mixins.grid-grid;
+    }
+
+    .md-col {
+        @include mixins.grid-col;
+    }
+
+    .md-row {
+        @include mixins.grid-row;
+    }
 }
 
-.justify-items-center {
-    justify-items: center;
+@media (min-width: variables.$breakpoint-lg) {
+    .lg-grid {
+        @include mixins.grid-grid;
+    }
+
+    .lg-col {
+        @include mixins.grid-col;
+    }
+
+    .lg-row {
+        @include mixins.grid-row;
+    }
 }
 
-.align-items-center {
-    align-items: center;
+@media (min-width: variables.$breakpoint-xl) {
+    .xl-grid {
+        @include mixins.grid-grid;
+    }
+
+    .xl-col {
+        @include mixins.grid-col;
+    }
+
+    .xl-row {
+        @include mixins.grid-row;
+    }
+}
+
+@media (min-width: variables.$breakpoint-xxl) {
+    .xxl-grid {
+        @include mixins.grid-grid;
+    }
+
+    .xxl-col {
+        @include mixins.grid-col;
+    }
+
+    .xxl-row {
+        @include mixins.grid-row;
+    }
 }
