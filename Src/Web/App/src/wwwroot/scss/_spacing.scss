@@ -1,117 +1,60 @@
-// Margin
+@use "variables";
+@use "mixins";
+
 .m {
-    &-auto {
-        margin: auto;
+    @include mixins.spacing-margin;
+}
+
+.p {
+    @include mixins.spacing-padding;
+}
+
+@media (min-width: variables.$breakpoint-sm) {
+    .sm-m {
+        @include mixins.spacing-margin;
     }
 
-    &t {
-        @for $i from 1 through 10 {
-            &-#{$i * 5} {
-                margin-top: #{$i * 5}px;
-            }
-        }
-
-        &-auto {
-            margin-top: auto;
-        }
-    }
-
-    &b {
-        @for $i from 1 through 10 {
-            &-#{$i * 5} {
-                margin-bottom: #{$i * 5}px;
-            }
-        }
-
-        &-auto {
-            margin-bottom: auto;
-        }
-    }
-
-    &x {
-        @for $i from 1 through 10 {
-            &-#{$i * 5} {
-                margin-left: #{$i * 5}px;
-                margin-right: #{$i * 5}px;
-            }
-        }
-
-        &-auto {
-            margin-left: auto;
-            margin-right: auto;
-        }
-    }
-
-    &y {
-        @for $i from 1 through 10 {
-            &-#{$i * 5} {
-                margin-top: #{$i * 5}px;
-                margin-bottom: #{$i * 5}px;
-            }
-        }
-
-        &-auto {
-            margin-top: auto;
-            margin-bottom: auto;
-        }
+    .sm-p {
+        @include mixins.spacing-padding;
     }
 }
 
-// Padding
-.p {
-    @for $i from 1 through 20 {
-        &-#{$i * 5} {
-            padding: #{$i * 5}px;
-        }
+@media (min-width: variables.$breakpoint-md) {
+    .md-m {
+        @include mixins.spacing-margin;
     }
 
-    &t {
-        @for $i from 1 through 10 {
-            &-#{$i * 5} {
-                padding-top: #{$i * 5}px;
-            }
-        }
+    .md-p {
+        @include mixins.spacing-padding;
+    }
+}
+
+@media (min-width: variables.$breakpoint-lg) {
+    .lg-m {
+        @include mixins.spacing-margin;
     }
 
-    &b {
-        @for $i from 1 through 10 {
-            &-#{$i * 5} {
-                padding-bottom: #{$i * 5}px;
-            }
-        }
+    .lg-p {
+        @include mixins.spacing-padding;
+    }
+}
+
+@media (min-width: variables.$breakpoint-xl) {
+    .xl-m {
+        @include mixins.spacing-margin;
     }
 
-    &s {
-        @for $i from 1 through 10 {
-            &-#{$i * 5} {
-                padding-left: #{$i * 5}px;
-            }
-        }
+    .xl-p {
+        @include mixins.spacing-padding;
+    }
+}
+
+@media (min-width: variables.$breakpoint-xxl) {
+    .xxl-m {
+        @include mixins.spacing-margin;
     }
 
-    &e {
-        @for $i from 1 through 10 {
-            &-#{$i * 5} {
-                padding-right: #{$i * 5}px;
-            }
-        }
-    }
-
-    &x {
-        @for $i from 1 through 20 {
-            &-#{$i * 5} {
-                padding-left: #{$i * 5}px;
-                padding-right: #{$i * 5}px;
-            }
-        }
-    }
-
-    &y {
-        @for $i from 1 through 10 {
-            &-#{$i * 5} {
-                padding-top: #{$i * 5}px;
-                padding-bottom: #{$i * 5}px;
-            }
-        }
+    .xxl-p {
+        @include mixins.spacing-padding;
     }
 }
