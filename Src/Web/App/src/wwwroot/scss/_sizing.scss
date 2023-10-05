@@ -1,48 +1,88 @@
+@use "variables";
+@use "mixins";
+
 .xxl-max-w {
     max-width: 1400px;
 }
 
+.w {
+    @include mixins.sizing-width;
+}
+
 .max-w {
-
-    &-800 {
-        max-width: 800px;
-    }
-
-    &-600 {
-        max-width: 600px;
-    }
-
-    &-300 {
-        max-width: 300px;
-    }
+    @include mixins.sizing-max-width;
 }
 
 .min-w {
-    &-300 {
-        min-width: 300px;
+    @include mixins.sizing-min-width;
+}
+
+@media (min-width: variables.$breakpoint-sm) {
+    .sm-w {
+        @include mixins.sizing-width;
+    }
+
+    .sm-max-w {
+        @include mixins.sizing-max-width;
+    }
+
+    .sm-min-w {
+        @include mixins.sizing-min-width;
     }
 }
 
-.w {
-    &-800 {
-        width: 800px;
+@media (min-width: variables.$breakpoint-md) {
+    .md-w {
+        @include mixins.sizing-width;
     }
 
-    &-600 {
-        width: 600px;
+    .md-max-w {
+        @include mixins.sizing-max-width;
     }
 
-    &-300 {
-        width: 300px;
+    .md-min-w {
+        @include mixins.sizing-min-width;
     }
 }
 
-.h {
-    &-200 {
-        height: 200px;
+@media (min-width: variables.$breakpoint-lg) {
+    .lg-w {
+        @include mixins.sizing-width;
     }
 
-    &-100 {
-        height: 100px;
+    .lg-max-w {
+        @include mixins.sizing-max-width;
+    }
+
+    .lg-min-w {
+        @include mixins.sizing-min-width;
+    }
+}
+
+@media (min-width: variables.$breakpoint-xl) {
+    .xl-w {
+        @include mixins.sizing-width;
+    }
+
+    .xl-max-w {
+        @include mixins.sizing-max-width;
+    }
+
+    .xl-min-w {
+        @include mixins.sizing-min-width;
+    }
+}
+
+@media (min-width: variables.$breakpoint-xxl) {
+    .xxl-w {
+        @include mixins.sizing-width;
+    }
+
+    .xxl-max-w {
+        @include mixins.sizing-max-width;
+    }
+
+    .xxl-min-w {
+        @include mixins.sizing-min-width;
     }
 }

@@ -4,33 +4,30 @@
 
 {% block content %}
 
-<div class="grid grid-cols-3">
-    <div class="col-start-2 bs-2 br-10 p-50">
-        <div class="fs-3 fw-6 pb-10">Sign in</div>
-        <div class="mt-20">
-            <form action="/login" method="post">
-                {% for message in app.session.flashbag.get("signin_error") %}
-                <div class="alert alert-error">
-                    {{ message }}
-                </div>
-                {% endfor %}
-                <div class="field">
-                    <label for="email">Email</label>
-                    <input type="email" name="email" id="email" required>
-                </div>
-                <div class="field">
-                    <label for="password">Password</label>
-                    <input type="password" name="password" id="password" required>
-                </div>
-                <div class="text-right mt-30">
-                    <input type="submit" value="Sign in">
-                </div>
-            </form>
-            <div class="pt-50 text-centre">Don't have an account? <a class="link" href="/signup">Create one!</a></div>
-            <div class="pt-30 text-centre">Want to register with our Partner Program? <a class="link"
-                    href="/register">Click
-                    here!</a></div>
-        </div>
+<div class="sm-bs-3 br-10 p-25 sm-p-50 max-w-80 mx-auto bg-white">
+    <div class="fs-3 fw-6 pb-10">Sign in</div>
+    <div class="mt-10 sm-mt-20">
+        <form action="/login" method="post">
+            {% for message in app.session.flashbag.get("signin_error") %}
+            <div class="alert alert-error">
+                {{ message }}
+            </div>
+            {% endfor %}
+            <div class="field">
+                <label for="email">Email</label>
+                <input type="email" name="email" id="email" required>
+            </div>
+            <div class="field">
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" required>
+            </div>
+            <div class="text-right mt-30">
+                <input type="submit" value="Sign in">
+            </div>
+        </form>
+        <div class="pt-50 text-centre">Don't have an account? <a class="link" href="/signup">Create one!</a></div>
+        <div class="pt-30 text-centre">Want to register with our Partner Program? <a class="link" href="/register">Click
+                here!</a></div>
     </div>
 </div>
 
