@@ -1,7 +1,5 @@
 # Requirements
 
-## For Developing
-
 - [Apache](https://httpd.apache.org/)
 
 - [PHP](https://www.php.net/)
@@ -10,17 +8,17 @@
 
 - [MySQL Community Server](https://dev.mysql.com/downloads/mysql/)
 
-Follownig PHP extensions
+Follownig PHP extensions.
 
 - [php_xdebug](https://xdebug.org/)
 
 - [php_apcu](https://pecl.php.net/package/APCu)
 
-Required IDE
+Required IDE.
 
 - [Visual Studio Code](https://code.visualstudio.com/) with recommended extensions in the workspace file installed.
 
-To build JavaScript files
+To build JavaScript files,
 
 - [Node.js](https://nodejs.org/en)
 
