@@ -1,0 +1,46 @@
+@use "../border";
+
+.nav-layout {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+
+    >.sidebar {
+
+        min-width: 275px;
+
+        >.nav-area {
+            background-color: #F5F5F5;
+            border-radius: 10px;
+            border: border.$b-1;
+            padding: 20px 15px;
+            
+            >.nav-link {
+                display: block;
+                padding: 10px 25px;
+                margin-bottom: 2px;
+                border-radius: 5px;
+
+                transition-duration: 100ms;
+                transition-property: background, border, color;
+                transition-timing-function: cubic-bezier(0.33, 0, 0.67, 1);
+
+                &:hover {
+                    background-color: #DEDEDE;
+                }
+
+                &:active {
+                    background-color: #D4D4D4;
+                }
+
+                &.active {
+                    background-color: #D9D9D9;
+                }
+            }
+        }
+    }
+
+    .page-content {
+
+        padding: 30px;
+    }
+}

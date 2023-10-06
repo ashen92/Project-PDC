@@ -8,11 +8,9 @@
 
 {% block content %}
 
-<div class="grid grid-cols-4 col-gap-1">
-    <div>
-        {{ include("internships/cycle/sidebar.html") }}
-    </div>
-    <div class="col-span-3 br-5 p-30">
+<div class="nav-layout">
+    {{ include("internships/cycle/sidebar.html") }}
+    <div class="page-content">
         {% if internship_cycle_status == "active" %}
         <div class="grid grid-cols-5 px-20 py-15 mb-20 b-1 br-5 align-items-baseline">
             <div class="col-span-4">
