@@ -1,0 +1,11 @@
+@use "../border";
+
+.row-cols-2 {
+    display: grid;
+    grid-template-columns: auto max-content;
+    align-items: baseline;
+    padding: 15px 20px;
+    margin-bottom: 20px;
+    border: border.$b-1;
+    border-radius: border.$br-5px;
+}
