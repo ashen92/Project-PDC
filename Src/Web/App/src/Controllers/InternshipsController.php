@@ -50,6 +50,15 @@ class InternshipsController extends PageControllerBase
         ]);
     }
 
+    #[Route("/cycle/feedback", name: "cycle_feedback")]
+    public function cycleFeedback(Request $request): Response
+    {
+        return $this->render("internships/cycle/feedback.html", [
+            "section" => "feedback",
+            "internship_cycle_status" => "active"
+        ]);
+    }
+
     #[Route("/show", name: "internships")]
     public function internships(Request $request): Response
     {

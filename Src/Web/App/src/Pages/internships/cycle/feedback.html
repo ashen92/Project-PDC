@@ -1,0 +1,34 @@
+{% extends "shared/layout.html" %}
+
+{% block title %}Internship Program{% endblock %}
+
+{% block header %}
+{{ include ("shared/header.html") }}
+{% endblock %}
+
+{% block content %}
+
+<div class="nav-layout">
+    {{ include("internships/cycle/sidebar.html") }}
+    <div class="page-content">
+        <div class="page-title">Feedback</div>
+        <div class="row-cols-2">
+            <div>
+                Add your feedback about the student.
+            </div>
+            <a class="link" href="feedback">
+                <input type="button" value="Add">
+            </a>
+        </div>
+        <div class="row-cols-2">
+            <div>
+                Add your feedback about the company.
+            </div>
+            <a class="link" href="feedback">
+                <input type="button" value="Add">
+            </a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

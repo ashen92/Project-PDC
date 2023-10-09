@@ -11,6 +11,7 @@
 <div class="nav-layout">
     {{ include("internships/cycle/sidebar.html") }}
     <div class="page-content">
+        <div class="page-title">Monitoring</div>
         {% if internship_cycle_status == "active" %}
         <div class="row-cols-2">
             <div>
@@ -26,24 +27,6 @@
                 Monthly Progress Reports
             </div>
             <a class="link" href="monitoring/progress-report">
-                <input type="button" value="View">
-            </a>
-        </div>
-
-        <div class="row-cols-2">
-            <div>
-                Feedback about Students
-            </div>
-            <a class="link" href="monitoring/feedback">
-                <input type="button" value="View">
-            </a>
-        </div>
-
-        <div class="row-cols-2">
-            <div>
-                Feedback about Companies
-            </div>
-            <a class="link" href="monitoring/feedback">
                 <input type="button" value="View">
             </a>
         </div>

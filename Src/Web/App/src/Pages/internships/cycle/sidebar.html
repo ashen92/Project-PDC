@@ -1,10 +1,18 @@
 <div class="sidebar">
     <div class="nav-area">
-        <a class="nav-link {% if section == "cycle" %} active{% endif %}" href="/internships/cycle">
+        <a class="nav-link {% if section == 'cycle' %} active{% endif %}" href="/internships/cycle">
             Internship Cycle
         </a>
-        <a class="nav-link {% if section == "monitoring" %} active{% endif %}" href="/internships/cycle/monitoring">
+        {# Only for admins #}
+        <a class="nav-link {% if section == 'monitoring' %} active{% endif %}" href="/internships/cycle/monitoring">
             Monitoring
+        </a>
+        {# For students and partners #}
+        <a class="nav-link {% if section == 'documents' %} active{% endif %}" href="/internships/cycle/documents">
+            Documents
+        </a>
+        <a class="nav-link {% if section == 'feedback' %} active{% endif %}" href="/internships/cycle/feedback">
+            Feedback
         </a>
     </div>
 </div>

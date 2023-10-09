@@ -1,4 +1,5 @@
 @use "../border";
+@use "../text";
 
 .nav-layout {
     display: grid;
@@ -40,7 +41,11 @@
     }
 
     .page-content {
+        padding: 0px 30px;
 
-        padding: 30px;
+        .page-title {
+            font-size: text.$fs-3;
+            padding: 10px 0px 30px 20px;
+        }
     }
 }
