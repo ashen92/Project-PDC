@@ -1,5 +1,5 @@
 @use "../border";
-@use "../text";
+@use "../variables";
 
 .nav-layout {
     display: grid;
@@ -14,7 +14,7 @@
             border-radius: 10px;
             border: border.$b-1;
             padding: 20px 15px;
-            
+
             >.nav-link {
                 display: block;
                 padding: 10px 25px;
@@ -44,7 +44,7 @@
         padding: 0px 30px;
 
         .page-title {
-            font-size: text.$fs-3;
+            font-size: variables.$fs-3;
             padding: 10px 0px 30px 20px;
         }
     }

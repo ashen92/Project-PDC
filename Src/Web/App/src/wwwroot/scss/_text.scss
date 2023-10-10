@@ -1,8 +1,8 @@
+@use "variables";
+
 $fw-6: 600;
 
 $title-padding: 20px;
-
-$fs-3: 25px;
 
 .text-subtitle {
     font-size: 30px;
@@ -19,24 +19,26 @@ $fs-3: 25px;
     }
 }
 
-.fs-1 {
-    font-size: 33px;
-}
+.fs {
+    &-1 {
+        font-size: variables.$fs-1;
+    }
 
-.fs-2 {
-    font-size: 28px;
-}
+    &-2 {
+        font-size: variables.$fs-2;
+    }
 
-.fs-3 {
-    font-size: 25px;
-}
+    &-3 {
+        font-size: variables.$fs-3;
+    }
 
-.fs-4 {
-    font-size: 23px;
-}
+    &-4 {
+        font-size: variables.$fs-4;
+    }
 
-.fs-6 {
-    font-size: 18px;
+    &-6 {
+        font-size: variables.$fs-5;
+    }
 }
 
 .fw-6 {
