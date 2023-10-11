@@ -12,11 +12,11 @@
     Browse Internships
 </div>
 
-<div class="grid grid-cols-4 col-gap-1">
+<div class="list-view">
     <div>
-        <div class="p-20 b-1 bg-lightgrey br-5" id="filters">
-            <div class="fs-6">Filter by</div>
-            <div class="my-15">
+        <div class="filters" id="filters">
+            <div class="title">Filter by</div>
+            <div class="category">
                 <div class="fw-6 mb-5">Job Roles</div>
                 <div class="px-5 data-category" data-category="Job Role">
                     {% for role in jobRoles %}
@@ -31,7 +31,7 @@
                 </div>
             </div>
             {% if ("ROLE_ADMIN" in user_roles) or ("ROLE_STUDENT" in user_roles) %}
-            <div class="my-15">
+            <div class="category">
                 <div class="fw-6 mb-5">Company</div>
                 <div class="px-5 data-category" data-category="Company">
                     {% for company in companies %}
@@ -47,7 +47,7 @@
             </div>
             {% endif %}
             {% if ("ROLE_ADMIN" in user_roles) or ("ROLE_PARTNER" in user_roles) %}
-            <div class="my-15">
+            <div class="category">
                 <div class="fw-6 mb-5">Internship Status</div>
                 <div class="px-5 data-category" data-category="Internship Status">
                     {% for status in internshipStatus %}
@@ -64,31 +64,31 @@
             {% endif %}
         </div>
     </div>
-    <div class="col-span-3">
+    <div class="list">
         {% for item in internships %}
-        <div class="px-25 py-20 mb-10 b-1 br-5 hov-bg-lightgrey act-bg-blue">
-            <a class="hov-underline" href="show/{{ item.id }}">
+        <div class="item">
+            <a class="description" href="show/{{ item.id }}">
                 <div class="fw-6 pb-10">{{ item.description }}</div>
                 <div><span class="italic fc-light">at </span>{{item.company}}</div>
             </a>
 
             {% if ("ROLE_PARTNER" in user_roles) or ("ROLE_ADMIN" in user_roles) %}
-            <div class="grid grid-cols-6 col-gap-1 pt-5">
-                <a class="col-start-4" href="show/{{ item.id }}/applicants">
+            <div class="actions">
+                <a class="action" href="show/{{ item.id }}/applicants">
                     <input type="button" value="Applicants">
                 </a>
-                <a class="col-start-5" href="show/{{ item.id }}/edit">
+                <a class="action" href="show/{{ item.id }}/edit">
                     <input type="button" value="Edit">
                 </a>
-                <a class="col-start-6" href="">
+                <a class="action" href="">
                     <input type="button" value="Remove">
                 </a>
             </div>
             {% endif %}
 
             {% if "ROLE_STUDENT" in user_roles %}
-            <div class="grid grid-cols-6 col-gap-1 pt-5">
-                <a class="col-start-6" href="">
+            <div class="actions">
+                <a class="action" href="">
                     <input type="button" value="Apply">
                 </a>
             </div>
