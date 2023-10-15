@@ -5,6 +5,10 @@
     "license": "UNLICENSED",
     "private": true,
     "devDependencies": {
-        "eslint": "^8.50.0"
+        "esbuild": "^0.19.4",
+        "eslint": "^8.50.0",
+        "gulp": "^4.0.2",
+        "gulp-sass": "^5.1.0",
+        "sass": "^1.69.3"
     }
 }

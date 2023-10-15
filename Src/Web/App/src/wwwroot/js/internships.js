@@ -10,8 +10,6 @@ parentFilters.addEventListener("click", function (event) {
     if (targetElement) {
         const category = targetElement.closest(".data-category").getAttribute("data-category");
 
-        // console.log(`You clicked on a checkbox in category ${category}. Checked: ${isChecked}, Value: ${checkboxValue}`);
-
         const params = new URLSearchParams(window.location.search);
 
         if (targetElement.checked) {

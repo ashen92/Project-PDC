@@ -28,6 +28,9 @@ cache
 *.sass.map
 *.scss.map
 
+### JS ###
+*.js.map
+
 ### VisualStudioCode ###
 .vscode/*
 !.vscode/settings.json

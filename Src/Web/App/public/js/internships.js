@@ -1,1 +1,21 @@
-(()=>{var c=document.getElementById("filters");c.addEventListener("click",function(n){let e=n.target;for(;e!==null&&!e.matches("input[type='checkbox']");)e=e.parentElement;if(e){let a=e.closest(".data-category").getAttribute("data-category"),t=new URLSearchParams(window.location.search);e.checked?t.append(`${a}[]`,e.value):t.delete(`${a}[]`,e.value),window.location.href=`${window.location.pathname}?${t.toString()}`}});})();
+(() => {
+  // src/wwwroot/js/internships.js
+  var parentFilters = document.getElementById("filters");
+  parentFilters.addEventListener("click", function(event) {
+    let targetElement = event.target;
+    while (targetElement !== null && !targetElement.matches("input[type='checkbox']")) {
+      targetElement = targetElement.parentElement;
+    }
+    if (targetElement) {
+      const category = targetElement.closest(".data-category").getAttribute("data-category");
+      const params = new URLSearchParams(window.location.search);
+      if (targetElement.checked) {
+        params.append(`${category}[]`, targetElement.value);
+      } else {
+        params.delete(`${category}[]`, targetElement.value);
+      }
+      window.location.href = `${window.location.pathname}?${params.toString()}`;
+    }
+  });
+})();
+//# sourceMappingURL=internships.js.map

@@ -4,21 +4,24 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Minify and Copy JS with esbuild",
+            "label": "Watch JS",
             "type": "shell",
-            "command": "esbuild --bundle '/src/wwwroot/js/*.js' --minify --outdir=/public/js/",
-            "problemMatcher": [],
+            "command": "gulp build-js watch-js",
             "group": {
                 "kind": "build",
                 "isDefault": true
+            },
+            "problemMatcher": [],
+            "runOptions": {
+                "runOn": "folderOpen"
             },
             "presentation": {
                 "echo": true,
                 "reveal": "silent",
                 "focus": false,
                 "panel": "shared",
-                "showReuseMessage": true,
-                "clear": false
+                "showReuseMessage": false,
+                "clear": true
             }
         }
     ]
