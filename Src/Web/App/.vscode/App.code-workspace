@@ -24,7 +24,9 @@
 			"/main.scss"
 		],
 		"liveSassCompile.settings.autoprefix": [
-			"defaults"
+			">0.15%",
+			"defaults",
+			"not dead"
 		],
 		"php.suggest.basic": false,
 		"sqltools.connections": [
