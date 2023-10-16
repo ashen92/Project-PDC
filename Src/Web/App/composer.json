@@ -11,6 +11,7 @@
             "name": "Ashen Sandaruwan"
         }
     ],
+    "license": "proprietary",
     "require": {
         "symfony/http-foundation": "^6.3",
         "symfony/routing": "^6.3",
