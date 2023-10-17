@@ -1,4 +1,4 @@
-@use "colours";
+@use "var";
 
 $text-field-padding: 8px 12px;
 $textarea-padding: 20px;
@@ -7,10 +7,10 @@ $btn-padding: 9px 24px;
 
 $btn-transition: background-color .1s cubic-bezier(0.02, 1, 1, 1);
 
-$btn-primary-border: 1px solid colours.$btn-primary-border;
-$btn-primary-bg-hov-border: 1px solid colours.$btn-primary-bg-hov-border;
-$btn-primary-bg-act-border: 1px solid colours.$btn-primary-bg-act-border;
-$btn-secondary-border: 1px solid colours.$btn-secondary-border;
+$btn-primary-border: 1px solid var.$colors-btn-primary-border;
+$btn-primary-bg-hov-border: 1px solid var.$colors-btn-primary-bg-hov-border;
+$btn-primary-bg-act-border: 1px solid var.$colors-btn-primary-bg-act-border;
+$btn-secondary-border: 1px solid var.$colors-btn-secondary-border;
 
 $btn-border-radius: 3px;
 
@@ -51,11 +51,11 @@ input {
         cursor: pointer;
 
         &:hover {
-            background-color: colours.$active-light-blue;
+            background-color: var.$colors-active-light-blue;
         }
 
         &:focus {
-            background-color: colours.$active-light-blue;
+            background-color: var.$colors-active-light-blue;
         }
     }
 
@@ -63,20 +63,20 @@ input {
         cursor: pointer;
         border: none;
         padding: $btn-padding;
-        color: colours.$btn-primary;
-        background-color: colours.$btn-primary-bg;
+        color: var.$colors-btn-primary;
+        background-color: var.$colors-btn-primary-bg;
         border: $btn-primary-border;
         border-radius: $btn-border-radius;
 
         &:hover {
-            color: colours.$btn-primary;
-            background-color: colours.$btn-primary-bg-hov;
+            color: var.$colors-btn-primary;
+            background-color: var.$colors-btn-primary-bg-hov;
             border: $btn-primary-bg-hov-border;
         }
 
         &:active {
-            color: colours.$btn-primary;
-            background-color: colours.$btn-primary-bg-act;
+            color: var.$colors-btn-primary;
+            background-color: var.$colors-btn-primary-bg-act;
             border: $btn-primary-bg-act-border;
         }
 
@@ -87,18 +87,18 @@ input {
         cursor: pointer;
         border: none;
         padding: $btn-padding;
-        color: colours.$btn-secondary;
-        background-color: colours.$btn-secondary-bg;
+        color: var.$colors-btn-secondary;
+        background-color: var.$colors-btn-secondary-bg;
         border: $btn-secondary-border;
         border-radius: $btn-border-radius;
         font-weight: $btn-font-weight;
 
         &:hover {
-            background-color: colours.$btn-secondary-bg-hov;
+            background-color: var.$colors-btn-secondary-bg-hov;
         }
 
         &:active {
-            background-color: colours.$btn-secondary-bg-act;
+            background-color: var.$colors-btn-secondary-bg-act;
         }
 
         transition: $btn-transition;
@@ -108,18 +108,18 @@ input {
         cursor: pointer;
         border: none;
         padding: $btn-padding;
-        color: colours.$btn-primary;
-        background-color: colours.$btn-primary-bg;
+        color: var.$colors-btn-primary;
+        background-color: var.$colors-btn-primary-bg;
         border-radius: $btn-border-radius;
 
         &:hover {
-            color: colours.$btn-primary;
-            background-color: colours.$btn-primary-bg-hov;
+            color: var.$colors-btn-primary;
+            background-color: var.$colors-btn-primary-bg-hov;
         }
 
         &:active {
-            color: colours.$btn-primary;
-            background-color: colours.$btn-primary-bg-act;
+            color: var.$colors-btn-primary;
+            background-color: var.$colors-btn-primary-bg-act;
         }
 
         transition: $btn-transition;

@@ -1,6 +1,6 @@
 @use "box-shadows";
 @use "border";
-@use "colours";
+@use "var";
 
 .card-container {
     display: grid;
@@ -28,6 +28,6 @@
         background-color: #f5f5f5;
     }
     &:active {
-        background-color: colours.$active-light-blue;
+        background-color: var.$colors-active-light-blue;
     }
 }

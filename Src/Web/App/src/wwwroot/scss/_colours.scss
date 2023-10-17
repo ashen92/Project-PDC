@@ -1,16 +1,5 @@
 @use "var";
 
-$hover-light-grey: #f8f8f8;
-$hover-grey: #c9c9c9;
-$active-light-blue: #deecf9;
-$hov-lightblue: #deecf9;
-
-$link: #0067b8;
-
-// Background Colours
-
-$bg-lightgrey: #ebebeb;
-
 .bg {
     &-greyextralight {
         background-color: #fafafa;
@@ -44,21 +33,3 @@ $bg-lightgrey: #ebebeb;
         }
     }
 }
-
-// Button Colours
-
-$btn-primary: #ffffff;
-$btn-primary-bg: #006fc9;
-$btn-primary-bg-hov: #0064b5;
-$btn-primary-bg-act: #005499;
-
-$btn-primary-border: #006fc9;
-$btn-primary-bg-hov-border: #0064b5;
-$btn-primary-bg-act-border: #005499;
-
-$btn-secondary: #323130;
-$btn-secondary-bg: #ffffff;
-$btn-secondary-bg-hov: #e8e8e8;
-$btn-secondary-bg-act: #dedede;
-
-$btn-secondary-border: #8a8886;

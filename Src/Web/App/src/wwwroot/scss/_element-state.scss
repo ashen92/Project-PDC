@@ -1,4 +1,4 @@
-@use "colours";
+@use "var";
 
 .hov {
     &-underline:hover {
@@ -7,7 +7,7 @@
 
     &-bg {
         &-lightgrey:hover {
-            background-color: colours.$hover-light-grey;
+            background-color: var.$colors-hover-light-grey;
         }
     }
 }
@@ -15,7 +15,7 @@
 .act {
     &-bg {
         &-blue:active {
-            background-color: colours.$active-light-blue;
+            background-color: var.$colors-active-light-blue;
         }
     }
 }

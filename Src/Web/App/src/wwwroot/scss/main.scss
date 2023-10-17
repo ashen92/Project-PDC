@@ -30,7 +30,7 @@ a {
 }
 
 .link {
-    color: colours.$link;
+    color: var.$colors-link;
 
     &:hover {
         text-decoration: underline;
