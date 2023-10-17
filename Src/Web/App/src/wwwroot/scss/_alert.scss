@@ -1,10 +1,11 @@
+@use "variables";
 @use "text";
 
 .alert {
     text-align: center;
 
     &-error {
-        color: red;
+        color: variables.$colours-alert-error;
         font-weight: text.$fw-6;
     }
 }
