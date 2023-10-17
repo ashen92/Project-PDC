@@ -16,3 +16,7 @@
 ./App/node_modules/
 **/package-lock.json
 **/package.json
+./App/public/css/
+./App/public/js/
+**/.vscode/
+**/.idea/
