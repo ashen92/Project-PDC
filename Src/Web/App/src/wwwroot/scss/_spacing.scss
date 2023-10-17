@@ -1,4 +1,4 @@
-@use "variables";
+@use "var";
 @use "mixins";
 
 .m {
@@ -9,7 +9,7 @@
     @include mixins.spacing-padding;
 }
 
-@media (min-width: variables.$breakpoint-sm) {
+@media (min-width: var.$breakpoint-sm) {
     .sm-m {
         @include mixins.spacing-margin;
     }
@@ -19,7 +19,7 @@
     }
 }
 
-@media (min-width: variables.$breakpoint-md) {
+@media (min-width: var.$breakpoint-md) {
     .md-m {
         @include mixins.spacing-margin;
     }
@@ -29,7 +29,7 @@
     }
 }
 
-@media (min-width: variables.$breakpoint-lg) {
+@media (min-width: var.$breakpoint-lg) {
     .lg-m {
         @include mixins.spacing-margin;
     }
@@ -39,7 +39,7 @@
     }
 }
 
-@media (min-width: variables.$breakpoint-xl) {
+@media (min-width: var.$breakpoint-xl) {
     .xl-m {
         @include mixins.spacing-margin;
     }
@@ -49,7 +49,7 @@
     }
 }
 
-@media (min-width: variables.$breakpoint-xxl) {
+@media (min-width: var.$breakpoint-xxl) {
     .xxl-m {
         @include mixins.spacing-margin;
     }

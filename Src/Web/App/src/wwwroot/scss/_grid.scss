@@ -1,4 +1,4 @@
-@use "variables";
+@use "var";
 @use "mixins";
 
 .grid {
@@ -19,7 +19,7 @@
     }
 }
 
-@media (min-width: variables.$breakpoint-sm) {
+@media (min-width: var.$breakpoint-sm) {
     .sm-grid {
         @include mixins.grid-grid;
     }
@@ -33,7 +33,7 @@
     }
 }
 
-@media (min-width: variables.$breakpoint-md) {
+@media (min-width: var.$breakpoint-md) {
     .md-grid {
         @include mixins.grid-grid;
     }
@@ -47,7 +47,7 @@
     }
 }
 
-@media (min-width: variables.$breakpoint-lg) {
+@media (min-width: var.$breakpoint-lg) {
     .lg-grid {
         @include mixins.grid-grid;
     }
@@ -61,7 +61,7 @@
     }
 }
 
-@media (min-width: variables.$breakpoint-xl) {
+@media (min-width: var.$breakpoint-xl) {
     .xl-grid {
         @include mixins.grid-grid;
     }
@@ -75,7 +75,7 @@
     }
 }
 
-@media (min-width: variables.$breakpoint-xxl) {
+@media (min-width: var.$breakpoint-xxl) {
     .xxl-grid {
         @include mixins.grid-grid;
     }

@@ -1,4 +1,4 @@
-@use "variables";
+@use "var";
 @use "mixins";
 
 .xxl-max-w {
@@ -17,7 +17,7 @@
     @include mixins.sizing-min-width;
 }
 
-@media (min-width: variables.$breakpoint-sm) {
+@media (min-width: var.$breakpoint-sm) {
     .sm-w {
         @include mixins.sizing-width;
     }
@@ -31,7 +31,7 @@
     }
 }
 
-@media (min-width: variables.$breakpoint-md) {
+@media (min-width: var.$breakpoint-md) {
     .md-w {
         @include mixins.sizing-width;
     }
@@ -45,7 +45,7 @@
     }
 }
 
-@media (min-width: variables.$breakpoint-lg) {
+@media (min-width: var.$breakpoint-lg) {
     .lg-w {
         @include mixins.sizing-width;
     }
@@ -59,7 +59,7 @@
     }
 }
 
-@media (min-width: variables.$breakpoint-xl) {
+@media (min-width: var.$breakpoint-xl) {
     .xl-w {
         @include mixins.sizing-width;
     }
@@ -73,7 +73,7 @@
     }
 }
 
-@media (min-width: variables.$breakpoint-xxl) {
+@media (min-width: var.$breakpoint-xxl) {
     .xxl-w {
         @include mixins.sizing-width;
     }

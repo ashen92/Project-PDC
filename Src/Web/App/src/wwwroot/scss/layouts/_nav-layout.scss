@@ -1,5 +1,5 @@
 @use "../border";
-@use "../variables";
+@use "../var";
 
 .nav-layout {
     display: grid;
@@ -44,7 +44,7 @@
         padding-left: 30px;
 
         .page-title {
-            font-size: variables.$fs-3;
+            font-size: var.$fs-3;
             padding: 10px 0px 30px 20px;
         }
     }

@@ -1,4 +1,4 @@
-@use "variables";
+@use "var";
 
 $fw-6: 600;
 
@@ -21,23 +21,23 @@ $title-padding: 20px;
 
 .fs {
     &-1 {
-        font-size: variables.$fs-1;
+        font-size: var.$fs-1;
     }
 
     &-2 {
-        font-size: variables.$fs-2;
+        font-size: var.$fs-2;
     }
 
     &-3 {
-        font-size: variables.$fs-3;
+        font-size: var.$fs-3;
     }
 
     &-4 {
-        font-size: variables.$fs-4;
+        font-size: var.$fs-4;
     }
 
     &-6 {
-        font-size: variables.$fs-5;
+        font-size: var.$fs-5;
     }
 }
 
