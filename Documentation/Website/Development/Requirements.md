@@ -35,6 +35,6 @@ composer install
 JavaScript Dependencies.
 
 ``` cmd
-npm install -g esbuild
+npm install --global gulp-cli
 npm install
 ```
