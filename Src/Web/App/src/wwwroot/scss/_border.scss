@@ -27,7 +27,7 @@ $bb-1: 1px solid #d4d2d0;
 }
 
 @media (min-width: var.$breakpoint-sm) {
-    .sm-bs-3 {
-        box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+    .sm-b-1 {
+        border: $b-1;
     }
 }

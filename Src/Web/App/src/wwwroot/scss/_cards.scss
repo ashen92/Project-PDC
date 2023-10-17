@@ -1,4 +1,3 @@
-@use "box-shadows";
 @use "border";
 @use "var";
 
@@ -19,7 +18,7 @@
     height: 100px;
     align-items: center;
     justify-items: center;
-    box-shadow: box-shadows.$bs-1;
+    box-shadow: var.$shadow-1;
     border-radius: border.$br-5px;
     padding: 5px 15px;
     text-align: center;
