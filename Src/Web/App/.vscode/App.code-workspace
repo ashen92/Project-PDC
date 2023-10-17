@@ -43,7 +43,8 @@
 				"database": "pdc",
 				"username": "root"
 			}
-		]
+		],
+		"git.suggestSmartCommit": false
 	},
 	"extensions": {
 		"recommendations": [
