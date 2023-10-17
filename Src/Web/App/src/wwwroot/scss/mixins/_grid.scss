@@ -92,7 +92,7 @@
     &-gap {
         @for $i from 1 through 10 {
             &-#{$i * 5} {
-                column-gap: #{$i * 5}px;
+                column-gap: #{$i * 0.325}rem;
             }
         }
     }
@@ -142,7 +142,7 @@
     &-gap {
         @for $i from 1 through 10 {
             &-#{$i * 5} {
-                row-gap: #{$i * 5}px;
+                row-gap: #{$i * 0.325}rem;
             }
         }
     }
