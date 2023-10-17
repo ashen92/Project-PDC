@@ -1,5 +1,13 @@
 @forward "var/borders";
 @forward "var/colors" as colors-*;
-@forward "var/breakpoints";
 @forward "var/text";
 @forward "var/shadows";
+
+$breakpoints: (
+    xs: 0,
+    sm: 576px,
+    md: 768px,
+    lg: 992px,
+    xl: 1200px,
+    xxl: 1400px
+);

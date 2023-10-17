@@ -17,7 +17,7 @@
     @include mixins.sizing-min-width;
 }
 
-@media (min-width: var.$breakpoint-sm) {
+@include mixins.media-breakpoint-up(sm) {
     .sm-w {
         @include mixins.sizing-width;
     }
@@ -31,7 +31,7 @@
     }
 }
 
-@media (min-width: var.$breakpoint-md) {
+@include mixins.media-breakpoint-up(md) {
     .md-w {
         @include mixins.sizing-width;
     }
@@ -45,7 +45,7 @@
     }
 }
 
-@media (min-width: var.$breakpoint-lg) {
+@include mixins.media-breakpoint-up(lg) {
     .lg-w {
         @include mixins.sizing-width;
     }
@@ -59,7 +59,7 @@
     }
 }
 
-@media (min-width: var.$breakpoint-xl) {
+@include mixins.media-breakpoint-up(xl) {
     .xl-w {
         @include mixins.sizing-width;
     }
@@ -73,7 +73,7 @@
     }
 }
 
-@media (min-width: var.$breakpoint-xxl) {
+@include mixins.media-breakpoint-up(xxl) {
     .xxl-w {
         @include mixins.sizing-width;
     }
