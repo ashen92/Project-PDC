@@ -1,4 +1,4 @@
-@forward "var/_borders.sass";
-@forward "var/_colors.scss" as colors-*;
-@forward "var/_breakpoints.sass";
-@forward "var/_text.sass";
+@forward "var/borders";
+@forward "var/colors" as colors-*;
+@forward "var/breakpoints";
+@forward "var/text";

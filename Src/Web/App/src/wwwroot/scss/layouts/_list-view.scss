@@ -1,5 +1,4 @@
 @use "../border";
-@use "../text";
 @use "../var";
 
 .list-view {
@@ -14,7 +13,7 @@
         padding: 20px;
         
         > .title {
-            font-weight: text.$fw-6;
+            font-weight: var.$fw-6;
             font-size: var.$fs-4;
             margin-bottom: 15px;
         }
