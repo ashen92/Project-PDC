@@ -1,3 +1,21 @@
+#####
+##### Build Stage
+#####
+
+FROM node:18.18-slim AS build
+
+COPY . .
+WORKDIR /App
+
+RUN npm install -g gulp-cli
+RUN npm install
+
+RUN gulp --gulpfile gulpfile.prod.js
+
+#####
+##### Production Stage
+#####
+
 FROM php:8.1-apache
 RUN apt-get update && apt-get install -y
 RUN apt-get install git libzip-dev dos2unix -y
@@ -20,12 +38,17 @@ RUN a2ensite App
 COPY ./App/ /var/www/
 COPY ./.docker/config/doctrine-config.php /var/www/src/doctrine-config.php
 COPY --from=composer/composer:latest-bin /composer /usr/bin/composer
+
 WORKDIR /var/www/
+
+COPY --from=build /App/public/js/ ./public/js/
+COPY --from=build /App/public/css/ ./public/css/
+
 RUN composer install --no-dev --optimize-autoloader
 
-# todo - add multistage build process to build css and js
-
-# Configure SSH for Azure Web Service
+#####
+##### Configure SSH for Azure Web Service
+#####
 
 COPY ./.docker/entrypoint.sh ./
 RUN dos2unix ./entrypoint.sh

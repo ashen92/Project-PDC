@@ -32,3 +32,5 @@ gulp.task("scss", function () {
         }))
         .pipe(gulp.dest("./public/css"));
 });
+
+gulp.task("default", gulp.parallel("scss", "build-js"));
