@@ -1,1 +1,0 @@
-This contains documentation about development of the website.
