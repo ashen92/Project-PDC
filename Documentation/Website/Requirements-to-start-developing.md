@@ -8,7 +8,7 @@
 
 - [MySQL Community Server](https://dev.mysql.com/downloads/mysql/)
 
-Follownig PHP extensions.
+Following PHP extensions.
 
 - [php_xdebug](https://xdebug.org/)
 
