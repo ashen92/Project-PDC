@@ -4,16 +4,23 @@
 @use "var";
 @use "utilities";
 @use "layouts";
+@use "pages";
 
-* {
-    margin: 0;
-    padding: 0;
+html {
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    box-sizing: border-box;
+    font-size: 100%;
 }
 
 body {
     height: 100%;
     width: 100%;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
 }
 
 a {
@@ -29,10 +36,6 @@ a {
     }
 }
 
-.box-border {
-    box-sizing: border-box;
-}
-
 .wrapper {
     display: grid;
     grid-template-rows: auto 1fr auto;
@@ -43,12 +46,6 @@ a {
         padding-top: 50px;
         padding-bottom: 50px;
         width: 100%;
-
-        box-sizing: border-box;
-
-        & .bg-fill-content {
-            background-color: #ffffff;
-        }
     }
 }
 
@@ -97,7 +94,7 @@ a {
     min-height: 60px;
     color: #616161;
 
-    div {
+    >* {
         padding: 20px 10px 20px 10px;
     }
 }

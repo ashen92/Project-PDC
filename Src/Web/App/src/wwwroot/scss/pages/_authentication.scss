@@ -1,0 +1,29 @@
+@use "../var";
+@use "../mixins";
+
+.auth-box {
+    padding: 1.5625rem;
+    max-width: 25rem;
+    margin: 0 auto;
+
+    @include mixins.media-breakpoint-up(sm) {
+        padding: 3.123rem;
+        border: var.$border-1;
+        border-radius: var.$rounded-2;
+    }
+
+    >.title {
+        font-size: var.$fs-4;
+        font-weight: var.$fw-6;
+        padding-bottom: 1.875rem;
+
+        @include mixins.media-breakpoint-up(sm) {
+            padding-bottom: 2.5rem;
+        }
+    }
+
+    >.form-wrapper {
+        margin: 0 auto;
+        max-width: 18rem;
+    }
+}
