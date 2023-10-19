@@ -9,16 +9,16 @@
 {% block content %}
 
 <div class="fs-3 fw-6 pb-20">
-    Edit Internship
+    Modify internship
 </div>
 <form>
     <div class="field">
         <label for="title">Title</label>
-        <input name="title" id="title" type="text" maxlength="75" placeholder="Internship name or position">
+        <input name="title" id="title" type="text" maxlength="75" placeholder="Add a title">
     </div>
 
     <div class="field">
-        <label for="job-role">Select Job Role</label>
+        <label for="job-role">Select job role</label>
         <select name="job-role" id="job-role">
             <option value="Role1">Role1</option>
             <option value="Role2">Role2</option>
@@ -28,9 +28,7 @@
     </div>
 
     <div class="field">
-        <label for="description">
-            Internship Description
-        </label>
+        <label for="description">Description</label>
         {% include "shared/textarea.html" with {
         "name": "description",
         "maxlength": "2000",

@@ -6,21 +6,21 @@
 @use "layouts";
 @use "pages";
 
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+}
+
 html {
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     box-sizing: border-box;
-    font-size: 100%;
 }
 
 body {
     height: 100%;
     width: 100%;
-}
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: inherit;
+    font-size: 1rem;
 }
 
 a {
