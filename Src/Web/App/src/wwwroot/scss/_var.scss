@@ -2,6 +2,7 @@
 @forward "var/colors" as colors-*;
 @forward "var/text";
 @forward "var/shadows";
+@forward "var/input";
 
 $breakpoints: (
     xs: 0,

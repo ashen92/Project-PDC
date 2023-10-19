@@ -1,0 +1,34 @@
+@use "../var";
+
+@mixin button($color: var.$colors-btn-primary,
+    $color-bg: var.$colors-btn-primary-bg,
+    $border: var.$btn-primary-border,
+    $hover-color: var.$colors-btn-primary,
+    $hover-color-bg: var.$colors-btn-primary-bg-hov,
+    $hover-border: var.$btn-primary-bg-hov-border,
+    $active-color: var.$colors-btn-primary,
+    $active-color-bg: var.$colors-btn-primary-bg-act,
+    $active-border: var.$btn-primary-bg-act-border ) {
+
+    cursor: pointer;
+    border: none;
+    padding: var.$btn-padding;
+    color: $color;
+    background-color: $color-bg;
+    border: $border;
+    border-radius: var.$btn-border-radius;
+
+    &:hover {
+        color: $hover-color;
+        background-color: $hover-color-bg;
+        border: $hover-border;
+    }
+
+    &:active {
+        color: $active-color;
+        background-color: $active-color-bg;
+        border: $active-border;
+    }
+
+    transition: var.$btn-transition;
+}

@@ -1,29 +1,5 @@
 @use "var";
-
-$text-field-padding: 8px 12px;
-$textarea-padding: 20px;
-
-$btn-padding: 9px 24px;
-
-$btn-transition: background-color .1s cubic-bezier(0.02, 1, 1, 1);
-
-$btn-primary-border: 1px solid var.$colors-btn-primary-border;
-$btn-primary-bg-hov-border: 1px solid var.$colors-btn-primary-bg-hov-border;
-$btn-primary-bg-act-border: 1px solid var.$colors-btn-primary-bg-act-border;
-$btn-secondary-border: 1px solid var.$colors-btn-secondary-border;
-
-$btn-border-radius: 3px;
-
-$btn-font-weight: 600;
-
-// office.com
-$btn-transition-duration: 100ms;
-$btn-transition-property: background, border, color;
-$btn-transition-timing-function: cubic-bezier(0.33, 0, 0.67, 1);
-
-// github
-$btn-github-transition: 80ms cubic-bezier(0.33, 1, 0.68, 1);
-$btn-github-transition-property: color, background-color, box-shadow, border-color;
+@use "mixins";
 
 a {
     &>input[type="button"] {
@@ -34,16 +10,8 @@ a {
 input {
     font-size: 0.9375rem;
 
-    &[type="text"] {
-        padding: $text-field-padding;
-    }
-
-    &[type="email"] {
-        padding: $text-field-padding;
-    }
-
-    &[type="password"] {
-        padding: $text-field-padding;
+    &[type="text"], &[type="email"], &[type="password"] {
+        padding: var.$text-field-padding;
     }
 
     &[type="date"] {
@@ -60,68 +28,23 @@ input {
     }
 
     &[type="submit"] {
-        cursor: pointer;
-        border: none;
-        padding: $btn-padding;
-        color: var.$colors-btn-primary;
-        background-color: var.$colors-btn-primary-bg;
-        border: $btn-primary-border;
-        border-radius: $btn-border-radius;
-
-        &:hover {
-            color: var.$colors-btn-primary;
-            background-color: var.$colors-btn-primary-bg-hov;
-            border: $btn-primary-bg-hov-border;
-        }
-
-        &:active {
-            color: var.$colors-btn-primary;
-            background-color: var.$colors-btn-primary-bg-act;
-            border: $btn-primary-bg-act-border;
-        }
-
-        transition: $btn-transition;
+        @include mixins.button();
     }
 
     &[type="reset"] {
-        cursor: pointer;
-        border: none;
-        padding: $btn-padding;
-        color: var.$colors-btn-secondary;
-        background-color: var.$colors-btn-secondary-bg;
-        border: $btn-secondary-border;
-        border-radius: $btn-border-radius;
-
-        &:hover {
-            background-color: var.$colors-btn-secondary-bg-hov;
-        }
-
-        &:active {
-            background-color: var.$colors-btn-secondary-bg-act;
-        }
-
-        transition: $btn-transition;
+        @include mixins.button($color: var.$colors-btn-secondary,
+            $color-bg: var.$colors-btn-secondary-bg,
+            $border: var.$btn-secondary-border,
+            $hover-color: var.$colors-btn-secondary,
+            $hover-color-bg: var.$colors-btn-secondary-bg-hov,
+            $hover-border: var.$btn-secondary-border,
+            $active-color: var.$colors-btn-secondary,
+            $active-color-bg: var.$colors-btn-secondary-bg-act,
+            $active-border: var.$btn-secondary-border,);
     }
 
     &[type="button"] {
-        cursor: pointer;
-        border: none;
-        padding: $btn-padding;
-        color: var.$colors-btn-primary;
-        background-color: var.$colors-btn-primary-bg;
-        border-radius: $btn-border-radius;
-
-        &:hover {
-            color: var.$colors-btn-primary;
-            background-color: var.$colors-btn-primary-bg-hov;
-        }
-
-        &:active {
-            color: var.$colors-btn-primary;
-            background-color: var.$colors-btn-primary-bg-act;
-        }
-
-        transition: $btn-transition;
+        @include mixins.button();
     }
 }
 
@@ -144,14 +67,14 @@ input {
 }
 
 select {
-    padding: $text-field-padding;
+    padding: var.$text-field-padding;
     font-size: 0.9375rem;
 }
 
 textarea {
     font-family: inherit;
     font-size: 0.9375rem;
-    padding: $textarea-padding;
+    padding: var.$textarea-padding;
     width: 100%;
     resize: none;
     border: none;
