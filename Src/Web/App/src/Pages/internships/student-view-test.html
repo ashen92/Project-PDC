@@ -1,0 +1,33 @@
+{% extends "shared/left-nav-layout.html" %}
+
+{% block title %}Student View Test{% endblock %}
+
+{% block left_nav %}
+<div class="left-nav">
+    <a class="nav-link active {% if section == 'cycle' %} active{% endif %}" href="">
+        Cycle
+    </a>
+    <a class="nav-link {% if section == 'monitoring' %} active{% endif %}" href="">
+        Monitor
+    </a>
+    <a class="nav-link {% if section == 'documents' %} active{% endif %}" href="">
+        Docs
+    </a>
+    <a class="nav-link {% if section == 'feedback' %} active{% endif %}" href="">
+        Feedback
+    </a>
+</div>
+{% endblock %}
+
+{% block content %}
+
+<div class="content">
+    <div class="title">
+        Lorem ipsum dolor sit amet.
+    </div>
+    <div>
+        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Fuga, voluptas!
+    </div>
+</div>
+
+{% endblock %}

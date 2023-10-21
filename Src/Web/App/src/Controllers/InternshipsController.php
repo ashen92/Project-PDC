@@ -29,6 +29,12 @@ class InternshipsController extends PageControllerBase
         return $this->render("internships/home.html");
     }
 
+    #[Route("/student-view-test", name: "student-view-test")]
+    public function studentViewTest(Request $request): Response
+    {
+        return $this->render("internships/student-view-test.html", ["section" => "StudentViewTest"]);
+    }
+
     #[Route("/cycle", name: "cycle")]
     public function cycle(Request $request): Response
     {
