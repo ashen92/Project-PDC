@@ -1,0 +1,44 @@
+@use "../var";
+
+.left-nav-layout {
+    display: grid;
+    grid-template-columns: 250px auto;
+
+    >.left-nav {
+        border-right: var.$border-1;
+        padding: 0px 10px 15px 0px;
+        margin-top: 50px;
+
+        >.nav-link {
+            display: block;
+            padding: 9px 10px 9px 25px;
+            margin-bottom: 2px;
+            border-radius: var.$rounded-1;
+
+            transition-duration: 100ms;
+            transition-property: background, border, color;
+            transition-timing-function: cubic-bezier(0.33, 0, 0.67, 1);
+
+            &:hover {
+                background-color: #DEDEDE;
+            }
+
+            &:active {
+                background-color: #D4D4D4;
+            }
+
+            &.active {
+                background-color: #e4e4e4;
+            }
+        }
+    }
+
+    >.content {
+        padding-left: 30px;
+
+        >.title {
+            font-size: var.$fs-3;
+            padding: 10px 0px 30px 20px;
+        }
+    }
+}

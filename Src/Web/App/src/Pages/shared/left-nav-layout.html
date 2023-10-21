@@ -13,7 +13,10 @@
     <div class="wrapper">
         {{ include("shared/header.html") }}
         <div class="content mx-auto xxl-max-w px-50">
-            {% block content %}{% endblock %}
+            <div class="left-nav-layout">
+                {% block left_nav %}{% endblock %}
+                {% block content %}{% endblock %}
+            </div>
             {% block js %}{% endblock js %}
         </div>
         {{ include("shared/footer.html") }}

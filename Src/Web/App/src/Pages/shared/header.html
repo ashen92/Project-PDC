@@ -1,0 +1,14 @@
+<div class="header-bg">
+    <div class="header mx-auto xxl-max-w px-50">
+        <div class="header-links">
+            <a href="/" class="logo">PDC</a>
+            {% if sectionURL %}
+            <a href="{{ sectionURL }}">{{ sectionName }}</a>
+            {% else %}
+            <div></div>
+            {% endif %}
+            <div></div>
+            <a href="/logout">Sign out</a>
+        </div>
+    </div>
+</div>
