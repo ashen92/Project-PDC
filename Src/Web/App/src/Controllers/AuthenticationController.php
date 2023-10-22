@@ -32,7 +32,7 @@ class AuthenticationController extends PageControllerBase
         return "";
     }
 
-    #[Route("/", name: "signin")]
+    #[Route("/login", name: "signin", methods: ["GET"])]
     public function signin(): Response
     {
         return $this->render("authentication/signin.html");

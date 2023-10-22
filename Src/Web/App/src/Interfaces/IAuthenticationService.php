@@ -7,5 +7,4 @@ interface IAuthenticationService
 {
     public function authenticate(string $username, string $passwordHash): bool;
     public function logout(): void;
-    public function isAuthenticated(): bool;
 }

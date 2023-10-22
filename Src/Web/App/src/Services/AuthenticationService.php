@@ -16,13 +16,6 @@ class AuthenticationService implements IAuthenticationService
     ) {
     }
 
-    public function isAuthenticated(): bool
-    {
-        if ($this->session->has("is_authenticated"))
-            return true;
-        return false;
-    }
-
     public function authenticate(string $email, string $passwordHash): bool
     {
         $user = $this->entityManager->getRepository(User::class)->findUserByEmail($email);

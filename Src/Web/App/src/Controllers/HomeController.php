@@ -8,15 +8,17 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends PageControllerBase
 {
-    protected function getSectionName(): string {
+    protected function getSectionName(): string
+    {
         return "Home";
     }
-    
-    protected function getSectionURL(): string {
+
+    protected function getSectionURL(): string
+    {
         return "/home";
     }
 
-    #[Route("/home", name: "home")]
+    #[Route(["/", "/home"], name: "home")]
     public function home(): Response
     {
         return $this->render("home.html");

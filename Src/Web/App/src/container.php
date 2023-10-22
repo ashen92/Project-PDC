@@ -59,20 +59,15 @@ $container->register(
     ->setArguments([new Reference("doctrine.entity_manager"), new Reference("app.cache")]);
 
 $container->register(
-    "listener.authentication",
-    App\EventListeners\AuthenticationListener::class
-);
-
-$container->register(
     "listener.authorization",
     App\EventListeners\AuthorizationListener::class
 )
     ->setArguments([
         new Reference("twig"),
         new Reference("service.user"),
-        new Reference("service.authentication"),
         new Reference("app.cache"),
-        new Reference("App\Controllers\ErrorController")
+        new Reference("App\Controllers\ErrorController"),
+        new Reference("session")
     ]);
 
 // Controllers
