@@ -6,19 +6,19 @@ namespace App\Services;
 use App\Interfaces\IAuthenticationService;
 use App\Entities\User;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class AuthenticationService implements IAuthenticationService
 {
     public function __construct(
-        private RequestStack $requestStack,
+        private SessionInterface $session,
         private EntityManagerInterface $entityManager
     ) {
     }
 
     public function isAuthenticated(): bool
     {
-        if ($this->requestStack->getSession()->has("is_authenticated"))
+        if ($this->session->has("is_authenticated"))
             return true;
         return false;
     }
@@ -31,16 +31,15 @@ class AuthenticationService implements IAuthenticationService
             return false;
         }
 
-        $session = $this->requestStack->getSession();
-        $session->set("is_authenticated", true);
-        $session->set("user_id", $user->getId());
-        $session->set("user_email", $user->getEmail());
-        $session->set("user_first_name", $user->getFirstName());
+        $this->session->set("is_authenticated", true);
+        $this->session->set("user_id", $user->getId());
+        $this->session->set("user_email", $user->getEmail());
+        $this->session->set("user_first_name", $user->getFirstName());
         return true;
     }
 
     public function logout(): void
     {
-        $this->requestStack->getSession()->invalidate();
+        $this->session->invalidate();
     }
 }

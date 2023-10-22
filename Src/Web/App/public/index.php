@@ -1,6 +1,8 @@
 <?php
 declare(strict_types=1);
 
+require_once __DIR__ . "/../vendor/autoload.php";
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\RequestContext;
@@ -9,17 +11,15 @@ use Symfony\Component\HttpKernel\EventListener\RouterListener;
 use Symfony\Component\HttpKernel\Controller\ArgumentResolver;
 use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\Controller\ContainerControllerResolver;
-use Symfony\Component\HttpFoundation\Session\Session;
-
-require_once __DIR__ . "/../vendor/autoload.php";
+use Symfony\Component\HttpFoundation\RequestStack;
 
 $routes = require_once __DIR__ . "/../src/app.php";
 $container = require_once __DIR__ . "/../src/container.php";
 
-$requestStack = $container->get("request.stack");
+$requestStack = new RequestStack();
 
 $request = Request::createFromGlobals();
-$request->setSession(new Session());
+$request->setSession($container->get("session"));
 
 $requestStack->push($request);
 
@@ -39,7 +39,7 @@ $kernel = new HttpKernel($dispatcher, $controllerResolver, $requestStack, $argum
 
 try {
     $response = $kernel->handle($request);
-    $response->send();  
+    $response->send();
     $kernel->terminate($request, $response);
 } catch (Exception $e) {
     echo $e;

@@ -7,8 +7,8 @@ use Symfony\Component\DependencyInjection\Reference;
 $container = new ContainerBuilder();
 
 $container->register(
-    "request.stack",
-    Symfony\Component\HttpFoundation\RequestStack::class
+    "session",
+    Symfony\Component\HttpFoundation\Session\Session::class
 );
 
 $container->register(
@@ -50,7 +50,7 @@ $container->register(
     "service.authentication",
     App\Services\AuthenticationService::class
 )
-    ->setArguments([new Reference("request.stack"), new Reference("doctrine.entity_manager")]);
+    ->setArguments([new Reference("session"), new Reference("doctrine.entity_manager")]);
 
 $container->register(
     "service.user",
