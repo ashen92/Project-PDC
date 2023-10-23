@@ -23,16 +23,92 @@ class InternshipsController extends PageControllerBase
         return "/internships";
     }
 
+    private function tempGetInternshipsData()
+    {
+        $jobRoles = [
+            new JobRole(1, "Software Engineer"),
+            new JobRole(2, "Data Scientist"),
+            new JobRole(3, "Network Administrator")
+        ];
+
+        $companies = [
+            new Company(1, "LSEG"),
+            new Company(2, "WSO2"),
+            new Company(3, "IFS")
+        ];
+
+        $internshipStatus = [
+            "Approved",
+            "Pending Approval",
+            "Rejected"
+        ];
+
+        $internships = [
+            new Internship(
+                1,
+                "Internship Name or Position. Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate modi",
+                "Company 1"
+            ),
+            new Internship(
+                2,
+                "Internship Name or Position. Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate modi",
+                "Company 1"
+            ),
+            new Internship(
+                3,
+                "Internship Name or Position. Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate modi",
+                "Company 1"
+            ),
+            new Internship(
+                4,
+                "Internship Name or Position. Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate modi",
+                "Company 1"
+            ),
+            new Internship(
+                5,
+                "Internship Name or Position. Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate modi",
+                "Company 1"
+            ),
+        ];
+
+        return [
+            "jobRoles" => $jobRoles,
+            "companies" => $companies,
+            "internshipStatus" => $internshipStatus,
+            "internships" => $internships
+        ];
+    }
+
     #[Route(["", "/"], name: "home")]
     public function home(Request $request): Response
     {
         return $this->render("internships/home.html");
     }
 
-    #[Route("/student-view-test", name: "student-view-test")]
-    public function studentViewTest(Request $request): Response
+    #[Route("/student-view-test/{section}", name: "student-view-test")]
+    public function studentViewTest(Request $request, string $section): Response
     {
-        return $this->render("internships/student-view-test.html", ["section" => "StudentViewTest"]);
+        if ($section === "details") {
+            return $this->render("internships/student/details.html", ["section" => "details"]);
+        }
+        if ($section === "internships") {
+            $data = $this->tempGetInternshipsData();
+
+            return $this->render(
+                "internships/student/internships.html",
+                array_merge(
+                    ["internships" => $data["internships"]],
+                    ["jobRoles" => $data["jobRoles"]],
+                    ["companies" => $data["companies"]],
+                    ["internshipStatus" => $data["internshipStatus"]],
+                    ["section" => "internships"]
+                )
+            );
+        }
+        if ($section === "documents") {
+            return $this->render("internships/student/documents.html", ["section" => "documents"]);
+        }
+        return $this->render("internships/student/feedback.html", ["section" => "feedback"]);
     }
 
     #[Route("/cycle", name: "cycle")]
@@ -77,63 +153,19 @@ class InternshipsController extends PageControllerBase
     #[Route("/show", name: "internships")]
     public function internships(Request $request): Response
     {
-        $jobRoles = [
-            new JobRole(1, "Software Engineer"),
-            new JobRole(2, "Data Scientist"),
-            new JobRole(3, "Network Administrator")
-        ];
-
-        $companies = [
-            new Company(1, "LSEG"),
-            new Company(2, "WSO2"),
-            new Company(3, "IFS")
-        ];
-
-        $internshipStatus = [
-            "Approved",
-            "Pending Approval",
-            "Rejected"
-        ];
+        $data = $this->tempGetInternshipsData();
 
         $queryParams = $request->query->all();
-
-        $internships = [
-            new Internship(
-                1,
-                "Internship Name or Position. Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate modi",
-                "Company 1"
-            ),
-            new Internship(
-                2,
-                "Internship Name or Position. Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate modi",
-                "Company 1"
-            ),
-            new Internship(
-                3,
-                "Internship Name or Position. Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate modi",
-                "Company 1"
-            ),
-            new Internship(
-                4,
-                "Internship Name or Position. Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate modi",
-                "Company 1"
-            ),
-            new Internship(
-                5,
-                "Internship Name or Position. Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate modi",
-                "Company 1"
-            ),
-        ];
 
         return $this->render(
             "internships/internships.html",
             array_merge(
-                ["internships" => $internships],
-                ["jobRoles" => $jobRoles],
-                ["companies" => $companies],
+                ["internships" => $data["internships"]],
+                ["jobRoles" => $data["jobRoles"]],
+                ["companies" => $data["companies"]],
+                ["internshipStatus" => $data["internshipStatus"]],
                 ["queryJobRoles" => $queryParams["Job_Role"] ?? []],
                 ["queryCompanies" => $queryParams["Company"] ?? []],
-                ["internshipStatus" => $internshipStatus],
                 ["queryInternshipStatus" => $queryParams["Internship_Status"] ?? []],
             )
         );
