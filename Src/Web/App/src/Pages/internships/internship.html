@@ -22,20 +22,20 @@
     itaque ipsum, officia maxime unde blanditiis recusandae esse facere expedita beatae quas veniam
     explicabo tempora mollitia autem nam iusto quisquam adipisci provident at.
 </div>
-<div class="grid grid-cols-8 col-gap-1 mt-50">
+<div class="text-right mt-50">
 
     {% if ("ROLE_PARTNER" in user_roles) or ("ROLE_ADMIN" in user_roles) %}
-    <a class="col-start-6" href="{{ id }}/applicants">
+    <a class="inline-block" href="{{ id }}/applicants">
         <input type="button" value="Applicants">
     </a>
-    <a class="col-start-7" href="{{ id }}/edit">
+    <a class="inline-block" href="{{ id }}/edit">
         <input type="button" value="Edit">
     </a>
-    <input class="col-start-8" type="button" value="Remove">
+    <input class="inline-block" type="button" value="Remove">
     {% endif %}
 
     {% if "ROLE_STUDENT" in user_roles %}
-    <input class="col-start-8" type="button" value="Apply">
+    <input class="inline-block" type="button" value="Apply">
     {% endif %}
 </div>
 

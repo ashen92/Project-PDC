@@ -171,10 +171,10 @@ class InternshipsController extends PageControllerBase
         return $this->render("internships/internship.html", ["id" => $id]);
     }
 
-    #[Route("/show/{id}/applicants", name: "internshipApplicants")]
+    #[Route("/show/{id}/applicants", name: "applicants")]
     public function internshipApplicants(int $id): Response
     {
-        return $this->render("internships/internship_applicants.html", [
+        return $this->render("internships/applicants.html", [
             "applicants" => [
                 "Ashen",
                 "Smith",

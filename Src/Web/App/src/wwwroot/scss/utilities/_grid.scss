@@ -12,12 +12,6 @@
     @include mixins.grid-row;
 }
 
-.align-items {
-    &-baseline {
-        align-items: baseline;
-    }
-}
-
 @include mixins.media-breakpoint-up(sm) {
     .sm-grid {
         @include mixins.grid-grid;

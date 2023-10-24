@@ -1,8 +1,8 @@
 @use "../var";
 
 .row-cols-2 {
-    display: grid;
-    grid-template-columns: auto max-content;
+    display: flex;
+    justify-content: space-between;
     align-items: baseline;
     padding: 15px 25px;
     margin-bottom: 20px;

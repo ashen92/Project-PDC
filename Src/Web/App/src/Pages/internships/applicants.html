@@ -1,6 +1,6 @@
 {% extends "shared/layout.html" %}
 
-{% block title %}Internships{% endblock %}
+{% block title %}Applicants{% endblock %}
 
 {% block content %}
 
@@ -11,8 +11,8 @@
     <input type="button" value="Download All">
 </div>
 {% for item in applicants %}
-<div class="grid grid-cols-4 col-gap-1 pl-20 pe-10 py-10 mb-5 border-1 rounded-1">
-    <div class="col-span-3">
+<div class="flex justify-between items-baseline pl-20 pr-10 py-10 mb-5 border-1 rounded-1">
+    <div>
         {{ item }}
     </div>
     <div>

@@ -1,0 +1,17 @@
+.inline-block {
+    display: inline-block;
+}
+
+.block {
+    display: block;
+}
+
+.float {
+    &-left {
+        float: left;
+    }
+
+    &-right {
+        float: right;
+    }
+}
