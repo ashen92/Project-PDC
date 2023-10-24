@@ -86,7 +86,7 @@ class InternshipsController extends PageControllerBase
     }
 
     #[Route("/{section}", name: "sections")]
-    public function studentViewTest(Request $request, string $section): Response
+    public function sections(Request $request, string $section): Response
     {
         if ($section === "home") {
             return $this->render("internships/home.html", ["section" => "home"]);
@@ -111,16 +111,10 @@ class InternshipsController extends PageControllerBase
         return $this->render("internships/feedback.html", ["section" => "feedback"]);
     }
 
-    #[Route("/cycle", name: "cycle")]
-    public function cycle(Request $request): Response
-    {
-        return $this->render("internships/cycle/cycle.html", ["section" => "cycle"]);
-    }
-
     #[Route("/cycle/create", name: "cycle_create")]
     public function cycleCreate(Request $request): Response
     {
-        return $this->render("internships/cycle/create.html", ["section" => "cycle"]);
+        return $this->render("internships/cycle/create.html", ["section" => "home"]);
     }
 
     #[Route("/cycle/monitoring", name: "cycle_monitoring")]

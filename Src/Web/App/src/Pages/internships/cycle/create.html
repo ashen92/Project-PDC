@@ -1,0 +1,59 @@
+{% extends "shared/left-nav-layout.html" %}
+
+{% block title %}Create an Internship Cycle{% endblock %}
+
+{% block left_nav %}
+{% include "internships/left-nav.html" %}
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <div class="title">
+        Create an Internship Cycle
+    </div>
+    <form>
+        <div class="mb-40">
+            <div class="fs-6 fw-6 pb-20">Internship gathering phase</div>
+            <div class="grid grid-cols-4 align-items-baseline px-20 py-10 border-1 rounded-1 mb-5">
+                <div class="col-span-3">Start date</div>
+                <input type="date" required>
+            </div>
+            <div class="grid grid-cols-4 align-items-baseline px-20 py-10 border-1 rounded-1 mb-5">
+                <div class="col-span-3">End date</div>
+                <input type="date" required>
+            </div>
+            <div class="grid grid-cols-4 align-items-baseline px-20 pt-10 pb-15 border-1 rounded-1 mb-5">
+                <div class="col-span-3">Automatically send emails to partners when the start date is reached.</div>
+                <div class="checkbox text-right">
+                    <input type="checkbox" id="check1">
+                </div>
+            </div>
+        </div>
+        <div class="mb-20">
+            <div class="fs-6 fw-6 pb-20">Internship phase</div>
+            <div class="grid grid-cols-4 align-items-baseline px-20 py-10 border-1 rounded-1 mb-5">
+                <div class="col-span-3">Start date</div>
+                <input type="date" required>
+            </div>
+            <div class="grid grid-cols-4 align-items-baseline px-20 py-10 border-1 rounded-1 mb-5">
+                <div class="col-span-3">End date</div>
+                <input type="date" required>
+            </div>
+            <div class="grid grid-cols-4 align-items-baseline px-20 py-10 border-1 rounded-1 mb-5">
+                <div class="col-span-3">Automatically send emails to Undergraduates when the start date is reached.
+                </div>
+                <div class="checkbox text-right">
+                    <input type="checkbox" id="check1">
+                </div>
+            </div>
+        </div>
+        <div class="mb-20">
+            <div class="text-right mt-25">
+                <input type="submit" value="Confirm">
+                <input type="reset" value="Reset">
+            </div>
+        </div>
+    </form>
+</div>
+
+{% endblock %}
