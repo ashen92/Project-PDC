@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route("/internships", name: "internships_")]
+#[Route("/internship-program", name: "internship_program_")]
 class InternshipsController extends PageControllerBase
 {
     protected function getSectionName(): string
@@ -20,7 +20,7 @@ class InternshipsController extends PageControllerBase
 
     protected function getSectionURL(): string
     {
-        return "/internships";
+        return "/internship-program";
     }
 
     private function tempGetInternshipsData()
@@ -82,20 +82,20 @@ class InternshipsController extends PageControllerBase
     #[Route(["", "/"], name: "home")]
     public function home(Request $request): Response
     {
-        return $this->render("internships/home.html");
+        return $this->render("internships/home.html", ["section" => "home"]);
     }
 
-    #[Route("/student-view-test/{section}", name: "student-view-test")]
+    #[Route("/{section}", name: "sections")]
     public function studentViewTest(Request $request, string $section): Response
     {
-        if ($section === "details") {
-            return $this->render("internships/student/details.html", ["section" => "details"]);
+        if ($section === "home") {
+            return $this->render("internships/home.html", ["section" => "home"]);
         }
         if ($section === "internships") {
             $data = $this->tempGetInternshipsData();
 
             return $this->render(
-                "internships/student/internships.html",
+                "internships/internships.html",
                 array_merge(
                     ["internships" => $data["internships"]],
                     ["jobRoles" => $data["jobRoles"]],
@@ -106,9 +106,9 @@ class InternshipsController extends PageControllerBase
             );
         }
         if ($section === "documents") {
-            return $this->render("internships/student/documents.html", ["section" => "documents"]);
+            return $this->render("internships/documents.html", ["section" => "documents"]);
         }
-        return $this->render("internships/student/feedback.html", ["section" => "feedback"]);
+        return $this->render("internships/feedback.html", ["section" => "feedback"]);
     }
 
     #[Route("/cycle", name: "cycle")]

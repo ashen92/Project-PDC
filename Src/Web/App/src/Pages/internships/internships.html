@@ -1,101 +1,18 @@
-{% extends "shared/layout.html" %}
+{% extends "shared/left-nav-layout.html" %}
 
-{% block title %}Browse Internships{% endblock %}
+{% block title %}Student View Test{% endblock %}
+
+{% block left_nav %}
+{% include "internships/left-nav.html" %}
+{% endblock %}
 
 {% block content %}
 
-<div class="fs-2 fw-6 p-30 border-1 rounded-2 mb-20">
-    Browse Internships
-</div>
-
-<div class="list-view">
-    <div>
-        <div class="filters" id="filters">
-            <div class="title">Filter by</div>
-            <div class="category">
-                <div class="fw-6 mb-5">Job Roles</div>
-                <div class="px-5 data-category" data-category="Job Role">
-                    {% for role in jobRoles %}
-                    <div class="checkbox">
-                        <input type="checkbox" id="role-{{ role.id }}" value="{{ role.id }}" {% if role.id in
-                            queryJobRoles %} checked {% endif %}>
-                        <label for="role-{{ role.id }}">
-                            {{ role.name }}
-                        </label>
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
-            {% if ("ROLE_ADMIN" in user_roles) or ("ROLE_STUDENT" in user_roles) %}
-            <div class="category">
-                <div class="fw-6 mb-5">Company</div>
-                <div class="px-5 data-category" data-category="Company">
-                    {% for company in companies %}
-                    <div class="checkbox">
-                        <input type="checkbox" id="company-{{ company.id }}" value="{{ company.id }}" {% if company.id
-                            in queryCompanies %} checked {% endif %}>
-                        <label for="company-{{ company.id }}">
-                            {{ company.name }}
-                        </label>
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
-            {% endif %}
-            {% if ("ROLE_ADMIN" in user_roles) or ("ROLE_PARTNER" in user_roles) %}
-            <div class="category">
-                <div class="fw-6 mb-5">Internship Status</div>
-                <div class="px-5 data-category" data-category="Internship Status">
-                    {% for status in internshipStatus %}
-                    <div class="checkbox">
-                        <input type="checkbox" id="status-{{ status }}" value="{{ status }}" {% if status in
-                            queryInternshipStatus %} checked {% endif %}>
-                        <label for="status-{{ status }}">
-                            {{ status }}
-                        </label>
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
-            {% endif %}
-        </div>
+<div class="content">
+    <div class="title">
+        Lorem ipsum dolor sit amet.
     </div>
-    <div class="list">
-        {% for item in internships %}
-        <div class="item">
-            <a class="description" href="show/{{ item.id }}">
-                <div class="fw-6 pb-10">{{ item.description }}</div>
-                <div><span class="italic fc-light">at </span>{{item.company}}</div>
-            </a>
-
-            {% if ("ROLE_PARTNER" in user_roles) or ("ROLE_ADMIN" in user_roles) %}
-            <div class="actions">
-                <a class="action" href="show/{{ item.id }}/applicants">
-                    <input type="button" value="Applicants">
-                </a>
-                <a class="action" href="show/{{ item.id }}/edit">
-                    <input type="button" value="Edit">
-                </a>
-                <a class="action" href="">
-                    <input type="button" value="Remove">
-                </a>
-            </div>
-            {% endif %}
-
-            {% if "ROLE_STUDENT" in user_roles %}
-            <div class="actions">
-                <a class="action" href="">
-                    <input type="button" value="Apply">
-                </a>
-            </div>
-            {% endif %}
-        </div>
-        {% endfor %}
-    </div>
+    {% include "internships/shared/internships.html" %}
 </div>
 
 {% endblock %}
-
-{% block js %}
-<script src="/js/internships.js" type="text/javascript"></script>
-{% endblock js %}
