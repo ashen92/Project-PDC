@@ -7,10 +7,17 @@ a {
     }
 }
 
+label {
+    display: block;
+}
+
 input {
+    display: block;
     font-size: 0.9375rem;
 
-    &[type="text"], &[type="email"], &[type="password"] {
+    &[type="text"],
+    &[type="email"],
+    &[type="password"] {
         padding: var.$text-field-padding;
     }
 
@@ -40,12 +47,18 @@ input {
             $hover-border: var.$btn-secondary-border,
             $active-color: var.$colors-btn-secondary,
             $active-color-bg: var.$colors-btn-secondary-bg-act,
-            $active-border: var.$btn-secondary-border,);
+            $active-border: var.$btn-secondary-border, );
     }
 
     &[type="button"] {
         @include mixins.button();
     }
+}
+
+button {
+    display: block;
+    font-size: 0.9375rem;
+    @include mixins.button();
 }
 
 .checkbox {
