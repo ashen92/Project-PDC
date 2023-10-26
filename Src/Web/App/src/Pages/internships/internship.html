@@ -22,21 +22,22 @@
     itaque ipsum, officia maxime unde blanditiis recusandae esse facere expedita beatae quas veniam
     explicabo tempora mollitia autem nam iusto quisquam adipisci provident at.
 </div>
-<div class="text-right mt-50">
-
-    {% if ("ROLE_PARTNER" in user_roles) or ("ROLE_ADMIN" in user_roles) %}
-    <a class="inline-block" href="{{ id }}/applicants">
-        <input type="button" value="Applicants">
-    </a>
-    <a class="inline-block" href="{{ id }}/edit">
-        <input type="button" value="Edit">
-    </a>
-    <input class="inline-block" type="button" value="Remove">
-    {% endif %}
-
-    {% if "ROLE_STUDENT" in user_roles %}
-    <input class="inline-block" type="button" value="Apply">
-    {% endif %}
-</div>
+<form class="mt-50">
+    <div class="actions">
+        {% if ("ROLE_PARTNER" in user_roles) or ("ROLE_ADMIN" in user_roles) %}
+        <a href="{{ id }}/applicants">
+            <input type="button" value="Applicants">
+        </a>
+        <a href="{{ id }}/edit">
+            <input type="button" value="Edit">
+        </a>
+        <input type="button" value="Remove">
+        {% endif %}
+        
+        {% if "ROLE_STUDENT" in user_roles %}
+        <input type="button" value="Apply">
+        {% endif %}
+    </div>
+</form>
 
 {% endblock %}

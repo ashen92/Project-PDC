@@ -46,12 +46,10 @@
             }
 
             .actions {
-                text-align: right;
+                display: flex;
+                justify-content: flex-end;
+                column-gap: 0.25rem;
                 padding-top: 5px;
-
-                .action {
-                    display: inline-block;
-                }
             }
         }
     }

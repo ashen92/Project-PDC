@@ -13,7 +13,7 @@ label {
 
 input {
     display: block;
-    font-size: 0.9375rem;
+    font-size: var.$input-font-size;
 
     &[type="text"],
     &[type="email"],
@@ -57,17 +57,18 @@ input {
 
 button {
     display: block;
-    font-size: 0.9375rem;
+    font-size: var.$input-font-size;
     @include mixins.button();
 }
 
 .checkbox {
+    display: flex;
+    align-items: flex-end;
     padding: 5px 10px;
 
     input[type="checkbox"] {
         width: 20px;
         height: 20px;
-        vertical-align: bottom;
         cursor: pointer;
     }
 
@@ -80,13 +81,16 @@ button {
 }
 
 select {
+    display: block;
+    width: 100%;
     padding: var.$text-field-padding;
-    font-size: 0.9375rem;
+    font-size: var.$input-font-size;
+    cursor: pointer;
 }
 
 textarea {
     font-family: inherit;
-    font-size: 0.9375rem;
+    font-size: var.$input-font-size;
     padding: var.$textarea-padding;
     width: 100%;
     resize: none;
