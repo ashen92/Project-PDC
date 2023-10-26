@@ -10,9 +10,9 @@ steps:
     git remote add github https://$GHTOKEN:@github.com/ashen92/GroupProject.git
     git fetch
     git checkout main
-    git push -u github main
+    git push -f github main
     git checkout dev
-    git push -u github dev
+    git push -f github dev
   displayName: 'Push to GitHub'
   env:
     GHTOKEN: $(GithubToken)
