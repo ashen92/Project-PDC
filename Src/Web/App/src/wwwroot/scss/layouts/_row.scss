@@ -3,10 +3,15 @@
 .row-cols-2 {
     display: flex;
     justify-content: space-between;
-    align-items: baseline;
+    align-items: center;
     padding: 15px 25px;
     margin-bottom: 20px;
     border: var.$border-1;
     border-radius: var.$rounded-1;
     line-height: 1.75;
+}
+
+.row-right {
+    display: flex;
+    justify-content: flex-end;
 }

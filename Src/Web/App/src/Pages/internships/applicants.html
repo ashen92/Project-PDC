@@ -7,11 +7,11 @@
 <div class="fs-3 fw-6 pb-20">
     Showing Applicants for the (Internship Id {{ id }})
 </div>
-<div class="text-right mb-20 pe-10">
+<div class="row-right mb-20 pe-10">
     <input type="button" value="Download All">
 </div>
 {% for item in applicants %}
-<div class="flex justify-between items-baseline pl-20 pr-10 py-10 mb-5 border-1 rounded-1">
+<div class="row-cols-2 mb-5">
     <div>
         {{ item }}
     </div>
