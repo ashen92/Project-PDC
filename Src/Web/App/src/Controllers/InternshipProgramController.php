@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route("/internship-program", name: "internship_program_")]
-class InternshipsController extends PageControllerBase
+class InternshipProgramController extends PageControllerBase
 {
     protected function getSectionName(): string
     {
