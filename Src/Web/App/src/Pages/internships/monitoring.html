@@ -1,19 +1,26 @@
-{% extends "shared/layout.html" %}
+{% extends "shared/left-nav-layout.html" %}
 
-{% block title %}Internship Program{% endblock %}
+{% block title %}Monitoring{% endblock %}
+
+{% block left_nav %}
+{% include "internships/left-nav.html" %}
+{% endblock %}
 
 {% block content %}
 
-<div class="nav-layout">
-    {{ include("internships/cycle/sidebar.html") }}
-    <div class="page-content">
-        <div class="page-title">Monitoring</div>
-        {% if internship_cycle_status == "active" %}
+<div class="content">
+    <div class="title">
+        Monitor the Internship Program
+    </div>
+    <div>
+        {# {% if stateWhenInterningIsActive %} #}
+        {% if 1 == 1 %}
+
         <div class="row-cols-2">
             <div>
                 Internship Contracts
             </div>
-            <a class="link" href="monitoring/contracts">
+            <a class="link" href="">
                 <input type="button" value="View">
             </a>
         </div>
@@ -22,7 +29,7 @@
             <div>
                 Monthly Progress Reports
             </div>
-            <a class="link" href="monitoring/progress-report">
+            <a class="link" href="">
                 <input type="button" value="View">
             </a>
         </div>
@@ -31,7 +38,7 @@
             <div>
                 Final Reports
             </div>
-            <a class="link" href="monitoring/feedback">
+            <a class="link" href="">
                 <input type="button" value="View">
             </a>
         </div>
@@ -40,7 +47,7 @@
             <div>
                 Final Presentations
             </div>
-            <a class="link" href="monitoring/feedback">
+            <a class="link" href="">
                 <input type="button" value="View">
             </a>
         </div>
@@ -49,12 +56,13 @@
             <div>
                 Service Letters
             </div>
-            <a class="link" href="monitoring/feedback">
+            <a class="link" href="">
                 <input type="button" value="View">
             </a>
         </div>
+
         {% else %}
-        <div class="grid fs-6 fw-6 text-centre">There is no internship cycle to monitor.</div>
+        <div>No internship cycle found to monitor.</div>
         {% endif %}
     </div>
 </div>
