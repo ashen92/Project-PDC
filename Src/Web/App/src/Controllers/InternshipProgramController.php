@@ -79,41 +79,10 @@ class InternshipProgramController extends PageControllerBase
         ];
     }
 
-    #[Route(["", "/"], name: "home")]
+    #[Route(["", "/", "/home"], name: "home")]
     public function home(Request $request): Response
     {
         return $this->render("internships/home.html", ["section" => "home"]);
-    }
-
-    #[Route("/{section}", name: "sections")]
-    public function sections(Request $request, string $section): Response
-    {
-        if ($section === "home") {
-            return $this->render("internships/home.html", ["section" => "home"]);
-        }
-        if ($section === "internships") {
-            $data = $this->tempGetInternshipsData();
-
-            return $this->render(
-                "internships/internships.html",
-                array_merge(
-                    ["internships" => $data["internships"]],
-                    ["jobRoles" => $data["jobRoles"]],
-                    ["companies" => $data["companies"]],
-                    ["internshipStatus" => $data["internshipStatus"]],
-                    ["section" => "internships"]
-                )
-            );
-        }
-        if ($section === "monitoring") {
-            return $this->render("internships/monitoring.html", ["section" => "monitoring"]);
-        }
-
-        if ($section === "documents") {
-            return $this->render("internships/documents.html", ["section" => "documents"]);
-        }
-
-        return $this->render("internships/feedback.html", ["section" => "feedback"]);
     }
 
     #[Route("/cycle/create", name: "cycle_create")]
@@ -122,34 +91,25 @@ class InternshipProgramController extends PageControllerBase
         return $this->render("internships/cycle/create.html", ["section" => "home"]);
     }
 
-    #[Route("/cycle/monitoring", name: "cycle_monitoring")]
-    public function cycleMonitoring(Request $request): Response
+    #[Route("/monitoring", name: "monitoring")]
+    public function monitoring(Request $request): Response
     {
-        return $this->render("internships/cycle/monitoring.html", [
-            "section" => "monitoring",
-            "internship_cycle_status" => "active"
-        ]);
+        return $this->render("internships/monitoring.html", ["section" => "monitoring"]);
     }
 
-    #[Route("/cycle/documents", name: "cycle_documents")]
+    #[Route("/documents", name: "documents")]
     public function cycleDocuments(Request $request): Response
     {
-        return $this->render("internships/cycle/documents.html", [
-            "section" => "documents",
-            "internship_cycle_status" => "active"
-        ]);
+        return $this->render("internships/documents.html", ["section" => "documents"]);
     }
 
-    #[Route("/cycle/feedback", name: "cycle_feedback")]
+    #[Route("/feedback", name: "feedback")]
     public function cycleFeedback(Request $request): Response
     {
-        return $this->render("internships/cycle/feedback.html", [
-            "section" => "feedback",
-            "internship_cycle_status" => "active"
-        ]);
+        return $this->render("internships/feedback.html", ["section" => "feedback"]);
     }
 
-    #[Route("/show", name: "internships")]
+    #[Route("/internships", name: "internships")]
     public function internships(Request $request): Response
     {
         $data = $this->tempGetInternshipsData();
@@ -159,6 +119,7 @@ class InternshipProgramController extends PageControllerBase
         return $this->render(
             "internships/internships.html",
             array_merge(
+                ["section" => "internships"],
                 ["internships" => $data["internships"]],
                 ["jobRoles" => $data["jobRoles"]],
                 ["companies" => $data["companies"]],
