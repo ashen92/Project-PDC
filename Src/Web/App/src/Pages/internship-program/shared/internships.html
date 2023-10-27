@@ -53,17 +53,17 @@
     <div class="list">
         {% for item in internships %}
         <div class="item">
-            <a class="description" href="show/{{ item.id }}">
+            <a class="description" href="internship/{{ item.id }}">
                 <div class="fw-6 pb-10">{{ item.description }}</div>
                 <div><span class="italic fc-light">at </span>{{item.company}}</div>
             </a>
 
             {% if ("ROLE_PARTNER" in user_roles) or ("ROLE_ADMIN" in user_roles) %}
             <div class="actions">
-                <a class="action" href="show/{{ item.id }}/applicants">
+                <a class="action" href="internship/{{ item.id }}/applicants">
                     <input type="button" value="Applicants">
                 </a>
-                <a class="action" href="show/{{ item.id }}/edit">
+                <a class="action" href="internship/{{ item.id }}/edit">
                     <input type="button" value="Edit">
                 </a>
                 <a class="action" href="">

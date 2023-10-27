@@ -131,13 +131,13 @@ class InternshipProgramController extends PageControllerBase
         );
     }
 
-    #[Route("/show/{id}", name: "internship")]
+    #[Route("/internship/{id}", name: "internship")]
     public function internship(int $id): Response
     {
         return $this->render("internship-program/internship/internship.html", ["id" => $id]);
     }
 
-    #[Route("/show/{id}/applicants", name: "applicants")]
+    #[Route("/internship/{id}/applicants", name: "applicants")]
     public function internshipApplicants(int $id): Response
     {
         return $this->render("internship-program/internship/applicants.html", [
@@ -152,7 +152,7 @@ class InternshipProgramController extends PageControllerBase
         ]);
     }
 
-    #[Route("/show/{id}/edit", name: "edit")]
+    #[Route("/internship/{id}/edit", name: "edit")]
     public function edit(int $id): Response
     {
         return $this->render("internship-program/internship/edit.html");
