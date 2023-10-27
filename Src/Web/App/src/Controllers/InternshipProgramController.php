@@ -82,31 +82,31 @@ class InternshipProgramController extends PageControllerBase
     #[Route(["", "/", "/home"], name: "home")]
     public function home(Request $request): Response
     {
-        return $this->render("internships/home.html", ["section" => "home"]);
+        return $this->render("internship-program/home.html", ["section" => "home"]);
     }
 
     #[Route("/cycle/create", name: "cycle_create")]
     public function cycleCreate(Request $request): Response
     {
-        return $this->render("internships/cycle/create.html", ["section" => "home"]);
+        return $this->render("internship-program/cycle/create.html", ["section" => "home"]);
     }
 
     #[Route("/monitoring", name: "monitoring")]
     public function monitoring(Request $request): Response
     {
-        return $this->render("internships/monitoring.html", ["section" => "monitoring"]);
+        return $this->render("internship-program/monitoring.html", ["section" => "monitoring"]);
     }
 
     #[Route("/documents", name: "documents")]
     public function cycleDocuments(Request $request): Response
     {
-        return $this->render("internships/documents.html", ["section" => "documents"]);
+        return $this->render("internship-program/documents.html", ["section" => "documents"]);
     }
 
     #[Route("/feedback", name: "feedback")]
     public function cycleFeedback(Request $request): Response
     {
-        return $this->render("internships/feedback.html", ["section" => "feedback"]);
+        return $this->render("internship-program/feedback.html", ["section" => "feedback"]);
     }
 
     #[Route("/internships", name: "internships")]
@@ -117,7 +117,7 @@ class InternshipProgramController extends PageControllerBase
         $queryParams = $request->query->all();
 
         return $this->render(
-            "internships/internships.html",
+            "internship-program/internships.html",
             array_merge(
                 ["section" => "internships"],
                 ["internships" => $data["internships"]],
@@ -134,13 +134,13 @@ class InternshipProgramController extends PageControllerBase
     #[Route("/show/{id}", name: "internship")]
     public function internship(int $id): Response
     {
-        return $this->render("internships/internship/internship.html", ["id" => $id]);
+        return $this->render("internship-program/internship/internship.html", ["id" => $id]);
     }
 
     #[Route("/show/{id}/applicants", name: "applicants")]
     public function internshipApplicants(int $id): Response
     {
-        return $this->render("internships/internship/applicants.html", [
+        return $this->render("internship-program/internship/applicants.html", [
             "applicants" => [
                 "Ashen",
                 "Smith",
@@ -155,12 +155,12 @@ class InternshipProgramController extends PageControllerBase
     #[Route("/show/{id}/edit", name: "edit")]
     public function edit(int $id): Response
     {
-        return $this->render("internships/internship/edit.html");
+        return $this->render("internship-program/internship/edit.html");
     }
 
     #[Route("/add", name: "add")]
     public function add(): Response
     {
-        return $this->render("internships/internship/add.html");
+        return $this->render("internship-program/internship/add.html");
     }
 }
