@@ -108,6 +108,11 @@ class InternshipsController extends PageControllerBase
         if ($section === "monitoring") {
             return $this->render("internships/monitoring.html", ["section" => "monitoring"]);
         }
+
+        if ($section === "documents") {
+            return $this->render("internships/documents.html", ["section" => "documents"]);
+        }
+
         return $this->render("internships/feedback.html", ["section" => "feedback"]);
     }
 

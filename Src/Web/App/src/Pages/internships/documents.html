@@ -1,0 +1,79 @@
+{% extends "shared/left-nav-layout.html" %}
+
+{% block title %}Documents{% endblock %}
+
+{% block left_nav %}
+{% include "internships/left-nav.html" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="content">
+    <div class="title">
+        Documents
+    </div>
+    <div>
+        {# {% if stateWhenInterningIsActive %} #}
+        {% if 1 == 1 %}
+
+        <div class="row-cols-2">
+            <div>
+                Upload Documents
+            </div>
+            <a class="link" href="">
+                <input type="button" value="Add">
+            </a>
+        </div>
+
+        <div class="row-cols-2">
+            <div>
+                Internship Contracts
+            </div>
+            <a class="link" href="">
+                <input type="button" value="View">
+            </a>
+        </div>
+
+        <div class="row-cols-2">
+            <div>
+                Monthly Progress Reports
+            </div>
+            <a class="link" href="">
+                <input type="button" value="View">
+            </a>
+        </div>
+
+        <div class="row-cols-2">
+            <div>
+                Final Reports
+            </div>
+            <a class="link" href="">
+                <input type="button" value="View">
+            </a>
+        </div>
+
+        <div class="row-cols-2">
+            <div>
+                Final Presentations
+            </div>
+            <a class="link" href="">
+                <input type="button" value="View">
+            </a>
+        </div>
+
+        <div class="row-cols-2">
+            <div>
+                Service Letters
+            </div>
+            <a class="link" href="">
+                <input type="button" value="View">
+            </a>
+        </div>
+
+        {% else %}
+        <div>No internship cycle found to monitor.</div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}
