@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
+use App\Entities\Internship;
 use Doctrine\ORM\EntityRepository;
 
 class InternshipRepository extends EntityRepository
@@ -16,5 +17,15 @@ class InternshipRepository extends EntityRepository
         $queryBuilder
             ->select("i");
         return $queryBuilder->getQuery()->getArrayResult();
+    }
+
+    public function getInternshipById(int $id): Internship|null
+    {
+        $queryBuilder = $this->createQueryBuilder("i");
+        $queryBuilder
+            ->select("i")
+            ->where("i.id = :id")
+            ->setParameter("id", $id);
+        return $queryBuilder->getQuery()->getOneOrNullResult();
     }
 }

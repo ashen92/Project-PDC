@@ -116,7 +116,17 @@ class InternshipProgramController extends PageControllerBase
     #[Route("/internship/{id}", name: "internship")]
     public function internship(int $id): Response
     {
-        return $this->render("internship-program/internship/internship.html", ["id" => $id]);
+        $internship = $this->internshipService->getInternshipById($id);
+        if ($internship) {
+            return $this->render(
+                "internship-program/internship/internship.html",
+                [
+                    "id" => $id,
+                    "internship" => $internship
+                ]
+            );
+        }
+        return $this->redirect("/internship-program");
     }
 
     #[Route("/internship/{id}/applicants", name: "applicants")]

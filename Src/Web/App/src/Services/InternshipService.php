@@ -22,9 +22,14 @@ class InternshipService implements IInternshipService
         $cacheKey = "internships";
 
         // return $this->cache->get($cacheKey, function (ItemInterface $item) {
-            // $item->expiresAfter(3600);
-            return $this->entityManager->getRepository(Internship::class)->getInternships();
+        // $item->expiresAfter(3600);
+        return $this->entityManager->getRepository(Internship::class)->getInternships();
         // });
+    }
+
+    public function getInternshipById(int $id): Internship|null
+    {
+        return $this->entityManager->getRepository(Internship::class)->getInternshipById($id);
     }
 
     public function invalidateInternshipsCache(): void
