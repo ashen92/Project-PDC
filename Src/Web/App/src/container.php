@@ -109,4 +109,10 @@ $container->register(
 )
     ->setArguments([new Reference("twig")]);
 
+$container->register(
+    "App\Controllers\EventsController",
+    \App\Controllers\EventsController::class
+)
+    ->setArguments([new Reference("twig")]);
+
 return $container;
