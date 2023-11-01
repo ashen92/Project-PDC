@@ -33,6 +33,9 @@ class User
     #[ORM\ManyToMany(targetEntity: Group::class, mappedBy: "users")]
     private Collection $groups;
 
+    #[ORM\OneToMany(targetEntity: Internship::class, mappedBy: 'partner')]
+    private Collection $internshipsCreated;
+
     public function __construct(string $email, string $firstName, string $passwordHash)
     {
         $this->groups = new ArrayCollection();
