@@ -27,13 +27,22 @@
         font-size: var.$fs-4;
     }
 
-    &-6 {
+    &-5 {
         font-size: var.$fs-5;
     }
 }
 
 .fw-6 {
     font-weight: var.$fw-6;
+    color: #2d2d2d;
+}
+.fw-4{
+    font-weight: var.$fw-4;
+    color: #0527b0;
+}
+
+.fw-1{
+    font-weight: var.$fw-1;
     color: #2d2d2d;
 }
 
