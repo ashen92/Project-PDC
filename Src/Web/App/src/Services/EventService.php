@@ -21,8 +21,8 @@ class EventService implements IEventService
     {
         $queryBuilder = $this->entityManager->createQueryBuilder();
         $queryBuilder
-            ->select("e.id, e.title, e.description")
-            ->from("Event", "e");
+            ->select("e")
+            ->from("App\Entities\Event", "e");
 
         return $queryBuilder->getQuery()->getArrayResult();
     }

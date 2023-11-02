@@ -8,16 +8,20 @@
 
 {% block content %}
 
-
-    
-    
-
-    
-    
-    
-                
-
-
-
+<div class="content">
+    <div class="title">
+        Events
+    </div>
+    {% for event in events %}
+    <div class="p-40 mb-10 border-1 rounded-2">
+        <div class="fw-6 fs-4 pl-15 pb-20">
+            {{ event.title}}
+        </div>
+        <div>
+            {{ event.description}}
+        </div>
+    </div>
+    {% endfor %}
+</div>
 
 {% endblock %}
