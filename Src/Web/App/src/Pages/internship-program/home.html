@@ -13,6 +13,7 @@
         Internship Program
     </div>
     <div>
+
         {# {% if "internship-cycle:create" in user_permissions %} #}
         {% if 1 == 1 %}
         <div class="row-cols-2">
@@ -24,6 +25,7 @@
             </a>
         </div>
         {% endif %}
+
         {# {% if "internship-cycle:read" in user_permissions %} #}
         {% if 1 == 1 %}
         <div class="row-cols-2">
@@ -35,30 +37,44 @@
             </a>
         </div>
         {% endif %}
+
         {# {% if stateWhenInternshipProgramActive %} #}
         {% if 1 == 1 %}
-            <div class="fs-4 pt-20 pb-30 pl-20">Timeline of the Internship Program</div>
-            {# {% if "internship:apply" in user_permissions %} #}
-            {% if 1 == 1 %}
-            <div class="row-cols-2">
-                <div>
-                    You can start applying for internships from <br>
-                    Deadline is
-                </div>
-                <div>
-                    Start Date <br>
-                    End Date
-                </div>
+
+        {# {% if "ROLE_PARTNER" in user_permissions %} #}
+        {% if 1 == 1 %}
+        <div class="row-cols-2">
+            <div>
+                Create new internship
             </div>
-            <div class="row-cols-2">
-                <div>
-                    Interning Duration is
-                </div>
-                <div>
-                    Start Date to End Date
-                </div>
+            <a class="link" href="/internship-program/internship/create">
+                <input type="button" value="Create">
+            </a>
+        </div>
+        {% endif %}
+
+        <div class="fs-4 pt-20 pb-30 pl-20">Timeline of the Internship Program</div>
+        {# {% if "internship:apply" in user_permissions %} #}
+        {% if 1 == 1 %}
+        <div class="row-cols-2">
+            <div>
+                You can start applying for internships from <br>
+                Deadline is
             </div>
-            {% endif %}
+            <div>
+                Start Date <br>
+                End Date
+            </div>
+        </div>
+        <div class="row-cols-2">
+            <div>
+                Interning Duration is
+            </div>
+            <div>
+                Start Date to End Date
+            </div>
+        </div>
+        {% endif %}
         {% endif %}
     </div>
 </div>

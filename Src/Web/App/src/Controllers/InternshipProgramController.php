@@ -113,7 +113,7 @@ class InternshipProgramController extends PageControllerBase
         );
     }
 
-    #[Route("/internship/{id}", name: "internship")]
+    #[Route("/internship/{id}", name: "internship", requirements: ['id' => '\d+'])]
     public function internship(int $id): Response
     {
         $internship = $this->internshipService->getInternshipById($id);
@@ -150,7 +150,7 @@ class InternshipProgramController extends PageControllerBase
         return $this->render("internship-program/internship/edit.html");
     }
 
-    #[Route("/add", name: "add")]
+    #[Route("/internship/create", name: "add")]
     public function add(): Response
     {
         return $this->render("internship-program/internship/add.html");
