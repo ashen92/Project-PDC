@@ -2,7 +2,8 @@
 
 .list-view {
     display: grid;
-    grid-template-columns: max-content auto;
+    // grid-template-columns: max-content auto;
+    grid-template-columns: 1fr;
 
     .filters {
         min-width: 275px;

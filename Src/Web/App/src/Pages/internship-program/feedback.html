@@ -13,6 +13,8 @@
         Feedback
     </div>
     <div>
+
+        {% if "ROLE_PARTNER" in user_roles %}
         <div class="row-cols-2">
             <div>
                 Add your feedback about the student.
@@ -21,6 +23,9 @@
                 <input type="button" value="Add">
             </a>
         </div>
+        {% endif %}
+
+        {% if "ROLE_STUDENT" in user_roles %}
         <div class="row-cols-2">
             <div>
                 Add your feedback about the company.
@@ -29,6 +34,27 @@
                 <input type="button" value="Add">
             </a>
         </div>
+        {% endif %}
+
+        {% if "ROLE_COORDINATOR" in user_roles %}
+        <div class="row-cols-2">
+            <div>
+                View feedback about students.
+            </div>
+            <a class="link" href="">
+                <input type="button" value="View">
+            </a>
+        </div>
+        <div class="row-cols-2">
+            <div>
+                View feedback about partners.
+            </div>
+            <a class="link" href="">
+                <input type="button" value="View">
+            </a>
+        </div>
+        {% endif %}
+
     </div>
 </div>
 
