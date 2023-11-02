@@ -41,12 +41,22 @@ class EventsController extends PageControllerBase
         ]);
     }
 
-    #[Route("/create", name: "create", methods: ["GET"])]
+    #[Route("/create", name: "create_get", methods: ["GET"])]
     public function create(Request $request): Response
     {
         return $this->render(
             "events/create.html",
             ["section" => "create"]
         );
+    }
+
+    #[Route("/create", name: "create_post", methods: ["POST"])]
+    public function createPost(Request $request): Response
+    {
+        $this->eventService->addEvent(
+            $request->request->get("title"),
+            $request->request->get("description")
+        );
+        return $this->redirect("/events");
     }
 }

@@ -32,4 +32,10 @@ class EventService implements IEventService
         return $this->entityManager->getRepository(Event::class)->getInternshipById($id);
     }
 
+    public function addEvent(string $title, string $description): void
+    {
+        $event = new Event($title, $description);
+        $this->entityManager->persist($event);
+        $this->entityManager->flush();
+    }
 }
