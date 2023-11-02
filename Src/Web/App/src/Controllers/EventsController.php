@@ -59,4 +59,11 @@ class EventsController extends PageControllerBase
         );
         return $this->redirect("/events");
     }
+
+    #[Route("/{id}/delete", name: "delete")]
+    public function delete(Request $request, int $id): Response
+    {
+        $this->eventService->deleteEventById($id);
+        return $this->redirect("/events");
+    }
 }

@@ -94,3 +94,10 @@ textarea {
     resize: vertical;
     border: none;
 }
+
+.actions {
+    display: flex;
+    justify-content: flex-end;
+    column-gap: 0.5rem;
+    padding-top: 0.95rem;
+}

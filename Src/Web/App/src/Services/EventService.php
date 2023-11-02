@@ -38,4 +38,15 @@ class EventService implements IEventService
         $this->entityManager->persist($event);
         $this->entityManager->flush();
     }
+
+    public function deleteEventById(int $id): void
+    {
+        $queryBuilder = $this->entityManager->createQueryBuilder();
+        $queryBuilder
+            ->delete()
+            ->from("App\Entities\Event", "e")
+            ->where("e.id = :id")
+            ->setParameter("id", $id);
+        $queryBuilder->getQuery()->execute();
+    }
 }
