@@ -18,6 +18,7 @@ html {
 }
 
 body {
+    
     height: 100%;
     width: 100%;
     font-size: 1rem;
@@ -37,6 +38,9 @@ a {
 }
 
 .wrapper {
+    //background-color: #709fbe;
+    background-image: url(/images/backgroundimage.jpg);
+    background-repeat: no-repeat;
     display: grid;
     grid-template-rows: auto 1fr auto;
     min-height: 100vh;
