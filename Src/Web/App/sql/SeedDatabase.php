@@ -17,11 +17,11 @@ $passwordHash = "$2y$10\$dLij/BtPMbPKtt/CxpzqVuSn1FBVq.es9spKQ87sdGVJmlu4J3zwq";
 
 $user = new User("1@mail.com", "Green", $passwordHash);
 $user1 = new User("2@mail.com", "Admin", $passwordHash);
-$user2 = new User("3@mail.com", "Coordinator", $passwordHash);
-$user3 = new User("4@mail.com", "Wood", $passwordHash);
+$user2 = new User("coordinator@mail.com", "Coordinator", $passwordHash);
+$user3 = new User("student@mail.com", "Student", $passwordHash);
 $user4 = new User("5@mail.com", "Root", $passwordHash);
 $user5 = new User("6@mail.com", "Head", $passwordHash);
-$user6 = new User("7@mail.com", "Apple", $passwordHash);
+$user6 = new User("partner@mail.com", "Apple", $passwordHash);
 $user7 = new User("8@mail.com", "Orange", $passwordHash);
 
 $entityManager->persist($user);
