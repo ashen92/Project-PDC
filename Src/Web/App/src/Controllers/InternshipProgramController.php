@@ -79,6 +79,12 @@ class InternshipProgramController extends PageControllerBase
         return $this->render("internship-program/cycle/create.html", ["section" => "home"]);
     }
 
+    #[Route("/cycle/details", name: "cycle_details")]
+    public function cycleDetails(Request $request): Response
+    {
+        return $this->render("internship-program/cycle/details.html", ["section" => "home"]);
+    }
+
     #[Route("/monitoring", name: "monitoring")]
     public function monitoring(Request $request): Response
     {
@@ -127,6 +133,7 @@ class InternshipProgramController extends PageControllerBase
             return $this->render(
                 "internship-program/internship/internship.html",
                 [
+                    "section" => "internships",
                     "id" => $id,
                     "internship" => $internship
                 ]
@@ -139,6 +146,7 @@ class InternshipProgramController extends PageControllerBase
     public function internshipApplicants(int $id): Response
     {
         return $this->render("internship-program/internship/applicants.html", [
+            "section" => "internships",
             "applicants" => [
                 "Ashen",
                 "Smith",
@@ -150,15 +158,47 @@ class InternshipProgramController extends PageControllerBase
         ]);
     }
 
-    #[Route("/internship/{id}/edit", name: "edit")]
+    #[Route("/internship/{id}/edit", name: "edit_get", methods: ["GET"])]
     public function edit(int $id): Response
     {
-        return $this->render("internship-program/internship/edit.html");
+        return $this->render("internship-program/internship/edit.html", [
+            "section" => "internships",
+            "internship" => $this->internshipService->getInternshipById($id)
+        ]);
     }
 
-    #[Route("/internship/create", name: "add")]
+    #[Route("/internship/{id}/edit", name: "edit_post", methods: ["POST"])]
+    public function editPost(Request $request): Response
+    {
+        $this->internshipService->updateInternship(
+            (int) $request->get("id"),
+            $request->get("title"),
+            $request->get("description")
+        );
+        return $this->redirect("/internship-program/internships");
+    }
+
+    #[Route("/internship/create", name: "add_get", methods: ["GET"])]
     public function add(): Response
     {
-        return $this->render("internship-program/internship/add.html");
+        return $this->render("internship-program/internship/add.html", ["section" => "internships"]);
+    }
+
+    #[Route("/internship/create", name: "add_post", methods: ["POST"])]
+    public function addPost(Request $request): Response
+    {
+        $this->internshipService->addInternship(
+            $request->get("title"),
+            $request->get("description"),
+            (int) $request->getSession()->get("user_id")
+        );
+        return $this->redirect("/internship-program/internships");
+    }
+
+    #[Route("/internship/{id}/delete", name: "delete")]
+    public function delete(Request $request, int $id): Response
+    {
+        $this->internshipService->deleteInternshipById($id);
+        return $this->redirect("/internship-program/internships");
     }
 }

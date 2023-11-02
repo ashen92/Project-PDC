@@ -1,31 +1,36 @@
-{% extends "shared/layout.html" %}
+{% extends "shared/left-nav-layout.html" %}
 
-{% block title %}Internships{% endblock %}
+{% block title %}Create Internship{% endblock %}
+
+{% block left_nav %}
+{% include "internship-program/left-nav.html" %}
+{% endblock %}
 
 {% block content %}
 
-<div class="fs-3 fw-6 pb-20">
-    {{ internship.getTitle }}
-</div>
-<div>
-    {{ internship.getDescription }}
-</div>
-<form class="mt-50">
-    <div class="actions">
-        {% if ("ROLE_PARTNER" in user_roles) or ("ROLE_ADMIN" in user_roles) %}
-        <a href="{{ id }}/applicants">
-            <input type="button" value="Applicants">
-        </a>
-        <a href="{{ id }}/edit">
-            <input type="button" value="Edit">
-        </a>
-        <input type="button" value="Remove">
-        {% endif %}
-
-        {% if "ROLE_STUDENT" in user_roles %}
-        <input type="button" value="Apply">
-        {% endif %}
+<div class="content">
+    <div class="title">
+        {{ internship.getTitle }}
     </div>
-</form>
+    <div>
+        {{ internship.getDescription }}
+    </div>
+    <form class="mt-50">
+        <div class="actions">
+            {% if ("ROLE_PARTNER" in user_roles) or ("ROLE_ADMIN" in user_roles) %}
+            <a href="{{ id }}/applicants">
+                <input type="button" value="Applicants">
+            </a>
+            <a href="{{ id }}/edit">
+                <input type="button" value="Edit">
+            </a>
+            <input type="button" value="Remove">
+            {% endif %}
 
+            {% if "ROLE_STUDENT" in user_roles %}
+            <input type="button" value="Apply">
+            {% endif %}
+        </div>
+    </form>
+</div>
 {% endblock %}

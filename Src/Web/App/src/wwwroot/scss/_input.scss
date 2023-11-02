@@ -90,6 +90,14 @@ textarea {
     font-size: var.$input-font-size;
     padding: var.$textarea-padding;
     width: 100%;
-    resize: none;
+    height: 350px;
+    resize: vertical;
     border: none;
+}
+
+.actions {
+    display: flex;
+    justify-content: flex-end;
+    column-gap: 0.5rem;
+    padding-top: 0.95rem;
 }

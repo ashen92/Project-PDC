@@ -1,40 +1,35 @@
-{% extends "shared/layout.html" %}
+{% extends "shared/left-nav-layout.html" %}
 
-{% block title %}Internships{% endblock %}
+{% block title %}Create Internship{% endblock %}
+
+{% block left_nav %}
+{% include "internship-program/left-nav.html" %}
+{% endblock %}
 
 {% block content %}
 
-<div class="fs-3 fw-6 pb-20">
-    Post an internship
+<div class="content">
+    <div class="title">
+        Post an internship
+    </div>
+    <form action="/internship-program/internship/create" method="POST">
+        <div class="field">
+            <label for="title">Title</label>
+            <input name="title" id="title" type="text" maxlength="75" placeholder="Add a title">
+        </div>
+
+        <div class="field">
+            <label for="description">Description</label>
+            {% include "shared/textarea.html" with {
+            "name": "description",
+            "maxlength": "2000",
+            "placeholder": "Put your description here."
+            } %}
+        </div>
+
+        <div class="actions">
+            <input type="submit" value="Add">
+        </div>
+    </form>
 </div>
-<form>
-    <div class="field">
-        <label for="title">Title</label>
-        <input name="title" id="title" type="text" maxlength="75" placeholder="Add a title">
-    </div>
-
-    <div class="field">
-        <label for="job-role">Select job role</label>
-        <select name="job-role" id="job-role">
-            <option value="Role1">Role1</option>
-            <option value="Role2">Role2</option>
-            <option value="Role3">Role3</option>
-            <option value="Role4">Role4</option>
-        </select>
-    </div>
-
-    <div class="field">
-        <label for="description">Description</label>
-        {% include "shared/textarea.html" with {
-        "name": "description",
-        "maxlength": "2000",
-        "placeholder": "Put your description here."
-        } %}
-    </div>
-
-    <div class="actions">
-        <input type="submit" value="Add">
-    </div>
-</form>
-
 {% endblock %}

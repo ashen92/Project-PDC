@@ -2,41 +2,30 @@
     <a class="nav-link {% if section == 'home' %} active{% endif %}" href="/internship-program/home">
         Internship Program
     </a>
-    {# {% if stateWhenInternshipApplyingIsActive or "coordinator" in user_roles %} #}
-    {% if 1 == 1 %}
 
-    {# {% if "internships:read" in user_permissions %} #}
-    {% if 1 == 1 %}
+    {% if "ROLE_COORDINATOR" in user_roles or "ROLE_PARTNER" in user_roles %}
+    <a class="nav-link {% if section == 'internships' %} active{% endif %}" href="/internship-program/internships">
+        Internships
+    </a>
+    {% endif %}
+
+    {% if "ROLE_STUDENT" in user_roles %}
     <a class="nav-link {% if section == 'internships' %} active{% endif %}" href="/internship-program/internships">
         Apply for Internships
     </a>
     {% endif %}
 
-    {% endif %}
-
-    {# {% if "coordinator" in user_roles %} #}
-    {% if 1 == 1 %}
+    {% if "ROLE_COORDINATOR" in user_roles %}
     <a class="nav-link {% if section == 'monitoring' %} active{% endif %}" href="/internship-program/monitoring">
         Monitoring
     </a>
     {% endif %}
 
-    {# {% if stateWhenInterningIsActive or "coordinator" in user_roles %} #}
-    {% if 1 == 1 %}
-
-    {# {% if "documents:read" in user_permissions %} #}
-    {% if 1 == 1 %}
     <a class="nav-link {% if section == 'documents' %} active{% endif %}" href="/internship-program/documents">
         Documents
     </a>
-    {% endif %}
 
-    {# {% if "feedback:read" in user_permissions %} #}
-    {% if 1 == 1 %}
     <a class="nav-link {% if section == 'feedback' %} active{% endif %}" href="/internship-program/feedback">
         Feedback
     </a>
-    {% endif %}
-
-    {% endif %}
 </div>

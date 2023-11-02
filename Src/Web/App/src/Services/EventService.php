@@ -49,6 +49,6 @@ class EventService implements IEventService
     {
 
         $this->entityManager->remove($event); // Mark the event for removal.
-        $this->entityManager->flush();    
+        $this->entityManager->flush();
     }
 }
