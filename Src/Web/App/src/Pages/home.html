@@ -9,12 +9,13 @@
 {% block content %}
 
 <div>
-    <div class="fs-1 fw-6 p-30 border-1 rounded-2 text-centre">
+    <div class="fs-1 fw-6 p-30 text-centre">
         Professional Development Centre
     </div>
     <div class="card-container">
-        <a class="card" href="/techtalks">Go to TechTalks</a>
+        <a class="card" href="/techtalks">TechTalks</a>
         <a class="card" href="/internship-program">Internship Program</a>
+        <a class="card" href="/events">Events</a>
         {% if "ROLE_ADMIN" in user_roles %}
         <a class="card" href="/users">Manage Users</a>
         {% endif %}
