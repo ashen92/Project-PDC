@@ -37,12 +37,18 @@ class InternshipProgramController extends PageControllerBase
 
     private function tempGetInternshipsData()
     {
-        $jobRoles = [];
+        $jobRoles = [
+            ["id" => "1", "name" => "Software Engineer"],
+            ["id" => "2", "name" => "Business Analyst"],
+            ["id" => "3", "name" => "Web Developer"]
+        ];
+
 
         $companies = [
             new Company(1, "LSEG"),
             new Company(2, "WSO2"),
-            new Company(3, "IFS")
+            new Company(3, "IFS"),
+            new Company(3, "Orange")
         ];
 
         $internshipStatus = [
