@@ -59,6 +59,12 @@ $container->register(
     ->setArguments([new Reference("doctrine.entity_manager"), new Reference("app.cache")]);
 
 $container->register(
+    "service.internship",
+    App\Services\InternshipService::class
+)
+    ->setArguments([new Reference("doctrine.entity_manager"), new Reference("app.cache")]);
+
+$container->register(
     "listener.authorization",
     App\EventListeners\AuthorizationListener::class
 )
@@ -101,7 +107,7 @@ $container->register(
     "App\Controllers\InternshipProgramController",
     \App\Controllers\InternshipProgramController::class
 )
-    ->setArguments([new Reference("twig")]);
+    ->setArguments([new Reference("twig"), new Reference("service.internship")]);
 
 $container->register(
     "App\Controllers\UserController",

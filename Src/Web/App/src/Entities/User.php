@@ -33,12 +33,16 @@ class User
     #[ORM\ManyToMany(targetEntity: Group::class, mappedBy: "users")]
     private Collection $groups;
 
+    #[ORM\OneToMany(targetEntity: Internship::class, mappedBy: 'partner')]
+    private Collection $internshipsCreated;
+
     public function __construct(string $email, string $firstName, string $passwordHash)
     {
-        $this->groups = new ArrayCollection();
         $this->email = $email;
         $this->firstName = $firstName;
         $this->passwordHash = $passwordHash;
+        $this->groups = new ArrayCollection();
+        $this->internshipsCreated = new ArrayCollection();
     }
 
     public function getId(): int
@@ -64,5 +68,10 @@ class User
     public function addToGroup(Group $group): void
     {
         $this->groups[] = $group;
+    }
+
+    public function addToInternshipsCreated(Internship $internship): void
+    {
+        $this->internshipsCreated[] = $internship;
     }
 }

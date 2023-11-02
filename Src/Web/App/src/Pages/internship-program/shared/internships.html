@@ -54,8 +54,8 @@
         {% for item in internships %}
         <div class="item">
             <a class="description" href="internship/{{ item.id }}">
-                <div class="fw-6 pb-10">{{ item.description }}</div>
-                <div><span class="italic fc-light">at </span>{{item.company}}</div>
+                <div class="fw-6 pb-10">{{ item.title }}</div>
+                <div><span class="italic fc-light">at </span>{{item.firstName}}</div>
             </a>
 
             {% if ("ROLE_PARTNER" in user_roles) or ("ROLE_ADMIN" in user_roles) %}

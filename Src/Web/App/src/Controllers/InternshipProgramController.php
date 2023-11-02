@@ -6,13 +6,25 @@ namespace App\Controllers;
 use App\Entities\Company;
 use App\Entities\Internship;
 use App\Entities\JobRole;
+use App\Interfaces\IInternshipService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Twig\Environment;
 
 #[Route("/internship-program", name: "internship_program_")]
 class InternshipProgramController extends PageControllerBase
 {
+    private IInternshipService $internshipService;
+
+    public function __construct(
+        Environment $twig,
+        IInternshipService $internshipService
+    ) {
+        $this->internshipService = $internshipService;
+        parent::__construct($twig);
+    }
+
     protected function getSectionName(): string
     {
         return "Internship Program";
@@ -25,11 +37,7 @@ class InternshipProgramController extends PageControllerBase
 
     private function tempGetInternshipsData()
     {
-        $jobRoles = [
-            new JobRole(1, "Software Engineer"),
-            new JobRole(2, "Data Scientist"),
-            new JobRole(3, "Network Administrator")
-        ];
+        $jobRoles = [];
 
         $companies = [
             new Company(1, "LSEG"),
@@ -43,33 +51,7 @@ class InternshipProgramController extends PageControllerBase
             "Rejected"
         ];
 
-        $internships = [
-            new Internship(
-                1,
-                "Internship Name or Position. Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate modi",
-                "Company 1"
-            ),
-            new Internship(
-                2,
-                "Internship Name or Position. Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate modi",
-                "Company 1"
-            ),
-            new Internship(
-                3,
-                "Internship Name or Position. Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate modi",
-                "Company 1"
-            ),
-            new Internship(
-                4,
-                "Internship Name or Position. Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate modi",
-                "Company 1"
-            ),
-            new Internship(
-                5,
-                "Internship Name or Position. Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate modi",
-                "Company 1"
-            ),
-        ];
+        $internships = $this->internshipService->getInternships();
 
         return [
             "jobRoles" => $jobRoles,
@@ -134,7 +116,17 @@ class InternshipProgramController extends PageControllerBase
     #[Route("/internship/{id}", name: "internship")]
     public function internship(int $id): Response
     {
-        return $this->render("internship-program/internship/internship.html", ["id" => $id]);
+        $internship = $this->internshipService->getInternshipById($id);
+        if ($internship) {
+            return $this->render(
+                "internship-program/internship/internship.html",
+                [
+                    "id" => $id,
+                    "internship" => $internship
+                ]
+            );
+        }
+        return $this->redirect("/internship-program");
     }
 
     #[Route("/internship/{id}/applicants", name: "applicants")]
