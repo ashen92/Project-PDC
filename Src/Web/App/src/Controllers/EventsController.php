@@ -61,7 +61,7 @@ class EventsController extends PageControllerBase
         return $this->render(
             "events/edit.html",
             [
-                "section" => "edit",
+                "section" => "home",
                 "event" => $event
             ]
         );
@@ -85,17 +85,8 @@ class EventsController extends PageControllerBase
         $event->setEventLocation($eventLocation);
         $event->setDescription($description);
         $this->eventService->editEvent($event);
-        //        return $this->render("events/home.html", [
-//            "section" => "home",
-//            "events" => $this->eventService->getEvents()
-//        ]);
         return $this->redirect("/events");
     }
-
-    /**
-     * @param Request $request
-     * @return Response
-     */
 
     #[Route("/create", name: "POSTcreate", methods: ["POST"])]
     public function createPOST(Request $request): Response

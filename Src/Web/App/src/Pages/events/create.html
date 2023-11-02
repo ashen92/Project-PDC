@@ -13,10 +13,27 @@
     <div class="title">
         Create an event
     </div>
-    <form action="/events/create" method="POST">
+    <form action="/events/create" method="post">
         <div class="field">
-            <label for="title">Event Title:</label>
-            <input type="text" id="title" name="title" required>
+            <label for="eventTitle">Event Title:</label>
+            <input type="text" id="eventTitle" name="eventTitle" required>
+        </div>
+        <div class="field">
+            <label for="eventDate">Event Date:</label>
+            <input type="date" id="eventDate" name="eventDate" required>
+        </div>
+        <div class="field">
+            <label for="startTime">Start Time:</label>
+            <input type="time" id="startTime" name="startTime" required>
+
+        </div>
+        <div class="field">
+            <label for="endTime">End Time:</label>
+            <input type="time" id="endTime" name="endTime" required>
+        </div>
+        <div class="field">
+            <label for="eventLocation">Event Location:</label>
+            <input type="text" id="eventLocation" name="eventLocation" required>
         </div>
         <div class="field">
             <label for="description">Event Description</label>
@@ -27,7 +44,7 @@
             } %}
         </div>
         <div class="actions">
-            <input type="submit" value="Create">
+            <input type="submit" value="Schedule Event">
         </div>
     </form>
 </div>

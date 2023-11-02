@@ -13,7 +13,7 @@
     <div class="title">
         Create an event
     </div>
-    <form class="w-96 mx-auto" action="/events/edit/{{event.id}}" method="post">
+    <form action="/events/edit/{{event.id}}" method="post">
         <div class="field">
             <label for="eventTitle">Event Title:</label>
             <input type="text" id="eventTitle" name="eventTitle" value="{{event.Title}}" required>
