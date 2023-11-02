@@ -13,7 +13,13 @@
         Events
     </div>
     {% for event in events %}
-    <div class="p-40 mb-10 border-1 rounded-2">
+    <div class="p-40 mb-10 border-1 rounded-2 ">
+        <a href="/events/edit/{{event.id}}" >
+            <button class="float-right">  Edit </button>
+        </a>
+        <form action="/events/delete/{{event.id}}" method="POST" >
+            <button class="float-right mr-5">  Remove </button>
+        </form>
         <div class="fw-6 fs-4 pl-15 pb-20">
             {{ event.title}}
         </div>

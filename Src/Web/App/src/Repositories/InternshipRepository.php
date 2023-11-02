@@ -22,6 +22,7 @@ class InternshipRepository extends EntityRepository
 
     public function getInternshipById(int $id): Internship|null
     {
+
         $queryBuilder = $this->createQueryBuilder("i");
         $queryBuilder
             ->select("i")

@@ -29,7 +29,26 @@ class EventService implements IEventService
 
     public function getEventById(int $id): Event|null
     {
-        return $this->entityManager->getRepository(Event::class)->getInternshipById($id);
+
+        return $this->entityManager->getRepository(Event::class)->getEventById($id);
     }
 
+    public function createEvent(Event $event): void
+    {
+        $this->entityManager->persist($event);
+        $this->entityManager->flush();
+    }
+
+    public function editEvent(Event $event): void
+    {
+
+        $this->entityManager->persist($event);
+        $this->entityManager->flush();
+    }
+    public function deleteEvent(Event $event): void
+    {
+
+        $this->entityManager->remove($event); // Mark the event for removal.
+        $this->entityManager->flush();    
+    }
 }

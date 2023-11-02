@@ -1,21 +1,20 @@
 (() => {
   // src/wwwroot/js/internships.js
-  var parentFilters = document.getElementById("filters");
-  parentFilters.addEventListener("click", function(event) {
-    let targetElement = event.target;
-    while (targetElement !== null && !targetElement.matches("input[type='checkbox']")) {
-      targetElement = targetElement.parentElement;
-    }
-    if (targetElement) {
-      const category = targetElement.closest(".data-category").getAttribute("data-category");
-      const params = new URLSearchParams(window.location.search);
-      if (targetElement.checked) {
-        params.append(`${category}[]`, targetElement.value);
-      } else {
-        params.delete(`${category}[]`, targetElement.value);
-      }
-      window.location.href = `${window.location.pathname}?${params.toString()}`;
-    }
-  });
+  var jobRoleSelect = document.getElementById("jobRoleSelect");
+  var companySelect = document.getElementById("companySelect");
+  var jobListings = document.getElementById("jobListings");
+  function filterJobListings() {
+    const selectedRoles = Array.from(jobRoleSelect.selectedOptions, (option) => option.value);
+    const selectedCompanies = Array.from(companySelect.selectedOptions, (option) => option.value);
+    jobListings.querySelectorAll(".item").forEach((listing) => {
+      const roles = listing.getAttribute("data-roles").split(",");
+      const companies = listing.getAttribute("data-companies").split(",");
+      const roleMatched = selectedRoles.length === 0 || roles.some((role) => selectedRoles.includes(role));
+      const companyMatched = selectedCompanies.length === 0 || companies.some((company) => selectedCompanies.includes(company));
+      listing.style.display = roleMatched && companyMatched ? "block" : "none";
+    });
+  }
+  jobRoleSelect.addEventListener("change", filterJobListings);
+  companySelect.addEventListener("change", filterJobListings);
 })();
 //# sourceMappingURL=internships.js.map
