@@ -193,4 +193,48 @@ $entityManager->persist($internship3);
 $entityManager->persist($internship4);
 $entityManager->flush();
 
+echo "Done.\nAdding events...";
+
+$eventData = [
+    [
+        "Innovate IT 2023: Shaping the Future of Tech",
+        "Join us at 'Innovate IT 2023,' the premier technology event of the year, where industry leaders, innovative startups, and tech enthusiasts come together to explore the future of information technology. This year's conference will feature keynote speeches from thought leaders in AI, cybersecurity, and cloud computing, interactive workshops on the latest programming techniques, and panel discussions on the ethical implications of emerging technologies. Network with peers, engage with expert speakers, and gain insights into cutting-edge IT trends and solutions that will drive your organization forward. Whether you're a seasoned IT professional or just passionate about technology, 'Innovate IT 2023' is the event you can't afford to miss. Secure your spot today and be part of the conversation that will redefine the tech landscape!"
+    ],
+    [
+        "CyberSecCon 2023: Navigating the Digital Threat Landscape",
+        "CyberSecCon 2023 invites cybersecurity experts and enthusiasts to delve into the dynamic world of digital security. This comprehensive conference will cover the latest strategies in protecting against cyber threats, managing risk, and ensuring compliance. Attend in-depth sessions on blockchain security, IoT vulnerabilities, and the future of encryption. Engage with hands-on demonstrations of cutting-edge security tools and network with professionals across the industry. Whether you're defending your organization's network or safeguarding personal data, CyberSecCon 2023 is your gateway to a safer digital tomorrow."
+    ],
+    [
+        "AI Revolution Summit: Transforming Business with Intelligence",
+        "The AI Revolution Summit is where the brightest minds in artificial intelligence converge to discuss the role of AI in transforming business practices. Explore how machine learning algorithms can optimize operations, enhance customer experiences, and drive innovation. This summit offers a unique opportunity to network with AI developers, business leaders, and researchers. Participate in workshops on natural language processing, predictive analytics, and ethical AI. Empower your business with the knowledge and tools needed to thrive in the AI era at the AI Revolution Summit."
+    ],
+    [
+        "Cloud Expo 2023: Elevating Enterprises to the Cloud",
+        "Elevate your business to new heights at Cloud Expo 2023! As cloud computing becomes the backbone of the digital economy, this event is a must-attend for IT professionals aiming to harness the power of the cloud. Discover the latest trends in cloud infrastructure, platform services, and SaaS applications. Gain insights from case studies on cloud migration, cost optimization, and security in the cloud. Connect with cloud service providers and partners to transform your IT strategy. Join us at Cloud Expo 2023 and embark on your cloud journey."
+    ],
+    [
+        "DevOps Days: Accelerating Software Delivery",
+        "DevOps Days is back, bringing together the community of developers, operations, and anyone involved in the software delivery process. Learn from industry experts about the latest DevOps practices, tools, and culture. Participate in sessions on continuous integration, containerization, and site reliability engineering. Experience hands-on workshops on infrastructure as code, microservices architecture, and collaboration techniques. Network with peers and accelerate your DevOps journey at DevOps Days."
+    ],
+    [
+        "NextGen Data Science Conference: The Future of Data-Driven Decisions",
+        "Data enthusiasts, rejoice! The NextGen Data Science Conference is here to explore the innovative ways data is transforming businesses and society. This event is the perfect meeting ground for data scientists, analysts, and business leaders. Immerse yourself in talks about big data analytics, the evolution of data warehousing, and the impact of data on customer experience. Engage in discussions about ethical data usage, privacy concerns, and data governance. Connect with industry pioneers and discover how to leverage data for smarter decisions at the NextGen Data Science Conference."
+    ]
+];
+
+$event0 = new \App\Entities\Event($eventData[0][0], $eventData[0][1]);
+$event1 = new \App\Entities\Event($eventData[1][0], $eventData[1][1]);
+$event2 = new \App\Entities\Event($eventData[2][0], $eventData[2][1]);
+$event3 = new \App\Entities\Event($eventData[3][0], $eventData[3][1]);
+$event4 = new \App\Entities\Event($eventData[4][0], $eventData[4][1]);
+$event5 = new \App\Entities\Event($eventData[5][0], $eventData[5][1]);
+
+$entityManager->persist($event0);
+$entityManager->persist($event1);
+$entityManager->persist($event2);
+$entityManager->persist($event3);
+$entityManager->persist($event4);
+$entityManager->persist($event5);
+$entityManager->flush();
+
 echo "Done.\nAdding ...";
