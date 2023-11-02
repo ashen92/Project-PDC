@@ -32,4 +32,14 @@ class InternshipService implements IInternshipService
         return $this->entityManager->getRepository(Internship::class)->getInternshipById($id);
     }
 
+    public function deleteInternshipById(int $id): void
+    {
+        $queryBuilder = $this->entityManager->createQueryBuilder();
+        $queryBuilder
+            ->delete()
+            ->from("App\Entities\Internship", "i")
+            ->where("i.id = :id")
+            ->setParameter("id", $id);
+        $queryBuilder->getQuery()->execute();
+    }
 }

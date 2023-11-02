@@ -157,4 +157,11 @@ class InternshipProgramController extends PageControllerBase
     {
         return $this->render("internship-program/internship/add.html", ["section" => "internships"]);
     }
+
+    #[Route("/internship/{id}/delete", name: "delete")]
+    public function delete(Request $request, int $id): Response
+    {
+        $this->internshipService->deleteInternshipById($id);
+        return $this->redirect("/internship-program/internships");
+    }
 }

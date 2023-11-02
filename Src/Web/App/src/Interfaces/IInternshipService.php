@@ -9,4 +9,5 @@ interface IInternshipService
 {
     public function getInternships(): array;
     public function getInternshipById(int $id): Internship|null;
+    public function deleteInternshipById(int $id): void;
 }
