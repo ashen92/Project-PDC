@@ -180,10 +180,10 @@ $internData = [
 $internshipCycle = new InternshipCycle();
 
 $internship0 = new Internship($internData[0][0], $internData[0][1], $user7, $internshipCycle);
-$internship1 = new Internship($internData[1][0], $internData[0][1], $user7, $internshipCycle);
-$internship2 = new Internship($internData[2][0], $internData[0][1], $user7, $internshipCycle);
-$internship3 = new Internship($internData[3][0], $internData[0][1], $user7, $internshipCycle);
-$internship4 = new Internship($internData[4][0], $internData[0][1], $user7, $internshipCycle);
+$internship1 = new Internship($internData[1][0], $internData[1][1], $user7, $internshipCycle);
+$internship2 = new Internship($internData[2][0], $internData[2][1], $user7, $internshipCycle);
+$internship3 = new Internship($internData[3][0], $internData[3][1], $user7, $internshipCycle);
+$internship4 = new Internship($internData[4][0], $internData[4][1], $user7, $internshipCycle);
 
 $entityManager->persist($internshipCycle);
 $entityManager->persist($internship0);

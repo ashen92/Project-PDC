@@ -15,7 +15,8 @@ class InternshipRepository extends EntityRepository
     {
         $queryBuilder = $this->createQueryBuilder("i");
         $queryBuilder
-            ->select("i");
+            ->select("i.id, i.title, i.description, u.firstName")
+            ->leftJoin("i.user", "u");
         return $queryBuilder->getQuery()->getArrayResult();
     }
 

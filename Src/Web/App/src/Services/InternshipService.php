@@ -32,8 +32,4 @@ class InternshipService implements IInternshipService
         return $this->entityManager->getRepository(Internship::class)->getInternshipById($id);
     }
 
-    public function invalidateInternshipsCache(): void
-    {
-        $this->cache->delete("internships");
-    }
 }
