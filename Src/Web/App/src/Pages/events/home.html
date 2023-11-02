@@ -20,11 +20,13 @@
         <div>
             {{ event.description}}
         </div>
+        {% if "ROLE_COORDINATOR" in user_roles %}
         <div class="actions">
             <a href="/events/{{ event.id }}/delete">
                 <input type="button" value="Remove">
             </a>
         </div>
+        {% endif %}
     </div>
     {% endfor %}
 </div>
