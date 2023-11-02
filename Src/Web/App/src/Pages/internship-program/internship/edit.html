@@ -12,10 +12,12 @@
     <div class="title">
         Modify internship
     </div>
-    <form>
+    <form action="/internship-program/internship/{{ internship.getId }}/edit" method="POST">
+        <input type="hidden" name="id" value="{{ internship.getId }}">
+
         <div class="field">
             <label for="title">Title</label>
-            <input name="title" id="title" type="text" maxlength="75" placeholder="Add a title">
+            <input name="title" id="title" type="text" maxlength="75" value="{{ internship.getTitle }}">
         </div>
 
         <div class="field">
@@ -23,12 +25,12 @@
             {% include "shared/textarea.html" with {
             "name": "description",
             "maxlength": "2000",
-            "placeholder": "Put your description here."
+            "value": internship.getDescription
             } %}
         </div>
 
         <div class="actions">
-            <input type="submit" value="Add">
+            <input type="submit" value="Modify">
         </div>
     </form>
 </div>

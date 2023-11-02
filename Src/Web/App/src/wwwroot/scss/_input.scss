@@ -90,6 +90,7 @@ textarea {
     font-size: var.$input-font-size;
     padding: var.$textarea-padding;
     width: 100%;
-    resize: none;
+    height: 350px;
+    resize: vertical;
     border: none;
 }
