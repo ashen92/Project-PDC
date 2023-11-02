@@ -1,26 +1,31 @@
-{% extends "shared/layout.html" %}
+{% extends "shared/left-nav-layout.html" %}
 
-{% block title %}Applicants{% endblock %}
+{% block title %}Create Internship{% endblock %}
+
+{% block left_nav %}
+{% include "internship-program/left-nav.html" %}
+{% endblock %}
 
 {% block content %}
 
-<div class="fs-3 fw-6 pb-20">
-    Showing Applicants for the (Internship Id {{ id }})
-</div>
-<div class="row-right mb-20 pe-10">
-    <input type="button" value="Download All">
-</div>
-{% for item in applicants %}
-<div class="row-cols-2 mb-5">
-    <div>
-        {{ item }}
+<div class="content">
+    <div class="title">
+        Showing Applicants
     </div>
-    <div>
-        <a href="">
-            <input type="button" value="Download">
-        </a>
+    <div class="row-right mb-20 pe-10">
+        <input type="button" value="Download All">
     </div>
+    {% for item in applicants %}
+    <div class="row-cols-2 mb-5">
+        <div>
+            {{ item }}
+        </div>
+        <div>
+            <a href="">
+                <input type="button" value="Download">
+            </a>
+        </div>
+    </div>
+    {% endfor %}
 </div>
-{% endfor %}
-
 {% endblock %}
