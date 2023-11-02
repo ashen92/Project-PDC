@@ -1,29 +1,26 @@
-{% extends "shared/layout.html" %}
+{% extends "shared/left-nav-layout.html" %}
 
 {% block title %}Events{% endblock %}
 
+{% block left_nav %}
+{% include "events/left-nav.html" %}
+{% endblock %}
+
 {% block content %}
 
-
-    <div class="fs-1 fw-6 p-30 text-centre">Event Scheduling Form</div>
-    
-    
-        <form class="w-96 mx-auto border-1 shadow-3 rounded-2 px-20 py-20" action="/events/create" method="post">
-    
-    
-    
+<div class="content">
+    <div class="title">
+        Create an event
+    </div>
+        <form class="w-96 mx-auto" action="/events/create" method="post">
                 <div class="field">
                     <label for="eventTitle">Event Title:</label>
                     <input type="text" id="eventTitle" name="eventTitle" required>
-                </div>
-    
-    
+                </div>  
                 <div class="field">
                     <label for="eventDate">Event Date:</label>
                     <input type="date" id="eventDate" name="eventDate" required>
-                </div>
-    
-    
+                </div>       
                 <div class="field">
                     <label for="startTime">Start Time:</label>
                     <input type="time" id="startTime" name="startTime" required>
@@ -55,6 +52,7 @@
     
             <div class="actions"><input type="submit" value="Schedule Event"></div>
         </form>
+</div>
 </div>
 
 

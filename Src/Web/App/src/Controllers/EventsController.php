@@ -23,12 +23,12 @@ class EventsController extends PageControllerBase
     #[Route(["", "/"], name: "home")]
     public function home(): Response
     {
-        return $this->render("events/events.html");
+        return $this->render("events/home.html");
     }
 
-    #[Route("/create", name: "create", methods: ["POST"])]
+    #[Route("/create", name: "create", methods: ["GET"])]
     public function create(Request $request): Response
     {
-        return $this->render("events/events.html");
+        return $this->render("events/create.html");
     }
 }
