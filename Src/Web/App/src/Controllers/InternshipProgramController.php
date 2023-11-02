@@ -152,10 +152,21 @@ class InternshipProgramController extends PageControllerBase
         return $this->render("internship-program/internship/edit.html", ["section" => "internships"]);
     }
 
-    #[Route("/internship/create", name: "add")]
+    #[Route("/internship/create", methods: ["GET"])]
     public function add(): Response
     {
         return $this->render("internship-program/internship/add.html", ["section" => "internships"]);
+    }
+
+    #[Route("/internship/create", methods: ["POST"])]
+    public function addPost(Request $request): Response
+    {
+        $this->internshipService->addInternship(
+            $request->get("title"),
+            $request->get("description"),
+            (int) $request->getSession()->get("user_id")
+        );
+        return $this->redirect("/internship-program/internships");
     }
 
     #[Route("/internship/{id}/delete", name: "delete")]

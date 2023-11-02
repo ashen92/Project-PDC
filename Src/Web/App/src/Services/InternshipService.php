@@ -42,4 +42,13 @@ class InternshipService implements IInternshipService
             ->setParameter("id", $id);
         $queryBuilder->getQuery()->execute();
     }
+
+    public function addInternship(string $title, string $description, int $userId): void
+    {
+        $user = $this->entityManager->getReference("App\Entities\User", $userId);
+        $internshipCycle = $this->entityManager->getReference("App\Entities\InternshipCycle", 1);
+        $internship = new Internship($title, $description, $user, $internshipCycle);
+        $this->entityManager->persist($internship);
+        $this->entityManager->flush();
+    }
 }

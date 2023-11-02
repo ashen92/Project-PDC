@@ -10,4 +10,5 @@ interface IInternshipService
     public function getInternships(): array;
     public function getInternshipById(int $id): Internship|null;
     public function deleteInternshipById(int $id): void;
+    public function addInternship(string $title, string $description, int $userId): void;
 }
