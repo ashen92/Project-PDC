@@ -1,19 +1,13 @@
 @use "var";
 @use "mixins";
 
-a {
-    &>input[type="button"] {
-        min-width: 100%;
-    }
-}
-
 label {
     display: block;
 }
 
 input {
     display: block;
-    font-size: var.$input-font-size;
+    font-size: var.$btn-font-size;
 
     &[type="text"],
     &[type="email"],
@@ -50,16 +44,6 @@ input {
             $active-color-bg: var.$colors-btn-secondary-bg-act,
             $active-border: var.$btn-secondary-border, );
     }
-
-    &[type="button"] {
-        @include mixins.button();
-    }
-}
-
-button {
-    display: block;
-    font-size: var.$input-font-size;
-    @include mixins.button();
 }
 
 .checkbox {
@@ -82,13 +66,13 @@ select {
     display: block;
     width: 100%;
     padding: var.$text-field-padding;
-    font-size: var.$input-font-size;
+    font-size: var.$btn-font-size;
     cursor: pointer;
 }
 
 textarea {
     font-family: inherit;
-    font-size: var.$input-font-size;
+    font-size: var.$btn-font-size;
     padding: var.$textarea-padding;
     width: 100%;
     height: 350px;

@@ -13,18 +13,14 @@
         Showing Applicants
     </div>
     <div class="row-right mb-20 pe-10">
-        <input type="button" value="Download All">
+        <a class="btn btn-primary" role="button" href="">Download all</a>
     </div>
     {% for item in applicants %}
     <div class="row-cols-2 mb-5">
         <div>
             {{ item }}
         </div>
-        <div>
-            <a href="">
-                <input type="button" value="Download">
-            </a>
-        </div>
+        <a class="btn btn-primary" role="button" href="">Download</a>
     </div>
     {% endfor %}
 </div>

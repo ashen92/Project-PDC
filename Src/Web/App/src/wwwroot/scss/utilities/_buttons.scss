@@ -1,0 +1,30 @@
+@use "../var";
+
+.btn {
+    display: inline-block;
+    line-height: 1;
+    font-size: var.$btn-font-size;
+    cursor: pointer;
+    padding: var.$btn-padding;
+    border: none;
+    border-radius: var.$btn-border-radius;
+    transition: var.$btn-transition;
+
+    &.btn-primary {
+        color: var.$colors-btn-primary;
+        background-color: var.$colors-btn-primary-bg;
+        border: var.$btn-primary-border;
+
+        &:hover {
+            color: var.$colors-btn-primary;
+            background-color: var.$colors-btn-primary-bg-hov;
+            border: var.$btn-primary-bg-hov-border;
+        }
+
+        &:active {
+            color: var.$colors-btn-primary;
+            background-color: var.$colors-btn-primary-bg-act;
+            border: var.$btn-primary-bg-act-border;
+        }
+    }
+}

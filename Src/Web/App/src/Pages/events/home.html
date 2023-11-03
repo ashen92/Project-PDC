@@ -22,11 +22,9 @@
         </div>
         {% if "ROLE_COORDINATOR" in user_roles %}
         <div class="actions">
-            <a href="/events/edit/{{event.id}}">
-                <input type="button" value="Modify">
-            </a>
+            <a class="btn btn-primary" role="button" href="/events/edit/{{event.id}}">Modify</a>
             <form action="/events/delete/{{event.id}}" method="POST">
-                <button>Remove</button>
+                <button class="btn btn-primary">Remove</button>
             </form>
         </div>
         {% endif %}

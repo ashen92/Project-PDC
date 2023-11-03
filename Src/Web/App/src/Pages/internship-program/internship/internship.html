@@ -18,17 +18,13 @@
     <form class="mt-50">
         <div class="actions">
             {% if ("ROLE_PARTNER" in user_roles) or ("ROLE_ADMIN" in user_roles) %}
-            <a href="{{ id }}/applicants">
-                <input type="button" value="Applicants">
-            </a>
-            <a href="{{ id }}/edit">
-                <input type="button" value="Edit">
-            </a>
-            <input type="button" value="Remove">
+            <a class="btn btn-primary" role="button" href="{{ id }}/applicants">Applicants</a>
+            <a class="btn btn-primary" role="button" href="{{ id }}/edit">Edit</a>
+            <a class="btn btn-primary" role="button" href="{{ id }}/delete">Remove</a>
             {% endif %}
 
             {% if "ROLE_STUDENT" in user_roles %}
-            <input type="button" value="Apply">
+            <a class="btn btn-primary" role="button" href="">Apply</a>
             {% endif %}
         </div>
     </form>

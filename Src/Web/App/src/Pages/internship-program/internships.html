@@ -41,23 +41,15 @@
 
                 {% if ("ROLE_PARTNER" in user_roles) or ("ROLE_ADMIN" in user_roles) %}
                 <div class="actions">
-                    <a class="action" href="internship/{{ item.id }}/applicants">
-                        <input type="button" value="Applicants">
-                    </a>
-                    <a class="action" href="internship/{{ item.id }}/edit">
-                        <input type="button" value="Edit">
-                    </a>
-                    <a class="action" href="internship/{{ item.id }}/delete">
-                        <input type="button" value="Remove">
-                    </a>
+                    <a class="btn btn-primary" role="button" href="internship/{{ item.id }}/applicants">Applicants</a>
+                    <a class="btn btn-primary" role="button" href="internship/{{ item.id }}/edit">Edit</a>
+                    <a class="btn btn-primary" role="button" href="internship/{{ item.id }}/delete">Remove</a>
                 </div>
                 {% endif %}
 
                 {% if "ROLE_STUDENT" in user_roles %}
                 <div class="actions">
-                    <a class="action" href="">
-                        <input type="button" value="Apply">
-                    </a>
+                    <a class="btn btn-primary" role="button" href="">Apply</a>
                 </div>
                 {% endif %}
             </div>
