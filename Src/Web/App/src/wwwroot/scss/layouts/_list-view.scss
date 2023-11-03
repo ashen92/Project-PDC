@@ -1,39 +1,59 @@
 @use "../var";
 
 .list-view {
-    display: grid;
-    // grid-template-columns: max-content auto;
-    grid-template-columns: 1fr;
-
     .filters {
-        min-width: 275px;
-        background-color: #ebebeb;
-        border: var.$border-1;
+        display: flex;
+        align-items: center;
+        background-color: #f0f0f0;
         border-radius: var.$rounded-1;
-        padding: 20px;
+        padding: 0.5rem 1.25rem;
+        margin-bottom: 1rem;
+        column-gap: 0.25rem;
 
         >.title {
-            font-weight: var.$fw-6;
-            font-size: var.$fs-5;
-            margin-bottom: 15px;
-        }
-
-        >.category {
-            margin-bottom: 15px;
-        }
-
-        .checkbox {
             display: flex;
-            align-items: flex-end;
+            align-items: center;
+            margin-right: auto;
+            font-weight: var.$fw-6;
+            color: #444444;
+
+            >.icon {
+                padding-top: 0.1rem;
+                width: 1.5rem;
+                height: 1.5rem;
+                margin-right: 0.4rem;
+            }
+        }
+
+        >.item {
+            display: flex;
+            align-items: center;
+            padding: 0.4rem 0.65rem 0.4rem 0.95rem;
+            border-radius: var.$rounded-1;
+            user-select: none;
+            transition: background 80ms linear;
+
+            >.icon {
+                width: 1.575rem;
+                height: 1.575rem;
+                margin-left: 0.2rem;
+            }
+
+            &:hover {
+                cursor: pointer;
+                background-color: #dad8d8;
+            }
+
+            &:active {
+                background-color: #c8c6c6;
+            }
         }
     }
 
     .list {
-        padding-left: 30px;
-
         .item {
-            padding: 20px 25px;
-            margin-bottom: 10px;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
             border: var.$border-1;
             border-radius: var.$rounded-1;
 
@@ -55,7 +75,7 @@
                 display: flex;
                 justify-content: flex-end;
                 column-gap: 0.25rem;
-                padding-top: 5px;
+                padding-top: 1rem;
             }
         }
     }

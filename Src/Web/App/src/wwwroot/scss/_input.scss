@@ -19,6 +19,7 @@ input {
     &[type="email"],
     &[type="password"] {
         padding: var.$text-field-padding;
+        outline: none;
     }
 
     &[type="date"] {
