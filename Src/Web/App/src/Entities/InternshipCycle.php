@@ -19,9 +19,6 @@ class InternshipCycle
     #[ORM\OneToMany(targetEntity: Internship::class, mappedBy: 'internshipCycle')]
     private Collection $internhips;
 
-    #[ORM\OneToMany(targetEntity: JobRole::class, mappedBy: 'internshipCycle')]
-    private Collection $jobRoles;
-
     public function __construct()
     {
         $this->internhips = new ArrayCollection();
