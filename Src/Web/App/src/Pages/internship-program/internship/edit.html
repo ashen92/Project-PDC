@@ -22,7 +22,7 @@
 
         <div class="field">
             <label for="description">Description</label>
-            {% include "shared/textarea.html" with {
+            {% include "shared/text-editor.html" with {
             "name": "description",
             "maxlength": "2000",
             "value": internship.getDescription
