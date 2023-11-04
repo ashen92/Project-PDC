@@ -8,8 +8,8 @@ pool:
 steps:
 - script: |
     git remote set-url origin https://$AZTOKEN@dev.azure.com/ashenhasanka12/GroupProject/_git/GroupProject
-    git remote add github https://$GHTOKEN:@github.com/ashen92/GroupProject.git
     git fetch
+    git remote add github https://$GHTOKEN:@github.com/ashen92/GroupProject.git
     git checkout main
     git push -f github main
     git checkout dev
