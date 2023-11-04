@@ -81,4 +81,9 @@ class User
     {
         $this->internshipsCreated[] = $internship;
     }
+
+    public function addToInternshipsApplied(Internship $internship): void
+    {
+        $this->internshipsApplied[] = $internship;
+    }
 }

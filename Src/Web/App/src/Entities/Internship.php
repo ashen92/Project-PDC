@@ -71,4 +71,10 @@ class Internship
     {
         $this->description = $description;
     }
+
+    public function addApplicant(User $user): void
+    {
+        $this->applicants[] = $user;
+        $user->addToInternshipsApplied($this);
+    }
 }

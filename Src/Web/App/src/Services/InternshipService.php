@@ -64,4 +64,12 @@ class InternshipService implements IInternshipService
         $internship->setDescription($description);
         $this->entityManager->flush();
     }
+
+    public function applyToInternship(int $internshipId, int $userId): void
+    {
+        $internship = $this->entityManager->getReference("App\Entities\Internship", $internshipId);
+        $user = $this->entityManager->getReference("App\Entities\User", $userId);
+        $internship->addApplicant($user);
+        $this->entityManager->flush();
+    }
 }

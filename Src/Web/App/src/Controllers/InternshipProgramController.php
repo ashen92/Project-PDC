@@ -6,6 +6,7 @@ namespace App\Controllers;
 use App\Entities\Company;
 use App\Interfaces\IInternshipService;
 use App\Interfaces\IUserService;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -130,7 +131,7 @@ class InternshipProgramController extends PageControllerBase
     }
 
     #[Route("/internship/{id}", name: "internship", requirements: ['id' => '\d+'])]
-    public function internship(int $id): Response
+    public function internship(int $id): Response|RedirectResponse
     {
         $internship = $this->internshipService->getInternshipById($id);
         if ($internship) {
@@ -172,7 +173,7 @@ class InternshipProgramController extends PageControllerBase
     }
 
     #[Route("/internship/{id}/edit", name: "edit_post", methods: ["POST"])]
-    public function editPost(Request $request): Response
+    public function editPost(Request $request): RedirectResponse
     {
         $this->internshipService->updateInternship(
             (int) $request->get("id"),
@@ -189,7 +190,7 @@ class InternshipProgramController extends PageControllerBase
     }
 
     #[Route("/internship/create", name: "add_post", methods: ["POST"])]
-    public function addPost(Request $request): Response
+    public function addPost(Request $request): RedirectResponse
     {
         $this->internshipService->addInternship(
             $request->get("title"),
@@ -200,9 +201,16 @@ class InternshipProgramController extends PageControllerBase
     }
 
     #[Route("/internship/{id}/delete", name: "delete")]
-    public function delete(Request $request, int $id): Response
+    public function delete(Request $request, int $id): RedirectResponse
     {
         $this->internshipService->deleteInternshipById($id);
+        return $this->redirect("/internship-program/internships");
+    }
+
+    #[Route("/internship/{id}/apply", name: "apply")]
+    public function apply(Request $request, int $id): Response
+    {
+        $this->internshipService->applyToInternship($id, (int) $request->getSession()->get("user_id"));
         return $this->redirect("/internship-program/internships");
     }
 }
