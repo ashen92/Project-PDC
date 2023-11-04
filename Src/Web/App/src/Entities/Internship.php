@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Entities;
 
 use App\Repositories\InternshipRepository;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: InternshipRepository::class)]
@@ -21,20 +22,28 @@ class Internship
     #[ORM\Column(type: "text")]
     private string $description;
 
-    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'internshipsCreated')]
-    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id')]
-    private User $user;
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: "internshipsCreated")]
+    #[ORM\JoinColumn(name: "user_id", referencedColumnName: "id")]
+    private User $owner;
 
-    #[ORM\ManyToOne(targetEntity: InternshipCycle::class, inversedBy: 'internships')]
-    #[ORM\JoinColumn(name: 'internshipcycle_id', referencedColumnName: 'id')]
+    /**
+     * Many Internships have Many Users who applied to it.
+     * @var Collection<int, User>
+     */
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: "internshipsApplied")]
+    #[ORM\JoinTable(name: "internships_applicants")]
+    private Collection $applicants;
+
+    #[ORM\ManyToOne(targetEntity: InternshipCycle::class, inversedBy: "internships")]
+    #[ORM\JoinColumn(name: "internshipcycle_id", referencedColumnName: "id")]
     private InternshipCycle $internshipCycle;
 
-    public function __construct(string $title, string $description, User $user, InternshipCycle $internshipCycle)
+    public function __construct(string $title, string $description, User $owner, InternshipCycle $internshipCycle)
     {
         $this->title = $title;
         $this->description = $description;
-        $this->user = $user;
-        $user->addToInternshipsCreated($this);
+        $this->owner = $owner;
+        $owner->addToInternshipsCreated($this);
         $this->internshipCycle = $internshipCycle;
     }
 

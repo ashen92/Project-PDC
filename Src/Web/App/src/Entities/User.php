@@ -33,8 +33,15 @@ class User
     #[ORM\ManyToMany(targetEntity: Group::class, mappedBy: "users")]
     private Collection $groups;
 
-    #[ORM\OneToMany(targetEntity: Internship::class, mappedBy: 'partner')]
+    #[ORM\OneToMany(targetEntity: Internship::class, mappedBy: "owner")]
     private Collection $internshipsCreated;
+
+    /**
+     * Many Users apply to Many Internships.
+     * @var Collection<int, Internship>
+     */
+    #[ORM\ManyToMany(targetEntity: Internship::class, mappedBy: "applicants")]
+    private Collection $internshipsApplied;
 
     public function __construct(string $email, string $firstName, string $passwordHash)
     {

@@ -16,7 +16,7 @@ class InternshipRepository extends EntityRepository
         $queryBuilder = $this->createQueryBuilder("i");
         $queryBuilder
             ->select("i.id, i.title, i.description, u.firstName")
-            ->leftJoin("i.user", "u");
+            ->leftJoin("i.owner", "u");
         return $queryBuilder->getQuery()->getArrayResult();
     }
 
@@ -25,7 +25,7 @@ class InternshipRepository extends EntityRepository
         $queryBuilder = $this->createQueryBuilder("i");
         $queryBuilder
             ->select("i.id, i.title, i.description, u.firstName")
-            ->leftJoin("i.user", "u")
+            ->leftJoin("i.owner", "u")
             ->where("u.id = :userId")
             ->setParameter("userId", $userId);
         return $queryBuilder->getQuery()->getArrayResult();
