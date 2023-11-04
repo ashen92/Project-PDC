@@ -113,7 +113,11 @@ $container->register(
     "App\Controllers\InternshipProgramController",
     \App\Controllers\InternshipProgramController::class
 )
-    ->setArguments([new Reference("twig"), new Reference("service.internship")]);
+    ->setArguments([
+        new Reference("twig"),
+        new Reference("service.internship"),
+        new Reference("service.user")
+    ]);
 
 $container->register(
     "App\Controllers\UserController",

@@ -4,9 +4,8 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Entities\Company;
-use App\Entities\Internship;
-use App\Entities\JobRole;
 use App\Interfaces\IInternshipService;
+use App\Interfaces\IUserService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,12 +15,15 @@ use Twig\Environment;
 class InternshipProgramController extends PageControllerBase
 {
     private IInternshipService $internshipService;
+    private IUserService $userService;
 
     public function __construct(
         Environment $twig,
-        IInternshipService $internshipService
+        IInternshipService $internshipService,
+        IUserService $userService
     ) {
         $this->internshipService = $internshipService;
+        $this->userService = $userService;
         parent::__construct($twig);
     }
 
@@ -43,7 +45,6 @@ class InternshipProgramController extends PageControllerBase
             ["id" => "3", "name" => "Web Developer"]
         ];
 
-
         $companies = [
             new Company(1, "LSEG"),
             new Company(2, "WSO2"),
@@ -57,13 +58,10 @@ class InternshipProgramController extends PageControllerBase
             "Rejected"
         ];
 
-        $internships = $this->internshipService->getInternships();
-
         return [
             "jobRoles" => $jobRoles,
             "companies" => $companies,
-            "internshipStatus" => $internshipStatus,
-            "internships" => $internships
+            "internshipStatus" => $internshipStatus
         ];
     }
 
@@ -110,15 +108,21 @@ class InternshipProgramController extends PageControllerBase
 
         $queryParams = $request->query->all();
 
+        $internships = [];
+
+        if ($this->userService->hasRole($request->getSession()->get("user_id"), "ROLE_PARTNER")) {
+            $internships = $this->internshipService->getInternshipsByUserId($request->getSession()->get("user_id"));
+        } else {
+            $internships = $this->internshipService->getInternships();
+        }
+
         return $this->render(
             "internship-program/internships.html",
             array_merge(
                 ["section" => "internships"],
-                ["internships" => $data["internships"]],
-                ["jobRoles" => $data["jobRoles"]],
+                ["internships" => $internships],
                 ["companies" => $data["companies"]],
                 ["internshipStatus" => $data["internshipStatus"]],
-                ["queryJobRoles" => $queryParams["Job_Role"] ?? []],
                 ["queryCompanies" => $queryParams["Company"] ?? []],
                 ["queryInternshipStatus" => $queryParams["Internship_Status"] ?? []],
             )

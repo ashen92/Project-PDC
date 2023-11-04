@@ -27,6 +27,11 @@ class InternshipService implements IInternshipService
         // });
     }
 
+    public function getInternshipsByUserId(int $userId): array
+    {
+        return $this->entityManager->getRepository(Internship::class)->getInternshipsByUserId($userId);
+    }
+
     public function getInternshipById(int $id): Internship|null
     {
         return $this->entityManager->getRepository(Internship::class)->getInternshipById($id);

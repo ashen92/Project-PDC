@@ -20,6 +20,17 @@ class InternshipRepository extends EntityRepository
         return $queryBuilder->getQuery()->getArrayResult();
     }
 
+    public function getInternshipsByUserId(int $userId): array
+    {
+        $queryBuilder = $this->createQueryBuilder("i");
+        $queryBuilder
+            ->select("i.id, i.title, i.description, u.firstName")
+            ->leftJoin("i.user", "u")
+            ->where("u.id = :userId")
+            ->setParameter("userId", $userId);
+        return $queryBuilder->getQuery()->getArrayResult();
+    }
+
     public function getInternshipById(int $id): Internship|null
     {
 
