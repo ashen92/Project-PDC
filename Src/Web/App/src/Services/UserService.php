@@ -40,10 +40,13 @@ class UserService implements IUserService
         $this->cache->delete("user_roles_" . $userId);
     }
 
-	public function hasRequiredRole(int $userId, string $requiredRole): bool {
-        if ($requiredRole == "") return true;
+    public function hasRole(int $userId, string $role): bool
+    {
+        if ($role == "")
+            return true;
         $roles = $this->getUserRoles($userId);
-        if (in_array($requiredRole, $roles)) return true;
+        if (in_array($role, $roles))
+            return true;
         return false;
-	}
+    }
 }
