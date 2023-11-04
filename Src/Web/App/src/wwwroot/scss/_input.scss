@@ -70,19 +70,30 @@ select {
     cursor: pointer;
 }
 
-textarea {
-    font-family: inherit;
-    font-size: var.$btn-font-size;
-    padding: var.$textarea-padding;
-    width: 100%;
-    height: 350px;
-    resize: vertical;
-    border: none;
-}
-
 .actions {
     display: flex;
     justify-content: flex-end;
     column-gap: 0.5rem;
     padding-top: 0.95rem;
+}
+
+#text-editor {
+    font-size: var.$text-field-font-size;
+}
+
+.formatted-text-area {
+    line-height: 1.42;
+    padding: 1.2rem 1.5rem;
+    text-align: left;
+    word-wrap: break-word;
+
+    ul {
+        margin-left: 1.6rem;
+        padding-left: 1.125rem;
+    }
+
+    ol {
+        margin-left: 1.6rem;
+        padding-left: 1.125rem;
+    }
 }

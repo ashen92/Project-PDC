@@ -1,21 +1,23 @@
-const jobRoleSelect = document.getElementById("jobRoleSelect");
-const companySelect = document.getElementById("companySelect");
-const jobListings = document.getElementById("jobListings");
+const parentFilters = document.getElementById("filters");
 
-function filterJobListings() {
-    const selectedRoles = Array.from(jobRoleSelect.selectedOptions, option => option.value);
-    const selectedCompanies = Array.from(companySelect.selectedOptions, option => option.value);
+parentFilters.addEventListener("click", function (event) {
+    let targetElement = event.target;
 
-    jobListings.querySelectorAll(".item").forEach(listing => {
-        const roles = listing.getAttribute("data-roles").split(",");
-        const companies = listing.getAttribute("data-companies").split(",");
+    while (targetElement !== null && !targetElement.matches("input[type='checkbox']")) {
+        targetElement = targetElement.parentElement;
+    }
 
-        const roleMatched = selectedRoles.length === 0 || roles.some(role => selectedRoles.includes(role));
-        const companyMatched = selectedCompanies.length === 0 || companies.some(company => selectedCompanies.includes(company));
+    if (targetElement) {
+        const category = targetElement.closest(".data-category").getAttribute("data-category");
 
-        listing.style.display = roleMatched && companyMatched ? "block" : "none";
-    });
-}
+        const params = new URLSearchParams(window.location.search);
 
-jobRoleSelect.addEventListener("change", filterJobListings);
-companySelect.addEventListener("change", filterJobListings);
+        if (targetElement.checked) {
+            params.append(`${category}[]`, targetElement.value);
+        } else {
+            params.delete(`${category}[]`, targetElement.value);
+        }
+
+        window.location.href = `${window.location.pathname}?${params.toString()}`;
+    }
+});

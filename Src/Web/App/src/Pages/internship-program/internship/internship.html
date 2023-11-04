@@ -12,8 +12,8 @@
     <div class="title">
         {{ internship.getTitle }}
     </div>
-    <div>
-        {{ internship.getDescription }}
+    <div class="formatted-text-area">
+        {{ internship.getDescription|raw }}
     </div>
     <form class="mt-50">
         <div class="actions">

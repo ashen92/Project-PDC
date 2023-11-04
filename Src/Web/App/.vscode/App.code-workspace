@@ -50,7 +50,7 @@
 			"editor.defaultFormatter": "DEVSENSE.phptools-vscode"
 		},
 		"[javascript]": {
-			"editor.defaultFormatter": "dbaeumer.vscode-eslint"
+			"editor.defaultFormatter": "vscode.typescript-language-features"
 		},
 		"[css]": {
 			"editor.defaultFormatter": "vscode.css-language-features"
