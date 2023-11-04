@@ -2,7 +2,7 @@ import Quill from "./quill.min.js";
 
 var container = document.getElementById("text-editor-container");
 
-var toolbarOptions = [["bold", "italic"], [{ "list": "ordered" }, { "list": "bullet" }]];
+var toolbarOptions = [["bold", "italic"], [{ "list": "bullet" }, { "list": "ordered" }]];
 var quill = new Quill("#text-editor", {
     formats: ["bold", "italic", "list", "bullet"],
     modules: {

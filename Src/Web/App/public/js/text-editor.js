@@ -5570,7 +5570,7 @@
   // src/wwwroot/js/text-editor.js
   var import_quill_min = __toESM(require_quill_min());
   var container = document.getElementById("text-editor-container");
-  var toolbarOptions = [["bold", "italic"], [{ "list": "ordered" }, { "list": "bullet" }]];
+  var toolbarOptions = [["bold", "italic"], [{ "list": "bullet" }, { "list": "ordered" }]];
   var quill = new import_quill_min.default("#text-editor", {
     formats: ["bold", "italic", "list", "bullet"],
     modules: {
