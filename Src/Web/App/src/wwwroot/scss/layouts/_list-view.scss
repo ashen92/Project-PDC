@@ -1,52 +1,102 @@
 @use "../var";
 
+$filter-bar-bg-color: #f0f0f0;
+$filter-bar-title-color: #444444;
+$search-bar-bg-color: #fdfdfd;
+$search-btn-bg-color: #d2d3d4;
+$filter-item-hover-bg-color: #dad8d8;
+$filter-item-active-bg-color: #c8c6c6;
+
 .list-view {
     .filters {
         display: flex;
-        align-items: center;
-        background-color: #f0f0f0;
+        column-gap: 0.3rem;
+        background-color: $filter-bar-bg-color;
         border-radius: var.$rounded-1;
-        padding: 0.5rem 1.25rem;
-        margin-bottom: 1rem;
-        column-gap: 0.25rem;
+        padding: 0.5rem 1rem;
+        margin-bottom: 1.5rem;
+
+        >* {
+            margin: auto 0;
+        }
 
         >.title {
-            display: flex;
-            align-items: center;
-            margin-right: auto;
             font-weight: var.$fw-6;
-            color: #444444;
+            color: $filter-bar-title-color;
 
-            >.icon {
-                padding-top: 0.1rem;
+            &::before {
+                content: url("/images/icons/filter-left.svg");
+                display: inline-block;
                 width: 1.5rem;
                 height: 1.5rem;
-                margin-right: 0.4rem;
+                margin-right: 0.5rem;
+                vertical-align: top;
+            }
+        }
+
+        >.search {
+            display: flex;
+            flex-grow: 1;
+            align-items: center;
+            min-height: 2.5rem;
+
+            padding-left: 1rem;
+            margin-left: 1.4rem;
+            margin-right: 4rem;
+
+            background-color: $search-bar-bg-color;
+            border-radius: var.$rounded-1;
+            border: 1px solid $filter-bar-bg-color;
+
+            &:hover {
+                border: 1px solid var.$colors-btn-primary-border;
+            }
+
+            >input[type="text"] {
+                outline: none;
+                border: none;
+                width: 100%;
+            }
+
+            &::before {
+                content: url("/images/icons/search.svg");
+                width: 1rem;
+                height: 1rem;
+            }
+
+            .btn-search {
+                align-self: stretch;
+                background-color: $search-btn-bg-color;
+
+                &:hover {
+                    background-color: var.$colors-btn-primary-bg;
+                    color: var.$colors-btn-primary;
+                }
             }
         }
 
         >.item {
-            display: flex;
-            align-items: center;
-            padding: 0.4rem 0.65rem 0.4rem 0.8rem;
             border-radius: var.$rounded-1;
             user-select: none;
             transition: background 80ms linear;
+            padding: 0.5rem 0.75rem 0.6rem 1.1rem;
 
-            >.icon {
+            &::after {
+                content: url("/images/icons/chevron-down.svg");
+                display: inline-block;
                 width: 1rem;
                 height: 1rem;
                 margin-left: 0.5rem;
-                padding-top: 0.1rem;
+                vertical-align: middle;
             }
 
             &:hover {
                 cursor: pointer;
-                background-color: #dad8d8;
+                background-color: $filter-item-hover-bg-color;
             }
 
             &:active {
-                background-color: #c8c6c6;
+                background-color: $filter-item-active-bg-color;
             }
         }
     }

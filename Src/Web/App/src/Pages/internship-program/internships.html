@@ -14,22 +14,20 @@
     </div>
     <div class="list-view">
         <div class="filters">
-            <div class="title">
-                <img class="icon" src="/images/icons/filter-left.svg" alt="Filter">
-                <div>Filter</div>
+            <div class="title">Filter</div>
+
+            <div class="search">
+                <input class="search" type="text" placeholder="Search">
+                <button class="btn btn-search" type="button">Search</button>
             </div>
-            <div class="item">
-                <div>Job Roles</div>
-                <img class="icon" src="/images/icons/chevron-down.svg" alt="Down Arrow">
-            </div>
-            <div class="item">
-                <div>Company</div>
-                <img class="icon" src="/images/icons/chevron-down.svg" alt="Down Arrow">
-            </div>
-            <div class="item">
-                <div>Status</div>
-                <img class="icon" src="/images/icons/chevron-down.svg" alt="Down Arrow">
-            </div>
+
+            {% if ("ROLE_ADMIN" in user_roles) or ("ROLE_STUDENT" in user_roles) %}
+            <div class="item">Company</div>
+            {% endif %}
+
+            {% if ("ROLE_ADMIN" in user_roles) or ("ROLE_PARTNER" in user_roles) %}
+            <div class="item">Status</div>
+            {% endif %}
         </div>
         <div class="list">
             {% for item in internships %}

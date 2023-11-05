@@ -12,6 +12,12 @@
     box-sizing: inherit;
 }
 
+::before,
+::after {
+    box-sizing: inherit;
+    line-height: 1;
+}
+
 html {
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     box-sizing: border-box;
