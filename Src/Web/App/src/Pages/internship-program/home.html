@@ -14,7 +14,7 @@
     </div>
     <div>
 
-        {% if "ROLE_COORDINATOR" in user_roles %}
+        {% if "ROLE_ADMIN" in user_roles %}
         <div class="row-cols-2">
             <div>
                 Create new internship cycle
@@ -23,7 +23,7 @@
         </div>
         {% endif %}
 
-        {% if "ROLE_COORDINATOR" in user_roles %}
+        {% if "ROLE_ADMIN" in user_roles %}
         <div class="row-cols-2">
             <div>
                 View current internship cycle

@@ -3,7 +3,7 @@
         Events
     </a>
 
-    {% if "ROLE_COORDINATOR" in user_roles %}
+    {% if "ROLE_ADMIN" in user_roles %}
     <a class="nav-link {% if section == 'create' %} active{% endif %}" href="/events/create">
         Create an event
     </a>

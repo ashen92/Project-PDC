@@ -3,7 +3,7 @@
         Internship Program
     </a>
 
-    {% if "ROLE_COORDINATOR" in user_roles or "ROLE_PARTNER" in user_roles %}
+    {% if "ROLE_ADMIN" in user_roles or "ROLE_PARTNER" in user_roles %}
     <a class="nav-link {% if section == 'internships' %} active{% endif %}" href="/internship-program/internships">
         Internships
     </a>
@@ -15,7 +15,7 @@
     </a>
     {% endif %}
 
-    {% if "ROLE_COORDINATOR" in user_roles %}
+    {% if "ROLE_ADMIN" in user_roles %}
     <a class="nav-link {% if section == 'monitoring' %} active{% endif %}" href="/internship-program/monitoring">
         Monitoring
     </a>

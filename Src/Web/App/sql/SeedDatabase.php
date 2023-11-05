@@ -25,6 +25,9 @@ $user4 = new User("5@mail.com", "Root", $passwordHash);
 $user5 = new User("6@mail.com", "Head", $passwordHash);
 $user6 = new User("partner@mail.com", "Apple", $passwordHash);
 $user7 = new User("8@mail.com", "Orange", $passwordHash);
+$user8 = new User("9@mail.com", "Willey", $passwordHash);
+$user9 = new User("10@mail.com", "Wood", $passwordHash);
+$user10 = new User("11@mail.com", "Cummings", $passwordHash);
 
 $entityManager->persist($user);
 $entityManager->persist($user1);
@@ -34,6 +37,9 @@ $entityManager->persist($user4);
 $entityManager->persist($user5);
 $entityManager->persist($user6);
 $entityManager->persist($user7);
+$entityManager->persist($user8);
+$entityManager->persist($user9);
+$entityManager->persist($user10);
 $entityManager->flush();
 
 echo "Done.\nAdding groups...";
