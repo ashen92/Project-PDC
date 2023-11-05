@@ -1,15 +1,19 @@
 @use "../var";
 @use "../mixins";
 
+.auth-box-container {
+    display: grid;
+    grid-template-columns: max-content auto;
+    margin-left: 7rem;
+}
+
 .auth-box {
     padding: 1.5625rem;
     max-width: 25rem;
-    margin: 0 auto;
+    margin: 0 2rem;
 
     @include mixins.media-breakpoint-up(sm) {
         padding: 3.123rem;
-        border: var.$border-1;
-        border-radius: var.$rounded-2;
     }
 
     >.title {
@@ -25,5 +29,17 @@
     >.form-wrapper {
         margin: 0 auto;
         max-width: 18rem;
+    }
+}
+
+.logo-container {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+
+    >.logo {
+        width: 350px;
+        height: 350px;
+        border-radius: 175px;
     }
 }
