@@ -28,16 +28,6 @@ class InternshipProgramController extends PageControllerBase
         parent::__construct($twig);
     }
 
-    protected function getSectionName(): string
-    {
-        return "Internship Program";
-    }
-
-    protected function getSectionURL(): string
-    {
-        return "/internship-program";
-    }
-
     private function tempGetInternshipsData()
     {
         $jobRoles = [

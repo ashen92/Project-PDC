@@ -22,16 +22,6 @@ class AuthenticationController extends PageControllerBase
         parent::__construct($twig);
     }
 
-    protected function getSectionName(): string
-    {
-        return "";
-    }
-
-    protected function getSectionURL(): string
-    {
-        return "";
-    }
-
     #[Route("/login", name: "signin", methods: ["GET"])]
     public function signin(): Response
     {

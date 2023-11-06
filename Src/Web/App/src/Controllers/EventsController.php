@@ -24,16 +24,6 @@ class EventsController extends PageControllerBase
         parent::__construct($twig);
     }
 
-    protected function getSectionName(): string
-    {
-        return "Events";
-    }
-
-    protected function getSectionURL(): string
-    {
-        return "/events";
-    }
-
     #[Route(["", "/"], name: "home")]
     public function home(): Response
     {

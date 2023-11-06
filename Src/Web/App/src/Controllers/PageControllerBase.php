@@ -14,9 +14,6 @@ abstract class PageControllerBase
 
     }
 
-    abstract protected function getSectionName(): string;
-    abstract protected function getSectionURL(): string;
-
     protected function redirect(string $url): RedirectResponse
     {
         return new RedirectResponse($url);
@@ -27,10 +24,7 @@ abstract class PageControllerBase
         return new Response(
             $this->twig->render(
                 $template,
-                array_merge([
-                    "sectionName" => $this->getSectionName(),
-                    "sectionURL" => $this->getSectionURL(),
-                ], $parameters)
+                $parameters
             ),
             $responseStatus
         );

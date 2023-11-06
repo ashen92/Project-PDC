@@ -11,16 +11,6 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route("/users", name: "users_")]
 class UserController extends PageControllerBase
 {
-	protected function getSectionName(): string
-	{
-		return "User Management";
-	}
-
-	protected function getSectionURL(): string
-	{
-		return "/users";
-	}
-
 	#[Route("", name: "home")]
 	public function home(): Response
 	{

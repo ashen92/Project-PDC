@@ -9,16 +9,6 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route("/techtalks", name: "techtalks_")]
 class TechTalksController extends PageControllerBase
 {
-    protected function getSectionName(): string
-    {
-        return "TechTalks";
-    }
-
-    protected function getSectionURL(): string
-    {
-        return "/techtalks";
-    }
-
     #[Route(["", "/"], name: "home")]
     public function home(): Response
     {
