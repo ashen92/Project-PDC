@@ -13,7 +13,7 @@ $filter-item-active-bg-color: #c8c6c6;
         column-gap: 0.3rem;
         background-color: $filter-bar-bg-color;
         border-radius: var.$rounded-1;
-        padding: 0.5rem 1rem;
+        padding: 0.5rem 1rem 0.5rem 1.5rem;
         margin-bottom: 1.5rem;
 
         >* {
@@ -24,13 +24,8 @@ $filter-item-active-bg-color: #c8c6c6;
             font-weight: var.$fw-6;
             color: $filter-bar-title-color;
 
-            &::before {
-                content: url("/images/icons/filter-left.svg");
-                display: inline-block;
-                width: 1.5rem;
-                height: 1.5rem;
-                margin-right: 0.5rem;
-                vertical-align: top;
+            .i-filter::before {
+                font-size: 1.1rem;
             }
         }
 
@@ -52,16 +47,14 @@ $filter-item-active-bg-color: #c8c6c6;
                 border: 1px solid var.$colors-btn-primary-border;
             }
 
+            .i-search::before {
+                vertical-align: top;
+            }
+
             >input[type="text"] {
                 outline: none;
                 border: none;
                 width: 100%;
-            }
-
-            &::before {
-                content: url("/images/icons/search.svg");
-                width: 1rem;
-                height: 1rem;
             }
 
             .btn-search {
@@ -80,15 +73,6 @@ $filter-item-active-bg-color: #c8c6c6;
             user-select: none;
             transition: background 80ms linear;
             padding: 0.5rem 0.75rem 0.6rem 1.1rem;
-
-            &::after {
-                content: url("/images/icons/chevron-down.svg");
-                display: inline-block;
-                width: 1rem;
-                height: 1rem;
-                margin-left: 0.5rem;
-                vertical-align: middle;
-            }
 
             &:hover {
                 cursor: pointer;

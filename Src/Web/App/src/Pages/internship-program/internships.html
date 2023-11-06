@@ -14,19 +14,29 @@
     </div>
     <div class="list-view">
         <div class="filters">
-            <div class="title">Filter</div>
+            <div class="title">
+                <i class="i i-filter"></i>
+                Filter
+            </div>
 
             <div class="search">
+                <i class="i i-search"></i>
                 <input class="search" type="text" placeholder="Search">
                 <button class="btn btn-search" type="button">Search</button>
             </div>
 
             {% if ("ROLE_ADMIN" in user_roles) or ("ROLE_STUDENT" in user_roles) %}
-            <div class="item">Company</div>
+            <div class="item">
+                Company
+                <i class="i i-chevron-down"></i>
+            </div>
             {% endif %}
 
             {% if ("ROLE_ADMIN" in user_roles) or ("ROLE_PARTNER" in user_roles) %}
-            <div class="item">Status</div>
+            <div class="item">
+                Status
+                <i class="i i-chevron-down"></i>
+            </div>
             {% endif %}
         </div>
         <div class="list">
