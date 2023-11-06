@@ -72,4 +72,35 @@ class InternshipService implements IInternshipService
         $internship->addApplicant($user);
         $this->entityManager->flush();
     }
+
+    public function getInternshipsBy(int|null $userId = null, string $searchQuery): array
+    {
+        if ($userId === null) {
+            $queryBuilder = $this->entityManager->createQueryBuilder();
+            $queryBuilder
+                ->select("i")
+                ->from("App\Entities\Internship", "i")
+                ->where("LOWER(i.title) LIKE :searchQuery")
+                ->setParameter("searchQuery", "%$searchQuery%");
+            $query = $queryBuilder->getQuery();
+            return $query->getArrayResult();
+        }
+
+        $queryBuilder = $this->entityManager->createQueryBuilder();
+        $queryBuilder
+            ->select("i")
+            ->from("App\Entities\Internship", "i")
+            ->where(
+                $queryBuilder->expr()->andX(
+                    $queryBuilder->expr()->eq("i.user", ":userId"),
+                    $queryBuilder->expr()->like("LOWER(i.title)", ":searchQuery")
+                )
+            )
+            // ->where("i.user = :userId")
+            // ->andWhere("LOWER(i.title) LIKE :searchQuery")
+            ->setParameter("userId", $userId)
+            ->setParameter("searchQuery", "%$searchQuery%");
+        $query = $queryBuilder->getQuery();
+        return $query->getArrayResult();
+    }
 }

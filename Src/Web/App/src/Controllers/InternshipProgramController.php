@@ -105,16 +105,27 @@ class InternshipProgramController extends PageControllerBase
     #[Route("/internships", name: "internships")]
     public function internships(Request $request): Response
     {
+        $userId = $request->getSession()->get("user_id");
         $data = $this->tempGetInternshipsData();
 
         $queryParams = $request->query->all();
 
+        $searchQuery = $queryParams["q"] ?? null;
+
         $internships = [];
 
-        if ($this->userService->hasRole($request->getSession()->get("user_id"), "ROLE_PARTNER")) {
-            $internships = $this->internshipService->getInternshipsByUserId($request->getSession()->get("user_id"));
+        if ($this->userService->hasRole($userId, "ROLE_PARTNER")) {
+            if ($searchQuery) {
+                $internships = $this->internshipService->getInternshipsBy($userId, $searchQuery);
+            } else {
+                $internships = $this->internshipService->getInternshipsByUserId($userId);
+            }
         } else {
-            $internships = $this->internshipService->getInternships();
+            if ($searchQuery) {
+                $internships = $this->internshipService->getInternshipsBy(null, $searchQuery);
+            } else {
+                $internships = $this->internshipService->getInternships();
+            }
         }
 
         return $this->render(

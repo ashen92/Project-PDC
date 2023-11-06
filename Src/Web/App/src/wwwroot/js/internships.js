@@ -1,23 +1,48 @@
-const parentFilters = document.getElementById("filters");
+// const parentFilters = document.getElementById("filters");
 
-parentFilters.addEventListener("click", function (event) {
-    let targetElement = event.target;
+// parentFilters.addEventListener("click", function (event) {
+//     let targetElement = event.target;
 
-    while (targetElement !== null && !targetElement.matches("input[type='checkbox']")) {
-        targetElement = targetElement.parentElement;
-    }
+//     while (targetElement !== null && !targetElement.matches("input[type='checkbox']")) {
+//         targetElement = targetElement.parentElement;
+//     }
 
-    if (targetElement) {
-        const category = targetElement.closest(".data-category").getAttribute("data-category");
+//     if (targetElement) {
+//         const category = targetElement.closest(".data-category").getAttribute("data-category");
 
-        const params = new URLSearchParams(window.location.search);
+//         const params = new URLSearchParams(window.location.search);
 
-        if (targetElement.checked) {
-            params.append(`${category}[]`, targetElement.value);
-        } else {
-            params.delete(`${category}[]`, targetElement.value);
-        }
+//         if (targetElement.checked) {
+//             params.append(`${category}[]`, targetElement.value);
+//         } else {
+//             params.delete(`${category}[]`, targetElement.value);
+//         }
 
+//         window.location.href = `${window.location.pathname}?${params.toString()}`;
+//     }
+// });
+
+const params = new URLSearchParams(window.location.search);
+
+const searchBtn = document.getElementById("search-btn");
+const searchQueryElement = document.getElementById("search-query");
+
+searchBtn.addEventListener("click", () => {
+    const searchQuery = searchQueryElement.value;
+    if (searchQuery) {
+        params.set("q", searchQuery);
         window.location.href = `${window.location.pathname}?${params.toString()}`;
     }
 });
+
+searchQueryElement.addEventListener("keypress", (event) => {
+    if (event.key === "Enter") {
+        searchBtn.click();
+    }
+});
+
+const query = params.get("q");
+
+if (query) {
+    searchQueryElement.value = query;
+}
