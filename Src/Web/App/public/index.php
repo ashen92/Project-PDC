@@ -30,6 +30,7 @@ $matcher = new UrlMatcher($routes, new RequestContext());
 $dispatcher = new EventDispatcher();
 $dispatcher->addSubscriber(new RouterListener($matcher, $requestStack));
 $dispatcher->addSubscriber($container->get("listener.authorization"));
+$dispatcher->addSubscriber($container->get("listener.url_path"));
 
 $controllerResolver = new ContainerControllerResolver($container);
 $argumentResolver = new ArgumentResolver();

@@ -82,6 +82,12 @@ $container->register(
         new Reference("session")
     ]);
 
+$container->register(
+    "listener.url_path",
+    App\EventListeners\UrlPathListener::class
+)
+    ->setArguments([new Reference("twig")]);
+
 // Controllers
 
 $container->register(
