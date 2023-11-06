@@ -10,7 +10,7 @@
       window.location.href = `${window.location.pathname}?${params.toString()}`;
     }
   });
-  searchQueryElement.addEventListener("keypress", (event) => {
+  searchQueryElement.addEventListener("keyup", (event) => {
     if (event.key === "Enter") {
       searchBtn.click();
     }

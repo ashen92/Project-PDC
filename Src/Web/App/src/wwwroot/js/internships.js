@@ -35,7 +35,7 @@ searchBtn.addEventListener("click", () => {
     }
 });
 
-searchQueryElement.addEventListener("keypress", (event) => {
+searchQueryElement.addEventListener("keyup", (event) => {
     if (event.key === "Enter") {
         searchBtn.click();
     }
