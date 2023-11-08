@@ -2,7 +2,8 @@
 
 .layout-left-nav {
     display: grid;
-    grid-template-columns: 200px auto;
+    grid-template-columns: 225px auto;
+    margin-top: 1rem;
 
     >.left-nav {
         border-right: var.$border-1;
@@ -37,8 +38,17 @@
         padding-left: 30px;
 
         >.title {
-            font-size: var.$fs-3;
-            padding: 10px 0px 30px 20px;
+            margin-bottom: 2.5rem;
+            margin-left: 1rem;
+
+            >h2 {
+                font-size: var.$fs-2;
+            }
+
+            >p {
+                font-size: var.$fs-6;
+                font-weight: var.$fw-3;
+            }
         }
     }
 }
