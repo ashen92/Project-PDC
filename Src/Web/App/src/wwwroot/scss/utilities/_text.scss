@@ -28,6 +28,32 @@ h6 {
     line-height: 1.2;
 }
 
+h {
+    &1 {
+        font-size: var.$fs-1;
+    }
+
+    &2 {
+        font-size: var.$fs-2;
+    }
+
+    &3 {
+        font-size: var.$fs-3;
+    }
+
+    &4 {
+        font-size: var.$fs-4;
+    }
+
+    &5 {
+        font-size: var.$fs-5;
+    }
+
+    &6 {
+        font-size: var.$fs-6;
+    }
+}
+
 .fs {
     &-1 {
         font-size: var.$fs-1;
