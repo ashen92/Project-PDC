@@ -21,7 +21,7 @@ class UrlPathListener implements EventSubscriberInterface
         $request = $event->getRequest();
         $currentRoute = $request->getPathInfo();
         $paths = explode("/", $currentRoute);
-        $this->twig->addGlobal("current_section", $paths[1] ?? "");
+        $this->twig->addGlobal("main_section", $paths[1] ?? "");
     }
 
     public static function getSubscribedEvents(): array
