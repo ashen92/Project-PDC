@@ -54,28 +54,38 @@ h6 {
     }
 }
 
-.fw-6 {
-    font-weight: var.$fw-6;
-    color: #2d2d2d;
-}
+.fw {
+    &-1 {
+        font-weight: var.$fw-1;
+    }
 
-.fw-4 {
-    font-weight: var.$fw-4;
-    color: #0527b0;
-}
+    &-2 {
+        font-weight: var.$fw-2;
+    }
 
-.fw-2 {
-    font-weight: var.$fw-2;
-    color: #000000;
-}
+    &-3 {
+        font-weight: var.$fw-3;
+    }
 
-.fw-1 {
-    font-weight: var.$fw-1;
-    color: #2d2d2d;
+    &-4 {
+        font-weight: var.$fw-4;
+    }
+
+    &-5 {
+        font-weight: var.$fw-5;
+    }
+
+    &-6 {
+        font-weight: var.$fw-6;
+    }
 }
 
 .fc-light {
     color: #666666;
+}
+
+.fc-blue {
+    color: #0527b0;
 }
 
 .italic {
