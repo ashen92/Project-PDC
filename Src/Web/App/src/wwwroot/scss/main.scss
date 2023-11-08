@@ -5,7 +5,7 @@
 @use "utilities";
 @use "layouts";
 @use "pages";
-@use "icons";
+@use "fonts";
 
 * {
     margin: 0;
@@ -20,7 +20,7 @@
 }
 
 html {
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    font-family: "Poppins", sans-serif;
     box-sizing: border-box;
 }
 
@@ -84,7 +84,7 @@ a {
         a {
             color: #444444;
             color: #ffffff;
-            font-weight: 600;
+            font-weight: var.$fw-5;
             min-width: 80px;
             padding: 0.6rem 1.2rem;
             border-bottom: 2px solid transparent;

@@ -10,6 +10,24 @@
     }
 }
 
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    font-weight: var.$fw-5;
+    line-height: 1.2;
+}
+
 .fs {
     &-1 {
         font-size: var.$fs-1;
@@ -30,45 +48,34 @@
     &-5 {
         font-size: var.$fs-5;
     }
+
+    &-6 {
+        font-size: var.$fs-6;
+    }
 }
 
 .fw-6 {
     font-weight: var.$fw-6;
     color: #2d2d2d;
 }
-.fw-4{
+
+.fw-4 {
     font-weight: var.$fw-4;
     color: #0527b0;
 }
 
-.fw-2{
+.fw-2 {
     font-weight: var.$fw-2;
     color: #000000;
 }
-.fw-1{
+
+.fw-1 {
     font-weight: var.$fw-1;
     color: #2d2d2d;
-}
-
-.fw-1-b{
-    font-weight: var.$fw-1;
-    color: #000000;
 }
 
 .fc-light {
     color: #666666;
-}
-
-.fc-blue {
-    color: #0a66c2;
-}
-
-.fc-black {
-    color: #000000;
-}
-
-.fc-dark {
-    color: #2d2d2d;
 }
 
 .italic {
