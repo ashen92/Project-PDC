@@ -64,6 +64,7 @@ a {
     &-container {
         display: flex;
         height: 100%;
+        column-gap: 0.5rem;
 
         >* {
             margin: auto 0;
@@ -77,12 +78,11 @@ a {
         >.end {
             display: flex;
             margin-left: auto;
+            column-gap: 0.5rem;
         }
 
         a {
-            color: #444444;
             color: #ffffff;
-            font-weight: var.$fw-5;
             min-width: 80px;
             padding: 0.6rem 1.2rem;
             border-bottom: 2px solid transparent;
@@ -100,7 +100,7 @@ a {
         }
 
         a:active {
-            background-color: #008fee;
+            background-color: #0085de;
         }
     }
 }

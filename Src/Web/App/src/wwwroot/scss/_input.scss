@@ -30,7 +30,6 @@ label {
 }
 
 input {
-    display: block;
     font-size: var.$btn-font-size;
 
     &[type="text"],
@@ -41,6 +40,19 @@ input {
     }
 
     &[type="date"] {
+        padding: 5px 12px;
+        cursor: pointer;
+
+        &:hover {
+            background-color: var.$colors-active-light-blue;
+        }
+
+        &:focus {
+            background-color: var.$colors-active-light-blue;
+        }
+    }
+
+    &[type="time"] {
         padding: 5px 12px;
         cursor: pointer;
 
