@@ -4,7 +4,7 @@
 
 {% block content %}
 
-<div class="title">Sign in</div>
+<h4>Sign in</h4>
 <div class="form-wrapper">
     <form action="/login" method="post">
         {% for message in app.session.flashbag.get("signin_error") %}
@@ -24,7 +24,7 @@
             <input type="submit" value="Sign in">
         </div>
     </form>
-    <div class="pt-50 text-centre">Don't have an account? 
+    <div class="pt-50 text-centre">Don't have an account?
         <div>
             <a class="link" href="/signup">Create one!</a>
         </div>

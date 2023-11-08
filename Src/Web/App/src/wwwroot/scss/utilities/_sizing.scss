@@ -2,7 +2,7 @@
 @use "../mixins";
 
 .xxl-max-w {
-    max-width: 1400px;
+    max-width: var.$webpage-max-allowed-width;
 }
 
 .w {

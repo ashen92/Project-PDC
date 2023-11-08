@@ -1,0 +1,56 @@
+@use "../var";
+@use "../mixins";
+
+.layout-auth {
+    display: grid;
+    grid-template-rows: 1fr auto;
+    min-height: 100vh;
+    width: 100%;
+
+    >.content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: max-content 1fr;
+        width: 100%;
+        max-width: var.$authentication-page-max-width;
+        margin: 6.25rem auto 3rem auto;
+    }
+
+    .hero-text {
+        grid-column: span 2;
+        margin-bottom: 2rem;
+        text-align: center;
+
+        h2 {
+            font-weight: var.$fw-4;
+        }
+
+        h3 {
+            font-weight: var.$fw-3;
+            color: #0527b0;
+            padding-top: 1.25rem;
+        }
+    }
+
+    .auth-box {
+        margin: auto 3.5625rem auto 3.5625rem;
+
+        >h4 {
+            padding-bottom: 1.875rem;
+        }
+
+        >.form-wrapper {
+            width: 18rem;
+        }
+    }
+
+    .logo-container {
+        margin: auto;
+
+        >.logo {
+            width: 22rem;
+            height: 22rem;
+            border-radius: 11rem;
+        }
+    }
+}
