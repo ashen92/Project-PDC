@@ -1,7 +1,10 @@
 const gulp = require("gulp");
 const esbuild = require("esbuild");
+const cleanCSS = require("gulp-clean-css");
+const rename = require("gulp-rename");
 
-// Build task
+// JavaScript tasks
+
 gulp.task("build-js", function (done) {
     esbuild.build({
         entryPoints: ["./src/wwwroot/js/*.js"],
@@ -12,10 +15,24 @@ gulp.task("build-js", function (done) {
     }).then(() => done()).catch(() => done("Build failed"));
 });
 
-// Watch task
 gulp.task("watch-js", function () {
     gulp.watch("./src/wwwroot/js/*.js", gulp.series("build-js"));
 });
 
+// CSS tasks
+
+gulp.task("build-css", () => {
+    return gulp.src("./src/wwwroot/css/*.css")
+        .pipe(cleanCSS({ compatibility: "ie8" }))
+        .pipe(rename({
+            suffix: ".min"
+        }))
+        .pipe(gulp.dest("./public/css"));
+});
+
+gulp.task("watch-css", function () {
+    gulp.watch("./src/wwwroot/css/*.css", gulp.series("build-css"));
+});
+
 // Default task
-gulp.task("default", gulp.series("build-js", "watch-js"));
+gulp.task("default", gulp.parallel(gulp.series("build-js", "watch-js"), gulp.series("build-css", "watch-css")));
