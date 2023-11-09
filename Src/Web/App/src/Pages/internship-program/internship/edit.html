@@ -8,32 +8,31 @@
 
 {% block content %}
 
-<div class="content">
-    <div class="title">
-        <h2>
-            Modify internship
-        </h2>
-    </div>
-    <form action="/internship-program/internship/{{ internship.getId }}/edit" method="POST">
-        <input type="hidden" name="id" value="{{ internship.getId }}">
-
-        <div class="field">
-            <label for="title">Title</label>
-            <input name="title" id="title" type="text" maxlength="75" value="{{ internship.getTitle }}">
-        </div>
-
-        <div class="field">
-            <label for="description">Description</label>
-            {% include "shared/text-editor.html" with {
-            "name": "description",
-            "maxlength": "2000",
-            "value": internship.getDescription
-            } %}
-        </div>
-
-        <div class="actions">
-            <input type="submit" value="Modify">
-        </div>
-    </form>
+<div class="title">
+    <h2>
+        Modify internship
+    </h2>
 </div>
+<form action="/internship-program/internship/{{ internship.getId }}/edit" method="POST">
+    <input type="hidden" name="id" value="{{ internship.getId }}">
+
+    <div class="field">
+        <label for="title">Title</label>
+        <input name="title" id="title" type="text" maxlength="75" value="{{ internship.getTitle }}">
+    </div>
+
+    <div class="field">
+        <label for="description">Description</label>
+        {% include "shared/text-editor.html" with {
+        "name": "description",
+        "maxlength": "2000",
+        "value": internship.getDescription
+        } %}
+    </div>
+
+    <div class="actions">
+        <input type="submit" value="Modify">
+    </div>
+</form>
+
 {% endblock %}

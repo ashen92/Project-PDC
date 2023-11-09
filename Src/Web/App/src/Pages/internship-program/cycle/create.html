@@ -8,68 +8,66 @@
 
 {% block content %}
 
-<div class="content">
-    <div class="title">
-        <h2>
-            Create an Internship Cycle
-        </h2>
-    </div>
-    <form>
-        <div class="mb-40">
-            <div class="fs-6 fw-6 pb-20">Internship gathering phase</div>
-            <div class="row-cols-2 mb-5">
-                <div>Start date</div>
-                <input type="date" required>
-            </div>
-            <div class="row-cols-2 mb-5">
-                <div>End date</div>
-                <input type="date" required>
-            </div>
-            <div class="row-cols-2 mb-5">
-                <div>Automatically send emails to partners when the start date is reached.</div>
-                <div class="checkbox text-right">
-                    <input type="checkbox" id="check1">
-                </div>
-            </div>
-        </div>
-        <div class="mb-40">
-            <div class="fs-6 fw-6 pb-20">Internship phase</div>
-            <div class="row-cols-2 mb-5">
-                <div>Start date</div>
-                <input type="date" required>
-            </div>
-            <div class="row-cols-2 mb-5">
-                <div>End date</div>
-                <input type="date" required>
-            </div>
-            <div class="row-cols-2">
-                <div>Automatically send emails to Undergraduates when the start date is reached.
-                </div>
-                <div class="checkbox">
-                    <input type="checkbox" id="check1">
-                </div>
-            </div>
-        </div>
-        <div class="mb-40">
-            <div class="fs-6 fw-6 pb-20">Choose who participates in this cycle</div>
-            <div class="row-cols-2 mb-5">
-                <div>Select the group students belong to</div>
-                <div>
-                    Select input
-                </div>
-            </div>
-            <div class="row-cols-2">
-                <div>Select the group partners belong to</div>
-                <div>
-                    Select input
-                </div>
-            </div>
-        </div>
-        <div class="actions">
-            <input type="submit" value="Confirm">
-            <input type="reset" value="Reset">
-        </div>
-    </form>
+<div class="title">
+    <h2>
+        Create an Internship Cycle
+    </h2>
 </div>
+<form>
+    <div class="mb-40">
+        <div class="fs-6 fw-6 pb-20">Internship gathering phase</div>
+        <div class="row-cols-2 mb-5">
+            <div>Start date</div>
+            <input type="date" required>
+        </div>
+        <div class="row-cols-2 mb-5">
+            <div>End date</div>
+            <input type="date" required>
+        </div>
+        <div class="row-cols-2 mb-5">
+            <div>Automatically send emails to partners when the start date is reached.</div>
+            <div class="checkbox text-right">
+                <input type="checkbox" id="check1">
+            </div>
+        </div>
+    </div>
+    <div class="mb-40">
+        <div class="fs-6 fw-6 pb-20">Internship phase</div>
+        <div class="row-cols-2 mb-5">
+            <div>Start date</div>
+            <input type="date" required>
+        </div>
+        <div class="row-cols-2 mb-5">
+            <div>End date</div>
+            <input type="date" required>
+        </div>
+        <div class="row-cols-2">
+            <div>Automatically send emails to Undergraduates when the start date is reached.
+            </div>
+            <div class="checkbox">
+                <input type="checkbox" id="check1">
+            </div>
+        </div>
+    </div>
+    <div class="mb-40">
+        <div class="fs-6 fw-6 pb-20">Choose who participates in this cycle</div>
+        <div class="row-cols-2 mb-5">
+            <div>Select the group students belong to</div>
+            <div>
+                Select input
+            </div>
+        </div>
+        <div class="row-cols-2">
+            <div>Select the group partners belong to</div>
+            <div>
+                Select input
+            </div>
+        </div>
+    </div>
+    <div class="actions">
+        <input type="submit" value="Confirm">
+        <input type="reset" value="Reset">
+    </div>
+</form>
 
 {% endblock %}

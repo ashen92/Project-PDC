@@ -8,49 +8,45 @@
 
 {% block content %}
 
-
-<div class="content">
-    <div class="title">
-        <h2>
-            Modify event
-        </h2>
+<div class="title">
+    <h2>
+        Modify event
+    </h2>
+</div>
+<form action="/events/edit/{{event.id}}" method="post">
+    <div class="field">
+        <label for="eventTitle">Event Title:</label>
+        <input type="text" id="eventTitle" name="eventTitle" value="{{event.Title}}" required>
     </div>
-    <form action="/events/edit/{{event.id}}" method="post">
-        <div class="field">
-            <label for="eventTitle">Event Title:</label>
-            <input type="text" id="eventTitle" name="eventTitle" value="{{event.Title}}" required>
-        </div>
-        <div class="field">
-            <label for="eventDate">Event Date:</label>
-            <input type="date" id="eventDate" name="eventDate" required value="{{event.eventDate}}">
-        </div>
-        <div class="field">
-            <label for="startTime">Start Time:</label>
-            <input type="time" id="startTime" name="startTime" value="{{event.startTime}}" required>
+    <div class="field">
+        <label for="eventDate">Event Date:</label>
+        <input type="date" id="eventDate" name="eventDate" required value="{{event.eventDate}}">
+    </div>
+    <div class="field">
+        <label for="startTime">Start Time:</label>
+        <input type="time" id="startTime" name="startTime" value="{{event.startTime}}" required>
 
-        </div>
-        <div class="field">
-            <label for="endTime">End Time:</label>
-            <input type="time" id="endTime" name="endTime" required value="{{event.endTime}}">
-        </div>
-        <div class="field">
-            <label for="eventLocation">Event Location:</label>
-            <input type="text" id="eventLocation" name="eventLocation" required value="{{event.eventLocation}}">
-        </div>
-        <div class="field">
-            <label for="description">Event Description</label>
-            {% include "shared/text-editor.html" with {
-            "name": "description",
-            "maxlength": "2000",
-            "placeholder": "Put your description here.",
-            "value": event.description
-            } %}
-        </div>
-        <div class="actions">
-            <input type="submit" value="Modify Event">
-        </div>
-    </form>
-</div>
-</div>
+    </div>
+    <div class="field">
+        <label for="endTime">End Time:</label>
+        <input type="time" id="endTime" name="endTime" required value="{{event.endTime}}">
+    </div>
+    <div class="field">
+        <label for="eventLocation">Event Location:</label>
+        <input type="text" id="eventLocation" name="eventLocation" required value="{{event.eventLocation}}">
+    </div>
+    <div class="field">
+        <label for="description">Event Description</label>
+        {% include "shared/text-editor.html" with {
+        "name": "description",
+        "maxlength": "2000",
+        "placeholder": "Put your description here.",
+        "value": event.description
+        } %}
+    </div>
+    <div class="actions">
+        <input type="submit" value="Modify Event">
+    </div>
+</form>
 
 {% endblock %}

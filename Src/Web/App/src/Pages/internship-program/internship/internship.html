@@ -8,27 +8,26 @@
 
 {% block content %}
 
-<div class="content">
-    <div class="title">
-        <h2>
-            {{ internship.getTitle }}
-        </h2>
-    </div>
-    <div class="formatted-text-area">
-        {{ internship.getDescription|raw }}
-    </div>
-    <form class="mt-50">
-        <div class="actions">
-            {% if ("ROLE_PARTNER" in user_roles) or ("ROLE_ADMIN" in user_roles) %}
-            <a class="btn btn-primary" role="button" href="{{ id }}/applicants">Applicants</a>
-            <a class="btn btn-primary" role="button" href="{{ id }}/edit">Edit</a>
-            <a class="btn btn-primary" role="button" href="{{ id }}/delete">Remove</a>
-            {% endif %}
-
-            {% if "ROLE_STUDENT" in user_roles %}
-            <a class="btn btn-primary" role="button" href="{{ id }}/apply">Apply</a>
-            {% endif %}
-        </div>
-    </form>
+<div class="title">
+    <h2>
+        {{ internship.getTitle }}
+    </h2>
 </div>
+<div class="formatted-text-area">
+    {{ internship.getDescription|raw }}
+</div>
+<form class="mt-50">
+    <div class="actions">
+        {% if ("ROLE_PARTNER" in user_roles) or ("ROLE_ADMIN" in user_roles) %}
+        <a class="btn btn-primary" role="button" href="{{ id }}/applicants">Applicants</a>
+        <a class="btn btn-primary" role="button" href="{{ id }}/edit">Edit</a>
+        <a class="btn btn-primary" role="button" href="{{ id }}/delete">Remove</a>
+        {% endif %}
+
+        {% if "ROLE_STUDENT" in user_roles %}
+        <a class="btn btn-primary" role="button" href="{{ id }}/apply">Apply</a>
+        {% endif %}
+    </div>
+</form>
+
 {% endblock %}

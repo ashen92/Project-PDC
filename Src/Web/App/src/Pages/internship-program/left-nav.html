@@ -1,31 +1,29 @@
-<div class="left-nav">
-    <a class="nav-link {% if section == 'home' %} active{% endif %}" href="/internship-program/home">
-        Internship Program
-    </a>
+<a class="nav-link {% if section == 'home' %} active{% endif %}" href="/internship-program/home">
+    Internship Program
+</a>
 
-    {% if "ROLE_ADMIN" in user_roles or "ROLE_PARTNER" in user_roles %}
-    <a class="nav-link {% if section == 'internships' %} active{% endif %}" href="/internship-program/internships">
-        Internships
-    </a>
-    {% endif %}
+{% if "ROLE_ADMIN" in user_roles or "ROLE_PARTNER" in user_roles %}
+<a class="nav-link {% if section == 'internships' %} active{% endif %}" href="/internship-program/internships">
+    Internships
+</a>
+{% endif %}
 
-    {% if "ROLE_STUDENT" in user_roles %}
-    <a class="nav-link {% if section == 'internships' %} active{% endif %}" href="/internship-program/internships">
-        Apply for Internships
-    </a>
-    {% endif %}
+{% if "ROLE_STUDENT" in user_roles %}
+<a class="nav-link {% if section == 'internships' %} active{% endif %}" href="/internship-program/internships">
+    Apply for Internships
+</a>
+{% endif %}
 
-    {% if "ROLE_ADMIN" in user_roles %}
-    <a class="nav-link {% if section == 'monitoring' %} active{% endif %}" href="/internship-program/monitoring">
-        Monitoring
-    </a>
-    {% endif %}
+{% if "ROLE_ADMIN" in user_roles %}
+<a class="nav-link {% if section == 'monitoring' %} active{% endif %}" href="/internship-program/monitoring">
+    Monitoring
+</a>
+{% endif %}
 
-    <a class="nav-link {% if section == 'documents' %} active{% endif %}" href="/internship-program/documents">
-        Documents
-    </a>
+<a class="nav-link {% if section == 'documents' %} active{% endif %}" href="/internship-program/documents">
+    Documents
+</a>
 
-    <a class="nav-link {% if section == 'feedback' %} active{% endif %}" href="/internship-program/feedback">
-        Feedback
-    </a>
-</div>
+<a class="nav-link {% if section == 'feedback' %} active{% endif %}" href="/internship-program/feedback">
+    Feedback
+</a>

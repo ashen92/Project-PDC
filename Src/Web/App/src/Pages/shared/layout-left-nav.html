@@ -15,8 +15,12 @@
         {{ include("shared/header.html") }}
         <div class="content mx-auto xxl-max-w px-50">
             <div class="layout-left-nav">
-                {% block left_nav %}{% endblock %}
-                {% block content %}{% endblock %}
+                <div class="left-nav">
+                    {% block left_nav %}{% endblock %}
+                </div>
+                <div class="content">
+                    {% block content %}{% endblock %}
+                </div>
             </div>
             {% block js %}{% endblock js %}
         </div>

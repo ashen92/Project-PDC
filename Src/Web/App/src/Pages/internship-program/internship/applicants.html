@@ -8,22 +8,21 @@
 
 {% block content %}
 
-<div class="content">
-    <div class="title">
-        <h2>
-            Showing Applicants
-        </h2>
-    </div>
-    <div class="row-right mb-20 pe-10">
-        <a class="btn btn-primary" role="button" href="">Download all</a>
-    </div>
-    {% for item in applicants %}
-    <div class="row-cols-2 mb-5">
-        <div>
-            {{ item }}
-        </div>
-        <a class="btn btn-primary" role="button" href="">Download</a>
-    </div>
-    {% endfor %}
+<div class="title">
+    <h2>
+        Showing Applicants
+    </h2>
 </div>
+<div class="row-right mb-20 pe-10">
+    <a class="btn btn-primary" role="button" href="">Download all</a>
+</div>
+{% for item in applicants %}
+<div class="row-cols-2 mb-5">
+    <div>
+        {{ item }}
+    </div>
+    <a class="btn btn-primary" role="button" href="">Download</a>
+</div>
+{% endfor %}
+
 {% endblock %}

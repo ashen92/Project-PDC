@@ -8,60 +8,56 @@
 
 {% block content %}
 
-<div class="content">
-    <div class="title">
-        <h2>
-            Internship Program
-        </h2>
+<div class="title">
+    <h2>
+        Internship Program
+    </h2>
+</div>
+
+{% if "ROLE_ADMIN" in user_roles %}
+<div class="row-cols-2">
+    <div>
+        Create new internship cycle
+    </div>
+    <a class="btn btn-primary" role="button" href="/internship-program/cycle/create">Create</a>
+</div>
+{% endif %}
+
+{% if "ROLE_ADMIN" in user_roles %}
+<div class="row-cols-2">
+    <div>
+        View current internship cycle
+    </div>
+    <a class="btn btn-primary" role="button" href="/internship-program/cycle/details">View</a>
+</div>
+{% endif %}
+
+{% if "ROLE_PARTNER" in user_roles %}
+<div class="row-cols-2">
+    <div>
+        Create new internship
+    </div>
+    <a class="btn btn-primary" role="button" href="/internship-program/internship/create">Create</a>
+</div>
+{% endif %}
+
+<div class="fs-4 pt-20 pb-30 pl-20">Timeline of the Internship Program</div>
+<div class="row-cols-2">
+    <div>
+        Students can apply for internships starting from <br>
+        Deadline is
     </div>
     <div>
-
-        {% if "ROLE_ADMIN" in user_roles %}
-        <div class="row-cols-2">
-            <div>
-                Create new internship cycle
-            </div>
-            <a class="btn btn-primary" role="button" href="/internship-program/cycle/create">Create</a>
-        </div>
-        {% endif %}
-
-        {% if "ROLE_ADMIN" in user_roles %}
-        <div class="row-cols-2">
-            <div>
-                View current internship cycle
-            </div>
-            <a class="btn btn-primary" role="button" href="/internship-program/cycle/details">View</a>
-        </div>
-        {% endif %}
-
-        {% if "ROLE_PARTNER" in user_roles %}
-        <div class="row-cols-2">
-            <div>
-                Create new internship
-            </div>
-            <a class="btn btn-primary" role="button" href="/internship-program/internship/create">Create</a>
-        </div>
-        {% endif %}
-
-        <div class="fs-4 pt-20 pb-30 pl-20">Timeline of the Internship Program</div>
-        <div class="row-cols-2">
-            <div>
-                Students can apply for internships starting from <br>
-                Deadline is
-            </div>
-            <div>
-                Start Date <br>
-                End Date
-            </div>
-        </div>
-        <div class="row-cols-2">
-            <div>
-                Interning Duration is
-            </div>
-            <div>
-                Start Date to End Date
-            </div>
-        </div>
+        Start Date <br>
+        End Date
+    </div>
+</div>
+<div class="row-cols-2">
+    <div>
+        Interning Duration is
+    </div>
+    <div>
+        Start Date to End Date
     </div>
 </div>
 

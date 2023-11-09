@@ -8,65 +8,62 @@
 
 {% block content %}
 
-<div class="content">
-    <div class="title">
-        <h2>
-            Available internships
-        </h2>
+<div class="title">
+    <h2>
+        Available internships
+    </h2>
+</div>
+<div class="list-view">
+    <div class="filters">
+        <div class="title">
+            <i class="i i-filter"></i>
+            Filter
+        </div>
+
+        <div class="search">
+            <i class="i i-search"></i>
+            <input id="search-query" class="search" type="text" placeholder="Search" autocomplete="off">
+            <button id="search-btn" class="btn btn-search" type="button">Search</button>
+        </div>
+
+        {% if ("ROLE_ADMIN" in user_roles) or ("ROLE_STUDENT" in user_roles) %}
+        <div class="item">
+            Company
+            <i class="i i-chevron-down"></i>
+        </div>
+        {% endif %}
+
+        {% if ("ROLE_ADMIN" in user_roles) or ("ROLE_PARTNER" in user_roles) %}
+        <div class="item">
+            Status
+            <i class="i i-chevron-down"></i>
+        </div>
+        {% endif %}
     </div>
-    <div class="list-view">
-        <div class="filters">
-            <div class="title">
-                <i class="i i-filter"></i>
-                Filter
-            </div>
+    <div class="list">
+        {% for item in internships %}
+        <div class="item">
+            <a class="description" href="internship/{{ item.id }}">
+                <div class="fw-6 pb-10">{{ item.title }}</div>
+                <div><span class="italic fc-light">at </span>{{item.firstName}}</div>
+            </a>
 
-            <div class="search">
-                <i class="i i-search"></i>
-                <input id="search-query" class="search" type="text" placeholder="Search" autocomplete="off">
-                <button id="search-btn" class="btn btn-search" type="button">Search</button>
-            </div>
-
-            {% if ("ROLE_ADMIN" in user_roles) or ("ROLE_STUDENT" in user_roles) %}
-            <div class="item">
-                Company
-                <i class="i i-chevron-down"></i>
+            {% if ("ROLE_PARTNER" in user_roles) or ("ROLE_ADMIN" in user_roles) %}
+            <div class="actions">
+                <a class="btn btn-primary" role="button" href="internship/{{ item.id }}/applicants">Applicants</a>
+                <a class="btn btn-primary" role="button" href="internship/{{ item.id }}/edit">Edit</a>
+                <a class="btn btn-primary" role="button" href="internship/{{ item.id }}/delete">Remove</a>
             </div>
             {% endif %}
 
-            {% if ("ROLE_ADMIN" in user_roles) or ("ROLE_PARTNER" in user_roles) %}
-            <div class="item">
-                Status
-                <i class="i i-chevron-down"></i>
+            {% if "ROLE_STUDENT" in user_roles %}
+            <div class="actions">
+                <a class="btn btn-primary" role="button" href="internship/{{ item.id }}/apply">Apply</a>
             </div>
             {% endif %}
         </div>
-        <div class="list">
-            {% for item in internships %}
-            <div class="item">
-                <a class="description" href="internship/{{ item.id }}">
-                    <div class="fw-6 pb-10">{{ item.title }}</div>
-                    <div><span class="italic fc-light">at </span>{{item.firstName}}</div>
-                </a>
-
-                {% if ("ROLE_PARTNER" in user_roles) or ("ROLE_ADMIN" in user_roles) %}
-                <div class="actions">
-                    <a class="btn btn-primary" role="button" href="internship/{{ item.id }}/applicants">Applicants</a>
-                    <a class="btn btn-primary" role="button" href="internship/{{ item.id }}/edit">Edit</a>
-                    <a class="btn btn-primary" role="button" href="internship/{{ item.id }}/delete">Remove</a>
-                </div>
-                {% endif %}
-
-                {% if "ROLE_STUDENT" in user_roles %}
-                <div class="actions">
-                    <a class="btn btn-primary" role="button" href="internship/{{ item.id }}/apply">Apply</a>
-                </div>
-                {% endif %}
-            </div>
-            {% endfor %}
-        </div>
+        {% endfor %}
     </div>
-
 </div>
 
 {% endblock %}

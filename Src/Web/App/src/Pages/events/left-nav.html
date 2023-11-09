@@ -1,11 +1,9 @@
-<div class="left-nav">
-    <a class="nav-link {% if section == 'home' %} active{% endif %}" href="/events">
-        Events
-    </a>
+<a class="nav-link {% if section == 'home' %} active{% endif %}" href="/events">
+    Events
+</a>
 
-    {% if "ROLE_ADMIN" in user_roles %}
-    <a class="nav-link {% if section == 'create' %} active{% endif %}" href="/events/create">
-        Create an event
-    </a>
-    {% endif %}
-</div>
+{% if "ROLE_ADMIN" in user_roles %}
+<a class="nav-link {% if section == 'create' %} active{% endif %}" href="/events/create">
+    Create an event
+</a>
+{% endif %}

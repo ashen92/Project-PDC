@@ -8,65 +8,63 @@
 
 {% block content %}
 
-<div class="content">
-    <div class="title">
-        <h2>
-            Add a reqirement
-        </h2>
-    </div>
-    <section>
-        <form action="add" method="POST">
-            <div class="field">
-                <label for="name">Display name</label>
-                <input type="text" name="name" id="name" autocomplete="off" required>
-            </div>
-            <div class="field-radio">
-                <div class="label">Type of the requirement</div>
-                <div class="option">
-                    <input type="radio" name="type" id="type-one-time" value="one-time" autocomplete="off" required>
-                    <label for="type-one-time">One-time</label>
-                </div>
-                <div class="option">
-                    <input type="radio" name="type" id="type-recurring" value="recurring" autocomplete="off" required>
-                    <label for="type-recurring">Recurring</label>
-                </div>
-            </div>
-
-            <div class="field">
-                <label for="start-date">
-                    Select a date from which the requirement must be fulfilled. (date inclusive)
-                </label>
-                <input type="date" name="start-date" id="start-date" autocomplete="off" required>
-            </div>
-
-            <div class="field hidden" id="field-one-time">
-                <label for="end-before-one-time">Select a date by which the requirement must be fulfilled. (date not
-                    inclusive)</label>
-                <input type="date" name="end-before" id="end-before-one-time" autocomplete="off">
-            </div>
-
-            <div class="field-radio hidden" id="field-recurring">
-                <div class="label">Repeat (up to maximum of six months duration)</div>
-                <div class="option">
-                    <input type="radio" name="repeat" id="repeat-daily" value="daily" autocomplete="off">
-                    <label for="repeat-daily">Daily</label>
-                </div>
-                <div class="option">
-                    <input type="radio" name="repeat" id="repeat-weekly" value="weekly" autocomplete="off">
-                    <label for="repeat-weekly">Weekly</label>
-                </div>
-                <div class="option">
-                    <input type="radio" name="repeat" id="repeat-monthly" value="monthly" autocomplete="off">
-                    <label for="repeat-monthly">Monthly</label>
-                </div>
-            </div>
-
-            <div class="actions">
-                <input type="submit" value="Add">
-            </div>
-        </form>
-    </section>
+<div class="title">
+    <h2>
+        Add a reqirement
+    </h2>
 </div>
+<section>
+    <form action="add" method="POST">
+        <div class="field">
+            <label for="name">Display name</label>
+            <input type="text" name="name" id="name" autocomplete="off" required>
+        </div>
+        <div class="field-radio">
+            <div class="label">Type of the requirement</div>
+            <div class="option">
+                <input type="radio" name="type" id="type-one-time" value="one-time" autocomplete="off" required>
+                <label for="type-one-time">One-time</label>
+            </div>
+            <div class="option">
+                <input type="radio" name="type" id="type-recurring" value="recurring" autocomplete="off" required>
+                <label for="type-recurring">Recurring</label>
+            </div>
+        </div>
+
+        <div class="field">
+            <label for="start-date">
+                Select a date from which the requirement must be fulfilled. (date inclusive)
+            </label>
+            <input type="date" name="start-date" id="start-date" autocomplete="off" required>
+        </div>
+
+        <div class="field hidden" id="field-one-time">
+            <label for="end-before-one-time">Select a date by which the requirement must be fulfilled. (date not
+                inclusive)</label>
+            <input type="date" name="end-before" id="end-before-one-time" autocomplete="off">
+        </div>
+
+        <div class="field-radio hidden" id="field-recurring">
+            <div class="label">Repeat (up to maximum of six months duration)</div>
+            <div class="option">
+                <input type="radio" name="repeat" id="repeat-daily" value="daily" autocomplete="off">
+                <label for="repeat-daily">Daily</label>
+            </div>
+            <div class="option">
+                <input type="radio" name="repeat" id="repeat-weekly" value="weekly" autocomplete="off">
+                <label for="repeat-weekly">Weekly</label>
+            </div>
+            <div class="option">
+                <input type="radio" name="repeat" id="repeat-monthly" value="monthly" autocomplete="off">
+                <label for="repeat-monthly">Monthly</label>
+            </div>
+        </div>
+
+        <div class="actions">
+            <input type="submit" value="Add">
+        </div>
+    </form>
+</section>
 
 {% endblock %}
 

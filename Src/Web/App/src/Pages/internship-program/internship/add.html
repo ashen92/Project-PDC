@@ -8,30 +8,28 @@
 
 {% block content %}
 
-<div class="content">
-    <div class="title">
-        <h2>
-            Post an internship
-        </h2>
-    </div>
-    <form action="/internship-program/internship/create" method="POST">
-        <div class="field">
-            <label for="title">Title</label>
-            <input name="title" id="title" type="text" maxlength="75" placeholder="Add a title">
-        </div>
-
-        <div class="field">
-            <label for="description">Description</label>
-            {% include "shared/text-editor.html" with {
-            "name": "description",
-            "maxlength": "2000",
-            "placeholder": "Put your description here."
-            } %}
-        </div>
-
-        <div class="actions">
-            <input type="submit" value="Add">
-        </div>
-    </form>
+<div class="title">
+    <h2>
+        Post an internship
+    </h2>
 </div>
+<form action="/internship-program/internship/create" method="POST">
+    <div class="field">
+        <label for="title">Title</label>
+        <input name="title" id="title" type="text" maxlength="75" placeholder="Add a title">
+    </div>
+
+    <div class="field">
+        <label for="description">Description</label>
+        {% include "shared/text-editor.html" with {
+        "name": "description",
+        "maxlength": "2000",
+        "placeholder": "Put your description here."
+        } %}
+    </div>
+
+    <div class="actions">
+        <input type="submit" value="Add">
+    </div>
+</form>
 {% endblock %}
