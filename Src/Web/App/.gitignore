@@ -22,6 +22,10 @@ cache
 # Build data
 /build/
 
+### Generated CSS and JavaScript ###
+/public/css/*.css
+/public/js/*.js
+
 ### Sass ###
 .sass-cache/
 *.css.map
