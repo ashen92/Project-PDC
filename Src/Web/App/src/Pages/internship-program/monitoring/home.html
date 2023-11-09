@@ -37,40 +37,31 @@
         {# {% if stateWhenInterningIsActive %} #}
         {% if 1 == 1 %}
 
-        <div class="row-cols-2 mb-5">
-            <div>
-                Internship Contracts
-            </div>
-            <a class="btn btn-primary" role="button" href="">View</a>
-        </div>
+        <section>
+            <h4>Requirements for this internship program</h4>
 
-        <div class="row-cols-2 mb-5">
-            <div>
-                Monthly Progress Reports
-            </div>
-            <a class="btn btn-primary" role="button" href="">View</a>
-        </div>
+            {# if there are no reqirements #}
+            <p class="mb-20">No requirements have found.</p>
 
-        <div class="row-cols-2 mb-5">
-            <div>
-                Final Reports
+            <div class="row-cols-2">
+                <div>
+                    Add new reqirement
+                </div>
+                <div>
+                    <a class="btn btn-primary" role="button" href="monitoring/requirement/add">Add</a>
+                </div>
             </div>
-            <a class="btn btn-primary" role="button" href="">View</a>
-        </div>
 
-        <div class="row-cols-2 mb-5">
-            <div>
-                Final Presentations
+            {# if there are requirements, for each requirement #}
+            <div class="row-cols-2">
+                <div>
+                    Requirement name
+                </div>
+                <div>
+                    <a class="btn btn-primary" role="button" href="">View</a>
+                </div>
             </div>
-            <a class="btn btn-primary" role="button" href="">View</a>
-        </div>
-
-        <div class="row-cols-2">
-            <div>
-                Service Letters
-            </div>
-            <a class="btn btn-primary" role="button" href="">View</a>
-        </div>
+        </section>
 
         {% else %}
         <div>No internship cycle found to monitor.</div>

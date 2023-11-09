@@ -35,15 +35,22 @@
     }
 
     >.content {
-        padding-left: 30px;
+        margin-left: 3rem;
 
         >.title {
             margin-bottom: 2.5rem;
-            margin-left: 1rem;
 
             >p {
                 font-size: var.$fs-6;
                 font-weight: var.$fw-3;
+            }
+        }
+
+        section {
+            margin-top: 4rem;
+
+            >h4 {
+                margin-bottom: 0.75rem;
             }
         }
     }

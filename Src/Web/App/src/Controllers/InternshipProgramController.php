@@ -77,7 +77,13 @@ class InternshipProgramController extends PageControllerBase
     #[Route("/monitoring", name: "monitoring")]
     public function monitoring(Request $request): Response
     {
-        return $this->render("internship-program/monitoring.html", ["section" => "monitoring"]);
+        return $this->render("internship-program/monitoring/home.html", ["section" => "monitoring"]);
+    }
+
+    #[Route("/monitoring/requirement/add", methods: ["GET"])]
+    public function requirementAddGET(Request $request): Response
+    {
+        return $this->render("internship-program/monitoring/requirement-add.html", ["section" => "monitoring"]);
     }
 
     #[Route("/documents", name: "documents")]

@@ -4,16 +4,37 @@
 form {
     >.field {
         min-width: 100%;
-        padding-top: 0.5rem;
-        margin-bottom: 1.25rem;
+        margin-bottom: 2rem;
 
         label {
             padding-bottom: 0.9rem;
-            padding-left: 0.625rem;
+            padding-left: 0.1rem;
         }
 
         input {
             width: 100%;
+        }
+
+        &-radio {
+            margin-bottom: 1.5rem;
+
+            .label {
+                padding-left: 0.1rem;
+            }
+
+            .option {
+                display: flex;
+                margin-top: 0.9rem;
+                padding-left: 1rem;
+
+                label {
+                    padding-left: 0.75rem;
+                }
+
+                input {
+                    width: 20px;
+                }
+            }
         }
     }
 
