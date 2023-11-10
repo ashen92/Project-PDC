@@ -28,34 +28,6 @@ class InternshipProgramController extends PageControllerBase
         parent::__construct($twig);
     }
 
-    private function tempGetInternshipsData()
-    {
-        $jobRoles = [
-            ["id" => "1", "name" => "Software Engineer"],
-            ["id" => "2", "name" => "Business Analyst"],
-            ["id" => "3", "name" => "Web Developer"]
-        ];
-
-        $companies = [
-            new Company(1, "LSEG"),
-            new Company(2, "WSO2"),
-            new Company(3, "IFS"),
-            new Company(3, "Orange")
-        ];
-
-        $internshipStatus = [
-            "Approved",
-            "Pending Approval",
-            "Rejected"
-        ];
-
-        return [
-            "jobRoles" => $jobRoles,
-            "companies" => $companies,
-            "internshipStatus" => $internshipStatus
-        ];
-    }
-
     #[Route(["", "/", "/home"], name: "home")]
     public function home(Request $request): Response
     {
@@ -102,7 +74,6 @@ class InternshipProgramController extends PageControllerBase
     public function internships(Request $request): Response
     {
         $userId = $request->getSession()->get("user_id");
-        $data = $this->tempGetInternshipsData();
 
         $queryParams = $request->query->all();
 
@@ -129,8 +100,8 @@ class InternshipProgramController extends PageControllerBase
             array_merge(
                 ["section" => "internships"],
                 ["internships" => $internships],
-                ["companies" => $data["companies"]],
-                ["internshipStatus" => $data["internshipStatus"]],
+                ["companies" => array()],
+                ["internshipStatus" => array()],
                 ["queryCompanies" => $queryParams["Company"] ?? []],
                 ["queryInternshipStatus" => $queryParams["Internship_Status"] ?? []],
             )
