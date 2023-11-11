@@ -5,11 +5,30 @@
     @return if($min !=0, $min, null);
 }
 
+@function breakpoint-max($name, $breakpoints: var.$breakpoints) {
+    $max: map-get($breakpoints, $name);
+    @return if($max and $max > 0, $max - .02, null);
+}
+
 @mixin media-breakpoint-up($name, $breakpoints: var.$breakpoints) {
     $min: breakpoint-min($name, $breakpoints);
 
     @if $min {
         @media (min-width: $min) {
+            @content;
+        }
+    }
+
+    @else {
+        @content;
+    }
+}
+
+@mixin media-breakpoint-down($name, $breakpoints: var.$breakpoints) {
+    $max: breakpoint-max($name, $breakpoints);
+
+    @if $max {
+        @media (max-width: $max) {
             @content;
         }
     }

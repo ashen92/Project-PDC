@@ -1,24 +1,30 @@
 @use "var";
+@use "mixins";
 
 .card-container {
     display: grid;
     grid-template-columns: repeat(4, auto);
-    grid-template-rows: auto auto;
-    justify-content: center;
     margin-top: 400px;
     row-gap: 30px;
     column-gap: 50px;
+
+    @include mixins.media-breakpoint-down(xl) {
+        grid-template-columns: repeat(3, auto);
+    }
+
+    @include mixins.media-breakpoint-down(lg) {
+        grid-template-columns: repeat(2, auto);
+    }
+
+    @include mixins.media-breakpoint-down(sm) {
+        grid-template-columns: auto;
+    }
 }
 
 .card {
-    display: grid;
-    color: black;
     min-width: 225px;
-    height: 60px;
-    align-items: center;
-    justify-items: center;
     border-radius: var.$rounded-1;
-    padding: 5px 15px;
+    padding: 13px 15px 10px 15px;
     text-align: center;
     border: 2px solid #3b81e8;
 
