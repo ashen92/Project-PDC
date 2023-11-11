@@ -27,6 +27,7 @@ body {
     width: 100%;
     font-size: 1rem;
     color: var.$colors-text;
+    line-height: 1.6;
 }
 
 a {
@@ -83,6 +84,7 @@ a {
 
         a {
             color: #ffffff;
+            font-weight: var.$fw-6;
             min-width: 80px;
             padding: 0.6rem 1.2rem;
             border-bottom: 2px solid transparent;

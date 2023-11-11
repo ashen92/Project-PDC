@@ -136,10 +136,13 @@ select {
 
 #text-editor {
     font-size: var.$text-field-font-size;
+
+    >* {
+        line-height: inherit;
+    }
 }
 
 .formatted-text-area {
-    line-height: 1.42;
     padding: 1.2rem 1.5rem;
     text-align: left;
     word-wrap: break-word;
