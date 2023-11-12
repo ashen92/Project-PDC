@@ -1,4 +1,4 @@
-@use "../var";
+@use "../variables" as *;
 
 $filter-bar-bg-color: #f0f0f0;
 $filter-bar-title-color: #444444;
@@ -12,7 +12,7 @@ $filter-item-active-bg-color: #c8c6c6;
         display: flex;
         column-gap: 0.3rem;
         background-color: $filter-bar-bg-color;
-        border-radius: var.$rounded-1;
+        border-radius: $rounded-1;
         padding: 0.5rem 1rem 0.5rem 1.25rem;
         margin-bottom: 1.5rem;
 
@@ -21,7 +21,7 @@ $filter-item-active-bg-color: #c8c6c6;
         }
 
         >.title {
-            font-weight: var.$fw-5;
+            font-weight: $fw-5;
             color: $filter-bar-title-color;
 
             .i-filter::before {
@@ -40,11 +40,11 @@ $filter-item-active-bg-color: #c8c6c6;
             margin-right: 4rem;
 
             background-color: $search-bar-bg-color;
-            border-radius: var.$rounded-1;
+            border-radius: $rounded-1;
             border: 1px solid $filter-bar-bg-color;
 
             &:hover {
-                border: 1px solid var.$colors-btn-primary-border;
+                border: 1px solid $btn-primary-border;
             }
 
             .i-search::before {
@@ -62,14 +62,14 @@ $filter-item-active-bg-color: #c8c6c6;
                 background-color: $search-btn-bg-color;
 
                 &:hover {
-                    background-color: var.$colors-btn-primary-bg;
-                    color: var.$colors-btn-primary;
+                    background-color: $btn-primary-bg;
+                    color: $btn-primary;
                 }
             }
         }
 
         >.item {
-            border-radius: var.$rounded-1;
+            border-radius: $rounded-1;
             user-select: none;
             transition: background 80ms linear;
             padding: 0.5rem 0.75rem 0.6rem 1.1rem;
@@ -89,8 +89,8 @@ $filter-item-active-bg-color: #c8c6c6;
         .item {
             padding: 1.25rem;
             margin-bottom: 1rem;
-            border: var.$border-1;
-            border-radius: var.$rounded-1;
+            border: $border-1;
+            border-radius: $rounded-1;
 
             &:hover {
                 background-color: #f8f8f8

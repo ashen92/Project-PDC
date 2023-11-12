@@ -1,4 +1,4 @@
-@use "var";
+@use "variables" as *;
 @use "mixins";
 
 .card-container {
@@ -23,18 +23,18 @@
 
 .card {
     min-width: 225px;
-    border-radius: var.$rounded-1;
+    border-radius: $rounded-1;
     padding: 13px 15px 10px 15px;
     text-align: center;
     border: 2px solid #3b81e8;
 
     &:hover {
-        background-color: var.$colors-hov-light-blue;
+        background-color: $hov-light-blue;
         border: 2px solid #3b81e8;
     }
 
     &:active {
-        background-color: var.$colors-active-light-blue;
+        background-color: $active-light-blue;
         border: 2px solid #3b81e8;
     }
 }

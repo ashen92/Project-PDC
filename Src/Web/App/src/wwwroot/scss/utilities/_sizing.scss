@@ -1,8 +1,8 @@
-@use "../var";
+@use "../variables" as *;
 @use "../mixins";
 
 .xxl-max-w {
-    max-width: var.$webpage-max-allowed-width;
+    max-width: $webpage-max-allowed-width;
 }
 
 .w {

@@ -1,16 +1,16 @@
-@use "../var";
+@use "../variables" as *;
 
-@function breakpoint-min($name, $breakpoints: var.$breakpoints) {
+@function breakpoint-min($name, $breakpoints: $breakpoints) {
     $min: map-get($breakpoints, $name);
     @return if($min !=0, $min, null);
 }
 
-@function breakpoint-max($name, $breakpoints: var.$breakpoints) {
+@function breakpoint-max($name, $breakpoints: $breakpoints) {
     $max: map-get($breakpoints, $name);
     @return if($max and $max > 0, $max - .02, null);
 }
 
-@mixin media-breakpoint-up($name, $breakpoints: var.$breakpoints) {
+@mixin media-breakpoint-up($name, $breakpoints: $breakpoints) {
     $min: breakpoint-min($name, $breakpoints);
 
     @if $min {
@@ -24,7 +24,7 @@
     }
 }
 
-@mixin media-breakpoint-down($name, $breakpoints: var.$breakpoints) {
+@mixin media-breakpoint-down($name, $breakpoints: $breakpoints) {
     $max: breakpoint-max($name, $breakpoints);
 
     @if $max {

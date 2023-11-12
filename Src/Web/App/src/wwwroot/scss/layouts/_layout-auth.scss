@@ -1,4 +1,4 @@
-@use "../var";
+@use "../variables" as *;
 @use "../mixins";
 
 .layout-auth {
@@ -12,7 +12,7 @@
         grid-template-columns: 1fr 1fr;
         grid-template-rows: max-content 1fr;
         width: 100%;
-        max-width: var.$authentication-page-max-width;
+        max-width: $authentication-page-max-width;
         margin: 6.25rem auto 3rem auto;
     }
 
@@ -22,11 +22,11 @@
         text-align: center;
 
         h2 {
-            font-weight: var.$fw-4;
+            font-weight: $fw-4;
         }
 
         h3 {
-            font-weight: var.$fw-3;
+            font-weight: $fw-3;
             color: #0527b0;
             padding-top: 1.25rem;
         }

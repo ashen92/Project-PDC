@@ -1,7 +1,7 @@
-@use "../var";
+@use "../variables" as *;
 
-.grad-1{
-   background-image : var.$bg-1;
+.grad-1 {
+    background-image: $bg-1;
 }
 
 .bg-white {

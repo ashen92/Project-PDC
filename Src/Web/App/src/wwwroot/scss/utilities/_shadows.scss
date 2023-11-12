@@ -1,21 +1,21 @@
-@use "../var";
+@use "../variables" as *;
 
 .shadow-1 {
-    box-shadow: var.$shadow-1;
+    box-shadow: $shadow-1;
 }
 
 .shadow-2 {
-    box-shadow: var.$shadow-2;
+    box-shadow: $shadow-2;
 }
 
 .shadow-3 {
-    box-shadow: var.$shadow-3;
+    box-shadow: $shadow-3;
 }
 
-.shadow-4{
-    box-shadow: var.$shadow-4;
+.shadow-4 {
+    box-shadow: $shadow-4;
 }
 
-.shadow-5{
-    box-shadow: var.$shadow-5;
+.shadow-5 {
+    box-shadow: $shadow-5;
 }

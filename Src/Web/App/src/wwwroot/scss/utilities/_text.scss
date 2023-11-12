@@ -1,4 +1,4 @@
-@use "../var";
+@use "../variables" as *;
 
 .text {
     &-centre {
@@ -14,7 +14,7 @@
     margin-bottom: 1rem;
 
     >p {
-        color: var.$colors-text-subtitle;
+        color: $text-subtitle-color;
     }
 }
 
@@ -32,85 +32,85 @@ h5,
 h6 {
     margin-top: 0;
     margin-bottom: 0.75rem;
-    font-weight: var.$fw-5;
+    font-weight: $fw-5;
     line-height: 1.2;
 }
 
 h {
     &1 {
-        font-size: var.$fs-1;
+        font-size: $fs-1;
     }
 
     &2 {
-        font-size: var.$fs-2;
+        font-size: $fs-2;
     }
 
     &3 {
-        font-size: var.$fs-3;
+        font-size: $fs-3;
     }
 
     &4 {
-        font-size: var.$fs-4;
+        font-size: $fs-4;
     }
 
     &5 {
-        font-size: var.$fs-5;
+        font-size: $fs-5;
     }
 
     &6 {
-        font-size: var.$fs-6;
+        font-size: $fs-6;
     }
 }
 
 .fs {
     &-1 {
-        font-size: var.$fs-1;
+        font-size: $fs-1;
     }
 
     &-2 {
-        font-size: var.$fs-2;
+        font-size: $fs-2;
     }
 
     &-3 {
-        font-size: var.$fs-3;
+        font-size: $fs-3;
     }
 
     &-4 {
-        font-size: var.$fs-4;
+        font-size: $fs-4;
     }
 
     &-5 {
-        font-size: var.$fs-5;
+        font-size: $fs-5;
     }
 
     &-6 {
-        font-size: var.$fs-6;
+        font-size: $fs-6;
     }
 }
 
 .fw {
     &-1 {
-        font-weight: var.$fw-1;
+        font-weight: $fw-1;
     }
 
     &-2 {
-        font-weight: var.$fw-2;
+        font-weight: $fw-2;
     }
 
     &-3 {
-        font-weight: var.$fw-3;
+        font-weight: $fw-3;
     }
 
     &-4 {
-        font-weight: var.$fw-4;
+        font-weight: $fw-4;
     }
 
     &-5 {
-        font-weight: var.$fw-5;
+        font-weight: $fw-5;
     }
 
     &-6 {
-        font-weight: var.$fw-6;
+        font-weight: $fw-6;
     }
 }
 

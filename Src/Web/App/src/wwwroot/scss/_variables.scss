@@ -1,0 +1,87 @@
+@forward "var/borders";
+@forward "var/text";
+@forward "var/shadows";
+@forward "var/gradients";
+@forward "var/sizing";
+
+$breakpoints: (
+    xs: 0,
+    sm: 576px,
+    md: 768px,
+    lg: 992px,
+    xl: 1200px,
+    xxl: 1400px
+);
+
+$btn-padding: 9px 24px;
+$btn-font-size: 0.9375rem;
+$btn-font-weight: 500;
+$btn-color: #ffffff;
+$btn-bg: #006fc9;
+$btn-border-radius: 3px;
+$btn-box-shadow: none;
+$btn-transition: background-color .1s cubic-bezier(0.02, 1, 1, 1);
+
+$btn-hover-color: #ffffff;
+$btn-hover-bg: #0064b5;
+$btn-hover-border-color: #0064b5;
+$btn-active-color: #ffffff;
+$btn-active-bg: #005499;
+$btn-active-border-color: #005499;
+$btn-focus-box-shadow: none;
+$btn-disabled-color: #ffffff;
+$btn-disabled-bg: #e8e8e8;
+$btn-disabled-border-color: #e8e8e8;
+
+
+$text-field-font-size: 0.9375rem;
+$text-field-padding: 8px 12px;
+$textarea-padding: 20px;
+
+// btn colors old
+$btn-primary: #ffffff;
+$btn-primary-bg: #006fc9;
+$btn-primary-bg-hov: #0064b5;
+$btn-primary-bg-act: #005499;
+
+$btn-primary-border: #006fc9;
+$btn-primary-bg-hov-border: #0064b5;
+$btn-primary-bg-act-border: #005499;
+
+$btn-secondary: #323130;
+$btn-secondary-bg: #ffffff;
+$btn-secondary-bg-hov: #e8e8e8;
+$btn-secondary-bg-act: #dedede;
+$btn-secondary-border: #8a8886;
+
+$btn-primary-border: 1px solid $btn-primary-border;
+$btn-primary-bg-hov-border: 1px solid $btn-primary-bg-hov-border;
+$btn-primary-bg-act-border: 1px solid $btn-primary-bg-act-border;
+$btn-secondary-border: 1px solid $btn-secondary-border;
+
+
+// office.com
+$btn-transition-duration: 100ms;
+$btn-transition-property: background, border, color;
+$btn-transition-timing-function: cubic-bezier(0.33, 0, 0.67, 1);
+
+// github
+$btn-github-transition: 80ms cubic-bezier(0.33, 1, 0.68, 1);
+$btn-github-transition-property: color, background-color, box-shadow, border-color;
+
+
+// Colors
+$alert-error: red;
+
+$hover-light-grey: #f8f8f8;
+$hover-grey: #c9c9c9;
+$active-light-blue: #deecf9;
+$hov-light-blue: #eff5fb;
+
+$link-color: #0067b8;
+
+// Background Colours
+$bg-lightgrey: #ebebeb;
+
+$text-color: #161616;
+$text-subtitle-color: #4a4a4a;

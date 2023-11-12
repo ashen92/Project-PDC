@@ -1,8 +1,8 @@
-@use "../var";
+@use "../variables" as *;
 
 .list {
-    border: var.$border-1;
-    border-radius: var.$rounded-1;
+    border: $border-1;
+    border-radius: $rounded-1;
 
     &-item {
         display: flex;
@@ -10,7 +10,7 @@
         align-items: center;
         justify-content: space-between;
         min-height: 3.75rem;
-        border-bottom: var.$border-1;
+        border-bottom: $border-1;
         padding: 0 1.2rem;
         transition: background 80ms linear;
 

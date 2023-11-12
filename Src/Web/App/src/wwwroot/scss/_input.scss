@@ -1,4 +1,4 @@
-@use "var";
+@use "variables" as *;
 @use "mixins";
 
 form {
@@ -51,12 +51,12 @@ label {
 }
 
 input {
-    font-size: var.$btn-font-size;
+    font-size: $btn-font-size;
 
     &[type="text"],
     &[type="email"],
     &[type="password"] {
-        padding: var.$text-field-padding;
+        padding: $text-field-padding;
         outline: none;
     }
 
@@ -65,11 +65,11 @@ input {
         cursor: pointer;
 
         &:hover {
-            background-color: var.$colors-active-light-blue;
+            background-color: $active-light-blue;
         }
 
         &:focus {
-            background-color: var.$colors-active-light-blue;
+            background-color: $active-light-blue;
         }
     }
 
@@ -78,28 +78,28 @@ input {
         cursor: pointer;
 
         &:hover {
-            background-color: var.$colors-active-light-blue;
+            background-color: $active-light-blue;
         }
 
         &:focus {
-            background-color: var.$colors-active-light-blue;
+            background-color: $active-light-blue;
         }
     }
 
     &[type="submit"] {
-        @include mixins.button();
+        // @include mixins.button();
     }
 
     &[type="reset"] {
-        @include mixins.button($color: var.$colors-btn-secondary,
-            $color-bg: var.$colors-btn-secondary-bg,
-            $border: var.$btn-secondary-border,
-            $hover-color: var.$colors-btn-secondary,
-            $hover-color-bg: var.$colors-btn-secondary-bg-hov,
-            $hover-border: var.$btn-secondary-border,
-            $active-color: var.$colors-btn-secondary,
-            $active-color-bg: var.$colors-btn-secondary-bg-act,
-            $active-border: var.$btn-secondary-border, );
+        // @include mixins.button($color: $colors-btn-secondary,
+        //     $color-bg: $colors-btn-secondary-bg,
+        //     $border: $btn-secondary-border,
+        //     $hover-color: $colors-btn-secondary,
+        //     $hover-color-bg: $colors-btn-secondary-bg-hov,
+        //     $hover-border: $btn-secondary-border,
+        //     $active-color: $colors-btn-secondary,
+        //     $active-color-bg: $colors-btn-secondary-bg-act,
+        //     $active-border: $btn-secondary-border, );
     }
 }
 
@@ -122,8 +122,8 @@ input {
 select {
     display: block;
     width: 100%;
-    padding: var.$text-field-padding;
-    font-size: var.$btn-font-size;
+    padding: $text-field-padding;
+    font-size: $btn-font-size;
     cursor: pointer;
 }
 
@@ -135,7 +135,7 @@ select {
 }
 
 #text-editor {
-    font-size: var.$text-field-font-size;
+    font-size: $text-field-font-size;
 
     >* {
         line-height: inherit;

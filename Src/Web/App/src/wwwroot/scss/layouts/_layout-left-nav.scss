@@ -1,4 +1,4 @@
-@use "../var";
+@use "../variables" as *;
 
 .layout-left-nav {
     display: grid;
@@ -6,7 +6,7 @@
     margin-top: 1rem;
 
     >.left-nav {
-        border-right: var.$border-1;
+        border-right: $border-1;
         padding: 0px 10px 15px 0px;
         margin-top: 50px;
 
@@ -14,7 +14,7 @@
             display: block;
             padding: 9px 10px 9px 25px;
             margin-bottom: 2px;
-            border-radius: var.$rounded-1;
+            border-radius: $rounded-1;
 
             transition-duration: 100ms;
             transition-property: background, border, color;
@@ -41,7 +41,7 @@
             margin-bottom: 2.5rem;
 
             >p {
-                font-size: var.$fs-6;
+                font-size: $fs-6;
             }
         }
 
