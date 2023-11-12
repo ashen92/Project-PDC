@@ -41,14 +41,10 @@ $filter-item-active-bg-color: #c8c6c6;
 
             background-color: $search-bar-bg-color;
             border-radius: $rounded-1;
-            border: 1px solid $filter-bar-bg-color;
+            border: $btn-border $filter-bar-bg-color;
 
             &:hover {
-                border: 1px solid $btn-primary-border;
-            }
-
-            .i-search::before {
-                vertical-align: top;
+                border: $btn-border $btn-hover-border-color;
             }
 
             >input[type="text"] {
@@ -57,13 +53,12 @@ $filter-item-active-bg-color: #c8c6c6;
                 width: 100%;
             }
 
-            .btn-search {
+            >.btn {
                 align-self: stretch;
-                background-color: $search-btn-bg-color;
+                border-radius: 0 $rounded-1 $rounded-1 0;
 
                 &:hover {
-                    background-color: $btn-primary-bg;
-                    color: $btn-primary;
+                    border-radius: 0 3px 3px 0;
                 }
             }
         }

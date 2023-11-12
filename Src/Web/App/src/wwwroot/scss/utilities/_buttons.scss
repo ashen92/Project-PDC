@@ -1,47 +1,19 @@
 @use "../variables" as *;
 
-// .btn {
-//     line-height: 1.2;
-//     font-size: $btn-font-size;
-//     cursor: pointer;
-//     padding: $btn-padding;
-//     border: none;
-//     border-radius: $btn-border-radius;
-//     transition: $btn-transition;
-//     font-weight: $fw-5;
-
-//     &.btn-primary {
-//         color: $colors-btn-primary;
-//         background-color: $colors-btn-primary-bg;
-//         border: $btn-primary-border;
-
-//         &:hover {
-//             color: $colors-btn-primary;
-//             background-color: $colors-btn-primary-bg-hov;
-//             border: $btn-primary-bg-hov-border;
-//         }
-
-//         &:active {
-//             color: $colors-btn-primary;
-//             background-color: $colors-btn-primary-bg-act;
-//             border: $btn-primary-bg-act-border;
-//         }
-//     }
-// }
-
 .btn {
     display: inline-block;
     padding: $btn-padding;
     font-size: $btn-font-size;
     font-weight: $btn-font-weight;
-    line-height: 1.2;
+    line-height: $btn-line-height;
     color: $btn-color;
     background-color: $btn-bg;
     text-align: center;
     cursor: pointer;
     user-select: none;
-    border: none;
+    border: $btn-border;
     border-radius: $btn-border-radius;
+    border-color: $btn-border-color;
     box-shadow: $btn-box-shadow;
     transition: $btn-transition;
 
@@ -71,6 +43,22 @@
         background-color: $btn-disabled-bg;
         border-color: $btn-disabled-border-color;
         box-shadow: none;
+    }
+
+    &.btn-secondary {
+        color: $btn-secondary;
+        background-color: $btn-secondary-bg;
+        border-color: $btn-secondary-border-color;
+
+        &:hover {
+            color: $btn-secondary;
+            background-color: $btn-secondary-hover-bg;
+        }
+
+        &:active {
+            color: $btn-secondary;
+            background-color: $btn-secondary-active-bg;
+        }
     }
 }
 

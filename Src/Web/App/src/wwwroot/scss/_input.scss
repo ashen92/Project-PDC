@@ -51,7 +51,8 @@ label {
 }
 
 input {
-    font-size: $btn-font-size;
+    font-family: inherit;
+    font-size: $text-field-font-size;
 
     &[type="text"],
     &[type="email"],
@@ -84,22 +85,6 @@ input {
         &:focus {
             background-color: $active-light-blue;
         }
-    }
-
-    &[type="submit"] {
-        // @include mixins.button();
-    }
-
-    &[type="reset"] {
-        // @include mixins.button($color: $colors-btn-secondary,
-        //     $color-bg: $colors-btn-secondary-bg,
-        //     $border: $btn-secondary-border,
-        //     $hover-color: $colors-btn-secondary,
-        //     $hover-color-bg: $colors-btn-secondary-bg-hov,
-        //     $hover-border: $btn-secondary-border,
-        //     $active-color: $colors-btn-secondary,
-        //     $active-color-bg: $colors-btn-secondary-bg-act,
-        //     $active-border: $btn-secondary-border, );
     }
 }
 
