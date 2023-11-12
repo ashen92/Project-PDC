@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
-use App\Entities\Company;
 use App\Interfaces\IInternshipService;
+use App\Interfaces\IRequirementService;
 use App\Interfaces\IUserService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,13 +18,17 @@ class InternshipProgramController extends PageControllerBase
     private IInternshipService $internshipService;
     private IUserService $userService;
 
+    private IRequirementService $requirementService;
+
     public function __construct(
         Environment $twig,
         IInternshipService $internshipService,
-        IUserService $userService
+        IUserService $userService,
+        IRequirementService $requirementService
     ) {
         $this->internshipService = $internshipService;
         $this->userService = $userService;
+        $this->requirementService = $requirementService;
         parent::__construct($twig);
     }
 
@@ -46,16 +50,29 @@ class InternshipProgramController extends PageControllerBase
         return $this->render("internship-program/cycle/details.html", ["section" => "home"]);
     }
 
-    #[Route("/monitoring", name: "monitoring")]
+    #[Route("/monitoring", methods: ["GET"])]
     public function monitoring(Request $request): Response
     {
-        return $this->render("internship-program/monitoring/home.html", ["section" => "monitoring"]);
+        return $this->render(
+            "internship-program/monitoring/home.html",
+            [
+                "section" => "monitoring",
+                "requirements" => $this->requirementService->getRequirements()
+            ]
+        );
     }
 
     #[Route("/monitoring/requirement/add", methods: ["GET"])]
     public function requirementAddGET(Request $request): Response
     {
         return $this->render("internship-program/monitoring/requirement-add.html", ["section" => "monitoring"]);
+    }
+
+    #[Route("/monitoring/requirement/add", methods: ["POST"])]
+    public function requirementAddPOST(Request $request): RedirectResponse
+    {
+        $this->requirementService->addRequirement($request->get("name"));
+        return $this->redirect("/internship-program/monitoring");
     }
 
     #[Route("/documents", name: "documents")]

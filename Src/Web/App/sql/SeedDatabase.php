@@ -5,6 +5,7 @@ use App\Entities\Group;
 use App\Entities\Internship;
 use App\Entities\InternshipCycle;
 use App\Entities\Policy;
+use App\Entities\Requirement;
 use App\Entities\Role;
 use App\Entities\User;
 
@@ -204,4 +205,11 @@ foreach ($eventData as $eventData) {
 }
 $entityManager->flush();
 
-echo "Done.\nAdding ...";
+echo "Done.\nAdding requirements...";
+
+$r1 = new Requirement("Internship Contract");
+$r2 = new Requirement("Service Letter");
+
+$entityManager->persist($r1);
+$entityManager->persist($r2);
+$entityManager->flush();
