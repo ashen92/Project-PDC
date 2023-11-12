@@ -10,6 +10,14 @@
     }
 }
 
+.title {
+    margin-bottom: 1rem;
+
+    >p {
+        color: var.$colors-text-subtitle;
+    }
+}
+
 .h1,
 .h2,
 .h3,

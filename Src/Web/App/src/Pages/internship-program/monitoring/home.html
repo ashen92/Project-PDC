@@ -17,55 +17,47 @@
     </p>
 </div>
 
-<section>
-    {# {% if stateWhenParticipantsAreAssigned %} #}
-    {% if 1 == 1 %}
-    <div class="row-cols-2 mb-5">
-        <div>
-            View Partners
+<section class="list">
+    <a class="list-item" href="">
+        <div class="list-item-title">
+            Partners
         </div>
-        <a class="btn btn-primary" role="button" href="">View</a>
-    </div>
-    <div class="row-cols-2">
-        <div>
-            View Students
+        <button class="btn btn-primary" type="button">View</button>
+    </a>
+    <a class="list-item" href="">
+        <div class="list-item-title">
+            Students
         </div>
-        <a class="btn btn-primary" role="button" href="">View</a>
-    </div>
-    {% endif %}
+        <button class="btn btn-primary" type="button">View</button>
+    </a>
 </section>
 
-{# {% if stateWhenInterningIsActive %} #}
-{% if 1 == 1 %}
-
 <section>
-    <h4>Requirements for this internship program</h4>
-
-    {# if there are no reqirements #}
-    <p class="mb-20">No requirements have found.</p>
-
-    <div class="row-cols-2">
-        <div>
-            Add new reqirement
-        </div>
-        <div>
-            <a class="btn btn-primary" role="button" href="monitoring/requirement/add">Add</a>
-        </div>
+    <div class="title">
+        <h4>Requirements for the Internship Program</h4>
+        <p>Manage requirements that the students must complete in order to finish the internship program.</p>
     </div>
 
-    {# if there are requirements, for each requirement #}
+    <div class="actions mb-20">
+        <a class="btn btn-primary" role="button" href="monitoring/requirement/add">Add Requirement</a>
+    </div>
+
+    {% if requirements is empty %}
+    <p>No requirements have found.</p>
+    {% else %}
+
+    {% for item in requirements %}
     <div class="row-cols-2">
         <div>
-            Requirement name
+            {{ item.name }}
         </div>
         <div>
             <a class="btn btn-primary" role="button" href="">View</a>
         </div>
     </div>
-</section>
+    {% endfor %}
 
-{% else %}
-<div>No internship cycle found to monitor.</div>
-{% endif %}
+    {% endif %}
+</section>
 
 {% endblock %}

@@ -1,28 +1,30 @@
 @use "../var";
 @use "../mixins";
 
+.rounded-0 {
+    border-radius: var.$rounded-0 !important;
+}
+
 .rounded-1 {
-    border-radius: var.$rounded-1;
+    border-radius: var.$rounded-1 !important;
 }
 
 .rounded-2 {
-    border-radius: var.$rounded-2;
+    border-radius: var.$rounded-2 !important;
+}
+
+.border-0 {
+    border: var.$border-0 !important;
 }
 
 .border-1 {
-    border: var.$border-1;
+    border: var.$border-1 !important;
 }
 
 .border-b-1 {
-    border-bottom: var.$border-b-1;
+    border-bottom: var.$border-1 !important;
 }
 
 .border-2 {
-    border: var.$border-2;
-}
-
-@include mixins.media-breakpoint-up(sm) {
-    .sm-border-1 {
-        border: var.$border-1;
-    }
+    border: var.$border-2 !important;
 }

@@ -2,7 +2,7 @@
 
 .layout-left-nav {
     display: grid;
-    grid-template-columns: 225px auto;
+    grid-template-columns: 210px auto;
     margin-top: 1rem;
 
     >.left-nav {
@@ -42,12 +42,11 @@
 
             >p {
                 font-size: var.$fs-6;
-                font-weight: var.$fw-3;
             }
         }
 
         section {
-            margin-top: 3.5rem;
+            margin-top: 3rem;
         }
     }
 }
