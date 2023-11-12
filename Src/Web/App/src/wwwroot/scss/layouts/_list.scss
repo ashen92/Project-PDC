@@ -14,7 +14,12 @@
         padding: 0 1.2rem;
         transition: background 80ms linear;
 
+        &:first-child {
+            border-radius: ($rounded-1 - 1) ($rounded-1 - 1) 0 0;
+        }
+
         &:last-child {
+            border-radius: 0 0 ($rounded-1 - 1) ($rounded-1 - 1);
             border-bottom: none;
         }
 
