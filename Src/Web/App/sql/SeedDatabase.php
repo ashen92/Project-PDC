@@ -1,5 +1,6 @@
 <?php
 
+use App\DTOs\RequirementDTO;
 use App\Entities\Event;
 use App\Entities\Group;
 use App\Entities\Internship;
@@ -207,9 +208,16 @@ $entityManager->flush();
 
 echo "Done.\nAdding requirements...";
 
-$r1 = new Requirement("Internship Contract");
-$r2 = new Requirement("Service Letter");
+$r1DTO = new RequirementDTO(
+    "Internship Contract",
+    "Upload the contract between you and the company.",
+    "one-time",
+    new DateTime("now"),
+    new DateTime("+1 month"),
+    null
+);
+
+$r1 = new Requirement($r1DTO);
 
 $entityManager->persist($r1);
-$entityManager->persist($r2);
 $entityManager->flush();

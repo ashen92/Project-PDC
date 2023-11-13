@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Entities;
 
+use App\DTOs\RequirementDTO;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -42,13 +43,14 @@ class Requirement
     #[ORM\OneToMany(targetEntity: UserRequirement::class, mappedBy: 'requirement')]
     private Collection $userRequirements;
 
-    public function __construct(string $name)
+    public function __construct(RequirementDTO $requirementDTO)
     {
-        $this->scheduledRequirements = new ArrayCollection();
-        $this->name = $name;
-        $this->description = "";
-        $this->type = "";
-        $this->startDate = new DateTime("now");
-        $this->endBeforeDate = new DateTime("now");
+        $this->name = $requirementDTO->name;
+        $this->description = $requirementDTO->description;
+        $this->type = $requirementDTO->type;
+        $this->startDate = $requirementDTO->startDate;
+        $this->endBeforeDate = $requirementDTO->endBeforeDate;
+        $this->repeatInterval = $requirementDTO->repeatInterval;
+        $this->userRequirements = new ArrayCollection();
     }
 }

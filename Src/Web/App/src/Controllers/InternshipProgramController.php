@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+use App\DTOs\RequirementDTO;
 use App\Interfaces\IInternshipService;
 use App\Interfaces\IRequirementService;
 use App\Interfaces\IUserService;
@@ -62,16 +63,24 @@ class InternshipProgramController extends PageControllerBase
         );
     }
 
-    #[Route("/monitoring/requirement/add", methods: ["GET"])]
+    #[Route("/requirement/add", methods: ["GET"])]
     public function requirementAddGET(Request $request): Response
     {
         return $this->render("internship-program/monitoring/requirement-add.html", ["section" => "monitoring"]);
     }
 
-    #[Route("/monitoring/requirement/add", methods: ["POST"])]
+    #[Route("/requirement/add", methods: ["POST"])]
     public function requirementAddPOST(Request $request): RedirectResponse
     {
-        $this->requirementService->addRequirement($request->get("name"));
+        $requirementDTO = new RequirementDTO(
+            $request->get("name"),
+            $request->get("description"),
+            $request->get("type"),
+            new \DateTime($request->get("start-date")),
+            new \DateTime($request->get("end-before")),
+            $request->get("repeat-interval")
+        );
+        $this->requirementService->createRequirement($requirementDTO);
         return $this->redirect("/internship-program/monitoring");
     }
 

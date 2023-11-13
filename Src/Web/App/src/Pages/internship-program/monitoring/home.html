@@ -39,23 +39,22 @@
     </div>
 
     <div class="actions mb-20">
-        <a class="btn btn-primary" role="button" href="monitoring/requirement/add">Add Requirement</a>
+        <a class="btn btn-primary" role="button" href="requirement/add">Add Requirement</a>
     </div>
 
     {% if requirements is empty %}
     <p>No requirements have found.</p>
     {% else %}
 
-    {% for item in requirements %}
-    <div class="row-cols-2">
-        <div>
-            {{ item.name }}
-        </div>
-        <div>
-            <a class="btn btn-primary" role="button" href="">View</a>
-        </div>
+    <div class="list">
+        {% for item in requirements %}
+        <a class="list-item" href="requirement/{{ item.id }}">
+            <div class="list-item-title">
+                {{ item.name }}
+            </div>
+        </a>
+        {% endfor %}
     </div>
-    {% endfor %}
 
     {% endif %}
 </section>

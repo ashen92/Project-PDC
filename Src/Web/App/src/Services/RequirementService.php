@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\DTOs\RequirementDTO;
 use App\Entities\Requirement;
 use App\Interfaces\IRequirementService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -21,15 +22,15 @@ class RequirementService implements IRequirementService
     {
         $queryBuilder = $this->entityManager->createQueryBuilder();
         $queryBuilder
-            ->select("r.name")
+            ->select("r.id, r.name")
             ->from("App\Entities\Requirement", "r");
         $query = $queryBuilder->getQuery();
         return $query->getArrayResult();
     }
 
-    public function addRequirement(string $name): void
+    public function createRequirement(RequirementDTO $requirementDTO): void
     {
-        $requirement = new Requirement($name);
+        $requirement = new Requirement($requirementDTO);
         $this->entityManager->persist($requirement);
         $this->entityManager->flush();
     }
