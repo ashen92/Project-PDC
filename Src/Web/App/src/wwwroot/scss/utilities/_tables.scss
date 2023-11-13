@@ -1,0 +1,58 @@
+@use "../variables" as *;
+
+.table {
+    table-layout: fixed;
+    text-align: left;
+    width: 100%;
+    border: $border-1;
+    border-radius: $rounded-1;
+    border-spacing: 0;
+
+    tr {
+        width: 100%;
+
+        th,
+        td {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            padding-left: 1.2rem;
+            padding-right: 1rem;
+        }
+    }
+
+    thead {
+        tr {
+            height: 3rem;
+            color: #0000009c;
+            font-size: 0.9rem;
+            font-weight: $fw-5;
+
+            * {
+                border-bottom: $border-1;
+            }
+        }
+    }
+
+    tbody>tr {
+        height: 3.25rem;
+
+        * {
+            border-bottom: $border-1;
+        }
+
+        &:last-child {
+            * {
+                border-bottom: none;
+            }
+        }
+    }
+
+    &.table-hover {
+        tbody>tr:hover>* {
+            background-color: #f2f2f2;
+            cursor: pointer;
+            user-select: none;
+        }
+    }
+}

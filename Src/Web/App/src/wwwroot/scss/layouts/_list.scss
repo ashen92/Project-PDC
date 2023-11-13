@@ -6,10 +6,9 @@
 
     &-item {
         display: flex;
-        flex-direction: row;
         align-items: center;
         justify-content: space-between;
-        min-height: 3.75rem;
+        min-height: 3.25rem;
         border-bottom: $border-1;
         padding: 0 1.2rem;
         transition: background 80ms linear;

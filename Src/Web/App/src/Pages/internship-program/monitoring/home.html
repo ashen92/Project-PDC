@@ -46,15 +46,32 @@
     <p>No requirements have found.</p>
     {% else %}
 
-    <div class="list">
-        {% for item in requirements %}
-        <a class="list-item" href="requirement/{{ item.id }}">
-            <div class="list-item-title">
-                {{ item.name }}
-            </div>
-        </a>
-        {% endfor %}
-    </div>
+    <table class="table table-hover">
+        <colgroup>
+            <col class="w-1-5">
+            <col class="w-2-5">
+            <col class="w-1-5">
+            <col class="w-1-5">
+        </colgroup>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Type</th>
+                <th>Start Date</th>
+            </tr>
+        </thead>
+        <tbody class="table-rows-clickable">
+            {% for item in requirements %}
+            <tr data-href="requirement/{{ item.id }}">
+                <td>{{ item.name }}</td>
+                <td>{{ item.description }}</td>
+                <td class="capitalize">{{ item.type }}</td>
+                <td>{{ item.startDate.format("Y-m-d") }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
     {% endif %}
 </section>
