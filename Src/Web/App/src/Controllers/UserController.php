@@ -16,4 +16,10 @@ class UserController extends PageControllerBase
 	{
 		return $this->render("users/home.html");
 	}
+
+	#[Route("/partners", name: "partners")]
+	public function partners(): Response
+	{
+		return $this->render("users/companylist.html");
+	}
 }
