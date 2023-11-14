@@ -1,43 +1,6 @@
 {
     "git.autofetch": true,
     "git.openRepositoryInParentFolders": "always",
-    "liveSassCompile.settings.useNewCompiler": true,
-    "liveSassCompile.settings.watchOnLaunch": true,
-    "liveSassCompile.settings.showOutputWindowOn": "None",
-    "liveSassCompile.settings.forceBaseDirectory": "/src/wwwroot/scss",
-    "liveSassCompile.settings.generateMap": true,
-    "liveSassCompile.settings.formats": [
-        {
-            "format": "compressed",
-            "extensionName": ".css",
-            "savePath": "/public/css",
-            "savePathReplacementPairs": null
-        }
-    ],
-    "liveSassCompile.settings.includeItems": [
-        "/main.scss"
-    ],
-    "liveSassCompile.settings.autoprefix": [
-        ">0.15%",
-        "defaults",
-        "not dead"
-    ],
-    "php.suggest.basic": false,
-    "sqltools.connections": [
-        {
-            "mysqlOptions": {
-                "authProtocol": "default",
-                "enableSsl": "Disabled"
-            },
-            "previewLimit": 50,
-            "server": "localhost",
-            "port": 3306,
-            "driver": "MySQL",
-            "name": "MySQL-GroupProject",
-            "database": "pdc",
-            "username": "root"
-        }
-    ],
     "git.suggestSmartCommit": false,
     "editor.formatOnSave": true,
     "[php]": {
@@ -54,5 +17,21 @@
     },
     "[html]": {
         "editor.defaultFormatter": "vscode.html-language-features"
-    }
+    },
+    "php.suggest.basic": false,
+    "sqltools.connections": [
+        {
+            "mysqlOptions": {
+                "authProtocol": "default",
+                "enableSsl": "Disabled"
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 3306,
+            "driver": "MySQL",
+            "name": "MySQL-GroupProject",
+            "database": "pdc",
+            "username": "root"
+        }
+    ]
 }
