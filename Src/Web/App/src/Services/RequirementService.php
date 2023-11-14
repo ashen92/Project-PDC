@@ -34,4 +34,18 @@ class RequirementService implements IRequirementService
         $this->entityManager->persist($requirement);
         $this->entityManager->flush();
     }
+
+    public function getUserRequirements(int $userId): array
+    {
+        $queryBuilder = $this->entityManager->createQueryBuilder();
+        $queryBuilder
+            ->select("r.name, r.description, r.type, r.startDate, r.repeatInterval")
+            ->from("App\Entities\UserRequirement", "ur")
+            ->innerJoin("ur.requirement", "r")
+            ->innerJoin("ur.user", "u")
+            ->where("u.id = :userId")
+            ->setParameter("userId", $userId);
+        $query = $queryBuilder->getQuery();
+        return $query->getArrayResult();
+    }
 }

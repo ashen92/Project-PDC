@@ -15,6 +15,10 @@ class UserRequirement
     #[ORM\Column(type: "integer")]
     private int $id;
 
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: "assignedRequirements")]
+    #[ORM\JoinColumn(name: "user_id", referencedColumnName: "id")]
+    private User $user;
+
     #[ORM\ManyToOne(targetEntity: Requirement::class, inversedBy: "userRequirements")]
     #[ORM\JoinColumn(name: "requirement_id", referencedColumnName: "id")]
     private Requirement $requirement;
@@ -25,14 +29,19 @@ class UserRequirement
     #[ORM\Column(type: "datetime")]
     private DateTime $endDate;
 
-    #[ORM\Column(type: "datetime")]
+    #[ORM\Column(type: "datetime", nullable: true)]
     private DateTime|null $completedAt;
 
     #[ORM\Column]
     private string $status;
 
-    public function __construct()
+    public function __construct(User $user, Requirement $requirement)
     {
-
+        $this->user = $user;
+        $this->requirement = $requirement;
+        $this->startDate = new DateTime("now");
+        $this->endDate = new DateTime("+2 month");
+        $this->completedAt = null;
+        $this->status = "pending";
     }
 }

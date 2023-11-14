@@ -43,6 +43,9 @@ class User
     #[ORM\ManyToMany(targetEntity: Internship::class, mappedBy: "applicants")]
     private Collection $internshipsApplied;
 
+    #[ORM\OneToMany(targetEntity: UserRequirement::class, mappedBy: "user")]
+    private Collection $assignedRequirements;
+
     public function __construct(string $email, string $firstName, string $passwordHash)
     {
         $this->email = $email;

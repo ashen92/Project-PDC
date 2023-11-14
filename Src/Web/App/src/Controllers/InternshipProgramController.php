@@ -60,11 +60,22 @@ class InternshipProgramController extends PageControllerBase
     #[Route("/requirements", methods: ["GET"])]
     public function requirements(Request $request): Response
     {
+        $userId = $request->getSession()->get("user_id");
+        if ($this->userService->hasRole($userId, "ROLE_ADMIN")) {
+            return $this->render(
+                "internship-program/requirements/home.html",
+                [
+                    "section" => "requirements",
+                    "requirements" => $this->requirementService->getRequirements()
+                ]
+            );
+        }
+
         return $this->render(
             "internship-program/requirements/home.html",
             [
                 "section" => "requirements",
-                "requirements" => $this->requirementService->getRequirements()
+                "requirements" => $this->requirementService->getUserRequirements($userId)
             ]
         );
     }

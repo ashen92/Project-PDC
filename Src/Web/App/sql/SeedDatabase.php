@@ -9,6 +9,7 @@ use App\Entities\Policy;
 use App\Entities\Requirement;
 use App\Entities\Role;
 use App\Entities\User;
+use App\Entities\UserRequirement;
 
 require_once __DIR__ . "/../../vendor/autoload.php";
 require_once __DIR__ . "/../src/container.php";
@@ -217,7 +218,50 @@ $r1DTO = new RequirementDTO(
     null
 );
 
+$r2DTO = new RequirementDTO(
+    "Monthly Report",
+    "Upload a report of your progress.",
+    "recurring",
+    new DateTime("now"),
+    null,
+    "monthly"
+);
+
+$r3DTO = new RequirementDTO(
+    "Daily Report",
+    "Upload a report of your progress.",
+    "recurring",
+    new DateTime("now"),
+    null,
+    "daily"
+);
+
+$r4DTO = new RequirementDTO(
+    "Weekly Report",
+    "Upload a report of your progress.",
+    "recurring",
+    new DateTime("now"),
+    null,
+    "weekly"
+);
+
 $r1 = new Requirement($r1DTO);
+$r2 = new Requirement($r2DTO);
+$r3 = new Requirement($r3DTO);
+$r4 = new Requirement($r4DTO);
 
 $entityManager->persist($r1);
+$entityManager->persist($r2);
+$entityManager->persist($r3);
+$entityManager->persist($r4);
+$entityManager->flush();
+
+echo "Done.\nAdding user requirements...";
+
+$userRequirement = new UserRequirement($user, $r1);
+$userRequirement1 = new UserRequirement($user3, $r1);
+$userRequirement2 = new UserRequirement($user, $r2);
+$entityManager->persist($userRequirement);
+$entityManager->persist($userRequirement1);
+$entityManager->persist($userRequirement2);
 $entityManager->flush();
