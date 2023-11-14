@@ -56,7 +56,7 @@ gulp.task("build-scss", function () {
 });
 
 gulp.task("watch-scss", function () {
-    gulp.watch("./App/src/wwwroot/scss/*.css", gulp.series("build-scss"));
+    gulp.watch("./App/src/wwwroot/scss/*.scss", gulp.series("build-scss"));
 });
 
 // Default task
