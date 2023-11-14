@@ -22,7 +22,7 @@ class RequirementService implements IRequirementService
     {
         $queryBuilder = $this->entityManager->createQueryBuilder();
         $queryBuilder
-            ->select("r.id, r.name, r.description, r.type, r.startDate, r.endBeforeDate")
+            ->select("r.id, r.name, r.description, r.type, r.startDate, r.endBeforeDate, r.repeatInterval")
             ->from("App\Entities\Requirement", "r");
         $query = $queryBuilder->getQuery();
         return $query->getArrayResult();

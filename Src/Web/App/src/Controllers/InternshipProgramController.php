@@ -54,22 +54,28 @@ class InternshipProgramController extends PageControllerBase
     #[Route("/monitoring", methods: ["GET"])]
     public function monitoring(Request $request): Response
     {
+        return $this->render("internship-program/monitoring/home.html", ["section" => "monitoring"]);
+    }
+
+    #[Route("/requirements", methods: ["GET"])]
+    public function requirements(Request $request): Response
+    {
         return $this->render(
-            "internship-program/monitoring/home.html",
+            "internship-program/requirements/home.html",
             [
-                "section" => "monitoring",
+                "section" => "requirements",
                 "requirements" => $this->requirementService->getRequirements()
             ]
         );
     }
 
-    #[Route("/requirement/add", methods: ["GET"])]
+    #[Route("/requirements/add", methods: ["GET"])]
     public function requirementAddGET(Request $request): Response
     {
-        return $this->render("internship-program/monitoring/requirement-add.html", ["section" => "monitoring"]);
+        return $this->render("internship-program/requirements/add.html", ["section" => "requirements"]);
     }
 
-    #[Route("/requirement/add", methods: ["POST"])]
+    #[Route("/requirements/add", methods: ["POST"])]
     public function requirementAddPOST(Request $request): RedirectResponse
     {
         $requirementDTO = new RequirementDTO(
@@ -81,7 +87,7 @@ class InternshipProgramController extends PageControllerBase
             $request->get("repeat-interval")
         );
         $this->requirementService->createRequirement($requirementDTO);
-        return $this->redirect("/internship-program/monitoring");
+        return $this->redirect("/internship-program/requirements");
     }
 
     #[Route("/documents", name: "documents")]

@@ -1,0 +1,60 @@
+{% extends "shared/layout-left-nav.html" %}
+
+{% block title %}Monitoring{% endblock %}
+
+{% block left_nav %}
+{% include "internship-program/left-nav.html" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="title">
+    <h2>Requirements for the Internship Program</h2>
+    <p>Manage requirements that the students must complete in order to finish the internship program.</p>
+</div>
+<section>
+    <div class="actions mb-20">
+        <a class="btn btn-primary" role="button" href="requirements/add">Add Requirement</a>
+    </div>
+
+    {% if requirements is empty %}
+    <p>No requirements have found.</p>
+    {% else %}
+
+    <table class="table table-hover">
+        <colgroup>
+            <col class="w-1-5">
+            <col class="w-2-5">
+            <col class="w-1-5">
+            <col class="w-1-5">
+        </colgroup>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Type</th>
+                <th>Start Date</th>
+            </tr>
+        </thead>
+        <tbody class="table-rows-clickable">
+            {% for item in requirements %}
+            <tr data-href="requirement/{{ item.id }}">
+                <td>{{ item.name }}</td>
+                <td>{{ item.description }}</td>
+                <td class="capitalize">
+                    {% if item.type == "recurring" %}
+                    {{ item.type }} ({{ item.repeatInterval }})
+                    {% else %}
+                    {{ item.type }}
+                    {% endif %}
+                </td>
+                <td>{{ item.startDate.format("Y-m-d") }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% endif %}
+</section>
+
+{% endblock %}
