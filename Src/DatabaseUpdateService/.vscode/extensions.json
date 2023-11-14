@@ -5,6 +5,7 @@
         "ms-python.vscode-pylance",
         "davidanson.vscode-markdownlint",
         "mhutchie.git-graph",
-        "streetsidesoftware.code-spell-checker"
+        "streetsidesoftware.code-spell-checker",
+        "ms-python.autopep8"
     ]
 }
