@@ -119,8 +119,33 @@ select {
     padding-top: 0.95rem;
 }
 
+#text-editor-container {
+    .ql-toolbar {
+        padding: 0.25rem 1rem;
+    }
+
+    .ql-formats {
+        :hover {
+            background-color: #f2f2f2;
+        }
+
+        button {
+            width: auto;
+            height: auto;
+            padding: .75rem;
+            border-radius: $rounded-1;
+        }
+
+        svg {
+            height: 18px;
+            width: 18px;
+        }
+    }
+}
+
 #text-editor {
     font-size: $text-field-font-size;
+    font-family: inherit;
 
     >* {
         line-height: inherit;
