@@ -19,8 +19,8 @@ App/public/css/
 App/public/js/
 !App/sql/
 !App/bin/
-!App/composer.json
-!App/composer.lock
-!App/package-lock.json
-!App/package.json
-!App/gulpfile.prod.js
+!composer.json
+!composer.lock
+!package-lock.json
+!package.json
+!gulpfile.prod.js

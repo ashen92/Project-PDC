@@ -10,7 +10,7 @@ use App\Entities\Requirement;
 use App\Entities\Role;
 use App\Entities\User;
 
-require_once __DIR__ . "/../vendor/autoload.php";
+require_once __DIR__ . "/../../vendor/autoload.php";
 require_once __DIR__ . "/../src/container.php";
 
 $entityManager = $container->get("doctrine.entity_manager");

@@ -1,0 +1,63 @@
+{
+	"folders": [
+		{
+			"path": "DatabaseUpdateService"
+		},
+		{
+			"path": "Web"
+		}
+	],
+	"extensions": {
+		"recommendations": [
+			"dbaeumer.vscode-eslint",
+			"ms-azuretools.vscode-docker",
+			"bajdzis.vscode-twig-pack",
+			"mtxr.sqltools-driver-mysql",
+			"mtxr.sqltools",
+			"ms-python.vscode-pylance",
+			"xdebug.php-debug",
+			"devsense.phptools-vscode",
+			"davidanson.vscode-markdownlint",
+			"mhutchie.git-graph",
+			"ms-vscode-remote.remote-containers",
+			"streetsidesoftware.code-spell-checker"
+		]
+	},
+	"settings": {
+		"git.autofetch": true,
+		"git.openRepositoryInParentFolders": "always",
+		"git.suggestSmartCommit": false,
+		"editor.formatOnSave": true,
+		"[php]": {
+			"editor.defaultFormatter": "DEVSENSE.phptools-vscode"
+		},
+		"[javascript]": {
+			"editor.defaultFormatter": "vscode.typescript-language-features"
+		},
+		"[css]": {
+			"editor.defaultFormatter": "vscode.css-language-features"
+		},
+		"[scss]": {
+			"editor.defaultFormatter": "vscode.css-language-features"
+		},
+		"[html]": {
+			"editor.defaultFormatter": "vscode.html-language-features"
+		},
+		"php.suggest.basic": false,
+		"sqltools.connections": [
+			{
+				"mysqlOptions": {
+					"authProtocol": "default",
+					"enableSsl": "Disabled"
+				},
+				"previewLimit": 50,
+				"server": "localhost",
+				"port": 3306,
+				"driver": "MySQL",
+				"name": "MySQL-GroupProject",
+				"database": "pdc",
+				"username": "root"
+			}
+		],
+	}
+}

@@ -7,31 +7,31 @@ const rename = require("gulp-rename");
 
 gulp.task("build-js", function (done) {
     esbuild.build({
-        entryPoints: ["./src/wwwroot/js/*.js"],
+        entryPoints: ["./App/src/wwwroot/js/*.js"],
         bundle: true,
         minify: false,
         sourcemap: true,
-        outdir: "./public/js",
+        outdir: "./App/public/js",
     }).then(() => done()).catch(() => done("Build failed"));
 });
 
 gulp.task("watch-js", function () {
-    gulp.watch("./src/wwwroot/js/*.js", gulp.series("build-js"));
+    gulp.watch("./App/src/wwwroot/js/*.js", gulp.series("build-js"));
 });
 
 // CSS tasks
 
 gulp.task("build-css", () => {
-    return gulp.src("./src/wwwroot/css/*.css")
+    return gulp.src("./App/src/wwwroot/css/*.css")
         .pipe(cleanCSS({ compatibility: "ie8" }))
         .pipe(rename({
             suffix: ".min"
         }))
-        .pipe(gulp.dest("./public/css"));
+        .pipe(gulp.dest("./App/public/css"));
 });
 
 gulp.task("watch-css", function () {
-    gulp.watch("./src/wwwroot/css/*.css", gulp.series("build-css"));
+    gulp.watch("./App/src/wwwroot/css/*.css", gulp.series("build-css"));
 });
 
 // Default task

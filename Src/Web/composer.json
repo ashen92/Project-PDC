@@ -1,9 +1,9 @@
 {
-    "name": "ashen/lib",
+    "name": "ashen/app",
     "type": "project",
     "autoload": {
         "psr-4": {
-            "App\\": "src/"
+            "App\\": "App/src/"
         }
     },
     "authors": [

@@ -1,0 +1,10 @@
+{
+    "recommendations": [
+        "mtxr.sqltools-driver-mysql",
+        "mtxr.sqltools",
+        "ms-python.vscode-pylance",
+        "davidanson.vscode-markdownlint",
+        "mhutchie.git-graph",
+        "streetsidesoftware.code-spell-checker"
+    ]
+}
