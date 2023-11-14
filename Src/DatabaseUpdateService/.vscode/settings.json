@@ -1,0 +1,6 @@
+{
+    "git.autofetch": true,
+    "git.openRepositoryInParentFolders": "always",
+    "git.suggestSmartCommit": false,
+    "editor.formatOnSave": true,
+}
