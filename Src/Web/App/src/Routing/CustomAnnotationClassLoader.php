@@ -8,7 +8,7 @@ use Symfony\Component\Routing\Route;
 
 class CustomAnnotationClassLoader extends AnnotationClassLoader
 {
-    protected function configureRoute(Route $route, \ReflectionClass $class, \ReflectionMethod $method, $annot)
+    protected function configureRoute(Route $route, \ReflectionClass $class, \ReflectionMethod $method, object $annot)
     {
         if ("__invoke" === $method->getName()) {
             $route->setDefault("_controller", $class->getName());

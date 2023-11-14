@@ -13,7 +13,7 @@ use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\Controller\ContainerControllerResolver;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-$routes = require_once __DIR__ . "/../src/app.php";
+$routes = require_once __DIR__ . "/../src/routes.php";
 $container = require_once __DIR__ . "/../src/container.php";
 
 $requestStack = new RequestStack();
