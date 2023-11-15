@@ -19,7 +19,7 @@ gulp.task("build-js", function (done) {
 });
 
 gulp.task("watch-js", function () {
-    gulp.watch("./App/src/wwwroot/js/*.js", gulp.series("build-js"));
+    gulp.watch("./App/src/wwwroot/js/**/*", gulp.series("build-js"));
 });
 
 // CSS tasks
@@ -34,7 +34,7 @@ gulp.task("build-css", () => {
 });
 
 gulp.task("watch-css", function () {
-    gulp.watch("./App/src/wwwroot/css/*.css", gulp.series("build-css"));
+    gulp.watch("./App/src/wwwroot/css/**/*", gulp.series("build-css"));
 });
 
 // SCSS tasks
@@ -56,7 +56,7 @@ gulp.task("build-scss", function () {
 });
 
 gulp.task("watch-scss", function () {
-    gulp.watch("./App/src/wwwroot/scss/*.scss", gulp.series("build-scss"));
+    gulp.watch("./App/src/wwwroot/scss/**/*", gulp.series("build-scss"));
 });
 
 // Default task
