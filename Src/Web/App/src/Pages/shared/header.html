@@ -11,14 +11,21 @@
         </ul>
         <ul class="navbar-menu">
             <div class="navbar-start">
-                <li {% if main_section=="techtalks" %} class="underline" {% endif %}>
-                    <a href="/techtalks">TechTalks</a>
+                <li>
+                    <a href="/techtalks" {% if main_section=="techtalks" %} class="underline" {% endif %}>
+                        TechTalks
+                    </a>
                 </li>
-                <li {% if main_section=="internship-program" %} class="underline" {% endif %}>
-                    <a href="/internship-program">Internship Program</a>
+                <li>
+                    <a href="/internship-program" {% if main_section=="internship-program" %} class="underline" {% endif
+                        %}>
+                        Internship Program
+                    </a>
                 </li>
-                <li {% if main_section=="events" %} class="underline" {% endif %}>
-                    <a href="/events">Events</a>
+                <li>
+                    <a href="/events" {% if main_section=="events" %} class="underline" {% endif %}>
+                        Events
+                    </a>
                 </li>
             </div>
             <div class="navbar-end">

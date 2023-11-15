@@ -55,6 +55,7 @@
         &-end {
             display: flex;
             list-style: none;
+            column-gap: 0.5rem;
         }
 
         &-start {
@@ -67,7 +68,8 @@
             display: block;
             color: #ffffff;
             font-weight: $fw-6;
-            padding: 0.6rem 1.2rem 0.4rem 1.2rem;
+            padding: 0.6rem 1rem 0.4rem 1rem;
+            border-bottom: 2px solid transparent;
         }
 
         .underline {
@@ -78,7 +80,6 @@
         li {
             display: block;
             border-radius: $rounded-1;
-            border-bottom: 2px solid transparent;
             transition: background-color .1s cubic-bezier(0.02, 1, 1, 1);
 
             &:hover {
