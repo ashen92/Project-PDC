@@ -6,7 +6,7 @@ const radioOneTimeElement = document.getElementById("type-one-time");
 const radioRecurringElement = document.getElementById("type-recurring");
 
 const endBeforeDateElement = document.getElementById("end-before-one-time");
-const radioRepeatElements = document.querySelectorAll("input[name='repeat']");
+const radioRepeatElements = document.querySelectorAll("input[name='repeat-interval']");
 
 radioOneTimeElement.addEventListener("change", function () {
 
