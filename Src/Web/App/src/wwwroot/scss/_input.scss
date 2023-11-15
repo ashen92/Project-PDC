@@ -30,10 +30,6 @@ form {
                 label {
                     padding-left: 0.75rem;
                 }
-
-                input {
-                    width: 20px;
-                }
             }
         }
     }
@@ -50,6 +46,20 @@ label {
     display: block;
 }
 
+%text-field-styles {
+    padding: $text-field-padding;
+    border: none;
+    border-radius: $rounded-1 - 2;
+    outline: 2px solid #a7a9ad;
+
+    &:active,
+    &:focus,
+    &:hover,
+    &:focus-within {
+        outline: 2px solid #2f80ea;
+    }
+}
+
 input {
     font-family: inherit;
     font-size: $text-field-font-size;
@@ -57,34 +67,22 @@ input {
     &[type="text"],
     &[type="email"],
     &[type="password"] {
-        padding: $text-field-padding;
-        outline: none;
+        @extend %text-field-styles;
     }
 
     &[type="date"] {
-        padding: 5px 12px;
         cursor: pointer;
-
-        &:hover {
-            background-color: $active-light-blue;
-        }
-
-        &:focus {
-            background-color: $active-light-blue;
-        }
+        @extend %text-field-styles;
     }
 
     &[type="time"] {
-        padding: 5px 12px;
         cursor: pointer;
+        @extend %text-field-styles;
+    }
 
-        &:hover {
-            background-color: $active-light-blue;
-        }
-
-        &:focus {
-            background-color: $active-light-blue;
-        }
+    &[type="radio"] {
+        outline: none;
+        width: 20px;
     }
 }
 
