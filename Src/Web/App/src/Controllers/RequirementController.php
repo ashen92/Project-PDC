@@ -74,4 +74,20 @@ class RequirementController extends PageControllerBase
         $this->requirementService->createRequirement($requirementDTO);
         return $this->redirect("/internship-program/requirements");
     }
+
+    #[Route("/{id}", methods: ["GET"], requirements: ['id' => '\d+'])]
+    public function requirement(Request $request, int $id): Response|RedirectResponse
+    {
+        $requirement = $this->requirementService->getRequirement($id);
+        if ($requirement) {
+            return $this->render(
+                "internship-program/requirements/requirement.html",
+                [
+                    "section" => "requirements",
+                    "requirement" => $requirement
+                ]
+            );
+        }
+        return $this->redirect("/internship-program/requirements");
+    }
 }

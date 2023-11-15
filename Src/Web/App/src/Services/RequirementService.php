@@ -28,6 +28,18 @@ class RequirementService implements IRequirementService
         return $query->getArrayResult();
     }
 
+    public function getRequirement(int $id): Requirement|null
+    {
+        $queryBuilder = $this->entityManager->createQueryBuilder();
+        $queryBuilder
+            ->select("r")
+            ->from("App\Entities\Requirement", "r")
+            ->where("r.id = :id")
+            ->setParameter("id", $id);
+        $query = $queryBuilder->getQuery();
+        return $query->getOneOrNullResult();
+    }
+
     public function createRequirement(RequirementDTO $requirementDTO): void
     {
         $requirement = new Requirement($requirementDTO);

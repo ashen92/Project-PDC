@@ -53,4 +53,39 @@ class Requirement
         $this->repeatInterval = $requirementDTO->repeatInterval;
         $this->userRequirements = new ArrayCollection();
     }
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    public function getStartDate(): DateTime
+    {
+        return $this->startDate;
+    }
+
+    public function getEndBeforeDate(): DateTime|null
+    {
+        return $this->endBeforeDate;
+    }
+
+    public function getRepeatInterval(): string|null
+    {
+        return $this->repeatInterval;
+    }
 }
