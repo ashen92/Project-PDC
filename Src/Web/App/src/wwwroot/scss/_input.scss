@@ -29,6 +29,7 @@ form {
 
                 label {
                     padding-left: 0.75rem;
+                    cursor: pointer;
                 }
             }
         }
@@ -83,6 +84,7 @@ input {
     &[type="radio"] {
         outline: none;
         width: 20px;
+        cursor: pointer;
     }
 }
 
@@ -100,6 +102,15 @@ input {
         user-select: none;
         cursor: pointer;
     }
+}
+
+button {
+    font-size: inherit;
+    font-family: inherit;
+    color: inherit;
+    background-color: inherit;
+    border: none;
+    outline: none;
 }
 
 select {

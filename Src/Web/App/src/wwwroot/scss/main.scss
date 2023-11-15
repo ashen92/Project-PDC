@@ -4,6 +4,7 @@
 @use "utilities";
 @use "layouts";
 @use "fonts";
+@use "header";
 
 * {
     margin: 0;
@@ -53,57 +54,6 @@ a {
         padding-top: 50px;
         padding-bottom: 50px;
         width: 100%;
-    }
-}
-
-.header {
-    background-color: #006bbd;
-    min-height: 3.75rem;
-    height: 3.75rem;
-    box-shadow: rgba(57, 76, 96, 0.15) 0px 2px 4px -1px;
-
-    &-container {
-        display: flex;
-        height: 100%;
-        column-gap: 0.5rem;
-
-        >* {
-            margin: auto 0;
-            text-align: center;
-        }
-
-        >.logo {
-            margin-right: 2rem;
-        }
-
-        >.end {
-            display: flex;
-            margin-left: auto;
-            column-gap: 0.5rem;
-        }
-
-        a {
-            color: #ffffff;
-            font-weight: $fw-6;
-            min-width: 80px;
-            padding: 0.6rem 1.2rem;
-            border-bottom: 2px solid transparent;
-            border-radius: $rounded-1;
-            transition: background-color .1s cubic-bezier(0.02, 1, 1, 1);
-        }
-
-        .active {
-            border-bottom: 2px solid #f1f2f4;
-            border-radius: $rounded-1 $rounded-1 0 0;
-        }
-
-        a:hover {
-            background-color: #007dce;
-        }
-
-        a:active {
-            background-color: #0085de;
-        }
     }
 }
 
