@@ -67,7 +67,8 @@ input {
 
     &[type="text"],
     &[type="email"],
-    &[type="password"] {
+    &[type="password"],
+    &[type="url"] {
         @extend %text-field-styles;
     }
 
@@ -158,6 +159,11 @@ select {
 
     >* {
         line-height: inherit;
+    }
+
+    .ql-editor.ql-blank::before {
+        font-style: normal;
+        padding-top: 4px;
     }
 }
 

@@ -134,8 +134,8 @@ class InternshipProgramController extends PageControllerBase
         ]);
     }
 
-    #[Route("/internship/{id}/edit", name: "edit_get", methods: ["GET"])]
-    public function edit(int $id): Response
+    #[Route("/internship/{id}/edit", methods: ["GET"])]
+    public function editGET(int $id): Response
     {
         return $this->render("internship-program/internship/edit.html", [
             "section" => "internships",
@@ -143,8 +143,8 @@ class InternshipProgramController extends PageControllerBase
         ]);
     }
 
-    #[Route("/internship/{id}/edit", name: "edit_post", methods: ["POST"])]
-    public function editPost(Request $request): RedirectResponse
+    #[Route("/internship/{id}/edit", methods: ["POST"])]
+    public function editPOST(Request $request): RedirectResponse
     {
         $this->internshipService->updateInternship(
             (int) $request->get("id"),
@@ -154,14 +154,14 @@ class InternshipProgramController extends PageControllerBase
         return $this->redirect("/internship-program/internships");
     }
 
-    #[Route("/internship/create", name: "add_get", methods: ["GET"])]
-    public function add(): Response
+    #[Route("/internship/create", methods: ["GET"])]
+    public function addGET(): Response
     {
-        return $this->render("internship-program/internship/add.html", ["section" => "internships"]);
+        return $this->render("internship-program/internship/create.html", ["section" => "internships"]);
     }
 
-    #[Route("/internship/create", name: "add_post", methods: ["POST"])]
-    public function addPost(Request $request): RedirectResponse
+    #[Route("/internship/create", methods: ["POST"])]
+    public function addPOST(Request $request): RedirectResponse
     {
         $this->internshipService->addInternship(
             $request->get("title"),

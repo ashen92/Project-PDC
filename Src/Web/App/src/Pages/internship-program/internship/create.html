@@ -28,6 +28,25 @@
         } %}
     </div>
 
+    <div class="field-radio">
+        <div class="label">Do you want to receive applicants at an different website?</div>
+        <div class="option">
+            <input type="radio" name="applicant-collection" id="applicant-collection-external" value="external"
+                autocomplete="off" required>
+            <label for="applicant-collection-external">Yes</label>
+        </div>
+        <div class="option">
+            <input type="radio" name="applicant-collection" id="applicant-collection-internal" value="internal"
+                autocomplete="off" required>
+            <label for="applicant-collection-internal">No</label>
+        </div>
+    </div>
+
+    <div class="field">
+        <label for="external-website">Website URL</label>
+        <input name="external-website" id="external-website" type="url" placeholder="https://yourwebsite.com/apply">
+    </div>
+
     <div class="actions">
         <input class="btn" type="submit" value="Add">
     </div>
