@@ -29,8 +29,14 @@ class EventService implements IEventService
 
     public function getEventById(int $id): Event|null
     {
+        $queryBuilder = $this->entityManager->createQueryBuilder();
+        $queryBuilder
+            ->select("e")
+            ->from("App\Entities\Event", "e")
+            ->where("e.id = :id")
+            ->setParameter("id", $id);
 
-        return $this->entityManager->getRepository(Event::class)->getEventById($id);
+        return $queryBuilder->getQuery()->getOneOrNullResult();
     }
 
     public function createEvent(Event $event): void

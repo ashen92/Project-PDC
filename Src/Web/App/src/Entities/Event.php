@@ -3,13 +3,11 @@ declare(strict_types=1);
 
 namespace App\Entities;
 
-use App\Repositories\EventRepository;
 use DateTime;
-use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: EventRepository::class)]
+#[ORM\Entity]
 #[ORM\Table(name: "events")]
 class Event
 {
@@ -36,14 +34,6 @@ class Event
     #[ORM\Column(type: Types::TEXT)]
     private string $eventLocation;
 
-    /**
-     * @param string $title
-     * @param string $description
-     * @param string $startTime
-     * @param string $endTime
-     * @param string $eventDate
-     * @param string $eventLocation
-     */
     public function __construct(string $title, string $description, DateTime $startTime, DateTime $endTime, DateTime $eventDate, string $eventLocation)
     {
         $this->title = $title;
@@ -53,7 +43,6 @@ class Event
         $this->eventDate = $eventDate;
         $this->eventLocation = $eventLocation;
     }
-
 
     public function getId(): int
     {
@@ -70,8 +59,8 @@ class Event
         return $this->description;
     }
 
-    // Setters
-    public function setDescription(string $description): void{
+    public function setDescription(string $description): void
+    {
         $this->description = $description;
     }
 
@@ -91,7 +80,7 @@ class Event
         return $dateTime->format('H:i:s');
     }
 
-    public function setStartTime(bool|\DateTime $startTime): void
+    public function setStartTime(bool|DateTime $startTime): void
     {
         $this->startTime = $startTime;
     }
@@ -102,7 +91,7 @@ class Event
         return $dateTime->format('H:i:s');
     }
 
-    public function setEndTime(bool|\DateTime $endTime): void
+    public function setEndTime(bool|DateTime $endTime): void
     {
         $this->endTime = $endTime;
     }
@@ -113,7 +102,7 @@ class Event
         return $dateTime->format('Y-m-d');
     }
 
-    public function setEventDate(bool|\DateTime $eventDate): void
+    public function setEventDate(bool|DateTime $eventDate): void
     {
         $this->eventDate = $eventDate;
     }
@@ -127,6 +116,4 @@ class Event
     {
         $this->eventLocation = $eventLocation;
     }
-
-
 }

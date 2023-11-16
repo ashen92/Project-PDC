@@ -19,22 +19,41 @@ class InternshipService implements IInternshipService
 
     public function getInternships(): array
     {
-        $cacheKey = "internships";
-
+        // $cacheKey = "internships";
         // return $this->cache->get($cacheKey, function (ItemInterface $item) {
         // $item->expiresAfter(3600);
-        return $this->entityManager->getRepository(Internship::class)->getInternships();
+        // return $internships;
         // });
+
+        $queryBuilder = $this->entityManager->createQueryBuilder();
+        $queryBuilder
+            ->select("i.id, i.title, i.description, u.firstName")
+            ->from("App\Entities\Internship", "i")
+            ->leftJoin("i.owner", "u");
+        return $queryBuilder->getQuery()->getArrayResult();
     }
 
     public function getInternshipsByUserId(int $userId): array
     {
-        return $this->entityManager->getRepository(Internship::class)->getInternshipsByUserId($userId);
+        $queryBuilder = $this->entityManager->createQueryBuilder();
+        $queryBuilder
+            ->select("i.id, i.title, i.description, u.firstName")
+            ->from("App\Entities\Internship", "i")
+            ->leftJoin("i.owner", "u")
+            ->where("u.id = :userId")
+            ->setParameter("userId", $userId);
+        return $queryBuilder->getQuery()->getArrayResult();
     }
 
     public function getInternshipById(int $id): Internship|null
     {
-        return $this->entityManager->getRepository(Internship::class)->getInternshipById($id);
+        $queryBuilder = $this->entityManager->createQueryBuilder();
+        $queryBuilder
+            ->select("i")
+            ->from("App\Entities\Internship", "i")
+            ->where("i.id = :id")
+            ->setParameter("id", $id);
+        return $queryBuilder->getQuery()->getOneOrNullResult();
     }
 
     public function deleteInternshipById(int $id): void
