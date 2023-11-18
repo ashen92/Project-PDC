@@ -5,11 +5,15 @@
 {% block content %}
 
 <h4>Create an account</h4>
-<div class="form-wrapper">
-    <form action="/signup/details" method="post">
+<div class="form-wrapper signup">
+    <form action="/signup" method="POST">
         <div class="field">
-            <label for="reg-number">Your Registration Number</label>
-            <input type="text" name="reg-number" id="reg-number" required>
+            <label for="student-email">Enter your student email address</label>
+            <div class="flex items-baseline">
+                <input type="text" name="student-email" id="student-email" required>
+                <span class="pl-15">@stu.ucsc.cmb.ac.lk</span>
+            </div>
+            <small>Format: 1800cs001 or 1800is002</small>
         </div>
         <div class="actions">
             <input class="btn" type="submit" value="Next">

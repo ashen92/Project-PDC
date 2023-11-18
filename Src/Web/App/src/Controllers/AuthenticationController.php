@@ -28,20 +28,28 @@ class AuthenticationController extends PageControllerBase
         return $this->render("authentication/signin.html");
     }
 
-    #[Route("/signup", name: "signup")]
-    public function signup(): Response
+    #[Route("/signup", methods: ["GET"])]
+    public function signupGET(): Response
     {
         return $this->render("authentication/signup.html");
     }
 
-    #[Route("/signup/details", name: "signup_details", methods: ["POST"])]
-    public function signupDetails(): Response
+    #[Route("/signup", methods: ["POST"])]
+    public function signupPOST(Request $request): Response
+    {
+        // if a user with given student email exists, send an email to that email 
+        // address and show message saying that they should check their email
+        return $this->render("authentication/signup.html");
+    }
+
+    #[Route("/signup/details", methods: ["GET"])]
+    public function signupDetailsGET(): Response
     {
         return $this->render("authentication/signup_details.html");
     }
 
-    #[Route("/signup/submit", name: "signup_submit", methods: ["POST"])]
-    public function signupSubmit(): Response|RedirectResponse
+    #[Route("/signup/details", methods: ["POST"])]
+    public function signupDetailsPOST(): Response|RedirectResponse
     {
         return new RedirectResponse("/");
     }

@@ -41,6 +41,10 @@
 
         >.form-wrapper {
             width: 18rem;
+
+            &.signup {
+                width: 22rem;
+            }
         }
     }
 
