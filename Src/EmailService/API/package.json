@@ -6,6 +6,7 @@
   "author": "Ashen Sandaruwan",
   "license": "UNLICENSED",
   "private": true,
+  "type": "module",
   "dependencies": {
     "dotenv": "^16.3.1",
     "redis": "^4.6.10"
