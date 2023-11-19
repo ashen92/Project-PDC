@@ -70,6 +70,12 @@ const server = http.createServer(async (req, res) => {
                     return;
                 }
 
+                if (!emailData.to || !emailData.subject || !emailData.body) {
+                    res.writeHead(400);
+                    res.end("Missing required fields (to, subject, body)");
+                    return;
+                }
+
                 try {
                     await redisClient.lPush("emailQueue", JSON.stringify(emailData));
                     res.writeHead(201, { "Content-Type": "application/json" });
