@@ -39,13 +39,13 @@ async function sendEmail(emailData) {
             senderAddress: process.env.FROM_EMAIL_ADDRESS,
             content: {
                 subject: emailData.subject,
-                plainText: emailData.body,
+                plainText: emailData.bodyPlainText,
             },
             recipients: {
                 to: [
                     {
-                        address: emailData.to,
-                        displayName: "Customer Name"
+                        address: emailData.receiverAddress,
+                        displayName: emailData.receiverName,
                     },
                 ],
             },

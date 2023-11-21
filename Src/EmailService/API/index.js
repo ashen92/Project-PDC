@@ -70,7 +70,12 @@ const server = http.createServer(async (req, res) => {
                     return;
                 }
 
-                if (!emailData.to || !emailData.subject || !emailData.body) {
+                if (
+                    !emailData.receiverAddress ||
+                    !emailData.receiverName ||
+                    !emailData.subject ||
+                    !emailData.bodyPlainText
+                ) {
                     res.writeHead(400);
                     res.end("Missing required fields (to, subject, body)");
                     return;
