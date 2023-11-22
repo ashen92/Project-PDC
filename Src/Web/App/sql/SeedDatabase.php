@@ -32,6 +32,13 @@ $user8 = new User("9@mail.com", "Willey", $passwordHash);
 $user9 = new User("10@mail.com", "Wood", $passwordHash);
 $user10 = new User("11@mail.com", "Cummings", $passwordHash);
 
+$user11 = new User(null, null, null);
+$user12 = new User(null, null, null);
+$user13 = new User(null, null, null);
+
+$user11->setStudentEmail("2021is084@stu.ucsc.cmb.ac.lk");
+$user11->setFullName("H.D.A.H. Sandaruwan");
+
 $entityManager->persist($user);
 $entityManager->persist($user1);
 $entityManager->persist($user2);
@@ -43,6 +50,7 @@ $entityManager->persist($user7);
 $entityManager->persist($user8);
 $entityManager->persist($user9);
 $entityManager->persist($user10);
+$entityManager->persist($user11);
 $entityManager->flush();
 
 echo "Done.\nAdding groups...";
@@ -65,6 +73,7 @@ $groupStudents->addUser($user);
 $groupStudents->addUser($user3);
 $groupStudents->addUser($user4);
 $groupStudents->addUser($user5);
+$groupStudents->addUser($user11);
 
 $entityManager->persist($groupCoordinators);
 $entityManager->persist($groupPartners);

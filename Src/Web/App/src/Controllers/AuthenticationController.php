@@ -13,12 +13,18 @@ use Twig\Environment;
 class AuthenticationController extends PageControllerBase
 {
     private IAuthenticationService $authn;
+    private IUserService $userService;
+    private IEmailService $emailService;
 
     public function __construct(
         Environment $twig,
-        IAuthenticationService $authn
+        IAuthenticationService $authn,
+        IUserService $userService,
+        IEmailService $emailService
     ) {
         $this->authn = $authn;
+        $this->userService = $userService;
+        $this->emailService = $emailService;
         parent::__construct($twig);
     }
 
@@ -37,8 +43,31 @@ class AuthenticationController extends PageControllerBase
     #[Route("/signup", methods: ["POST"])]
     public function signupPOST(Request $request): Response
     {
-        // if a user with given student email exists, send an email to that email 
-        // address and show message saying that they should check their email
+        // Handle errors
+        // todo
+        $email = $request->request->get("student-email", null);
+        if ($email) {
+            $email = "{$email}@stu.ucsc.cmb.ac.lk";
+            $user = $this->userService->getUserByStudentEmail($email);
+            if ($user) {
+                if ($user->getIsActive() == false) {
+
+                    $token = bin2hex(random_bytes(32));
+                    $expirationTime = new DateTime("+1 day");
+
+                    $user->setActivationToken($token);
+                    $user->setActivationTokenExpiresAt($expirationTime);
+
+                    $this->userService->saveUser($user);
+
+                    $email = new SignupEmail($email, $user->getFullName(), $token);
+
+                    $this->emailService->sendEmail($email);
+
+                    return $this->redirect("/login");
+                }
+            }
+        }
         return $this->render("authentication/signup.html");
     }
 

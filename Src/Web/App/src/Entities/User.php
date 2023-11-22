@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Entities;
 
 use App\Repositories\UserRepository;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -17,14 +18,34 @@ class User
     #[ORM\Column(type: "integer")]
     private int $id;
 
-    #[ORM\Column]
-    private string $email;
+    #[ORM\Column(nullable: true)]
+    private ?string $email;
 
-    #[ORM\Column]
-    private string $firstName;
+    // For students. Should not be nullable
+    #[ORM\Column(nullable: true)]
+    private string $studentEmail;
 
-    #[ORM\Column]
-    private string $passwordHash;
+    // For students. Should not be nullable
+    #[ORM\Column(nullable: true)]
+    private string $fullName;
+
+    #[ORM\Column(nullable: true)]
+    private ?string $firstName;
+
+    #[ORM\Column(nullable: true)]
+    private string $lastName;
+
+    #[ORM\Column(nullable: true)]
+    private ?string $passwordHash;
+
+    #[ORM\Column(type: "boolean")]
+    private bool $isActive = false;
+
+    #[ORM\Column(nullable: true)]
+    private string $activationToken;
+
+    #[ORM\Column(type: "datetime", nullable: true)]
+    private DateTime $activationTokenExpiresAt;
 
     /**
      * Many Users have Many Groups.
@@ -46,7 +67,7 @@ class User
     #[ORM\OneToMany(targetEntity: UserRequirement::class, mappedBy: "user")]
     private Collection $assignedRequirements;
 
-    public function __construct(string $email, string $firstName, string $passwordHash)
+    public function __construct(?string $email, ?string $firstName, ?string $passwordHash)
     {
         $this->email = $email;
         $this->firstName = $firstName;
@@ -65,14 +86,89 @@ class User
         return $this->email;
     }
 
+    public function getStudentEmail(): string
+    {
+        return $this->studentEmail;
+    }
+
+    public function getFullName(): string
+    {
+        return $this->fullName;
+    }
+
     public function getFirstName(): string
     {
         return $this->firstName;
     }
 
+    public function getLastName(): string
+    {
+        return $this->lastName;
+    }
+
     public function getPasswordHash(): string
     {
         return $this->passwordHash;
+    }
+
+    public function getIsActive(): bool
+    {
+        return $this->isActive;
+    }
+
+    public function getActivationToken(): string
+    {
+        return $this->activationToken;
+    }
+
+    public function getActivationTokenExpiresAt(): DateTime
+    {
+        return $this->activationTokenExpiresAt;
+    }
+
+    public function setEmail(string $email): void
+    {
+        $this->email = $email;
+    }
+
+    public function setStudentEmail(string $studentEmail): void
+    {
+        $this->studentEmail = $studentEmail;
+    }
+
+    public function setFullName(string $fullName): void
+    {
+        $this->fullName = $fullName;
+    }
+
+    public function setFirstName(string $firstName): void
+    {
+        $this->firstName = $firstName;
+    }
+
+    public function setLastName(string $lastName): void
+    {
+        $this->lastName = $lastName;
+    }
+
+    public function setPasswordHash(string $passwordHash): void
+    {
+        $this->passwordHash = $passwordHash;
+    }
+
+    public function setIsActive(bool $isActive): void
+    {
+        $this->isActive = $isActive;
+    }
+
+    public function setActivationToken(string $activationToken): void
+    {
+        $this->activationToken = $activationToken;
+    }
+
+    public function setActivationTokenExpiresAt(DateTime $activationTokenExpiresAt): void
+    {
+        $this->activationTokenExpiresAt = $activationTokenExpiresAt;
     }
 
     public function addToGroup(Group $group): void

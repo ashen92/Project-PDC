@@ -49,4 +49,15 @@ class UserService implements IUserService
             return true;
         return false;
     }
+
+    public function getUserByStudentEmail(string $email): User
+    {
+        return $this->entityManager->getRepository(User::class)->findOneBy(["studentEmail" => $email]);
+    }
+
+    public function saveUser(User $user): void
+    {
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+    }
 }

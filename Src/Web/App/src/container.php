@@ -77,6 +77,18 @@ $container->register(
     ->setArguments([new Reference("doctrine.entity_manager"), new Reference("app.cache")]);
 
 $container->register(
+    "service.email",
+    App\Services\EmailAPI::class
+)
+    ->setArguments([new Reference("http_client")]);
+
+$container->register(
+    "http_client",
+    Symfony\Component\HttpClient\HttpClient::class
+)
+    ->setFactory([Symfony\Component\HttpClient\HttpClient::class, "create"]);
+
+$container->register(
     "listener.authorization",
     App\EventListeners\AuthorizationListener::class
 )
@@ -106,7 +118,12 @@ $container->register(
     "App\Controllers\AuthenticationController",
     \App\Controllers\AuthenticationController::class
 )
-    ->setArguments([new Reference("twig"), new Reference("service.authentication")]);
+    ->setArguments([
+        new Reference("twig"),
+        new Reference("service.authentication"),
+        new Reference("service.user"),
+        new Reference("service.email")
+    ]);
 
 $container->register(
     "App\Controllers\HomeController",
