@@ -4,6 +4,10 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Interfaces\IAuthenticationService;
+use App\Interfaces\IEmailService;
+use App\Interfaces\IUserService;
+use App\Models\SignupEmail;
+use DateTime;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
