@@ -4,12 +4,11 @@
 .row-cols-2 {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    padding: 15px 25px;
-    margin-bottom: 20px;
+    align-items: baseline;
+    padding: 10px 25px;
+    margin-bottom: 10px;
     border: $border-1;
     border-radius: $rounded-1;
-    line-height: 1.75;
 }
 
 .row-right {
