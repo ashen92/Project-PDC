@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+use App\DTOs\CreateStudentDTO;
 use App\Interfaces\IAuthenticationService;
 use App\Interfaces\IEmailService;
 use App\Interfaces\IUserService;
@@ -50,6 +51,8 @@ class AuthenticationController extends PageControllerBase
         // Handle errors
         // todo
         $email = $request->request->get("student-email", null);
+        // Validate email
+        // todo
         if ($email) {
             $email = "{$email}@stu.ucsc.cmb.ac.lk";
             $user = $this->userService->getUserByStudentEmail($email);
@@ -75,16 +78,63 @@ class AuthenticationController extends PageControllerBase
         return $this->render("authentication/signup.html");
     }
 
-    #[Route("/signup/details", methods: ["GET"])]
-    public function signupDetailsGET(): Response
+    #[Route("/signup/activate", methods: ["GET"])]
+    public function signupActivateGET(Request $request): Response
     {
-        return $this->render("authentication/signup_details.html");
+        // Handle errors
+        // todo
+        $token = $request->query->get("token", null);
+        // Validate token
+        // todo
+        if ($token) {
+            $user = $this->userService->getUserByActivationToken($token);
+            if ($user) {
+                if ($user->getActivationTokenExpiresAt() > new DateTime("now")) {
+                    return $this->render(
+                        "authentication/activate.html",
+                        ["token" => $token]
+                    );
+                }
+
+                $user->setActivationToken(null);
+                $user->setActivationTokenExpiresAt(null);
+                $this->userService->saveUser($user);
+            }
+        }
+        return $this->redirect("/login");
     }
 
-    #[Route("/signup/details", methods: ["POST"])]
-    public function signupDetailsPOST(): Response|RedirectResponse
+    #[Route("/signup/activate", methods: ["POST"])]
+    public function signupActivatePOST(Request $request): Response
     {
-        return new RedirectResponse("/");
+        // Handle errors
+        // todo
+        $token = $request->get("token", null);
+        // Validate token
+        // todo
+        if ($token) {
+            $user = $this->userService->getUserByActivationToken($token);
+            if ($user) {
+                if ($user->getActivationTokenExpiresAt() > new DateTime("now")) {
+
+                    $createStudentDTO = new CreateStudentDTO(
+                        $request->get("first-name", null),
+                        $request->get("last-name", null),
+                        $request->get("email", null),
+                        $request->get("password", null),
+                        $request->get("confirm-password", null),
+                    );
+
+                    // Validate createStudentDTO
+                    // todo
+
+                    $this->userService->createUserStudent($user, $createStudentDTO);
+
+                    return $this->redirect("/login");
+                }
+            }
+        }
+        return $this->redirect("/login");
     }
 
     #[Route("/register", name: "register")]
@@ -98,12 +148,12 @@ class AuthenticationController extends PageControllerBase
     {
         $req = $request->request;
         $email = $req->get("email", "");
-        $passwordHash = $req->get("password", "");
+        $password = $req->get("password", "");
 
         // validate form data
         // todo
 
-        if ($this->authn->authenticate($email, $passwordHash)) {
+        if ($this->authn->authenticate($email, $password)) {
             return new RedirectResponse("/home");
         }
 

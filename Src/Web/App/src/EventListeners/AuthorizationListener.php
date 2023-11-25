@@ -5,11 +5,9 @@ namespace App\EventListeners;
 
 use App\Attributes\RequiredRole;
 use App\Controllers\ErrorController;
-use App\Interfaces\IAuthenticationService;
 use App\Interfaces\IUserService;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
@@ -44,8 +42,7 @@ class AuthorizationListener implements EventSubscriberInterface
         $specialRoutes = [
             "/login" => ["GET", "POST"],
             "/signup" => ["GET", "POST"],
-            "/signup/details" => ["POST"],
-            "/signup/submit" => ["POST"],
+            "/signup/activate" => ["GET", "POST"],
             "/register" => ["GET"],
         ];
 

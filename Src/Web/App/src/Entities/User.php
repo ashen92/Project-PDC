@@ -33,7 +33,7 @@ class User
     private ?string $firstName;
 
     #[ORM\Column(nullable: true)]
-    private string $lastName;
+    private ?string $lastName;
 
     #[ORM\Column(nullable: true)]
     private ?string $passwordHash;
@@ -42,10 +42,10 @@ class User
     private bool $isActive = false;
 
     #[ORM\Column(nullable: true)]
-    private string $activationToken;
+    private ?string $activationToken;
 
     #[ORM\Column(type: "datetime", nullable: true)]
-    private DateTime $activationTokenExpiresAt;
+    private ?DateTime $activationTokenExpiresAt;
 
     /**
      * Many Users have Many Groups.
@@ -161,12 +161,12 @@ class User
         $this->isActive = $isActive;
     }
 
-    public function setActivationToken(string $activationToken): void
+    public function setActivationToken(?string $activationToken): void
     {
         $this->activationToken = $activationToken;
     }
 
-    public function setActivationTokenExpiresAt(DateTime $activationTokenExpiresAt): void
+    public function setActivationTokenExpiresAt(?DateTime $activationTokenExpiresAt): void
     {
         $this->activationTokenExpiresAt = $activationTokenExpiresAt;
     }

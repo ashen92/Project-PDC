@@ -4,15 +4,19 @@
 
 {% block content %}
 
-<h4>Confirm Your Details</h4>
+<h4>Complete your signup</h4>
 <div class="form-wrapper">
-    <form action="/signup/submit" method="post">
+    <form action="/signup/activate" method="post">
         <div class="field">
-            <label for="name">Preferred Name</label>
-            <input type="text" name="name" id="name" autocomplete="name" required>
+            <label for="first-name">First name</label>
+            <input type="text" name="first-name" id="first-name" autocomplete="first-name" required>
         </div>
         <div class="field">
-            <label for="email">Email address you prefer to receive notifications</label>
+            <label for="first-name">Last name</label>
+            <input type="text" name="last-name" id="last-name" autocomplete="last-name" required>
+        </div>
+        <div class="field">
+            <label for="email">Email address</label>
             <input type="email" name="email" id="email" autocomplete="email" required>
         </div>
         <div class="field">
@@ -20,9 +24,10 @@
             <input type="password" name="password" id="password" autocomplete="new-password" required>
         </div>
         <div class="field">
-            <label for="repassword">Re-enter Password</label>
-            <input type="password" name="repassword" id="repassword" autocomplete="new-password" required>
+            <label for="confirm-password">Confirm password</label>
+            <input type="password" name="confirm-password" id="confirm-password" autocomplete="new-password" required>
         </div>
+        <input type="hidden" name="token" value="{{ token }}">
         <div class="actions">
             <input class="btn" type="submit" value="Submit">
         </div>

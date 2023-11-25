@@ -5,6 +5,6 @@ namespace App\Interfaces;
 
 interface IAuthenticationService
 {
-    public function authenticate(string $username, string $passwordHash): bool;
+    public function authenticate(string $email, string $password): bool;
     public function logout(): void;
 }

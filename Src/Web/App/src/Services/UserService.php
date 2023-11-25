@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\DTOs\CreateStudentDTO;
 use App\Entities\User;
+use App\Interfaces\IPasswordHasher;
 use App\Interfaces\IUserService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\Cache\CacheInterface;
@@ -13,8 +15,21 @@ class UserService implements IUserService
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
-        private CacheInterface $cache
+        private CacheInterface $cache,
+        private IPasswordHasher $passwordHasher
     ) {
+    }
+
+    public function createUserStudent(User $user, CreateStudentDTO $createStudentDTO)
+    {
+        $user->setFirstName($createStudentDTO->firstName);
+        $user->setLastName($createStudentDTO->lastName);
+        $user->setEmail($createStudentDTO->email);
+        $user->setPasswordHash($this->passwordHasher->hashPassword($createStudentDTO->password));
+        $user->setIsActive(true);
+        $user->setActivationToken(null);
+        $user->setActivationTokenExpiresAt(null);
+        $this->saveUser($user);
     }
 
     /**
@@ -50,9 +65,19 @@ class UserService implements IUserService
         return false;
     }
 
+    public function getUserByEmail(string $email): User
+    {
+        return $this->entityManager->getRepository(User::class)->findOneBy(["email" => $email]);
+    }
+
     public function getUserByStudentEmail(string $email): User
     {
         return $this->entityManager->getRepository(User::class)->findOneBy(["studentEmail" => $email]);
+    }
+
+    public function getUserByActivationToken(string $token): User
+    {
+        return $this->entityManager->getRepository(User::class)->findOneBy(["activationToken" => $token]);
     }
 
     public function saveUser(User $user): void

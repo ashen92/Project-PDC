@@ -46,17 +46,27 @@ $container->register(
 )
     ->setArguments([new Reference("twig.loader")]);
 
+$container->register("password_hasher", App\Services\PasswordHasher::class);
+
 $container->register(
     "service.authentication",
     App\Services\AuthenticationService::class
 )
-    ->setArguments([new Reference("session"), new Reference("doctrine.entity_manager")]);
+    ->setArguments([
+        new Reference("session"),
+        new Reference("service.user"),
+        new Reference("password_hasher")
+    ]);
 
 $container->register(
     "service.user",
     App\Services\UserService::class
 )
-    ->setArguments([new Reference("doctrine.entity_manager"), new Reference("app.cache")]);
+    ->setArguments([
+        new Reference("doctrine.entity_manager"),
+        new Reference("app.cache"),
+        new Reference("password_hasher")
+    ]);
 
 $container->register(
     "service.internship",

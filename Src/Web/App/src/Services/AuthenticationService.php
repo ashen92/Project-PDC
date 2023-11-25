@@ -4,23 +4,24 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Interfaces\IAuthenticationService;
-use App\Entities\User;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Interfaces\IPasswordHasher;
+use App\Interfaces\IUserService;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class AuthenticationService implements IAuthenticationService
 {
     public function __construct(
         private SessionInterface $session,
-        private EntityManagerInterface $entityManager
+        private IUserService $userService,
+        private IPasswordHasher $passwordHasher
     ) {
     }
 
-    public function authenticate(string $email, string $passwordHash): bool
+    public function authenticate(string $email, string $password): bool
     {
-        $user = $this->entityManager->getRepository(User::class)->findUserByEmail($email);
+        $user = $this->userService->getUserByEmail($email);
 
-        if (!$user || !password_verify($passwordHash, $user->getPasswordHash())) {
+        if (!$user || !$this->passwordHasher->verifyPassword($password, $user->getPasswordHash())) {
             return false;
         }
 
