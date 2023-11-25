@@ -14,7 +14,25 @@
     </h2>
 </div>
 
-{% if "ROLE_ADMIN" in user_roles %}
+<section>
+    {# if there is no active internship cycle #}
+    <p>There is no active internship cycle</p>
+    <a class="btn btn-primary" role="button" href="/internship-program/cycle/create">Create an internship cycle</a>
+    {# end #}
+
+    {# if there is an active internship cycle #}
+    <p>Click on the following link to view or modify the current internship cycle.</p>
+    <a class="btn btn-primary" role="button" href="/internship-program/cycle/details">View internship cycle</a>
+    {# end #}
+
+</section>
+<section>
+    <h4>Timeline of the internship cycle</h4>
+</section>
+
+
+
+{# {% if "ROLE_ADMIN" in user_roles %}
 <div class="row-cols-2">
     <div>
         Create new internship cycle
@@ -59,6 +77,6 @@
     <div>
         Start Date to End Date
     </div>
-</div>
+</div> #}
 
 {% endblock %}

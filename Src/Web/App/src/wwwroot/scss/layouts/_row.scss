@@ -11,7 +11,9 @@
     border-radius: $rounded-1;
 }
 
-.row-right {
+.row {
     display: flex;
-    justify-content: flex-end;
+    column-gap: 1rem;
+    align-items: baseline;
+    margin-bottom: 0.25rem;
 }
