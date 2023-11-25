@@ -24,37 +24,20 @@ class Role
      * @var Collection<int, Group>
      */
     #[ORM\ManyToMany(targetEntity: Group::class, inversedBy: "roles")]
-    #[ORM\JoinTable(name: "roles_groups")]
+    #[ORM\JoinTable(name: "user_group_roles")]
     private Collection $groups;
-
-    /**
-     * Many Roles have Many Policies.
-     * @var Collection<int, Policy>
-     */
-    #[ORM\ManyToMany(targetEntity: Policy::class, inversedBy: "roles")]
-    #[ORM\JoinTable(name: "roles_policies")]
-    private Collection $policies;
 
     public function __construct(string $name)
     {
         $this->groups = new ArrayCollection();
-        $this->policies = new ArrayCollection();
         $this->name = $name;
     }
 
     public function addGroup(Group $group): void
     {
-        if(!$this->groups->contains($group)) {
+        if (!$this->groups->contains($group)) {
             $this->groups[] = $group;
             $group->addToRole($this);
-        }
-    }
-
-    public function addPolicy(Policy $policy): void
-    {
-        if(!$this->policies->contains($policy)) {
-            $this->policies[] = $policy;
-            $policy->addToRole($this);
         }
     }
 }

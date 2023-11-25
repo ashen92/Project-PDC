@@ -30,11 +30,11 @@ class Internship
      * @var Collection<int, User>
      */
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: "internshipsApplied")]
-    #[ORM\JoinTable(name: "internships_applicants")]
+    #[ORM\JoinTable(name: "internship_applicants")]
     private Collection $applicants;
 
     #[ORM\ManyToOne(targetEntity: InternshipCycle::class, inversedBy: "internships")]
-    #[ORM\JoinColumn(name: "internshipcycle_id", referencedColumnName: "id")]
+    #[ORM\JoinColumn(name: "internship_cycle_id", referencedColumnName: "id")]
     private InternshipCycle $internshipCycle;
 
     public function __construct(string $title, string $description, User $owner, InternshipCycle $internshipCycle)

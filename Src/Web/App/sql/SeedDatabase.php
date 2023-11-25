@@ -101,21 +101,6 @@ $entityManager->persist($roleStudent);
 $entityManager->persist($roleAdmin);
 $entityManager->flush();
 
-echo "Done.\nAdding policies...";
-
-$policyCanEditUsers = new Policy("CanEditUsers");
-$policyCanDeleteUsers = new Policy("CanDeleteUsers");
-$policyCanViewUsers = new Policy("CanViewUsers");
-
-$roleAdmin->addPolicy($policyCanViewUsers);
-$roleAdmin->addPolicy($policyCanEditUsers);
-$roleAdmin->addPolicy($policyCanDeleteUsers);
-
-$entityManager->persist($policyCanEditUsers);
-$entityManager->persist($policyCanDeleteUsers);
-$entityManager->persist($policyCanViewUsers);
-$entityManager->flush();
-
 echo "Done.\nAdding internships...";
 
 $internData = [

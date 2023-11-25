@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
-#[ORM\Table(name: "groups_")]
+#[ORM\Table(name: "user_groups")]
 class Group
 {
     #[ORM\Id]
@@ -24,7 +24,7 @@ class Group
      * @var Collection<int, User>
      */
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: "groups")]
-    #[ORM\JoinTable(name: "groups_users")]
+    #[ORM\JoinTable(name: "user_group_membership")]
     private Collection $users;
 
     /**
