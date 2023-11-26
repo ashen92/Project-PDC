@@ -53,21 +53,17 @@
         <div class="field-row">
             <label for="student-group">Select the group students belong to</label>
             <select name="student-group" id="student-group">
-                <option value="student-group1">Student Group 1</option>
-                <option value="student-group2">Student Group 2</option>
-                <option value="student-group3">Student Group 3</option>
-                <option value="student-group4">Student Group 4</option>
-                <option value="student-group5">Student Group 5</option>
+                {% for group in userGroups %}
+                <option value="{{ group.name }}">{{ group.name }}</option>
+                {% endfor %}
             </select>
         </div>
         <div class="field-row">
             <label for="partner-group">Select the group partners belong to</label>
             <select name="partner-group" id="partner-group">
-                <option value="partner-group1">Partner Group 1</option>
-                <option value="partner-group2">Partner Group 2</option>
-                <option value="partner-group3">Partner Group 3</option>
-                <option value="partner-group4">Partner Group 4</option>
-                <option value="partner-group5">Partner Group 5</option>
+                {% for group in userGroups %}
+                <option value="{{ group.name }}">{{ group.name }}</option>
+                {% endfor %}
             </select>
         </div>
     </div>

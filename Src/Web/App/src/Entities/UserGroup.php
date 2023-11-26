@@ -41,6 +41,11 @@ class UserGroup
         $this->name = $name;
     }
 
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
     public function addUser(User $user): void
     {
         if (!$this->users->contains($user)) {

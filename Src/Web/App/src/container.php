@@ -68,6 +68,12 @@ $container->register(
         new Reference("password_hasher")
     ]);
 
+$container->register("service.user_group", App\Services\UserGroupService::class)
+    ->setArguments([
+        new Reference("doctrine.entity_manager"),
+        new Reference("app.cache")
+    ]);
+
 $container->register(
     "service.internship",
     App\Services\InternshipService::class
@@ -155,7 +161,8 @@ $container->register(
     ->setArguments([
         new Reference("twig"),
         new Reference("service.internship"),
-        new Reference("service.user")
+        new Reference("service.user"),
+        new Reference("service.user_group")
     ]);
 
 $container->register(

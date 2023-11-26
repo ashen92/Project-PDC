@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Interfaces\IInternshipService;
+use App\Interfaces\IUserGroupService;
 use App\Interfaces\IUserService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,14 +17,17 @@ class InternshipProgramController extends PageControllerBase
 {
     private IInternshipService $internshipService;
     private IUserService $userService;
+    private IUserGroupService $userGroupService;
 
     public function __construct(
         Environment $twig,
         IInternshipService $internshipService,
         IUserService $userService,
+        IUserGroupService $userGroupService
     ) {
         $this->internshipService = $internshipService;
         $this->userService = $userService;
+        $this->userGroupService = $userGroupService;
         parent::__construct($twig);
     }
 
@@ -36,7 +40,13 @@ class InternshipProgramController extends PageControllerBase
     #[Route("/cycle/create", name: "cycle_create")]
     public function cycleCreate(Request $request): Response
     {
-        return $this->render("internship-program/cycle/create.html", ["section" => "home"]);
+        return $this->render(
+            "internship-program/cycle/create.html",
+            [
+                "section" => "home",
+                "userGroups" => $this->userGroupService->getUserGroupsForInternshipProgram()
+            ]
+        );
     }
 
     #[Route("/cycle/details", name: "cycle_details")]
