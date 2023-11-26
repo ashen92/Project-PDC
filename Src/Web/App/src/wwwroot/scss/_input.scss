@@ -2,7 +2,7 @@
 @use "mixins";
 
 form {
-    max-width: 52rem;
+    max-width: 50rem;
 
     >.field,
     >.field-group>.field {
@@ -15,11 +15,15 @@ form {
             margin-bottom: 0.85rem;
 
             >label {
-                width: 25rem;
-            }
+                flex-basis: 23rem;
 
-            >label+* {
-                max-width: 25rem;
+                &+* {
+                    flex: 1;
+                }
+
+                &+[type="checkbox"] {
+                    flex: unset;
+                }
             }
         }
 
