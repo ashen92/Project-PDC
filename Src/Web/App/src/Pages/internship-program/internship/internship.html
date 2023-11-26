@@ -16,7 +16,7 @@
 <div class="formatted-text-area">
     {{ internship.getDescription|raw }}
 </div>
-<form class="mt-50">
+<form>
     <div class="actions">
         {% if ("ROLE_PARTNER" in user_roles) or ("ROLE_ADMIN" in user_roles) %}
         <a class="btn btn-primary" role="button" href="{{ id }}/applicants">Applicants</a>

@@ -160,9 +160,18 @@ $container->register(
 )
     ->setArguments([
         new Reference("twig"),
-        new Reference("service.internship"),
         new Reference("service.user"),
         new Reference("service.user_group")
+    ]);
+
+$container->register(
+    "App\Controllers\InternshipController",
+    \App\Controllers\InternshipController::class
+)
+    ->setArguments([
+        new Reference("twig"),
+        new Reference("service.internship"),
+        new Reference("service.user")
     ]);
 
 $container->register(

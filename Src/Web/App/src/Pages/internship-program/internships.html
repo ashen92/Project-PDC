@@ -43,22 +43,22 @@
     <div class="item-container">
         {% for item in internships %}
         <div class="item">
-            <a class="description" href="internship/{{ item.id }}">
+            <a class="description" href="internships/{{ item.id }}">
                 <div class="fw-6 pb-10">{{ item.title }}</div>
                 <div><span class="italic fc-light">at </span>{{item.firstName}}</div>
             </a>
 
             {% if ("ROLE_PARTNER" in user_roles) or ("ROLE_ADMIN" in user_roles) %}
             <div class="actions">
-                <a class="btn btn-primary" role="button" href="internship/{{ item.id }}/applicants">Applicants</a>
-                <a class="btn btn-primary" role="button" href="internship/{{ item.id }}/edit">Edit</a>
-                <a class="btn btn-primary" role="button" href="internship/{{ item.id }}/delete">Remove</a>
+                <a class="btn btn-primary" role="button" href="internships/{{ item.id }}/applicants">Applicants</a>
+                <a class="btn btn-primary" role="button" href="internships/{{ item.id }}/edit">Edit</a>
+                <a class="btn btn-primary" role="button" href="internships/{{ item.id }}/delete">Remove</a>
             </div>
             {% endif %}
 
             {% if "ROLE_STUDENT" in user_roles %}
             <div class="actions">
-                <a class="btn btn-primary" role="button" href="internship/{{ item.id }}/apply">Apply</a>
+                <a class="btn btn-primary" role="button" href="internships/{{ item.id }}/apply">Apply</a>
             </div>
             {% endif %}
         </div>
