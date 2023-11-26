@@ -9,63 +9,70 @@
 {% block content %}
 
 <div class="title">
-    <h2>
-        Create an Internship Cycle
-    </h2>
+    <h4>
+        Create an internship cycle
+    </h4>
 </div>
-<form>
-    <div class="mb-40">
-        <div class="fs-6 fw-6 pb-20">Internship gathering phase</div>
-        <div class="row-cols-2 mb-5">
-            <div>Start date</div>
-            <input type="date" required>
+<form action="/internship-program/cycle/create" method="POST">
+    <div class="field-group">
+        <h6>Internship collection</h6>
+        <div class="field-row">
+            <label for="collection-phase-start-date">Pick a start date</label>
+            <input type="date" name="collection-phase-start-date" id="collection-phase-start-date" required>
         </div>
-        <div class="row-cols-2 mb-5">
-            <div>End date</div>
-            <input type="date" required>
+        <div class="field-row">
+            <label for="collection-phase-end-date">Pick an end date</label>
+            <input type="date" name="collection-phase-end-date" id="collection-phase-end-date" required>
         </div>
-        <div class="row-cols-2 mb-5">
-            <div>Automatically send emails to partners when the start date is reached.</div>
-            <div class="checkbox text-right">
-                <input type="checkbox" id="check1">
-            </div>
-        </div>
-    </div>
-    <div class="mb-40">
-        <div class="fs-6 fw-6 pb-20">Internship phase</div>
-        <div class="row-cols-2 mb-5">
-            <div>Start date</div>
-            <input type="date" required>
-        </div>
-        <div class="row-cols-2 mb-5">
-            <div>End date</div>
-            <input type="date" required>
-        </div>
-        <div class="row-cols-2">
-            <div>Automatically send emails to Undergraduates when the start date is reached.
-            </div>
-            <div class="checkbox">
-                <input type="checkbox" id="check1">
-            </div>
+        <div class="field-row">
+            <label for="notify-partners-on-collection-start">Automatically send emails to partners when the start date
+                is
+                reached.</label>
+            <input type="checkbox" name="notify-partners-on-collection-start" id="notify-partners-on-collection-start">
         </div>
     </div>
-    <div class="mb-40">
-        <div class="fs-6 fw-6 pb-20">Choose who participates in this cycle</div>
-        <div class="row-cols-2 mb-5">
-            <div>Select the group students belong to</div>
-            <div>
-                Select input
-            </div>
+    <div class="field-group">
+        <h6>Internship application collection</h6>
+        <div class="field-row">
+            <label for="application-phase-start-date">Pick a start date</label>
+            <input type="date" name="application-phase-start-date" id="application-phase-start-date">
         </div>
-        <div class="row-cols-2">
-            <div>Select the group partners belong to</div>
-            <div>
-                Select input
-            </div>
+        <div class="field-row">
+            <label for="application-phase-end-date">Pick an end date</label>
+            <input type="date" name="application-phase-end-date" id="application-phase-end-date">
+        </div>
+        <div class="field-row">
+            <label for="notify-students-on-application-start">Automatically send emails to Undergraduates when the start
+                date is reached.</label>
+            <input type="checkbox" name="notify-students-on-application-start"
+                id="notify-students-on-application-start">
+        </div>
+    </div>
+    <div class="field-group">
+        <h6>Choose who participates in this cycle</h6>
+        <div class="field-row">
+            <label for="student-group">Select the group students belong to</label>
+            <select name="student-group" id="student-group">
+                <option value="student-group1">Student Group 1</option>
+                <option value="student-group2">Student Group 2</option>
+                <option value="student-group3">Student Group 3</option>
+                <option value="student-group4">Student Group 4</option>
+                <option value="student-group5">Student Group 5</option>
+            </select>
+        </div>
+        <div class="field-row">
+            <label for="partner-group">Select the group partners belong to</label>
+            <select name="partner-group" id="partner-group">
+                <option value="partner-group1">Partner Group 1</option>
+                <option value="partner-group2">Partner Group 2</option>
+                <option value="partner-group3">Partner Group 3</option>
+                <option value="partner-group4">Partner Group 4</option>
+                <option value="partner-group5">Partner Group 5</option>
+            </select>
         </div>
     </div>
     <div class="actions">
-        <input class="btn" type="submit" value="Confirm">
+        <input class="btn" type="submit" value="Create">
         <input class="btn btn-secondary" type="reset" value="Reset">
     </div>
 </form>
