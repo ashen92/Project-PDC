@@ -49,9 +49,9 @@ class User
 
     /**
      * Many Users have Many Groups.
-     * @var Collection<int, Group>
+     * @var Collection<int, UserGroup>
      */
-    #[ORM\ManyToMany(targetEntity: Group::class, mappedBy: "users")]
+    #[ORM\ManyToMany(targetEntity: UserGroup::class, mappedBy: "users")]
     private Collection $groups;
 
     #[ORM\OneToMany(targetEntity: Internship::class, mappedBy: "owner")]
@@ -171,7 +171,7 @@ class User
         $this->activationTokenExpiresAt = $activationTokenExpiresAt;
     }
 
-    public function addToGroup(Group $group): void
+    public function addToGroup(UserGroup $group): void
     {
         $this->groups[] = $group;
     }

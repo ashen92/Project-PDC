@@ -21,9 +21,9 @@ class Role
 
     /**
      * Many Roles have Many Groups.
-     * @var Collection<int, Group>
+     * @var Collection<int, UserGroup>
      */
-    #[ORM\ManyToMany(targetEntity: Group::class, inversedBy: "roles")]
+    #[ORM\ManyToMany(targetEntity: UserGroup::class, inversedBy: "roles")]
     #[ORM\JoinTable(name: "user_group_roles")]
     private Collection $groups;
 
@@ -33,7 +33,7 @@ class Role
         $this->name = $name;
     }
 
-    public function addGroup(Group $group): void
+    public function addGroup(UserGroup $group): void
     {
         if (!$this->groups->contains($group)) {
             $this->groups[] = $group;

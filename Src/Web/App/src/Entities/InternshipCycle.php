@@ -16,13 +16,13 @@ class InternshipCycle
     #[ORM\Column(type: "integer")]
     private int $id;
 
-    #[ORM\OneToOne(targetEntity: Group::class)]
+    #[ORM\OneToOne(targetEntity: UserGroup::class)]
     #[ORM\JoinColumn(name: "student_group_id", referencedColumnName: "id")]
-    private Group $studentGroup;
+    private UserGroup $studentGroup;
 
-    #[ORM\OneToOne(targetEntity: Group::class)]
+    #[ORM\OneToOne(targetEntity: UserGroup::class)]
     #[ORM\JoinColumn(name: "partner_group_id", referencedColumnName: "id")]
-    private Group $partnerGroup;
+    private UserGroup $partnerGroup;
 
     #[ORM\OneToMany(targetEntity: Internship::class, mappedBy: 'internshipCycle')]
     private Collection $internhips;

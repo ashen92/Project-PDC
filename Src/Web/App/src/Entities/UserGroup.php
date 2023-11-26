@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: "user_groups")]
-class Group
+class UserGroup
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

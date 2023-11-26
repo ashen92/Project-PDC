@@ -2,7 +2,7 @@
 
 use App\DTOs\RequirementDTO;
 use App\Entities\Event;
-use App\Entities\Group;
+use App\Entities\UserGroup;
 use App\Entities\Internship;
 use App\Entities\InternshipCycle;
 use App\Entities\Policy;
@@ -55,11 +55,11 @@ $entityManager->flush();
 
 echo "Done.\nAdding groups...";
 
-$groupCoordinators = new Group("Coordinators");
-$groupPartners = new Group("Partners");
-$groupStudents = new Group("Students");
-$groupThirdYearStudents = new Group("ThirdYearStudents");
-$groupFirstYearStudents = new Group("FirstYearStudents");
+$groupCoordinators = new UserGroup("Coordinators");
+$groupPartners = new UserGroup("Partners");
+$groupStudents = new UserGroup("Students");
+$groupThirdYearStudents = new UserGroup("ThirdYearStudents");
+$groupFirstYearStudents = new UserGroup("FirstYearStudents");
 
 $groupThirdYearStudents->addUser($user);
 $groupThirdYearStudents->addUser($user3);
