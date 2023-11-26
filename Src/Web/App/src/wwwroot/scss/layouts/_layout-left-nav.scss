@@ -47,11 +47,14 @@
 
         section {
             margin-top: 3rem;
-        }
 
-        p {
-            margin-top: 1.25rem;
-            margin-bottom: 1rem;
+            .info-card {
+                >p {
+                    margin-bottom: 0.5rem;
+                }
+
+                margin-bottom: 1.5rem;
+            }
         }
     }
 }
