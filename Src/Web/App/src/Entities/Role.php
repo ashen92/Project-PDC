@@ -27,9 +27,18 @@ class Role
     #[ORM\JoinTable(name: "user_group_roles")]
     private Collection $groups;
 
+    /**
+     * Many Roles have Many Permissions.
+     * @var Collection<int, Permission>
+     */
+    #[ORM\ManyToMany(targetEntity: Permission::class, inversedBy: "roles")]
+    #[ORM\JoinTable(name: "role_permissions")]
+    private Collection $permissions;
+
     public function __construct(string $name)
     {
         $this->groups = new ArrayCollection();
+        $this->permissions = new ArrayCollection();
         $this->name = $name;
     }
 
@@ -38,6 +47,14 @@ class Role
         if (!$this->groups->contains($group)) {
             $this->groups[] = $group;
             $group->addToRole($this);
+        }
+    }
+
+    public function addPolicy(Permission $policy): void
+    {
+        if (!$this->permissions->contains($policy)) {
+            $this->permissions[] = $policy;
+            $policy->addToRole($this);
         }
     }
 }
