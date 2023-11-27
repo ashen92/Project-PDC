@@ -3,8 +3,11 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+use App\DTOs\CreateInternshipCycleDTO;
+use App\Interfaces\IInternshipCycleService;
 use App\Interfaces\IUserGroupService;
 use App\Interfaces\IUserService;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,14 +18,17 @@ class InternshipProgramController extends PageControllerBase
 {
     private IUserService $userService;
     private IUserGroupService $userGroupService;
+    private IInternshipCycleService $internshipCycleService;
 
     public function __construct(
         Environment $twig,
         IUserService $userService,
-        IUserGroupService $userGroupService
+        IUserGroupService $userGroupService,
+        IInternshipCycleService $internshipCycleService
     ) {
         $this->userService = $userService;
         $this->userGroupService = $userGroupService;
+        $this->internshipCycleService = $internshipCycleService;
         parent::__construct($twig);
     }
 
@@ -32,8 +38,8 @@ class InternshipProgramController extends PageControllerBase
         return $this->render("internship-program/home.html", ["section" => "home"]);
     }
 
-    #[Route("/cycle/create", name: "cycle_create")]
-    public function cycleCreate(Request $request): Response
+    #[Route("/cycle/create", methods: ["GET"])]
+    public function cycleCreateGET(Request $request): Response
     {
         return $this->render(
             "internship-program/cycle/create.html",
@@ -42,6 +48,25 @@ class InternshipProgramController extends PageControllerBase
                 "userGroups" => $this->userGroupService->getUserGroupsForInternshipProgram()
             ]
         );
+    }
+
+    #[Route("/cycle/create", methods: ["POST"])]
+    public function cycleCreatePost(Request $request): RedirectResponse
+    {
+        $createInternshipCycleDTO = new CreateInternshipCycleDTO(
+            $request->get("collection-start-date"),
+            $request->get("collection-end-date"),
+            $request->get("application-start-date"),
+            $request->get("application-end-date"),
+            $request->get("partner-group"),
+            $request->get("student-group")
+        );
+        // validate DTO
+        // todo
+
+        $this->internshipCycleService->createInternshipCycle($createInternshipCycleDTO);
+
+        return $this->redirect("/internship-program/cycle/details");
     }
 
     #[Route("/cycle/details", name: "cycle_details")]

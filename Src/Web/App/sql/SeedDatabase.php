@@ -88,7 +88,8 @@ $roleCoordinator = new Role("ROLE_COORDINATOR");
 $rolePartner = new Role("ROLE_PARTNER");
 $roleStudent = new Role("ROLE_STUDENT");
 $roleAdmin = new Role("ROLE_ADMIN");
-$roleUser = new Role("ROLE_USER");
+$roleInternshipPartner = new Role("ROLE_INTERNSHIP_PARTNER");
+$roleInternshipStudent = new Role("ROLE_INTERNSHIP_STUDENT");
 
 $roleCoordinator->addGroup($groupCoordinators);
 $rolePartner->addGroup($groupPartners);
@@ -99,6 +100,8 @@ $entityManager->persist($roleCoordinator);
 $entityManager->persist($rolePartner);
 $entityManager->persist($roleStudent);
 $entityManager->persist($roleAdmin);
+$entityManager->persist($roleInternshipPartner);
+$entityManager->persist($roleInternshipStudent);
 $entityManager->flush();
 
 echo "Done.\nAdding internships...";

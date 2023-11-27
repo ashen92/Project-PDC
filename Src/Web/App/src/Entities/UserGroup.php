@@ -46,11 +46,23 @@ class UserGroup
         return $this->name;
     }
 
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
     public function addUser(User $user): void
     {
         if (!$this->users->contains($user)) {
             $this->users[] = $user;
             $user->addToGroup($this);
+        }
+    }
+
+    public function addUsersFrom(UserGroup $group): void
+    {
+        foreach ($group->getUsers() as $user) {
+            $this->addUser($user);
         }
     }
 

@@ -33,5 +33,6 @@
             "database": "pdc",
             "username": "root"
         }
-    ]
+    ],
+    "php.version": "8.1"
 }

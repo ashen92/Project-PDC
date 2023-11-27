@@ -81,6 +81,15 @@ $container->register(
     ->setArguments([new Reference("doctrine.entity_manager"), new Reference("app.cache")]);
 
 $container->register(
+    "service.internship_cycle",
+    App\Services\InternshipCycleService::class
+)
+    ->setArguments([
+        new Reference("doctrine.entity_manager"),
+        new Reference("app.cache")
+    ]);
+
+$container->register(
     "service.requirement",
     App\Services\RequirementService::class
 )
@@ -161,7 +170,8 @@ $container->register(
     ->setArguments([
         new Reference("twig"),
         new Reference("service.user"),
-        new Reference("service.user_group")
+        new Reference("service.user_group"),
+        new Reference("service.internship_cycle")
     ]);
 
 $container->register(
