@@ -3,40 +3,40 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/docker
 
 trigger:
-- main
+  - main
 
 resources:
-- repo: self
+  - repo: self
 
 variables:
-  tag: '$(Build.BuildId)'
+  tag: "$(Build.BuildId)"
 
 stages:
-- stage: Build
-  displayName: Build image
-  jobs:
-  - job: Build
-    displayName: Build
-    pool:
-      vmImage: ubuntu-latest
-    steps:
-    - task: Docker@2
-      inputs:
-        containerRegistry: 'docker-hub'
-        repository: 'ashensandaruwan/groupproject'
-        command: 'buildAndPush'
-        Dockerfile: '**/Dockerfile'
-- stage: Deploy
-  displayName: Deploy to Azure App Service
-  jobs:
-    - job: Deploy
-      displayName: Deploy
-      steps:
-      - task: AzureWebAppContainer@1
-        inputs:
-          azureSubscription: 'Azure subscription 1(cd17a9df-d623-4250-8ab2-34441652222d)'
-          appName: 'webappgroupproject'
-          deployToSlotOrASE: true
-          resourceGroupName: 'group-project'
-          slotName: 'production'
-          multicontainerConfigFile: '**/docker-compose.yml'
+  - stage: Build
+    displayName: Build image
+    jobs:
+      - job: Build
+        displayName: Build
+        pool:
+          vmImage: ubuntu-latest
+        steps:
+          - task: Docker@2
+            inputs:
+              containerRegistry: "docker-hub"
+              repository: "ashensandaruwan/groupproject"
+              command: "buildAndPush"
+              Dockerfile: "**/Dockerfile"
+  - stage: Deploy
+    displayName: Deploy to Azure App Service
+    jobs:
+      - job: Deploy
+        displayName: Deploy
+        steps:
+          - task: AzureWebAppContainer@1
+            inputs:
+              azureSubscription: "Azure subscription 1(cd17a9df-d623-4250-8ab2-34441652222d)"
+              appName: "webappgroupproject"
+              deployToSlotOrASE: true
+              resourceGroupName: "group-project"
+              slotName: "production"
+              multicontainerConfigFile: "**/docker-compose.yml"
