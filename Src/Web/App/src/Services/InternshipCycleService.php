@@ -26,8 +26,8 @@ class InternshipCycleService implements IInternshipCycleService
         $this->entityManager->persist($internshipCycle);
         $this->entityManager->flush();
 
-        $partnerGroup = new UserGroup("Cycle_{$internshipCycle->getId()}-Partner");
-        $studentGroup = new UserGroup("Cycle_{$internshipCycle->getId()}-Student");
+        $partnerGroup = new UserGroup("InternshipCycle-{$internshipCycle->getId()}-Partners");
+        $studentGroup = new UserGroup("InternshipCycle-{$internshipCycle->getId()}-Students");
 
         $roleInternshipPartner = $this->entityManager
             ->getRepository(Role::class)
