@@ -7,7 +7,7 @@ pool:
 
 steps:
   - script: |
-      echo $(GithubToken) | gh auth login --with-token
+      echo $GHTOKEN | gh auth login --with-token
       gh auth setup-git
     displayName: "Configure gh cli"
     env:
@@ -16,13 +16,9 @@ steps:
   - script: |
       git config --global http.postBuffer 524288000
       git remote set-url origin https://$AZTOKEN@dev.azure.com/ashenhasanka12/GroupProject/_git/GroupProject
-      git fetch
-      git pull
+      git fetch origin
       git remote add github https://github.com/ashen92/GroupProject.git
-      git checkout main
-      git push -f github main
-      git checkout dev
-      git push -f github dev
+      git push --mirror github
     displayName: "Push to GitHub"
     env:
       AZTOKEN: $(AzureDevOpsToken)
