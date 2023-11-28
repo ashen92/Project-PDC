@@ -27,7 +27,7 @@ if (query) {
 const jobList = document.getElementById("job-list");
 const jobTitle = document.getElementById("job-title");
 const jobDescription = document.getElementById("job-description");
-
+let previouslySelectedItemCard = null;
 jobList.addEventListener("click", function (event) {
     let itemCard = event.target.closest(".item-card");
 
@@ -39,6 +39,10 @@ jobList.addEventListener("click", function (event) {
             .then(data => {
                 jobTitle.innerHTML = data.title;
                 jobDescription.innerHTML = data.description;
+
+                previouslySelectedItemCard.classList.remove("active");
+                itemCard.classList.add("active");
+                previouslySelectedItemCard = itemCard;
             })
             .catch(error => console.error("Error retrieving job:", error));
     }
@@ -48,6 +52,9 @@ const jobDetailsContent = document.getElementById("job-details-content");
 const jobDetailsSkeleton = document.getElementById("job-details-skeleton");
 const itemCard = document.querySelector(".item-card");
 document.addEventListener("DOMContentLoaded", () => {
+    itemCard.classList.add("active");
+    previouslySelectedItemCard = itemCard;
+
     fetch("/internship-program/internships/" + itemCard.getAttribute("data-job-id"), { method: "GET" })
         .then(response => response.json())
         .then(data => {

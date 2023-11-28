@@ -100,7 +100,8 @@ $filter-item-active-bg-color: #c8c6c6;
                     text-decoration: underline;
                 }
 
-                &:active {
+                &:active,
+                &.active {
                     background-color: #deecf9
                 }
 
