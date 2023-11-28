@@ -109,7 +109,104 @@ echo "Done.\nAdding internships...";
 $internData = [
     [
         "Software Development Intern",
-        "<p>Are you passionate about software development and eager to apply your skills in the real world? We are looking for a highly motivated Software Development Intern to join our dynamic team. This is an exciting opportunity to work on cutting-edge technologies and projects that will make a real impact. </p><p><br></p><p><strong>Responsibilities: </strong></p><ul><li>Assist in developing and maintaining our web-based applications. </li><li>Work closely with senior developers to implement new features and optimize existing ones. </li><li>Write clean, maintainable, and efficient code. </li><li>Participate in code reviews to maintain a high-quality codebase. </li><li>Test software rigorously and work on bug fixes. </li><li>Collaborate with cross-functional teams to deliver on project goals. </li></ul><p><br></p><p><strong>Qualifications: </strong></p><ul><li>Currently pursuing a degree in Computer Science, Software Engineering, or a related field. </li><li>Familiarity with programming languages such as PHP, Java, or Python. </li><li>Strong problem-solving skills and attention to detail. </li><li>Excellent written and verbal communication skills. </li><li>Previous experience in software development is a plus, but not required. </li></ul><p><br></p><p><strong>Duration: </strong></p><p>3-6 months, with the possibility of extension or full-time employment. </p><p><br></p><p><strong>Location: </strong></p><p>Remote or in our office located in [City, State]. </p><p><br></p><p>If you are a proactive learner and thrive in a fast-paced environment, we would love to hear from you! Apply now to kickstart your career in software development.</p>"
+        "<p>Are you passionate about software development and eager to apply your skills in the real world? We are looking for a highly motivated Software Development Intern to join our dynamic team. This is an exciting opportunity to work on cutting-edge technologies and projects that will make a real impact. </p><p><br></p><p><strong>Responsibilities: </strong></p><ul><li>Assist in developing and maintaining our web-based applications. </li><li>Work closely with senior developers to implement new features and optimize existing ones. </li><li>Write clean, maintainable, and efficient code. </li><li>Participate in code reviews to maintain a high-quality codebase. </li><li>Test software rigorously and work on bug fixes. </li><li>Collaborate with cross-functional teams to deliver on project goals. </li></ul><p><br></p><p><strong>Qualifications: </strong></p><ul><li>Currently pursuing a degree in Computer Science, Software Engineering, or a related field. </li><li>Familiarity with programming languages such as PHP, Java, or Python. </li><li>Strong problem-solving skills and attention to detail. </li><li>Excellent written and verbal communication skills. </li><li>Previous experience in software development is a plus, but not required. </li></ul><p><br></p><p><strong>Duration: </strong></p><p>3-6 months, with the possibility of extension or full-time employment. </p><p><br></p><p><strong>Location: </strong></p><p>Remote or in our office located in [City, State]. </p><p><br></p><p>If you are a proactive learner and thrive in a fast-paced environment, we would love to hear from you! Apply now to kickstart your career in software development.</p>
+        <p>Are you passionate about software development and eager to apply your skills in the real world? We are looking for a highly motivated Software Development Intern to join our dynamic team. This is an exciting opportunity to work on cutting-edge technologies and projects that will make a real impact. </p><p><br></p><p><strong>Responsibilities: </strong></p><ul><li>Assist in developing and maintaining our web-based applications. </li><li>Work closely with senior developers to implement new features and optimize existing ones. </li><li>Write clean, maintainable, and efficient code. </li><li>Participate in code reviews to maintain a high-quality codebase. </li><li>Test software rigorously and work on bug fixes. </li><li>Collaborate with cross-functional teams to deliver on project goals. </li></ul><p><br></p><p><strong>Qualifications: </strong></p><ul><li>Currently pursuing a degree in Computer Science, Software Engineering, or a related field. </li><li>Familiarity with programming languages such as PHP, Java, or Python. </li><li>Strong problem-solving skills and attention to detail. </li><li>Excellent written and verbal communication skills. </li><li>Previous experience in software development is a plus, but not required. </li></ul><p><br></p><p><strong>Duration: </strong></p><p>3-6 months, with the possibility of extension or full-time employment. </p><p><br></p><p><strong>Location: </strong></p><p>Remote or in our office located in [City, State]. </p><p><br></p><p>If you are a proactive learner and thrive in a fast-paced environment, we would love to hear from you! Apply now to kickstart your career in software development.</p>"
+    ],
+    [
+        "Frontend Development Intern",
+        "<p>We are seeking a Frontend Development Intern to assist in building high-quality web applications. You will work closely with our experienced developers and designers to create user-friendly interfaces.</p><p><br></p><p><strong>Responsibilities:</strong></p><ul><li>Convert UI/UX designs to HTML, CSS, and JavaScript.</li><li>Assist in optimizing web pages for maximum speed and scalability.</li><li>Test website compatibility across different browsers.</li><li>Collaborate with backend developers to integrate RESTful APIs.</li></ul><p><br></p><p><strong>Qualifications: </strong></p><ul><li>Currently pursuing a degree in Computer Science, Web Development, or a related field.</li><li>Familiarity with HTML, CSS, and basic JavaScript.</li><li>Strong attention to detail and willingness to learn.</li></ul>"
+    ],
+    [
+        "Mobile App Development Intern",
+        "<p>We are looking for an enthusiastic Mobile App Development Intern to join our mobile team. You'll work on developing features for our iOS and Android applications. </p><p><br></p><p><strong>Responsibilities: </strong></p><ul><li>Work on bug fixes and implement new features under guidance from senior developers. </li><li>Write clean, maintainable code following best practices. </li><li>Learn and apply new technologies quickly. </li></ul><p><br></p><p><strong>Qualifications: </strong></p><ul><li>Currently enrolled in a Computer Science or related degree program. </li><li>Basic understanding of Swift or Kotlin. </li><li>A strong passion for mobile app development.</li></ul>"
+    ],
+    [
+        "DevOps Intern",
+        "<p>Join us as a DevOps Intern to gain hands-on experience in automating, configuring, and optimizing our development pipelines for high performance. </p><p><br></p><p><strong>Responsibilities: </strong></p><ul><li>Assist in managing and deploying cloud-based applications. Monitor system performance and troubleshoot issues. </li><li>Learn about CI/CD pipelines and assist in their implementation. </li></ul><p><br></p><p><strong>Qualifications: </strong></p><ul><li>Pursuing a degree in Computer Science, Information Systems, or a related field. </li><li>Basic understanding of cloud services like AWS, Azure, or GCP. </li><li>Familiarity with Linux/Unix commands.</li></ul>"
+    ],
+    [
+        "Data Engineering Intern",
+        "<p>We are in search of a Data Engineering Intern to assist in developing, constructing, testing, and maintaining architectures such as databases and large-scale processing systems.</p><p><br></p><p><strong>Responsibilities: </strong></p><ul><li>Assist in building scalable, high-performance data pipelines. </li><li>Work closely with data scientists to implement algorithms and models. </li><li>Learn to write complex SQL queries and optimize them for performance.</li></ul><p><br></p><p><strong>Qualifications: </strong></p><ul><li>Currently pursuing a degree in Computer Science, Data Science, or a related field. </li><li>Familiarity with SQL and Python. </li><li>Strong analytical and problem-solving skills.</li></ul>"
+    ],
+    [
+        "Frontend Development Intern",
+        "<p>We are seeking a Frontend Development Intern to assist in building high-quality web applications. You will work closely with our experienced developers and designers to create user-friendly interfaces.</p><p><br></p><p><strong>Responsibilities:</strong></p><ul><li>Convert UI/UX designs to HTML, CSS, and JavaScript.</li><li>Assist in optimizing web pages for maximum speed and scalability.</li><li>Test website compatibility across different browsers.</li><li>Collaborate with backend developers to integrate RESTful APIs.</li></ul><p><br></p><p><strong>Qualifications: </strong></p><ul><li>Currently pursuing a degree in Computer Science, Web Development, or a related field.</li><li>Familiarity with HTML, CSS, and basic JavaScript.</li><li>Strong attention to detail and willingness to learn.</li></ul>"
+    ],
+    [
+        "Mobile App Development Intern",
+        "<p>We are looking for an enthusiastic Mobile App Development Intern to join our mobile team. You'll work on developing features for our iOS and Android applications. </p><p><br></p><p><strong>Responsibilities: </strong></p><ul><li>Work on bug fixes and implement new features under guidance from senior developers. </li><li>Write clean, maintainable code following best practices. </li><li>Learn and apply new technologies quickly. </li></ul><p><br></p><p><strong>Qualifications: </strong></p><ul><li>Currently enrolled in a Computer Science or related degree program. </li><li>Basic understanding of Swift or Kotlin. </li><li>A strong passion for mobile app development.</li></ul>"
+    ],
+    [
+        "DevOps Intern",
+        "<p>Join us as a DevOps Intern to gain hands-on experience in automating, configuring, and optimizing our development pipelines for high performance. </p><p><br></p><p><strong>Responsibilities: </strong></p><ul><li>Assist in managing and deploying cloud-based applications. Monitor system performance and troubleshoot issues. </li><li>Learn about CI/CD pipelines and assist in their implementation. </li></ul><p><br></p><p><strong>Qualifications: </strong></p><ul><li>Pursuing a degree in Computer Science, Information Systems, or a related field. </li><li>Basic understanding of cloud services like AWS, Azure, or GCP. </li><li>Familiarity with Linux/Unix commands.</li></ul>"
+    ],
+    [
+        "Data Engineering Intern",
+        "<p>We are in search of a Data Engineering Intern to assist in developing, constructing, testing, and maintaining architectures such as databases and large-scale processing systems.</p><p><br></p><p><strong>Responsibilities: </strong></p><ul><li>Assist in building scalable, high-performance data pipelines. </li><li>Work closely with data scientists to implement algorithms and models. </li><li>Learn to write complex SQL queries and optimize them for performance.</li></ul><p><br></p><p><strong>Qualifications: </strong></p><ul><li>Currently pursuing a degree in Computer Science, Data Science, or a related field. </li><li>Familiarity with SQL and Python. </li><li>Strong analytical and problem-solving skills.</li></ul>"
+    ],
+    [
+        "Frontend Development Intern",
+        "<p>We are seeking a Frontend Development Intern to assist in building high-quality web applications. You will work closely with our experienced developers and designers to create user-friendly interfaces.</p><p><br></p><p><strong>Responsibilities:</strong></p><ul><li>Convert UI/UX designs to HTML, CSS, and JavaScript.</li><li>Assist in optimizing web pages for maximum speed and scalability.</li><li>Test website compatibility across different browsers.</li><li>Collaborate with backend developers to integrate RESTful APIs.</li></ul><p><br></p><p><strong>Qualifications: </strong></p><ul><li>Currently pursuing a degree in Computer Science, Web Development, or a related field.</li><li>Familiarity with HTML, CSS, and basic JavaScript.</li><li>Strong attention to detail and willingness to learn.</li></ul>"
+    ],
+    [
+        "Mobile App Development Intern",
+        "<p>We are looking for an enthusiastic Mobile App Development Intern to join our mobile team. You'll work on developing features for our iOS and Android applications. </p><p><br></p><p><strong>Responsibilities: </strong></p><ul><li>Work on bug fixes and implement new features under guidance from senior developers. </li><li>Write clean, maintainable code following best practices. </li><li>Learn and apply new technologies quickly. </li></ul><p><br></p><p><strong>Qualifications: </strong></p><ul><li>Currently enrolled in a Computer Science or related degree program. </li><li>Basic understanding of Swift or Kotlin. </li><li>A strong passion for mobile app development.</li></ul>"
+    ],
+    [
+        "DevOps Intern",
+        "<p>Join us as a DevOps Intern to gain hands-on experience in automating, configuring, and optimizing our development pipelines for high performance. </p><p><br></p><p><strong>Responsibilities: </strong></p><ul><li>Assist in managing and deploying cloud-based applications. Monitor system performance and troubleshoot issues. </li><li>Learn about CI/CD pipelines and assist in their implementation. </li></ul><p><br></p><p><strong>Qualifications: </strong></p><ul><li>Pursuing a degree in Computer Science, Information Systems, or a related field. </li><li>Basic understanding of cloud services like AWS, Azure, or GCP. </li><li>Familiarity with Linux/Unix commands.</li></ul>"
+    ],
+    [
+        "Data Engineering Intern",
+        "<p>We are in search of a Data Engineering Intern to assist in developing, constructing, testing, and maintaining architectures such as databases and large-scale processing systems.</p><p><br></p><p><strong>Responsibilities: </strong></p><ul><li>Assist in building scalable, high-performance data pipelines. </li><li>Work closely with data scientists to implement algorithms and models. </li><li>Learn to write complex SQL queries and optimize them for performance.</li></ul><p><br></p><p><strong>Qualifications: </strong></p><ul><li>Currently pursuing a degree in Computer Science, Data Science, or a related field. </li><li>Familiarity with SQL and Python. </li><li>Strong analytical and problem-solving skills.</li></ul>"
+    ],
+    [
+        "Frontend Development Intern",
+        "<p>We are seeking a Frontend Development Intern to assist in building high-quality web applications. You will work closely with our experienced developers and designers to create user-friendly interfaces.</p><p><br></p><p><strong>Responsibilities:</strong></p><ul><li>Convert UI/UX designs to HTML, CSS, and JavaScript.</li><li>Assist in optimizing web pages for maximum speed and scalability.</li><li>Test website compatibility across different browsers.</li><li>Collaborate with backend developers to integrate RESTful APIs.</li></ul><p><br></p><p><strong>Qualifications: </strong></p><ul><li>Currently pursuing a degree in Computer Science, Web Development, or a related field.</li><li>Familiarity with HTML, CSS, and basic JavaScript.</li><li>Strong attention to detail and willingness to learn.</li></ul>"
+    ],
+    [
+        "Mobile App Development Intern",
+        "<p>We are looking for an enthusiastic Mobile App Development Intern to join our mobile team. You'll work on developing features for our iOS and Android applications. </p><p><br></p><p><strong>Responsibilities: </strong></p><ul><li>Work on bug fixes and implement new features under guidance from senior developers. </li><li>Write clean, maintainable code following best practices. </li><li>Learn and apply new technologies quickly. </li></ul><p><br></p><p><strong>Qualifications: </strong></p><ul><li>Currently enrolled in a Computer Science or related degree program. </li><li>Basic understanding of Swift or Kotlin. </li><li>A strong passion for mobile app development.</li></ul>"
+    ],
+    [
+        "DevOps Intern",
+        "<p>Join us as a DevOps Intern to gain hands-on experience in automating, configuring, and optimizing our development pipelines for high performance. </p><p><br></p><p><strong>Responsibilities: </strong></p><ul><li>Assist in managing and deploying cloud-based applications. Monitor system performance and troubleshoot issues. </li><li>Learn about CI/CD pipelines and assist in their implementation. </li></ul><p><br></p><p><strong>Qualifications: </strong></p><ul><li>Pursuing a degree in Computer Science, Information Systems, or a related field. </li><li>Basic understanding of cloud services like AWS, Azure, or GCP. </li><li>Familiarity with Linux/Unix commands.</li></ul>"
+    ],
+    [
+        "Data Engineering Intern",
+        "<p>We are in search of a Data Engineering Intern to assist in developing, constructing, testing, and maintaining architectures such as databases and large-scale processing systems.</p><p><br></p><p><strong>Responsibilities: </strong></p><ul><li>Assist in building scalable, high-performance data pipelines. </li><li>Work closely with data scientists to implement algorithms and models. </li><li>Learn to write complex SQL queries and optimize them for performance.</li></ul><p><br></p><p><strong>Qualifications: </strong></p><ul><li>Currently pursuing a degree in Computer Science, Data Science, or a related field. </li><li>Familiarity with SQL and Python. </li><li>Strong analytical and problem-solving skills.</li></ul>"
+    ],
+    [
+        "Frontend Development Intern",
+        "<p>We are seeking a Frontend Development Intern to assist in building high-quality web applications. You will work closely with our experienced developers and designers to create user-friendly interfaces.</p><p><br></p><p><strong>Responsibilities:</strong></p><ul><li>Convert UI/UX designs to HTML, CSS, and JavaScript.</li><li>Assist in optimizing web pages for maximum speed and scalability.</li><li>Test website compatibility across different browsers.</li><li>Collaborate with backend developers to integrate RESTful APIs.</li></ul><p><br></p><p><strong>Qualifications: </strong></p><ul><li>Currently pursuing a degree in Computer Science, Web Development, or a related field.</li><li>Familiarity with HTML, CSS, and basic JavaScript.</li><li>Strong attention to detail and willingness to learn.</li></ul>"
+    ],
+    [
+        "Mobile App Development Intern",
+        "<p>We are looking for an enthusiastic Mobile App Development Intern to join our mobile team. You'll work on developing features for our iOS and Android applications. </p><p><br></p><p><strong>Responsibilities: </strong></p><ul><li>Work on bug fixes and implement new features under guidance from senior developers. </li><li>Write clean, maintainable code following best practices. </li><li>Learn and apply new technologies quickly. </li></ul><p><br></p><p><strong>Qualifications: </strong></p><ul><li>Currently enrolled in a Computer Science or related degree program. </li><li>Basic understanding of Swift or Kotlin. </li><li>A strong passion for mobile app development.</li></ul>"
+    ],
+    [
+        "DevOps Intern",
+        "<p>Join us as a DevOps Intern to gain hands-on experience in automating, configuring, and optimizing our development pipelines for high performance. </p><p><br></p><p><strong>Responsibilities: </strong></p><ul><li>Assist in managing and deploying cloud-based applications. Monitor system performance and troubleshoot issues. </li><li>Learn about CI/CD pipelines and assist in their implementation. </li></ul><p><br></p><p><strong>Qualifications: </strong></p><ul><li>Pursuing a degree in Computer Science, Information Systems, or a related field. </li><li>Basic understanding of cloud services like AWS, Azure, or GCP. </li><li>Familiarity with Linux/Unix commands.</li></ul>"
+    ],
+    [
+        "Data Engineering Intern",
+        "<p>We are in search of a Data Engineering Intern to assist in developing, constructing, testing, and maintaining architectures such as databases and large-scale processing systems.</p><p><br></p><p><strong>Responsibilities: </strong></p><ul><li>Assist in building scalable, high-performance data pipelines. </li><li>Work closely with data scientists to implement algorithms and models. </li><li>Learn to write complex SQL queries and optimize them for performance.</li></ul><p><br></p><p><strong>Qualifications: </strong></p><ul><li>Currently pursuing a degree in Computer Science, Data Science, or a related field. </li><li>Familiarity with SQL and Python. </li><li>Strong analytical and problem-solving skills.</li></ul>"
+    ],
+    [
+        "Frontend Development Intern",
+        "<p>We are seeking a Frontend Development Intern to assist in building high-quality web applications. You will work closely with our experienced developers and designers to create user-friendly interfaces.</p><p><br></p><p><strong>Responsibilities:</strong></p><ul><li>Convert UI/UX designs to HTML, CSS, and JavaScript.</li><li>Assist in optimizing web pages for maximum speed and scalability.</li><li>Test website compatibility across different browsers.</li><li>Collaborate with backend developers to integrate RESTful APIs.</li></ul><p><br></p><p><strong>Qualifications: </strong></p><ul><li>Currently pursuing a degree in Computer Science, Web Development, or a related field.</li><li>Familiarity with HTML, CSS, and basic JavaScript.</li><li>Strong attention to detail and willingness to learn.</li></ul>"
+    ],
+    [
+        "Mobile App Development Intern",
+        "<p>We are looking for an enthusiastic Mobile App Development Intern to join our mobile team. You'll work on developing features for our iOS and Android applications. </p><p><br></p><p><strong>Responsibilities: </strong></p><ul><li>Work on bug fixes and implement new features under guidance from senior developers. </li><li>Write clean, maintainable code following best practices. </li><li>Learn and apply new technologies quickly. </li></ul><p><br></p><p><strong>Qualifications: </strong></p><ul><li>Currently enrolled in a Computer Science or related degree program. </li><li>Basic understanding of Swift or Kotlin. </li><li>A strong passion for mobile app development.</li></ul>"
+    ],
+    [
+        "DevOps Intern",
+        "<p>Join us as a DevOps Intern to gain hands-on experience in automating, configuring, and optimizing our development pipelines for high performance. </p><p><br></p><p><strong>Responsibilities: </strong></p><ul><li>Assist in managing and deploying cloud-based applications. Monitor system performance and troubleshoot issues. </li><li>Learn about CI/CD pipelines and assist in their implementation. </li></ul><p><br></p><p><strong>Qualifications: </strong></p><ul><li>Pursuing a degree in Computer Science, Information Systems, or a related field. </li><li>Basic understanding of cloud services like AWS, Azure, or GCP. </li><li>Familiarity with Linux/Unix commands.</li></ul>"
+    ],
+    [
+        "Data Engineering Intern",
+        "<p>We are in search of a Data Engineering Intern to assist in developing, constructing, testing, and maintaining architectures such as databases and large-scale processing systems.</p><p><br></p><p><strong>Responsibilities: </strong></p><ul><li>Assist in building scalable, high-performance data pipelines. </li><li>Work closely with data scientists to implement algorithms and models. </li><li>Learn to write complex SQL queries and optimize them for performance.</li></ul><p><br></p><p><strong>Qualifications: </strong></p><ul><li>Currently pursuing a degree in Computer Science, Data Science, or a related field. </li><li>Familiarity with SQL and Python. </li><li>Strong analytical and problem-solving skills.</li></ul>"
     ],
     [
         "Frontend Development Intern",
@@ -131,19 +228,27 @@ $internData = [
 
 $internshipCycle = new InternshipCycle();
 
-$internship0 = new Internship($internData[0][0], $internData[0][1], $user7, $internshipCycle);
-$internship1 = new Internship($internData[1][0], $internData[1][1], $user7, $internshipCycle);
-$internship2 = new Internship($internData[2][0], $internData[2][1], $user7, $internshipCycle);
-$internship3 = new Internship($internData[3][0], $internData[3][1], $user7, $internshipCycle);
-$internship4 = new Internship($internData[4][0], $internData[4][1], $user7, $internshipCycle);
+foreach ($internData as $internship) {
+    $i = new Internship($internship[0], $internship[1], $user7, $internshipCycle);
+    $entityManager->persist($i);
+}
 
 $entityManager->persist($internshipCycle);
-$entityManager->persist($internship0);
-$entityManager->persist($internship1);
-$entityManager->persist($internship2);
-$entityManager->persist($internship3);
-$entityManager->persist($internship4);
 $entityManager->flush();
+
+// $internship0 = new Internship($internData[0][0], $internData[0][1], $user7, $internshipCycle);
+// $internship1 = new Internship($internData[1][0], $internData[1][1], $user7, $internshipCycle);
+// $internship2 = new Internship($internData[2][0], $internData[2][1], $user7, $internshipCycle);
+// $internship3 = new Internship($internData[3][0], $internData[3][1], $user7, $internshipCycle);
+// $internship4 = new Internship($internData[4][0], $internData[4][1], $user7, $internshipCycle);
+
+// $entityManager->persist($internshipCycle);
+// $entityManager->persist($internship0);
+// $entityManager->persist($internship1);
+// $entityManager->persist($internship2);
+// $entityManager->persist($internship3);
+// $entityManager->persist($internship4);
+// $entityManager->flush();
 
 echo "Done.\nAdding events...";
 

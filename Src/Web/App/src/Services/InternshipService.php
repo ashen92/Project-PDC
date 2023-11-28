@@ -3,9 +3,11 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\DTOs\InternshipDetailsDTO;
 use App\Entities\Internship;
 use App\Interfaces\IInternshipService;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Query\ResultSetMappingBuilder;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Cache\ItemInterface;
 
@@ -45,15 +47,24 @@ class InternshipService implements IInternshipService
         return $queryBuilder->getQuery()->getArrayResult();
     }
 
-    public function getInternshipById(int $id): Internship|null
+    public function getInternshipById(int $id): ?InternshipDetailsDTO
     {
-        $queryBuilder = $this->entityManager->createQueryBuilder();
-        $queryBuilder
-            ->select("i")
-            ->from("App\Entities\Internship", "i")
-            ->where("i.id = :id")
-            ->setParameter("id", $id);
-        return $queryBuilder->getQuery()->getOneOrNullResult();
+        $rsm = new ResultSetMappingBuilder($this->entityManager);
+        $rsm->addRootEntityFromClassMetadata('App\Entities\Internship', 'i');
+
+        $sql = "SELECT i.* FROM internships i WHERE i.id = :id";
+        $query = $this->entityManager->createNativeQuery($sql, $rsm);
+        $query->setParameter("id", $id);
+        $internship = $query->getSingleResult();
+        if ($internship === null) {
+            return null;
+        }
+
+        return new InternshipDetailsDTO(
+            $internship->getId(),
+            $internship->getTitle(),
+            $internship->getDescription()
+        );
     }
 
     public function deleteInternshipById(int $id): void

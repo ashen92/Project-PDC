@@ -8,11 +8,6 @@
 
 {% block content %}
 
-<div class="title">
-    <h2>
-        Available internships
-    </h2>
-</div>
 <div class="list-view">
     <div class="filters">
         <div class="title">
@@ -40,29 +35,49 @@
         </div>
         {% endif %}
     </div>
-    <div class="item-container">
-        {% for item in internships %}
-        <div class="item">
-            <a class="description" href="internships/{{ item.id }}">
-                <div class="fw-6 pb-10">{{ item.title }}</div>
-                <div><span class="italic fc-light">at </span>{{item.firstName}}</div>
-            </a>
-
-            {% if ("ROLE_PARTNER" in user_roles) or ("ROLE_ADMIN" in user_roles) %}
-            <div class="actions">
-                <a class="btn btn-primary" role="button" href="internships/{{ item.id }}/applicants">Applicants</a>
-                <a class="btn btn-primary" role="button" href="internships/{{ item.id }}/edit">Edit</a>
-                <a class="btn btn-primary" role="button" href="internships/{{ item.id }}/delete">Remove</a>
+    <div class="content-container">
+        <div class="item-list" id="job-list">
+            {% for item in internships %}
+            <div class="item-card" data-job-id="{{ item.id }}">
+                <div class="title">{{ item.title }}</div>
+                <div>{{item.firstName}}</div>
             </div>
-            {% endif %}
-
-            {% if "ROLE_STUDENT" in user_roles %}
-            <div class="actions">
-                <a class="btn btn-primary" role="button" href="internships/{{ item.id }}/apply">Apply</a>
-            </div>
-            {% endif %}
+            {% endfor %}
         </div>
-        {% endfor %}
+        <div class="item-details" id="job-details">
+            <div class="skeleton" id="job-details-skeleton">
+                <div class="skeleton-header"></div>
+                <div class="skeleton-header last"></div>
+                <div class="skeleton-body">
+                    <div class="skeleton-line"></div>
+                    <div class="skeleton-line"></div>
+                    <div class="skeleton-line"></div>
+                </div>
+                <div class="skeleton-body">
+                    <div class="skeleton-line"></div>
+                    <div class="skeleton-line"></div>
+                    <div class="skeleton-line"></div>
+                </div>
+            </div>
+            <div class="content hidden" id="job-details-content">
+                <h3 class="title" id="job-title"></h3>
+                <div class="actions">
+                    {% if ("ROLE_PARTNER" in user_roles) or ("ROLE_ADMIN" in user_roles) %}
+                    <a class="btn btn-primary" role="button" href="{{ id }}/applicants">Applicants</a>
+                    <a class="btn btn-primary" role="button" href="{{ id }}/edit">Edit</a>
+                    <a class="btn btn-primary" role="button" href="{{ id }}/delete">Remove</a>
+                    {% endif %}
+
+                    {% if "ROLE_STUDENT" in user_roles %}
+                    <a class="btn btn-primary" role="button" href="{{ id }}/apply">Apply</a>
+                    {% endif %}
+                </div>
+                <div class="job-description-container">
+                    <h5 class="title">About the internship</h5>
+                    <div class="formatted-text-area" id="job-description"></div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 

@@ -3,13 +3,13 @@ declare(strict_types=1);
 
 namespace App\Interfaces;
 
-use App\Entities\Internship;
+use App\DTOs\InternshipDetailsDTO;
 
 interface IInternshipService
 {
     public function getInternships(): array;
     public function getInternshipsByUserId(int $userId): array;
-    public function getInternshipById(int $id): Internship|null;
+    public function getInternshipById(int $id): ?InternshipDetailsDTO;
     public function deleteInternshipById(int $id): void;
     public function addInternship(string $title, string $description, int $userId): void;
     public function updateInternship(int $id, string $title, string $description): void;

@@ -57,10 +57,6 @@ class InternshipController extends PageControllerBase
             array_merge(
                 ["section" => "internships"],
                 ["internships" => $internships],
-                ["companies" => array()],
-                ["internshipStatus" => array()],
-                ["queryCompanies" => $queryParams["Company"] ?? []],
-                ["queryInternshipStatus" => $queryParams["Internship_Status"] ?? []],
             )
         );
     }
@@ -70,14 +66,7 @@ class InternshipController extends PageControllerBase
     {
         $internship = $this->internshipService->getInternshipById($id);
         if ($internship) {
-            return $this->render(
-                "internship-program/internship/internship.html",
-                [
-                    "section" => "internships",
-                    "id" => $id,
-                    "internship" => $internship
-                ]
-            );
+            return new Response(json_encode($internship), 200, ["Content-Type" => "application/json"]);
         }
         return $this->redirect("/internship-program");
     }
