@@ -5,7 +5,6 @@ use App\Entities\Event;
 use App\Entities\UserGroup;
 use App\Entities\Internship;
 use App\Entities\InternshipCycle;
-use App\Entities\Policy;
 use App\Entities\Requirement;
 use App\Entities\Role;
 use App\Entities\User;
@@ -75,6 +74,15 @@ $groupStudents->addUser($user4);
 $groupStudents->addUser($user5);
 $groupStudents->addUser($user11);
 
+$groupInternshipCycleStudents = new UserGroup("InternshipCycleStudents");
+$groupInternshipCycleStudents->addUser($user3);
+
+$groupInternshipCyclePartners = new UserGroup("InternshipCyclePartners");
+$groupInternshipCyclePartners->addUser($user6);
+
+$entityManager->persist($groupInternshipCycleStudents);
+$entityManager->persist($groupInternshipCyclePartners);
+
 $entityManager->persist($groupCoordinators);
 $entityManager->persist($groupPartners);
 $entityManager->persist($groupStudents);
@@ -95,6 +103,9 @@ $roleCoordinator->addGroup($groupCoordinators);
 $rolePartner->addGroup($groupPartners);
 $roleStudent->addGroup($groupStudents);
 $roleAdmin->addGroup($groupCoordinators);
+
+$roleInternshipPartner->addGroup($groupInternshipCyclePartners);
+$roleInternshipStudent->addGroup($groupInternshipCycleStudents);
 
 $entityManager->persist($roleCoordinator);
 $entityManager->persist($rolePartner);

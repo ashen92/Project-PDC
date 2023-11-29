@@ -37,12 +37,12 @@ class UserService implements IUserService
      */
     public function getUserRoles(int $userId): array
     {
-        $cacheKey = "user_roles_" . $userId;
+        // $cacheKey = "user_roles_" . $userId;
 
-        return $this->cache->get($cacheKey, function (ItemInterface $item) use ($userId) {
-            $item->expiresAfter(3600);
-            return $this->entityManager->getRepository(User::class)->getUserRoles($userId);
-        });
+        // return $this->cache->get($cacheKey, function (ItemInterface $item) use ($userId) {
+        // $item->expiresAfter(3600);
+        return $this->entityManager->getRepository(User::class)->getUserRoles($userId);
+        // });
     }
 
     public function invalidateUserCache(int $userId): void
