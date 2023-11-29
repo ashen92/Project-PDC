@@ -90,6 +90,13 @@ $filter-item-active-bg-color: #c8c6c6;
             border-radius: $rounded-1;
             height: max-content;
 
+            .empty-list {
+                margin-top: 0.5rem;
+                margin-bottom: 1.5rem;
+                padding: 1.25rem;
+                text-align: center;
+            }
+
             .item-card {
                 padding: 1.25rem;
                 border-bottom: $border-1;

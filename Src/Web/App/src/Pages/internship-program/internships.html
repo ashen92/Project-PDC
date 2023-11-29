@@ -37,6 +37,14 @@
     </div>
     <div class="content-container">
         <div class="item-list" id="job-list">
+            {% if internships|length == 0 %}
+            <div class="empty-list">
+                <h5>No internships found</h5>
+                {% if "ROLE_INTERNSHIP_STUDENT" in user_roles %}
+                <div class="description">Try changing your search query or filters</div>
+                {% endif %}
+            </div>
+            {% endif %}
             {% for item in internships %}
             <div class="item-card" data-job-id="{{ item.id }}">
                 <div class="title">{{ item.title }}</div>
