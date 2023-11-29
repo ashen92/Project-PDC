@@ -63,13 +63,13 @@
                 <h3 class="title" id="job-title"></h3>
                 <div class="actions">
                     {% if ("ROLE_PARTNER" in user_roles) or ("ROLE_ADMIN" in user_roles) %}
-                    <a class="btn btn-primary" role="button" href="{{ id }}/applicants">Applicants</a>
-                    <a class="btn btn-primary" role="button" href="{{ id }}/edit">Edit</a>
-                    <a class="btn btn-primary" role="button" href="{{ id }}/delete">Remove</a>
+                    <button type="button" class="btn" id="applicants-job-btn">Applicants</button>
+                    <button type="button" class="btn" id="modify-job-btn">Modify</button>
+                    <button type="button" class="btn" id="remove-job-btn">Remove</button>
                     {% endif %}
 
                     {% if "ROLE_STUDENT" in user_roles %}
-                    <a class="btn btn-primary" role="button" href="{{ id }}/apply">Apply</a>
+                    <button type="button" class="btn">Apply</button>
                     {% endif %}
                 </div>
                 <div class="job-description-container">

@@ -88,6 +88,7 @@ $filter-item-active-bg-color: #c8c6c6;
             min-width: 23rem;
             border: $border-1;
             border-radius: $rounded-1;
+            height: max-content;
 
             .item-card {
                 padding: 1.25rem;
@@ -115,7 +116,7 @@ $filter-item-active-bg-color: #c8c6c6;
         .item-details {
             position: sticky;
             top: 20px;
-            height: 95vh;
+            height: min(max-content, 95vh);
             width: 100%;
 
             .skeleton {

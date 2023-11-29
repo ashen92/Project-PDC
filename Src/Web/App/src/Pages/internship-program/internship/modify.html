@@ -9,16 +9,16 @@
 {% block content %}
 
 <div class="title">
-    <h2>
-        Modify internship
-    </h2>
+    <h4>
+        Modify the post
+    </h4>
 </div>
-<form action="/internship-program/internships/{{ internship.getId }}/edit" method="POST">
-    <input type="hidden" name="id" value="{{ internship.getId }}">
+<form action="/internship-program/internships/{{ internship.id }}/modify" method="POST">
+    <input type="hidden" name="id" value="{{ internship.id }}">
 
     <div class="field">
         <label for="title">Title</label>
-        <input name="title" id="title" type="text" maxlength="75" value="{{ internship.getTitle }}">
+        <input name="title" id="title" type="text" maxlength="75" value="{{ internship.title }}">
     </div>
 
     <div class="field">
@@ -26,7 +26,7 @@
         {% include "shared/text-editor.html" with {
         "name": "description",
         "maxlength": "2000",
-        "value": internship.getDescription
+        "value": internship.description
         } %}
     </div>
 

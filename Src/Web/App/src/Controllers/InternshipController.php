@@ -61,7 +61,7 @@ class InternshipController extends PageControllerBase
         );
     }
 
-    #[Route("/{id}", requirements: ['id' => '\d+'])]
+    #[Route("/{id}", methods: ["GET"], requirements: ['id' => '\d+'])]
     public function internship(int $id): Response|RedirectResponse
     {
         $internship = $this->internshipService->getInternshipById($id);
@@ -69,6 +69,13 @@ class InternshipController extends PageControllerBase
             return new Response(json_encode($internship), 200, ["Content-Type" => "application/json"]);
         }
         return $this->redirect("/internship-program");
+    }
+
+    #[Route("/{id}", methods: ["DELETE"], requirements: ['id' => '\d+'])]
+    public function delete(Request $request, int $id): Response
+    {
+        $this->internshipService->deleteInternshipById($id);
+        return new Response(null, 204);
     }
 
     #[Route("/{id}/applicants")]
@@ -87,16 +94,16 @@ class InternshipController extends PageControllerBase
         ]);
     }
 
-    #[Route("/{id}/edit", methods: ["GET"])]
+    #[Route("/{id}/modify", methods: ["GET"])]
     public function editGET(int $id): Response
     {
-        return $this->render("internship-program/internship/edit.html", [
+        return $this->render("internship-program/internship/modify.html", [
             "section" => "internships",
             "internship" => $this->internshipService->getInternshipById($id)
         ]);
     }
 
-    #[Route("/{id}/edit", methods: ["POST"])]
+    #[Route("/{id}/modify", methods: ["POST"])]
     public function editPOST(Request $request): RedirectResponse
     {
         $this->internshipService->updateInternship(
@@ -121,13 +128,6 @@ class InternshipController extends PageControllerBase
             $request->get("description"),
             (int) $request->getSession()->get("user_id")
         );
-        return $this->redirect("/internship-program/internships");
-    }
-
-    #[Route("/{id}/delete")]
-    public function delete(Request $request, int $id): RedirectResponse
-    {
-        $this->internshipService->deleteInternshipById($id);
         return $this->redirect("/internship-program/internships");
     }
 
