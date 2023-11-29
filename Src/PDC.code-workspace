@@ -8,6 +8,9 @@
 		},
 		{
 			"path": "EmailService"
+		},
+		{
+			"path": "FileStorageService"
 		}
 	],
 	"extensions": {
