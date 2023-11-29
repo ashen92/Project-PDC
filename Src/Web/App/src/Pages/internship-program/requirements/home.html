@@ -9,13 +9,17 @@
 {% block content %}
 
 <div class="title">
-    <h2>Requirements for the Internship Program</h2>
-    <p>Manage requirements that the students must complete in order to finish the internship program.</p>
+    <h2>Requirements to be fulfilled</h2>
+    {% if "ROLE_ADMIN" in user_roles %}
+    <p>Manage requirements that students and partners must complete.</p>
+    {% endif %}
 </div>
 <section>
+    {% if "ROLE_ADMIN" in user_roles %}
     <div class="actions mb-20">
         <a class="btn btn-primary" role="button" href="requirements/create">Add Requirement</a>
     </div>
+    {% endif %}
 
     {% if requirements is empty %}
     <p>No requirements have found.</p>
