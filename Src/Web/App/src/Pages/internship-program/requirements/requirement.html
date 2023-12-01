@@ -16,7 +16,7 @@
     <div class="mb-30 formatted-text-area border-1 p-20 rounded-1">{{ requirement.description|raw }}</div>
 
     <h5 class="fw-4">Type</h5>
-    <p class="mb-25">{{ requirement.type }}</p>
+    <p class="mb-25 capitalize">{{ requirement.type }}</p>
 
     {% if requirement.type == "recurring" %}
     <h5 class="fw-4">Repeat interval</h5>
