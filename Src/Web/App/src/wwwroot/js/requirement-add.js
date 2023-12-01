@@ -35,3 +35,23 @@ radioRecurringElement.addEventListener("change", function () {
     recurringRepeatElement.classList.add("block");
     recurringRepeatElement.classList.remove("hidden");
 });
+
+const fulfillMethodDiv = document.getElementById("fulfill-method");
+const fulfillMethodFileOptions = document.getElementById("fulfill-method-file-options");
+
+fulfillMethodDiv.addEventListener("change", function (event) {
+    if (event.target.name === "fulfill-method") {
+        if (event.target.checked) {
+            console.log("Selected method: " + event.target.value);
+
+            if (event.target.value == "file") {
+                fulfillMethodFileOptions.classList.remove("hidden");
+                fulfillMethodFileOptions.classList.add("block");
+            }
+            else {
+                fulfillMethodFileOptions.classList.remove("block");
+                fulfillMethodFileOptions.classList.add("hidden");
+            }
+        }
+    }
+});
