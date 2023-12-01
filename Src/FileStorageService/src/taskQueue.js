@@ -1,16 +1,19 @@
 import Queue from "bull";
 import { uploadFileToAzure } from "./azureUpload.js";
 
-const uploadQueue = new Queue("file-upload-queue", "redis://127.0.0.1:6379");
+const redisHost = process.env.REDIS_HOST;
+const redisPort = process.env.REDIS_PORT;
+
+const uploadQueue = new Queue("file-upload-queue", `redis://${redisHost}:${redisPort}`);
 
 uploadQueue.process(async (job) => {
-    await uploadFileToAzure(job.data.file);
+    await uploadFileToAzure(job.data.files);
 });
 
 uploadQueue.on("failed", (job, err) => {
     console.error("Job failed", job.id, job.data, err);
 });
 
-export const addFileToUploadQueue = async (file) => {
-    await uploadQueue.add({ file });
+export const addFileToUploadQueue = async (files) => {
+    await uploadQueue.add({ files });
 };

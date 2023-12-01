@@ -1,15 +1,16 @@
-import formidable from "formidable";
+import { IncomingForm } from "formidable";
 
 export async function parseIncomingFile(req) {
     return new Promise((resolve, reject) => {
-        const form = new formidable.IncomingForm();
+        const form = new IncomingForm();
 
-        form.parse(req, (err, fields, files) => {
+        form.parse(req, (err, _, files) => {
             if (err) {
                 console.error("Error parsing file:", err);
                 reject(err);
                 return;
             }
+
             resolve(files);
         });
     });

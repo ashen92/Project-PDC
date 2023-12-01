@@ -1,15 +1,27 @@
 import http from "http";
 import { parseIncomingFile } from "./fileParser.js";
-import { addTaskToQueue } from "./taskQueue.js";
+import { addFileToUploadQueue } from "./taskQueue.js";
 
 const server = http.createServer(async (req, res) => {
+    res.setHeader("Content-Security-Policy", "default-src 'none'; script-src 'self'; connect-src 'self'; img-src 'self'; style-src 'self';");
+    res.setHeader("X-Frame-Options", "DENY");
+    res.setHeader("X-Content-Type-Options", "nosniff");
+    res.setHeader("X-XSS-Protection", "1; mode=block");
+
     if (req.method === "POST" && req.url === "/upload") {
         try {
-            const file = await parseIncomingFile(req);
-            await addTaskToQueue(file);
+            const files = await parseIncomingFile(req);
+            await addFileToUploadQueue(files);
             res.writeHead(200);
-            res.end("File upload initiated");
+            res.end(
+                JSON.stringify(
+                    {
+                        message: "File upload initiated"
+                    }
+                )
+            );
         } catch (error) {
+            console.error("Error parsing file:", error);
             res.writeHead(500);
             res.end("Internal Server Error");
         }
