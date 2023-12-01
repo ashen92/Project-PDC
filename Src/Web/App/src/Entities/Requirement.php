@@ -21,7 +21,7 @@ class Requirement
     #[ORM\Column]
     private string $name;
 
-    #[ORM\Column]
+    #[ORM\Column(type: "text")]
     private string $description;
 
     #[ORM\Column]
