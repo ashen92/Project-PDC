@@ -15,6 +15,22 @@
 </div>
 <section>
     <form action="/internship-program/requirements/create" method="POST">
+        <div class="field-radio row">
+            <div class="label">This requirement is for,</div>
+            <div>
+                <div class="option">
+                    <input type="radio" name="user-group" id="user-group-students" value="students" autocomplete="off"
+                        required>
+                    <label for="user-group-students">Students</label>
+                </div>
+                <div class="option">
+                    <input type="radio" name="user-group" id="user-group-partners" value="partners" autocomplete="off"
+                        required>
+                    <label for="user-group-partners">Partners</label>
+                </div>
+            </div>
+        </div>
+
         <div class="field row">
             <label for="name">Display name</label>
             <input type="text" name="name" id="name" autocomplete="off" required>
