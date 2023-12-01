@@ -12,33 +12,28 @@
     <h3>{{ requirement.name }}</h3>
 </div>
 <section>
-    <h6>Description</h6>
-    <p>{{ requirement.description }}</p>
-    <div class="mb-25"></div>
+    <h5 class="fw-5 mb-20">Description</h5>
+    <div class="mb-30 formatted-text-area border-1 p-20 rounded-1">{{ requirement.description|raw }}</div>
 
-    <h6>Type</h6>
-    <p>{{ requirement.type }}</p>
-    <div class="mb-25"></div>
+    <h5 class="fw-4">Type</h5>
+    <p class="mb-25">{{ requirement.type }}</p>
 
     {% if requirement.type == "recurring" %}
-    <h6>Repeat Interval</h6>
-    <p>{{ requirement.repeatInterval }}</p>
-    <div class="mb-25"></div>
+    <h5 class="fw-4">Repeat interval</h5>
+    <p class="mb-25">{{ requirement.repeatInterval }}</p>
     {% endif %}
 
-    <h6>Start Date</h6>
-    <p>{{ requirement.startDate.format("Y-m-d") }}</p>
-    <div class="mb-25"></div>
+    <h5 class="fw-4">Start date</h5>
+    <p class="mb-25">{{ requirement.startDate.format("Y-m-d") }}</p>
 
     {% if requirement.type == "one-time" %}
-    <h6>End Before Date</h6>
-    <p>{{ requirement.endBeforeDate.format("Y-m-d") }}</p>
-    <div class="mb-25"></div>
+    <h5 class="fw-4">End before date</h5>
+    <p class="mb-25">{{ requirement.endBeforeDate.format("Y-m-d") }}</p>
     {% endif %}
 
-    <div class="actions">
-        <button class="btn" type="button">Remove</button>
+    <div class="actions mt-50">
         <button class="btn" type="button">Modify</button>
+        <button class="btn" type="button">Remove</button>
     </div>
 </section>
 
