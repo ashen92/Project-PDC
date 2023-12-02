@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use App\DTOs\RequirementDTO;
+use App\DTOs\CreateRequirementDTO;
 use App\Entities\Requirement;
 use App\Interfaces\IRequirementService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -40,7 +40,7 @@ class RequirementService implements IRequirementService
         return $query->getOneOrNullResult();
     }
 
-    public function createRequirement(RequirementDTO $requirementDTO): void
+    public function createRequirement(CreateRequirementDTO $requirementDTO): void
     {
         $requirement = new Requirement($requirementDTO);
         $this->entityManager->persist($requirement);

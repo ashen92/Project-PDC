@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Entities;
 
-use App\DTOs\RequirementDTO;
+use App\DTOs\CreateRequirementDTO;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -36,6 +36,18 @@ class Requirement
     #[ORM\Column(nullable: true)]
     private string|null $repeatInterval;
 
+    #[ORM\Column]
+    private string $fulfillMethod;
+
+    #[ORM\Column(type: "simple_array", nullable: true)]
+    private ?array $allowedFileTypes;
+
+    #[ORM\Column(type: "integer", nullable: true)]
+    private ?int $maxFileSize;
+
+    #[ORM\Column(type: "integer", nullable: true)]
+    private ?int $maxFileCount;
+
     #[ORM\ManyToOne(targetEntity: InternshipCycle::class, inversedBy: "requirements")]
     #[ORM\JoinColumn(name: "internship_cycle_id", referencedColumnName: "id")]
     private InternshipCycle $internshipCycle;
@@ -43,7 +55,7 @@ class Requirement
     #[ORM\OneToMany(targetEntity: UserRequirement::class, mappedBy: 'requirement')]
     private Collection $userRequirements;
 
-    public function __construct(RequirementDTO $requirementDTO)
+    public function __construct(CreateRequirementDTO $requirementDTO)
     {
         $this->name = $requirementDTO->name;
         $this->description = $requirementDTO->description;
@@ -51,6 +63,10 @@ class Requirement
         $this->startDate = $requirementDTO->startDate;
         $this->endBeforeDate = $requirementDTO->endBeforeDate;
         $this->repeatInterval = $requirementDTO->repeatInterval;
+        $this->fulfillMethod = $requirementDTO->fulfillMethod;
+        $this->allowedFileTypes = $requirementDTO->allowedFileTypes;
+        $this->maxFileSize = $requirementDTO->maxFileSize;
+        $this->maxFileCount = $requirementDTO->maxFileCount;
         $this->userRequirements = new ArrayCollection();
     }
 

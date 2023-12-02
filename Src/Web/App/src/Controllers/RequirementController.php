@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
-use App\DTOs\RequirementDTO;
+use App\DTOs\CreateRequirementDTO;
 use App\Interfaces\IInternshipService;
 use App\Interfaces\IRequirementService;
 use App\Interfaces\IUserService;
@@ -63,7 +63,7 @@ class RequirementController extends PageControllerBase
     #[Route("/create", methods: ["POST"])]
     public function requirementAddPOST(Request $request): RedirectResponse
     {
-        $requirementDTO = new RequirementDTO(
+        $requirementDTO = new CreateRequirementDTO(
             $request->get("name"),
             $request->get("description"),
             $request->get("type"),

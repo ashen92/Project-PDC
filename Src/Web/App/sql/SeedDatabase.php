@@ -1,6 +1,6 @@
 <?php
 
-use App\DTOs\RequirementDTO;
+use App\DTOs\CreateRequirementDTO;
 use App\Entities\Event;
 use App\Entities\UserGroup;
 use App\Entities\Internship;
@@ -237,40 +237,56 @@ $entityManager->flush();
 
 echo "Done.\nAdding requirements...";
 
-$r1DTO = new RequirementDTO(
+$r1DTO = new CreateRequirementDTO(
     "Internship Contract",
     "Upload the contract between you and the company.",
     "one-time",
     new DateTime("now"),
     new DateTime("+1 month"),
-    null
+    null,
+    "file",
+    ["pdf"],
+    null,
+    1
 );
 
-$r2DTO = new RequirementDTO(
+$r2DTO = new CreateRequirementDTO(
     "Monthly Report",
     "Upload a report of your progress.",
     "recurring",
     new DateTime("now"),
     null,
-    "monthly"
+    "monthly",
+    "file",
+    ["pdf"],
+    null,
+    1
 );
 
-$r3DTO = new RequirementDTO(
+$r3DTO = new CreateRequirementDTO(
     "Daily Report",
     "Upload a report of your progress.",
     "recurring",
     new DateTime("now"),
     null,
-    "daily"
+    "daily",
+    "file",
+    ["pdf"],
+    null,
+    1
 );
 
-$r4DTO = new RequirementDTO(
+$r4DTO = new CreateRequirementDTO(
     "Weekly Report",
     "Upload a report of your progress.",
     "recurring",
     new DateTime("now"),
     null,
-    "weekly"
+    "weekly",
+    "file",
+    ["pdf"],
+    null,
+    1
 );
 
 $r1 = new Requirement($r1DTO);
