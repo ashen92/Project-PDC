@@ -95,13 +95,33 @@ class Requirement
         return $this->startDate;
     }
 
-    public function getEndBeforeDate(): DateTime|null
+    public function getEndBeforeDate(): ?DateTime
     {
         return $this->endBeforeDate;
     }
 
-    public function getRepeatInterval(): string|null
+    public function getRepeatInterval(): ?string
     {
         return $this->repeatInterval;
+    }
+
+    public function getFulfillMethod(): string
+    {
+        return $this->fulfillMethod;
+    }
+
+    public function getAllowedFileTypes(): ?array
+    {
+        return $this->allowedFileTypes;
+    }
+
+    public function getMaxFileSize(): ?int
+    {
+        return $this->maxFileSize;
+    }
+
+    public function getMaxFileCount(): ?int
+    {
+        return $this->maxFileCount;
     }
 }

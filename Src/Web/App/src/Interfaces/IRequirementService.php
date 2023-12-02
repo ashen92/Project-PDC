@@ -4,12 +4,12 @@ declare(strict_types=1);
 namespace App\Interfaces;
 
 use App\DTOs\CreateRequirementDTO;
-use App\Entities\Requirement;
+use App\DTOs\RequirementViewDTO;
 
 interface IRequirementService
 {
     public function getRequirements(): array;
-    public function getRequirement(int $id): Requirement|null;
+    public function getRequirement(int $id): RequirementViewDTO|null;
     public function createRequirement(CreateRequirementDTO $requirementDTO): void;
     public function getUserRequirements(int $userId): array;
 }
