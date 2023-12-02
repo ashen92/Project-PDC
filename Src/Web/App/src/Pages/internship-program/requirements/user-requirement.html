@@ -14,14 +14,14 @@
 <section class="mt-0">
     <form>
         <div class="divider"></div>
-        <h5 class="fw-5 mb-20">Description</h5>
+        <div class="row mb-20">
+            <p class="fw-6">Please complete this requirement before the following date :</p>
+            <p>{{ requirement.endDate.format("Y-m-d") }}</p>
+        </div>
+
+        <p class="fw-6 mb-20">Description</p>
         <div class="mb-30 formatted-text-area border-1 p-20 rounded-1">{{ requirement.description|raw }}</div>
 
-        <h5 class="fw-4">Start date</h5>
-        <p class="mb-25">{{ requirement.startDate.format("Y-m-d") }}</p>
-
-        <h5 class="fw-4">End date</h5>
-        <p class="mb-25">{{ requirement.endDate.format("Y-m-d") }}</p>
         <div class="divider"></div>
     </form>
 
@@ -48,6 +48,7 @@
                 </div>
             </div>
             {% endif %}
+            <div class="divider"></div>
 
             <button class="btn" type="button">Submit</button>
         </form>
@@ -66,6 +67,8 @@
                     } %}
                 </div>
             </div>
+            <div class="divider"></div>
+
             <button class="btn" type="button">Submit</button>
         </form>
         {% endif %}
