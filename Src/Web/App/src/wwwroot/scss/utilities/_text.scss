@@ -32,7 +32,7 @@ h5,
 h6 {
     margin-top: 0;
     margin-bottom: 0.75rem;
-    font-weight: $fw-5;
+    font-weight: $fw-medium;
     line-height: 1.2;
 }
 
@@ -89,28 +89,20 @@ h {
 }
 
 .fw {
-    &-1 {
-        font-weight: $fw-1;
+    &-light {
+        font-weight: $fw-light;
     }
 
-    &-2 {
-        font-weight: $fw-2;
+    &-normal {
+        font-weight: $fw-normal;
     }
 
-    &-3 {
-        font-weight: $fw-3;
+    &-medium {
+        font-weight: $fw-medium;
     }
 
-    &-4 {
-        font-weight: $fw-4;
-    }
-
-    &-5 {
-        font-weight: $fw-5;
-    }
-
-    &-6 {
-        font-weight: $fw-6;
+    &-semibold {
+        font-weight: $fw-semibold;
     }
 }
 

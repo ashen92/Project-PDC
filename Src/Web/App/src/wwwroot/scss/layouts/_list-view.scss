@@ -21,7 +21,7 @@ $filter-item-active-bg-color: #c8c6c6;
         }
 
         >.title {
-            font-weight: $fw-5;
+            font-weight: $fw-medium;
             color: $filter-bar-title-color;
 
             .i-filter::before {
@@ -114,7 +114,7 @@ $filter-item-active-bg-color: #c8c6c6;
                 }
 
                 >.title {
-                    font-weight: $fw-6;
+                    font-weight: $fw-semibold;
                     margin-bottom: 0.5rem;
                 }
             }
@@ -167,7 +167,7 @@ $filter-item-active-bg-color: #c8c6c6;
                 padding: 2.5rem;
 
                 >.title {
-                    font-weight: $fw-6;
+                    font-weight: $fw-semibold;
                     margin-bottom: 1.5rem;
                 }
 
@@ -176,7 +176,7 @@ $filter-item-active-bg-color: #c8c6c6;
                     margin-bottom: 2.5rem;
 
                     >.title {
-                        font-weight: $fw-6;
+                        font-weight: $fw-semibold;
                     }
                 }
             }

@@ -14,12 +14,12 @@
 <section class="mt-0">
     <form>
         <div class="divider"></div>
-        <div class="row mb-20">
-            <p class="fw-6">Please complete this requirement before the following date :</p>
+        <div class="row mb-25">
+            <p class="fw-medium">Complete this requirement before the following date :</p>
             <p>{{ requirement.endDate.format("Y-m-d") }}</p>
         </div>
 
-        <p class="fw-6 mb-20">Description</p>
+        <p class="fw-semibold mb-20">Description</p>
         <div class="mb-30 formatted-text-area border-1 p-20 rounded-1">{{ requirement.description|raw }}</div>
 
         <div class="divider"></div>

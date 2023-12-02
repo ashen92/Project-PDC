@@ -14,41 +14,41 @@
 <section class="mt-0">
     <form>
         <div class="divider"></div>
-        <h5 class="fw-5 mb-20">Description</h5>
+        <h5 class="fw-medium mb-20">Description</h5>
         <div class="mb-30 formatted-text-area border-1 p-20 rounded-1">{{ requirement.description|raw }}</div>
 
-        <h5 class="fw-4">Type</h5>
+        <h5 class="fw-normal">Type</h5>
         <p class="mb-25 capitalize">{{ requirement.type }}</p>
 
         {% if requirement.type == "recurring" %}
-        <h5 class="fw-4">Repeat interval</h5>
+        <h5 class="fw-normal">Repeat interval</h5>
         <p class="mb-25 capitalize">{{ requirement.repeatInterval }}</p>
         {% endif %}
 
-        <h5 class="fw-4">Start date</h5>
+        <h5 class="fw-normal">Start date</h5>
         <p class="mb-25">{{ requirement.startDate.format("Y-m-d") }}</p>
 
         {% if requirement.type == "one-time" %}
-        <h5 class="fw-4">End before date</h5>
+        <h5 class="fw-normal">End before date</h5>
         <p class="mb-25">{{ requirement.endBeforeDate.format("Y-m-d") }}</p>
         {% endif %}
 
-        <h5 class="fw-4">Fulfill Method</h5>
+        <h5 class="fw-normal">Fulfill Method</h5>
         <p class="mb-25 capitalize">{{ requirement.fulfillMethod }}</p>
 
         {% if requirement.fulfillMethod == "file" %}
 
-        <h5 class="fw-4">Allowed file types</h5>
+        <h5 class="fw-normal">Allowed file types</h5>
         <p class="mb-25 uppercase">
             {% for type in requirement.allowedFileTypes %}
             {{ type }} <br>
             {% endfor %}
         </p>
 
-        <h5 class="fw-4">Maximum file size</h5>
+        <h5 class="fw-normal">Maximum file size</h5>
         <p class="mb-25">{{ requirement.maxFileSize }}</p>
 
-        <h5 class="fw-4">Maximum file count</h5>
+        <h5 class="fw-normal">Maximum file count</h5>
         <p class="mb-25">{{ requirement.maxFileCount }}</p>
 
         {% endif %}
