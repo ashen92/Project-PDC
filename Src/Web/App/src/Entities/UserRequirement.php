@@ -44,4 +44,29 @@ class UserRequirement
         $this->completedAt = null;
         $this->status = "pending";
     }
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function getStartDate(): DateTime
+    {
+        return $this->startDate;
+    }
+
+    public function getEndDate(): DateTime
+    {
+        return $this->endDate;
+    }
+
+    public function getCompletedAt(): ?DateTime
+    {
+        return $this->completedAt;
+    }
+
+    public function getStatus(): string
+    {
+        return $this->status;
+    }
 }

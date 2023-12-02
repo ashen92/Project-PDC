@@ -246,7 +246,7 @@ $r1DTO = new CreateRequirementDTO(
     null,
     "file",
     ["pdf"],
-    null,
+    5,
     1
 );
 
@@ -259,7 +259,7 @@ $r2DTO = new CreateRequirementDTO(
     "monthly",
     "file",
     ["pdf"],
-    null,
+    5,
     1
 );
 
@@ -272,7 +272,7 @@ $r3DTO = new CreateRequirementDTO(
     "daily",
     "file",
     ["pdf"],
-    null,
+    5,
     1
 );
 
@@ -285,7 +285,7 @@ $r4DTO = new CreateRequirementDTO(
     "weekly",
     "file",
     ["pdf"],
-    null,
+    5,
     1
 );
 

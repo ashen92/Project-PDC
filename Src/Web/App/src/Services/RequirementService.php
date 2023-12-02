@@ -5,6 +5,7 @@ namespace App\Services;
 
 use App\DTOs\CreateRequirementDTO;
 use App\DTOs\RequirementViewDTO;
+use App\DTOs\UserRequirementViewDTO;
 use App\Entities\Requirement;
 use App\Interfaces\IRequirementService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -69,7 +70,7 @@ class RequirementService implements IRequirementService
     {
         $queryBuilder = $this->entityManager->createQueryBuilder();
         $queryBuilder
-            ->select("r.name, r.description, r.type, r.startDate, r.repeatInterval")
+            ->select("r.id, r.name, r.description, r.type, r.startDate, r.repeatInterval")
             ->from("App\Entities\UserRequirement", "ur")
             ->innerJoin("ur.requirement", "r")
             ->innerJoin("ur.user", "u")
@@ -77,5 +78,48 @@ class RequirementService implements IRequirementService
             ->setParameter("userId", $userId);
         $query = $queryBuilder->getQuery();
         return $query->getArrayResult();
+    }
+
+    public function getUserRequirement(int $id): UserRequirementViewDTO|null
+    {
+        $rsm = new ResultSetMappingBuilder($this->entityManager);
+        $rsm->addRootEntityFromClassMetadata('App\Entities\UserRequirement', 'i');
+
+        $sql = "SELECT ur.* 
+                FROM user_requirements ur 
+                INNER JOIN requirements r ON ur.requirement_id = r.id
+                INNER JOIN users u ON ur.user_id = u.id
+                WHERE ur.id = :id";
+        $query = $this->entityManager->createNativeQuery($sql, $rsm);
+        $query->setParameter("id", $id);
+        $ur = $query->getOneOrNullResult();
+        if ($ur === null) {
+            return null;
+        }
+
+        $rsm = new ResultSetMappingBuilder($this->entityManager);
+        $rsm->addRootEntityFromClassMetadata('App\Entities\Requirement', 'i');
+        $sql = "SELECT r.* 
+                FROM user_requirements ur 
+                INNER JOIN requirements r ON ur.requirement_id = r.id
+                INNER JOIN users u ON ur.user_id = u.id
+                WHERE ur.id = :id";
+        $query = $this->entityManager->createNativeQuery($sql, $rsm);
+        $query->setParameter("id", $id);
+        $r = $query->getOneOrNullResult();
+
+        return new UserRequirementViewDTO(
+            $ur->getId(),
+            $r->getName(),
+            $r->getDescription(),
+            $ur->getStartDate(),
+            $ur->getEndDate(),
+            $ur->getCompletedAt(),
+            $ur->getStatus(),
+            $r->getFulfillMethod(),
+            $r->getAllowedFileTypes(),
+            $r->getMaxFileSize(),
+            $r->getMaxFileCount()
+        );
     }
 }
