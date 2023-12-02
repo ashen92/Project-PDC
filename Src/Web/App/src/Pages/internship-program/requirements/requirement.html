@@ -32,49 +32,33 @@
         <h5 class="fw-4">End before date</h5>
         <p class="mb-25">{{ requirement.endBeforeDate.format("Y-m-d") }}</p>
         {% endif %}
-        <div class="divider"></div>
-    </form>
 
-    <div>
-        {% if "ROLE_ADMIN" in user_roles %}
+        <h5 class="fw-4">Fulfill Method</h5>
+        <p class="mb-25 capitalize">{{ requirement.fulfillMethod }}</p>
+
+        {% if requirement.fulfillMethod == "file" %}
+
+        <h5 class="fw-4">Allowed file types</h5>
+        <p class="mb-25 uppercase">
+            {% for type in requirement.allowedFileTypes %}
+            {{ type }} <br>
+            {% endfor %}
+        </p>
+
+        <h5 class="fw-4">Maximum file size</h5>
+        <p class="mb-25">{{ requirement.maxFileSize }}</p>
+
+        <h5 class="fw-4">Maximum file count</h5>
+        <p class="mb-25">{{ requirement.maxFileCount }}</p>
+
+        {% endif %}
+
+        <div class="divider"></div>
         <div class="actions">
             <button class="btn" type="button">Modify</button>
             <button class="btn" type="button">Remove</button>
         </div>
-        {% endif %}
-
-        <div class="divider"></div>
-
-        {# {% if "ROLE_INTERNSHIP_STUDENT" in user_roles %} #}
-        <form action="/internship-program/requirements/complete" method="POST" enctype="multipart/form-data">
-
-            <input type="hidden" name="requirement-id" value="{{ requirement.id }}" />
-
-            <div class="field-file-upload">
-                <label class="btn" for="fileToUpload">Select file to upload</label>
-                <input type="file" name="fileToUpload" id="fileToUpload">
-                <div class="preview" id="fileToUpload-preview">
-                    <p>No files currently selected for upload</p>
-                </div>
-            </div>
-
-            <div class="field-file-upload">
-                <label class="btn" for="filesToUpload">Select files to upload</label>
-                <input type="file" name="filesToUpload" id="filesToUpload" multiple>
-                <div class="preview" id="filesToUpload-preview">
-                    <p>No files currently selected for upload</p>
-                </div>
-            </div>
-
-            <button class="btn" type="button">Submit</button>
-        </form>
-        {# {% endif %} #}
-
-    </div>
+    </form>
 </section>
 
-{% endblock %}
-
-{% block js %}
-<script src="/js/requirement-view.js" type="text/javascript"></script>
 {% endblock %}
