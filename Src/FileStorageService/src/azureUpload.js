@@ -10,14 +10,14 @@ if (!AZURE_STORAGE_CONNECTION_STRING) {
     throw Error("Azure Storage Connection string not found");
 }
 
-// Create the BlobServiceClient object with connection string
 const blobServiceClient = BlobServiceClient.fromConnectionString(
     AZURE_STORAGE_CONNECTION_STRING
 );
 
 export async function uploadFileToAzure(files) {
-    files.file.forEach(async file => {
-        var containerName = file.mimetype;
+    let fileProperties = [];
+    for (const file of files.file) {
+        let containerName = file.mimetype;
         containerName = containerName.replace(/\//g, "-").replace(/\*/g, "");
         const containerClient = blobServiceClient.getContainerClient(containerName);
 
@@ -29,7 +29,7 @@ export async function uploadFileToAzure(files) {
             console.log(`Container "${containerName}" already exists`);
         }
 
-        const blobName = uuidv1() + ":" + file.originalFilename;
+        const blobName = uuidv1();
         const blockBlobClient = containerClient.getBlockBlobClient(blobName);
 
         console.log(
@@ -41,5 +41,12 @@ export async function uploadFileToAzure(files) {
         console.log(
             `Blob was uploaded successfully. requestId: ${uploadBlobResponse.requestId}`
         );
-    });
+
+        fileProperties.push({
+            originalFilename: file.originalFilename,
+            filePath: containerName + "-uuid-" + blobName
+        });
+    }
+
+    return fileProperties;
 }

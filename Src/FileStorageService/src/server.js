@@ -11,14 +11,15 @@ const server = http.createServer(async (req, res) => {
     if (req.method === "POST" && req.url === "/upload") {
         try {
             const files = await parseIncomingFile(req);
-            await uploadFileToAzure(files);
-            res.writeHead(200);
+            let fileProperties = await uploadFileToAzure(files);
+
+            res.writeHead(200, { "Content-Type": "application/json" });
             res.end(
                 JSON.stringify(
                     {
-                        message: "File upload initiated"
-                    }
-                )
+                        message: "Successfully uploaded files",
+                        properties: fileProperties
+                    })
             );
         } catch (error) {
             console.error("Error parsing file:", error);
