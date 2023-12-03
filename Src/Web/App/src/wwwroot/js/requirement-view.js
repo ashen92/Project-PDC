@@ -1,13 +1,8 @@
-const inp = document.getElementById("fileToUpload");
-const inp1 = document.getElementById("filesToUpload");
-const inPreview = document.getElementById("fileToUpload-preview");
-const in1Preview = document.getElementById("filesToUpload-preview");
+const fileInput = document.getElementById("files-to-upload");
+const filePreview = document.getElementById("files-to-upload-preview");
 
-inp.addEventListener("change", () => {
-    updateImageDisplay(inp, inPreview);
-});
-inp1.addEventListener("change", () => {
-    updateImageDisplay(inp1, in1Preview);
+fileInput.addEventListener("change", () => {
+    updateImageDisplay(fileInput, filePreview);
 });
 
 function updateImageDisplay(input, preview) {
@@ -28,39 +23,19 @@ function updateImageDisplay(input, preview) {
             const listItem = document.createElement("li");
             const para = document.createElement("p");
 
-            if (validFileType(file)) {
-                para.textContent = `${file.name}, ${returnFileSize(file.size)}.`;
+            para.innerHTML = `${file.name}. <small>${returnFileSize(file.size)}</small>`;
+
+            if (file.type.match("image.*")) {
                 const image = document.createElement("img");
                 image.src = URL.createObjectURL(file);
-
                 listItem.appendChild(image);
-                listItem.appendChild(para);
-            } else {
-                para.textContent = "Invalid file type.";
-                listItem.appendChild(para);
             }
+
+            listItem.appendChild(para);
 
             list.appendChild(listItem);
         }
     }
-}
-
-// https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Image_types
-const fileTypes = [
-    "image/apng",
-    "image/bmp",
-    "image/gif",
-    "image/jpeg",
-    "image/pjpeg",
-    "image/png",
-    "image/svg+xml",
-    "image/tiff",
-    "image/webp",
-    "image/x-icon"
-];
-
-function validFileType(file) {
-    return fileTypes.includes(file.type);
 }
 
 function returnFileSize(number) {

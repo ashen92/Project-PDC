@@ -28,22 +28,42 @@
     <div>
         {% if requirement.fulfillMethod == "file" %}
         <form action="/internship-program/requirements/complete" method="POST" enctype="multipart/form-data">
-
             <input type="hidden" name="requirement-id" value="{{ requirement.id }}" />
+
+            <div class="row mb-5">
+                <p>Maximum number of files :</p>
+                <p>{{ requirement.maxFileCount }}</p>
+            </div>
+
+            <div class="row mb-5">
+                <p>Maximum file size :</p>
+                <p>{{ requirement.maxFileSize }} MB</p>
+            </div>
+
+            <div class="row mb-25">
+                <p>Allowed file types :</p>
+                <p>
+                    {% for t in requirement.allowedFileTypes %}
+                    {{ t }}{% if not loop.last %}, {% endif %}
+                    {% endfor %}
+                </p>
+            </div>
 
             {% if requirement.maxFileCount == 1 %}
             <div class="field-file-upload">
-                <label class="btn" for="fileToUpload">Select file to upload</label>
-                <input type="file" name="fileToUpload" id="fileToUpload">
-                <div class="preview" id="fileToUpload-preview">
-                    <p>No files currently selected for upload</p>
+                <label class="btn" for="files-to-upload">Select file to upload</label>
+                <input type="file" name="files-to-upload" id="files-to-upload"
+                    accept="{% for t in requirement.allowedFileTypes %}.{{ t }}{% if not loop.last %},{% endif %}{% endfor %}">
+                <div class="preview" id="files-to-upload-preview">
+                    <p>No file currently selected for upload</p>
                 </div>
             </div>
             {% else %}
             <div class="field-file-upload">
-                <label class="btn" for="filesToUpload">Select files to upload</label>
-                <input type="file" name="filesToUpload" id="filesToUpload" multiple>
-                <div class="preview" id="filesToUpload-preview">
+                <label class="btn" for="files-to-upload">Select files to upload</label>
+                <input type="file" name="files-to-upload" id="files-to-upload" multiple
+                    accept="{% for t in requirement.allowedFileTypes %}.{{ t }}{% if not loop.last %},{% endif %}{% endfor %}">
+                <div class="preview" id="files-to-upload-preview">
                     <p>No files currently selected for upload</p>
                 </div>
             </div>

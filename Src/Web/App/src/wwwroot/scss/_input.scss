@@ -115,8 +115,9 @@ form {
             .preview {
                 border: $border-1;
                 border-radius: $rounded-1;
-                padding: 1rem;
+                padding: .5rem 1rem;
                 margin-top: 1rem;
+                font-size: 0.95rem;
 
                 ol {
                     list-style: none;
@@ -128,7 +129,7 @@ form {
 
                         &:not(:last-child) {
                             border-bottom: $border-1;
-                            padding-bottom: 0.5rem;
+                            padding-bottom: 0.25rem;
                             margin-bottom: 0.5rem;
                         }
                     }
