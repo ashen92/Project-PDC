@@ -1,6 +1,6 @@
 import http from "http";
 import { parseIncomingFile } from "./fileParser.js";
-import { addFileToUploadQueue } from "./taskQueue.js";
+import { uploadFileToAzure } from "./azureUpload.js";
 
 const server = http.createServer(async (req, res) => {
     res.setHeader("Content-Security-Policy", "default-src 'none'; script-src 'self'; connect-src 'self'; img-src 'self'; style-src 'self';");
@@ -11,7 +11,7 @@ const server = http.createServer(async (req, res) => {
     if (req.method === "POST" && req.url === "/upload") {
         try {
             const files = await parseIncomingFile(req);
-            await addFileToUploadQueue(files);
+            await uploadFileToAzure(files);
             res.writeHead(200);
             res.end(
                 JSON.stringify(
