@@ -250,6 +250,19 @@ $r1DTO = new CreateRequirementDTO(
     3
 );
 
+$r5DTO = new CreateRequirementDTO(
+    "Your feedback about the internship",
+    "Upload the contract between you and the company.",
+    "one-time",
+    new DateTime("now"),
+    new DateTime("+1 month"),
+    null,
+    "text",
+    null,
+    null,
+    null
+);
+
 $r2DTO = new CreateRequirementDTO(
     "Monthly Report",
     "Upload a report of your progress.",
@@ -293,11 +306,13 @@ $r1 = new Requirement($r1DTO);
 $r2 = new Requirement($r2DTO);
 $r3 = new Requirement($r3DTO);
 $r4 = new Requirement($r4DTO);
+$r5 = new Requirement($r5DTO);
 
 $entityManager->persist($r1);
 $entityManager->persist($r2);
 $entityManager->persist($r3);
 $entityManager->persist($r4);
+$entityManager->persist($r5);
 $entityManager->flush();
 
 echo "Done.\nAdding user requirements...";
@@ -305,7 +320,9 @@ echo "Done.\nAdding user requirements...";
 $userRequirement = new UserRequirement($user, $r1);
 $userRequirement1 = new UserRequirement($user3, $r1);
 $userRequirement2 = new UserRequirement($user, $r2);
+$userRequirement3 = new UserRequirement($user3, $r5);
 $entityManager->persist($userRequirement);
 $entityManager->persist($userRequirement1);
 $entityManager->persist($userRequirement2);
+$entityManager->persist($userRequirement3);
 $entityManager->flush();
