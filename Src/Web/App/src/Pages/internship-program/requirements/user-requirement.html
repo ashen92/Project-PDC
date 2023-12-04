@@ -19,12 +19,13 @@
             <p>{{ requirement.endDate.format("Y-m-d") }}</p>
         </div>
 
-        <p class="fw-semibold mb-20">Description</p>
+        <p class="fw-medium mb-20">Description</p>
         <div class="mb-30 formatted-text-area border-1 p-20 rounded-1">{{ requirement.description|raw }}</div>
 
         <div class="divider"></div>
     </form>
 
+    {% if requirement.status == "pending" %}
     <div>
         {% if requirement.fulfillMethod == "file" %}
         <form action="/internship-program/requirements/complete" method="POST" enctype="multipart/form-data">
@@ -78,7 +79,7 @@
         <form action="/internship-program/requirements/complete" method="POST">
             <input type="hidden" name="requirement-id" value="{{ requirement.id }}" />
             <div class="field">
-                <label class="fw-semibold" for="description">Your response</label>
+                <label class="fw-medium" for="description">Your response</label>
                 <div>
                     {% include "shared/text-editor.html" with {
                     "name": "description",
@@ -93,6 +94,16 @@
         </form>
         {% endif %}
     </div>
+    {% endif %}
+
+    {% if requirement.status == "completed" %}
+
+    <div class="row mb-5">
+        <p class="fw-medium">Completed on :</p>
+        <p>{{ requirement.completedAt.format("Y-m-d") }}</p>
+    </div>
+
+    {% endif %}
 </section>
 
 {% endblock %}
