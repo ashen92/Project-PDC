@@ -113,9 +113,9 @@ form {
             margin-bottom: 2rem;
 
             .preview {
-                border: $border-1;
                 border-radius: $rounded-1;
-                padding: .5rem 1rem;
+                background-color: $grey-100;
+                padding: 1rem;
                 margin-top: 1rem;
                 font-size: 0.95rem;
 
@@ -128,7 +128,6 @@ form {
                         align-items: center;
 
                         &:not(:last-child) {
-                            border-bottom: $border-1;
                             padding-bottom: 0.25rem;
                             margin-bottom: 0.5rem;
                         }

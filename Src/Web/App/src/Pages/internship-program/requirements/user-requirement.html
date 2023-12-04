@@ -20,7 +20,8 @@
         </div>
 
         <p class="fw-medium mb-20">Description</p>
-        <div class="mb-30 formatted-text-area border-1 p-20 rounded-1">{{ requirement.description|raw }}</div>
+        <div class="mb-30 bg-grey-100 formatted-text-area p-20 rounded-1">{{ requirement.description|raw }}
+        </div>
 
         <div class="divider"></div>
     </form>
@@ -43,7 +44,7 @@
 
             <div class="row mb-25">
                 <p>Allowed file types :</p>
-                <p>
+                <p class="uppercase">
                     {% for t in requirement.allowedFileTypes %}
                     {{ t }}{% if not loop.last %}, {% endif %}
                     {% endfor %}
