@@ -4,9 +4,11 @@
 .card-container {
     display: grid;
     grid-template-columns: repeat(4, auto);
+    justify-items: center;
+    justify-content: center;
     margin-top: 400px;
-    row-gap: 30px;
-    column-gap: 50px;
+    row-gap: 1.75rem;
+    column-gap: 2rem;
 
     @include mixins.media-breakpoint-down(xl) {
         grid-template-columns: repeat(3, auto);
@@ -23,18 +25,19 @@
 
 .card {
     min-width: 225px;
+    width: 250px;
     border-radius: $rounded-1;
     padding: 13px 15px 10px 15px;
     text-align: center;
-    border: 2px solid #3b81e8;
+    box-shadow: $shadow-1;
+    border-left: 5px solid #00588a;
 
     &:hover {
         background-color: $hov-light-blue;
-        border: 2px solid #3b81e8;
+        border-left: 5px solid #55befb;
     }
 
     &:active {
         background-color: $active-light-blue;
-        border: 2px solid #3b81e8;
     }
 }
