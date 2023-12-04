@@ -75,7 +75,7 @@ class RequirementService implements IRequirementService
     {
         $queryBuilder = $this->entityManager->createQueryBuilder();
         $queryBuilder
-            ->select("r.id, r.name, r.description, r.type, r.startDate, r.repeatInterval")
+            ->select("ur.id, r.id as r_id, r.name, r.description, r.type, r.startDate, r.repeatInterval")
             ->from("App\Entities\UserRequirement", "ur")
             ->innerJoin("ur.requirement", "r")
             ->innerJoin("ur.user", "u")
