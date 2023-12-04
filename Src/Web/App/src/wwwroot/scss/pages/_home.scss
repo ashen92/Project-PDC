@@ -1,14 +1,47 @@
 @use "../variables" as *;
 @use "../mixins";
 
+.layout-home {
+    .content {
+        max-width: $webpage-max-allowed-width;
+        padding-left: 50px;
+        padding-right: 50px;
+        margin: 0 auto;
+    }
+}
+
+.hero-container {
+    height: 500px;
+    background-color: #f4fafd;
+    padding: 5rem;
+
+    .hero-text {
+        text-align: left;
+        width: 60%;
+
+        &-title {
+            line-height: 1.25;
+            font-size: 4rem;
+            font-weight: $fw-semibold;
+        }
+
+        &-subtitle {
+            margin-top: 2.5rem;
+            font-size: 1.45rem;
+            font-weight: $fw-normal;
+            color: #00243a;
+        }
+    }
+}
+
 .card-container {
     display: grid;
     grid-template-columns: repeat(4, auto);
     justify-items: center;
     justify-content: center;
-    margin-top: 400px;
     row-gap: 1.75rem;
     column-gap: 2rem;
+    margin: 6rem 0;
 
     @include mixins.media-breakpoint-down(xl) {
         grid-template-columns: repeat(3, auto);

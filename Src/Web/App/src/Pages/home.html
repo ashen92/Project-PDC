@@ -1,4 +1,4 @@
-{% extends "shared/layout.html" %}
+{% extends "shared/layout-home.html" %}
 
 {% block title %}Home{% endblock %}
 
@@ -8,10 +8,19 @@
 
 {% block content %}
 
-<div>
-    <h1 class="p-30 text-centre">
-        Professional Development Centre
-    </h1>
+<div class="hero-container">
+    <div class="content hero">
+        <div class="hero-text">
+            <h2 class="hero-text-title">Professional Development Centre</h2>
+            <p class="hero-text-subtitle">Professional Development Centre is a platform for students to learn and
+                grow. We provide students
+                with
+                opportunities to learn new skills and gain experience.</p>
+        </div>
+        <div class="hero-image"></div>
+    </div>
+</div>
+<section class="content">
     <div class="card-container">
         <a class="card" href="/techtalks">TechTalks</a>
         <a class="card" href="/internship-program">Internship Program</a>
@@ -20,6 +29,6 @@
         <a class="card" href="/users">Manage Users</a>
         {% endif %}
     </div>
-</div>
+</section>
 
 {% endblock %}
