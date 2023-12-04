@@ -2,7 +2,6 @@
 @use "mixins" as *;
 
 .header {
-    background-color: #006bbd;
     height: 3.75rem;
     box-shadow: rgba(57, 76, 96, 0.15) 0px 2px 4px -1px;
 
@@ -10,7 +9,8 @@
         display: flex;
         height: 100%;
         column-gap: 0.5rem;
-        padding: 0 0.5rem;
+        padding: 0 3.125rem;
+        padding-top: 0.1rem;
         max-width: $webpage-max-allowed-width;
         margin: 0 auto;
 
@@ -20,7 +20,6 @@
         }
 
         &-toggler {
-            color: #ffffff;
             padding: .5rem;
             border-radius: $rounded-1;
 
@@ -66,30 +65,21 @@
             width: 100%;
             height: 100%;
             display: block;
-            color: #ffffff;
-            font-weight: $fw-semibold;
-            padding: 0.6rem 1rem 0.4rem 1rem;
-            border-bottom: 2px solid transparent;
-        }
+            padding: 0.7rem 1rem 0.7rem 1rem;
+            border-radius: 20px;
+            transition: background-color .1s cubic-bezier(0.02, 1, 1, 1);
 
-        .underline {
-            border-bottom: 2px solid #f1f2f4;
-            border-radius: $rounded-1 $rounded-1 0 0;
+            &:hover {
+                background-color: #e5e5e5;
+            }
+
+            &:active {
+                background-color: #d3d3d3;
+            }
         }
 
         li {
             display: block;
-            border-radius: $rounded-1;
-            transition: background-color .1s cubic-bezier(0.02, 1, 1, 1);
-
-            &:hover {
-                background-color: #007dce;
-            }
-
-            &:active {
-                background-color: #0085de;
-            }
         }
-
     }
 }
