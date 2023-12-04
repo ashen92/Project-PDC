@@ -1,8 +1,8 @@
 <div class="header">
     <nav class="navbar">
-        <button class="navbar-toggler hidden" type="button" title="Open menu">
-            <i class="i i-list"></i>
-            <i class="i i-x-lg hidden"></i>
+        <button class="navbar-toggler" type="button" title="Open menu">
+            <i class="i i-list" id="navbar-toggle-show"></i>
+            <i class="i i-x-lg hidden" id="navbar-toggle-hide"></i>
         </button>
         <ul class="navbar-brand">
             <li>
@@ -10,7 +10,7 @@
             </li>
         </ul>
         <div class="navbar-menu">
-            <ol class="navbar-start">
+            <ul class="navbar-start">
                 <li>
                     <a href="/techtalks">
                         TechTalks
@@ -26,15 +26,36 @@
                         Events
                     </a>
                 </li>
-            </ol>
-            <ol class="navbar-end">
-                <li>
-                    <a href="">Your Profile</a>
-                </li>
+            </ul>
+            <ul class="navbar-end">
+                {# <li>
+                    <a href="">Name</a>
+                </li> #}
                 <li>
                     <a href="/logout">Sign out</a>
                 </li>
-            </ol>
+            </ul>
         </div>
+        <ul class="navbar-dropdown">
+            <li>
+                <a href="/techtalks">
+                    TechTalks
+                </a>
+            </li>
+            <li>
+                <a href="/internship-program">
+                    Internship Program
+                </a>
+            </li>
+            <li>
+                <a href="/events">
+                    Events
+                </a>
+            </li>
+        </ul>
     </nav>
 </div>
+
+{% block js %}
+<script src="/js/header.js" type="text/javascript"></script>
+{% endblock %}
