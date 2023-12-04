@@ -11,7 +11,14 @@ export async function parseIncomingFile(req) {
                 return;
             }
 
-            resolve(files);
+            const filesArray = Object.values(files).flat();
+            
+            if (filesArray.length === 0) {
+                reject(new Error("No files found in the request"));
+                return;
+            }
+
+            resolve(filesArray);
         });
     });
 }

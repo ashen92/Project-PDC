@@ -16,7 +16,7 @@ const blobServiceClient = BlobServiceClient.fromConnectionString(
 
 export async function uploadFileToAzure(files) {
     let fileProperties = [];
-    for (const file of files.file) {
+    for (const file of files) {
         let containerName = file.mimetype;
         containerName = containerName.replace(/\//g, "-").replace(/\*/g, "");
         const containerClient = blobServiceClient.getContainerClient(containerName);
