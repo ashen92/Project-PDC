@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\DTOs\CreateRequirementDTO;
+use App\DTOs\UserRequirementCompletionDTO;
 use App\Interfaces\IInternshipService;
 use App\Interfaces\IRequirementService;
 use App\Interfaces\IUserService;
@@ -102,5 +103,23 @@ class RequirementController extends PageControllerBase
             }
         }
         return $this->redirect("/internship-program/requirements");
+    }
+
+    #[Route("/complete", methods: ["POST"])]
+    public function complete(Request $request): Response|RedirectResponse
+    {
+        $files = $request->files->get("files-to-upload");
+        if (!is_array($files)) {
+            $files = [$files];
+        }
+        $urCompletionDTO = new UserRequirementCompletionDTO(
+            (int) $request->get("requirement-id"),
+            $files
+        );
+        // Validate DTO
+
+        $this->requirementService->completeUserRequirement($urCompletionDTO);
+
+        return $this->redirect("/internship-program/requirements/{$urCompletionDTO->requirementId}");
     }
 }

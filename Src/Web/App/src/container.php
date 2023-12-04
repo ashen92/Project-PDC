@@ -93,7 +93,11 @@ $container->register(
     "service.requirement",
     App\Services\RequirementService::class
 )
-    ->setArguments([new Reference("doctrine.entity_manager"), new Reference("app.cache")]);
+    ->setArguments([
+        new Reference("doctrine.entity_manager"),
+        new Reference("app.cache"),
+        new Reference("service.file_storage")
+    ]);
 
 $container->register(
     "service.event",
@@ -104,6 +108,12 @@ $container->register(
 $container->register(
     "service.email",
     App\Services\EmailAPI::class
+)
+    ->setArguments([new Reference("http_client")]);
+
+$container->register(
+    "service.file_storage",
+    App\Services\FileStorageService::class
 )
     ->setArguments([new Reference("http_client")]);
 

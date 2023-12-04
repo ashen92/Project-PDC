@@ -52,7 +52,7 @@
             {% if requirement.maxFileCount == 1 %}
             <div class="field-file-upload">
                 <label class="btn" for="files-to-upload">Select file to upload</label>
-                <input type="file" name="files-to-upload" id="files-to-upload"
+                <input type="file" name="files-to-upload" id="files-to-upload" required
                     accept="{% for t in requirement.allowedFileTypes %}.{{ t }}{% if not loop.last %},{% endif %}{% endfor %}">
                 <div class="preview" id="files-to-upload-preview">
                     <p>No file currently selected for upload</p>
@@ -61,7 +61,7 @@
             {% else %}
             <div class="field-file-upload">
                 <label class="btn" for="files-to-upload">Select files to upload</label>
-                <input type="file" name="files-to-upload" id="files-to-upload" multiple
+                <input type="file" name="files-to-upload[]" id="files-to-upload" multiple required
                     accept="{% for t in requirement.allowedFileTypes %}.{{ t }}{% if not loop.last %},{% endif %}{% endfor %}">
                 <div class="preview" id="files-to-upload-preview">
                     <p>No files currently selected for upload</p>
@@ -70,7 +70,7 @@
             {% endif %}
             <div class="divider"></div>
 
-            <button class="btn" type="button">Submit</button>
+            <button class="btn" type="submit">Submit</button>
         </form>
         {% endif %}
 
@@ -89,7 +89,7 @@
             </div>
             <div class="divider"></div>
 
-            <button class="btn" type="button">Submit</button>
+            <button class="btn" type="submit">Submit</button>
         </form>
         {% endif %}
     </div>

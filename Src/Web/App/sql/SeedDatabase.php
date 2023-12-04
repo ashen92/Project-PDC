@@ -247,7 +247,7 @@ $r1DTO = new CreateRequirementDTO(
     "file",
     ["pdf"],
     5,
-    1
+    3
 );
 
 $r2DTO = new CreateRequirementDTO(

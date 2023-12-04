@@ -5,9 +5,13 @@ namespace App\Services;
 
 use App\DTOs\CreateRequirementDTO;
 use App\DTOs\RequirementViewDTO;
+use App\DTOs\UserRequirementCompletionDTO;
 use App\DTOs\UserRequirementViewDTO;
 use App\Entities\Requirement;
+use App\Entities\UserRequirement;
+use App\Interfaces\IFileStorageService;
 use App\Interfaces\IRequirementService;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query\ResultSetMappingBuilder;
 use Symfony\Contracts\Cache\CacheInterface;
@@ -16,7 +20,8 @@ class RequirementService implements IRequirementService
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
-        private CacheInterface $cache
+        private CacheInterface $cache,
+        private IFileStorageService $fileStorageService
     ) {
 
     }
@@ -121,5 +126,24 @@ class RequirementService implements IRequirementService
             $r->getMaxFileSize(),
             $r->getMaxFileCount()
         );
+    }
+
+    public function completeUserRequirement(UserRequirementCompletionDTO $urCompletionDTO): void
+    {
+        $response = $this->fileStorageService->upload($urCompletionDTO->files);
+        $ur = $this->entityManager
+            ->getRepository(UserRequirement::class)
+            ->find($urCompletionDTO->requirementId);
+
+        $filePaths = [];
+
+        foreach ($response["properties"] as $fileProperty) {
+            $filePaths[] = $fileProperty["filePath"];
+        }
+
+        $ur->setFilePaths($filePaths);
+        $ur->setCompletedAt(new DateTime("now"));
+        $ur->setStatus("completed");
+        $this->entityManager->flush();
     }
 }

@@ -35,6 +35,12 @@ class UserRequirement
     #[ORM\Column]
     private string $status;
 
+    #[ORM\Column(nullable: true)]
+    private string|null $originalFileName;
+
+    #[ORM\Column(type: "simple_array", nullable: true)]
+    private array|null $filePaths;
+
     public function __construct(User $user, Requirement $requirement)
     {
         $this->user = $user;
@@ -68,5 +74,35 @@ class UserRequirement
     public function getStatus(): string
     {
         return $this->status;
+    }
+
+    public function getOriginalFileName(): ?string
+    {
+        return $this->originalFileName;
+    }
+
+    public function getFilePaths(): ?array
+    {
+        return $this->filePaths;
+    }
+
+    public function setCompletedAt(DateTime $completedAt): void
+    {
+        $this->completedAt = $completedAt;
+    }
+
+    public function setStatus(string $status): void
+    {
+        $this->status = $status;
+    }
+
+    /**
+     * Summary of setFilePaths
+     * @param array $filePaths Array of strings
+     * @return void
+     */
+    public function setFilePaths(array $filePaths): void
+    {
+        $this->filePaths = $filePaths;
     }
 }
