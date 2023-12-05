@@ -109,13 +109,19 @@ $container->register(
     "service.email",
     App\Services\EmailAPI::class
 )
-    ->setArguments([new Reference("http_client")]);
+    ->setArguments([
+        new Reference("http_client"),
+        "http://localhost:3000/api/emails"
+    ]);
 
 $container->register(
     "service.file_storage",
     App\Services\FileStorageService::class
 )
-    ->setArguments([new Reference("http_client")]);
+    ->setArguments([
+        new Reference("http_client"),
+        "http://localhost:3000/upload"
+    ]);
 
 $container->register(
     "http_client",

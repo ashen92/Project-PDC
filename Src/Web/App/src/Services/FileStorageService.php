@@ -11,7 +11,8 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 class FileStorageService implements IFileStorageService
 {
     public function __construct(
-        private HttpClientInterface $httpClient
+        private HttpClientInterface $httpClient,
+        private string $fileStorageAPIEndpoint
     ) {
     }
 
@@ -30,7 +31,7 @@ class FileStorageService implements IFileStorageService
         try {
             $response = $this->httpClient->request(
                 "POST",
-                "http://localhost:3000/upload",
+                $this->fileStorageAPIEndpoint,
                 [
                     "headers" => $headers,
                     "body" => $body

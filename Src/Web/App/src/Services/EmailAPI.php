@@ -10,7 +10,8 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 class EmailAPI implements IEmailService
 {
     public function __construct(
-        private HttpClientInterface $httpClient
+        private HttpClientInterface $httpClient,
+        private string $emailAPIEndpoint
     ) {
     }
 
@@ -19,7 +20,7 @@ class EmailAPI implements IEmailService
         try {
             $response = $this->httpClient->request(
                 "POST",
-                "http://localhost:3000/api/emails",
+                $this->emailAPIEndpoint,
                 [
                     "headers" => [
                         "Content-Type" => "application/json",
