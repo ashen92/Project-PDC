@@ -3,12 +3,11 @@
 .layout-left-nav {
     display: grid;
     grid-template-columns: 210px auto;
-    margin-top: 1rem;
+    margin-top: 3rem;
 
     >.left-nav {
         border-right: $border-1;
         padding: 0px 10px 15px 0px;
-        margin-top: 50px;
 
         >.nav-link {
             display: block;
