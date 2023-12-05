@@ -120,7 +120,7 @@ $container->register(
 )
     ->setArguments([
         new Reference("http_client"),
-        "http://localhost:3000/upload"
+        "http://localhost:5000/api/files"
     ]);
 
 $container->register(
