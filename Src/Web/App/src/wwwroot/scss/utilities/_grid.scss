@@ -1,3 +1,4 @@
+@use "../variables" as *;
 @use "../mixins";
 
 .grid {
@@ -10,6 +11,18 @@
 
 .row {
     @include mixins.grid-row;
+}
+
+.grid-details {
+    display: grid;
+    grid-template-columns: max-content max-content auto;
+    column-gap: 1rem;
+    row-gap: 0.5rem;
+    padding-right: 2.5rem;
+
+    >.label {
+        font-weight: $fw-medium;
+    }
 }
 
 @include mixins.media-breakpoint-up(sm) {
