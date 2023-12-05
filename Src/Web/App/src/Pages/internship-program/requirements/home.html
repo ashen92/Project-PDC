@@ -27,15 +27,13 @@
 
     <table class="table table-hover">
         <colgroup>
-            <col class="w-1-5">
-            <col class="w-2-5">
+            <col class="w-3-5">
             <col class="w-1-5">
             <col class="w-1-5">
         </colgroup>
         <thead>
             <tr>
                 <th>Name</th>
-                <th>Description</th>
                 <th>Type</th>
                 <th>Start Date</th>
             </tr>
@@ -44,7 +42,6 @@
             {% for item in requirements %}
             <tr data-href="/internship-program/requirements/{{ item.id }}">
                 <td>{{ item.name }}</td>
-                <td>{{ item.description }}</td>
                 <td class="capitalize">
                     {% if item.type == "recurring" %}
                     {{ item.type }} ({{ item.repeatInterval }})
