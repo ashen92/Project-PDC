@@ -1,5 +1,5 @@
 @use "../variables" as *;
-@use "../mixins";
+@use "../mixins" as *;
 
 .layout-home {
     .content {
@@ -15,6 +15,20 @@
     background-color: #c9eee5;
     padding: 5rem;
     box-shadow: rgba(0, 0, 0, 0.12) 0px 0px 2px 0px, rgba(0, 0, 0, 0.14) 0px 1.008px 2px 0px;
+
+    @include media-breakpoint-down(md) {
+        height: 450px;
+        padding: 4rem;
+
+        .hero {
+            padding: 0;
+        }
+    }
+
+    @include media-breakpoint-down(sm) {
+        height: 450px;
+        padding: 3rem 2rem;
+    }
 
     .hero-text {
         text-align: left;
@@ -32,6 +46,42 @@
             font-weight: $fw-normal;
             color: #00243a;
         }
+
+        @include media-breakpoint-down(xxl) {
+            &-title {
+                font-size: 3.5rem;
+            }
+
+            &-subtitle {
+                font-size: 1.3rem;
+            }
+        }
+
+        @include media-breakpoint-down(xl) {
+            width: 75%;
+        }
+
+        @include media-breakpoint-down(lg) {
+            width: 100%;
+
+            &-title {
+                font-size: 3rem;
+            }
+
+            &-subtitle {
+                font-size: 1.25rem;
+            }
+        }
+
+        @include media-breakpoint-down(md) {
+            &-title {
+                font-size: 2.5rem;
+            }
+
+            &-subtitle {
+                font-size: 1.2rem;
+            }
+        }
     }
 }
 
@@ -44,15 +94,15 @@
     column-gap: 2rem;
     margin: 6rem 0;
 
-    @include mixins.media-breakpoint-down(xl) {
+    @include media-breakpoint-down(xl) {
         grid-template-columns: repeat(3, auto);
     }
 
-    @include mixins.media-breakpoint-down(lg) {
+    @include media-breakpoint-down(lg) {
         grid-template-columns: repeat(2, auto);
     }
 
-    @include mixins.media-breakpoint-down(sm) {
+    @include media-breakpoint-down(sm) {
         grid-template-columns: auto;
     }
 }
