@@ -22,7 +22,7 @@ $container->register(
 $dbParams = require_once "doctrine-config.php";
 
 $config = Doctrine\ORM\ORMSetup::createAttributeMetadataConfiguration(
-    paths: array(__DIR__ . "/Entities"),
+    paths: array(__DIR__."/Entities"),
     isDevMode: true,
 );
 
@@ -38,7 +38,7 @@ $container->register(
     "twig.loader",
     Twig\Loader\FilesystemLoader::class
 )
-    ->setArguments([__DIR__ . "/Pages"]);
+    ->setArguments([__DIR__."/Pages"]);
 
 $container->register(
     "twig",
@@ -181,7 +181,8 @@ $container->register(
         new Reference("twig"),
         new Reference("service.user"),
         new Reference("service.user_group"),
-        new Reference("service.internship_cycle")
+        new Reference("service.internship_cycle"),
+        new Reference("service.requirement"),
     ]);
 
 $container->register(

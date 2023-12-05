@@ -17,19 +17,58 @@
     </p>
 </div>
 
-<section class="list">
-    <a class="list-item" href="">
-        <div class="list-item-title">
-            Partners
-        </div>
-        <button class="btn btn-primary" type="button">View</button>
-    </a>
-    <a class="list-item" href="">
-        <div class="list-item-title">
-            Students
-        </div>
-        <button class="btn btn-primary" type="button">View</button>
-    </a>
+<section>
+    <table class="table table-hover">
+        <tbody class="table-rows-clickable">
+            <tr data-href="/internship-program/monitoring/hello">
+                <td>Partners</td>
+            </tr>
+            <tr data-href="/internship-program/monitoring/hello">
+                <td>Students</td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+<section>
+    <div class="title">
+        <h4>
+            Requirements
+        </h4>
+        <p>
+            You can manage the responses to each requirement in here.
+        </p>
+        <div class="divider"></div>
+    </div>
+
+    <table class="table table-hover">
+        <colgroup>
+            <col class="w-3-5">
+            <col class="w-1-5">
+            <col class="w-1-5">
+        </colgroup>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Start Date</th>
+            </tr>
+        </thead>
+        <tbody class="table-rows-clickable">
+            {% for item in requirements %}
+            <tr data-href="/internship-program/requirements/{{ item.id }}">
+                <td>{{ item.name }}</td>
+                <td class="capitalize">
+                    {% if item.type == "recurring" %}
+                    {{ item.type }} ({{ item.repeatInterval }})
+                    {% else %}
+                    {{ item.type }}
+                    {% endif %}
+                </td>
+                <td>{{ item.startDate.format("Y-m-d") }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </section>
 
 {% endblock %}

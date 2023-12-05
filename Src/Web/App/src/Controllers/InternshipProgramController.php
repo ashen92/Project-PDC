@@ -5,6 +5,7 @@ namespace App\Controllers;
 
 use App\DTOs\CreateInternshipCycleDTO;
 use App\Interfaces\IInternshipCycleService;
+use App\Interfaces\IRequirementService;
 use App\Interfaces\IUserGroupService;
 use App\Interfaces\IUserService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -14,33 +15,33 @@ use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
 
 #[Route("/internship-program", name: "internship_program_")]
-class InternshipProgramController extends PageControllerBase
-{
+class InternshipProgramController extends PageControllerBase {
     private IUserService $userService;
     private IUserGroupService $userGroupService;
     private IInternshipCycleService $internshipCycleService;
+    private IRequirementService $requirementService;
 
     public function __construct(
         Environment $twig,
         IUserService $userService,
         IUserGroupService $userGroupService,
-        IInternshipCycleService $internshipCycleService
+        IInternshipCycleService $internshipCycleService,
+        IRequirementService $requirementService
     ) {
         $this->userService = $userService;
         $this->userGroupService = $userGroupService;
         $this->internshipCycleService = $internshipCycleService;
+        $this->requirementService = $requirementService;
         parent::__construct($twig);
     }
 
     #[Route(["", "/", "/home"], name: "home")]
-    public function home(Request $request): Response
-    {
+    public function home(Request $request): Response {
         return $this->render("internship-program/home.html", ["section" => "home"]);
     }
 
     #[Route("/cycle/create", methods: ["GET"])]
-    public function cycleCreateGET(Request $request): Response
-    {
+    public function cycleCreateGET(Request $request): Response {
         return $this->render(
             "internship-program/cycle/create.html",
             [
@@ -51,8 +52,7 @@ class InternshipProgramController extends PageControllerBase
     }
 
     #[Route("/cycle/create", methods: ["POST"])]
-    public function cycleCreatePost(Request $request): RedirectResponse
-    {
+    public function cycleCreatePost(Request $request): RedirectResponse {
         $createInternshipCycleDTO = new CreateInternshipCycleDTO(
             $request->get("collection-start-date"),
             $request->get("collection-end-date"),
@@ -70,26 +70,28 @@ class InternshipProgramController extends PageControllerBase
     }
 
     #[Route("/cycle/details", name: "cycle_details")]
-    public function cycleDetails(Request $request): Response
-    {
+    public function cycleDetails(Request $request): Response {
         return $this->render("internship-program/cycle/details.html", ["section" => "home"]);
     }
 
     #[Route("/monitoring", methods: ["GET"])]
-    public function monitoring(Request $request): Response
-    {
-        return $this->render("internship-program/monitoring/home.html", ["section" => "monitoring"]);
+    public function monitoring(Request $request): Response {
+        return $this->render(
+            "internship-program/monitoring/home.html",
+            [
+                "section" => "requirements",
+                "requirements" => $this->requirementService->getRequirements()
+            ]
+        );
     }
 
     #[Route("/documents", name: "documents")]
-    public function cycleDocuments(Request $request): Response
-    {
+    public function cycleDocuments(Request $request): Response {
         return $this->render("internship-program/documents.html", ["section" => "documents"]);
     }
 
     #[Route("/feedback", name: "feedback")]
-    public function cycleFeedback(Request $request): Response
-    {
+    public function cycleFeedback(Request $request): Response {
         return $this->render("internship-program/feedback.html", ["section" => "feedback"]);
     }
 }
