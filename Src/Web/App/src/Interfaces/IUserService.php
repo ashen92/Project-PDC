@@ -3,17 +3,18 @@ declare(strict_types=1);
 
 namespace App\Interfaces;
 
-use App\Entities\User;
-use App\DTOs\CreateStudentDTO;
+use App\DTOs\CreateStudentUserDTO;
+use App\DTOs\StudentUserViewDTO;
+use App\DTOs\UserActivationTokenDTO;
+use App\DTOs\UserViewDTO;
 
-interface IUserService
-{
-    public function createUserStudent(User $user, CreateStudentDTO $createStudentDTO);
+interface IUserService {
+    public function createStudentUser(CreateStudentUserDTO $createStudentDTO);
     public function getUserRoles(int $userId): array;
     public function invalidateUserCache(int $userId): void;
     public function hasRole(int $userId, string $role): bool;
-    public function getUserByEmail(string $email): User;
-    public function getUserByStudentEmail(string $email): User;
-    public function getUserByActivationToken(string $token): User;
-    public function saveUser(User $user): void;
+    public function getUserByEmail(string $email): ?UserViewDTO;
+    public function getUserByStudentEmail(string $email): ?StudentUserViewDTO;
+    public function getUserByActivationToken(string $token): ?UserViewDTO;
+    public function saveActivationToken(UserActivationTokenDTO $userActivationTokenDTO): void;
 }

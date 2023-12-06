@@ -3,7 +3,8 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
-use App\DTOs\CreateStudentDTO;
+use App\DTOs\CreateStudentUserDTO;
+use App\DTOs\UserActivationTokenDTO;
 use App\Interfaces\IAuthenticationService;
 use App\Interfaces\IEmailService;
 use App\Interfaces\IUserService;
@@ -15,8 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
 
-class AuthenticationController extends PageControllerBase
-{
+class AuthenticationController extends PageControllerBase {
     private IAuthenticationService $authn;
     private IUserService $userService;
     private IEmailService $emailService;
@@ -34,40 +34,40 @@ class AuthenticationController extends PageControllerBase
     }
 
     #[Route("/login", name: "signin", methods: ["GET"])]
-    public function signin(): Response
-    {
+    public function signin(): Response {
         return $this->render("authentication/signin.html");
     }
 
     #[Route("/signup", methods: ["GET"])]
-    public function signupGET(): Response
-    {
+    public function signupGET(): Response {
         return $this->render("authentication/signup.html");
     }
 
     #[Route("/signup", methods: ["POST"])]
-    public function signupPOST(Request $request): Response
-    {
+    public function signupPOST(Request $request): Response {
         // Handle errors
         // todo
         $email = $request->request->get("student-email", null);
         // Validate email
         // todo
-        if ($email) {
+        if($email) {
             $email = "{$email}@stu.ucsc.cmb.ac.lk";
             $user = $this->userService->getUserByStudentEmail($email);
-            if ($user) {
-                if ($user->getIsActive() == false) {
+            if($user) {
+                if($user->isActive == false) {
 
                     $token = bin2hex(random_bytes(32));
                     $expirationTime = new DateTime("+1 day");
 
-                    $user->setActivationToken($token);
-                    $user->setActivationTokenExpiresAt($expirationTime);
+                    $userUpdateDTO = new UserActivationTokenDTO(
+                        id: $user->id,
+                        activationToken: $token,
+                        activationTokenExpiresAt: $expirationTime
+                    );
 
-                    $this->userService->saveUser($user);
+                    $this->userService->saveActivationToken($userUpdateDTO);
 
-                    $email = new SignupEmail($email, $user->getFullName(), $token);
+                    $email = new SignupEmail($email, $user->fullName, $token);
 
                     $this->emailService->sendEmail($email);
 
@@ -79,45 +79,43 @@ class AuthenticationController extends PageControllerBase
     }
 
     #[Route("/signup/activate", methods: ["GET"])]
-    public function signupActivateGET(Request $request): Response
-    {
+    public function signupActivateGET(Request $request): Response {
         // Handle errors
         // todo
         $token = $request->query->get("token", null);
         // Validate token
         // todo
-        if ($token) {
+        if($token) {
             $user = $this->userService->getUserByActivationToken($token);
-            if ($user) {
-                if ($user->getActivationTokenExpiresAt() > new DateTime("now")) {
+            if($user) {
+                if($user->activationTokenExpiresAt > new DateTime("now")) {
                     return $this->render(
                         "authentication/activate.html",
                         ["token" => $token]
                     );
                 }
 
-                $user->setActivationToken(null);
-                $user->setActivationTokenExpiresAt(null);
-                $this->userService->saveUser($user);
+                $dto = new UserActivationTokenDTO($user->id);
+                $this->userService->saveActivationToken($dto);
             }
         }
         return $this->redirect("/login");
     }
 
     #[Route("/signup/activate", methods: ["POST"])]
-    public function signupActivatePOST(Request $request): Response
-    {
+    public function signupActivatePOST(Request $request): Response {
         // Handle errors
         // todo
         $token = $request->get("token", null);
         // Validate token
         // todo
-        if ($token) {
+        if($token) {
             $user = $this->userService->getUserByActivationToken($token);
-            if ($user) {
-                if ($user->getActivationTokenExpiresAt() > new DateTime("now")) {
+            if($user) {
+                if($user->activationTokenExpiresAt > new DateTime("now")) {
 
-                    $createStudentDTO = new CreateStudentDTO(
+                    $createStudentDTO = new CreateStudentUserDTO(
+                        $user->id,
                         $request->get("first-name", null),
                         $request->get("last-name", null),
                         $request->get("email", null),
@@ -128,7 +126,7 @@ class AuthenticationController extends PageControllerBase
                     // Validate createStudentDTO
                     // todo
 
-                    $this->userService->createUserStudent($user, $createStudentDTO);
+                    $this->userService->createStudentUser($createStudentDTO);
 
                     return $this->redirect("/login");
                 }
@@ -138,14 +136,12 @@ class AuthenticationController extends PageControllerBase
     }
 
     #[Route("/register", name: "register")]
-    public function register(): Response
-    {
+    public function register(): Response {
         return $this->render("authentication/register.html");
     }
 
     #[Route("/login", name: "login", methods: ["POST"])]
-    public function login(Request $request): RedirectResponse
-    {
+    public function login(Request $request): RedirectResponse {
         $req = $request->request;
         $email = $req->get("email", "");
         $password = $req->get("password", "");
@@ -153,7 +149,7 @@ class AuthenticationController extends PageControllerBase
         // validate form data
         // todo
 
-        if ($this->authn->authenticate($email, $password)) {
+        if($this->authn->authenticate($email, $password)) {
             return new RedirectResponse("/home");
         }
 
@@ -163,8 +159,7 @@ class AuthenticationController extends PageControllerBase
     }
 
     #[Route("/logout", name: "logout")]
-    public function logout(): RedirectResponse
-    {
+    public function logout(): RedirectResponse {
         $this->authn->logout();
         return new RedirectResponse("/");
     }

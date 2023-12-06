@@ -11,8 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: "users")]
-class User
-{
+class User {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: "integer")]
@@ -67,8 +66,7 @@ class User
     #[ORM\OneToMany(targetEntity: UserRequirement::class, mappedBy: "user")]
     private Collection $assignedRequirements;
 
-    public function __construct(?string $email, ?string $firstName, ?string $passwordHash)
-    {
+    public function __construct(?string $email, ?string $firstName, ?string $passwordHash) {
         $this->email = $email;
         $this->firstName = $firstName;
         $this->passwordHash = $passwordHash;
@@ -76,113 +74,91 @@ class User
         $this->internshipsCreated = new ArrayCollection();
     }
 
-    public function getId(): int
-    {
+    public function getId(): int {
         return $this->id;
     }
 
-    public function getEmail(): string
-    {
+    public function getEmail(): ?string {
         return $this->email;
     }
 
-    public function getStudentEmail(): string
-    {
+    public function getStudentEmail(): string {
         return $this->studentEmail;
     }
 
-    public function getFullName(): string
-    {
+    public function getFullName(): string {
         return $this->fullName;
     }
 
-    public function getFirstName(): string
-    {
+    public function getFirstName(): ?string {
         return $this->firstName;
     }
 
-    public function getLastName(): string
-    {
+    public function getLastName(): ?string {
         return $this->lastName;
     }
 
-    public function getPasswordHash(): string
-    {
+    public function getPasswordHash(): ?string {
         return $this->passwordHash;
     }
 
-    public function getIsActive(): bool
-    {
+    public function getIsActive(): bool {
         return $this->isActive;
     }
 
-    public function getActivationToken(): string
-    {
+    public function getActivationToken(): ?string {
         return $this->activationToken;
     }
 
-    public function getActivationTokenExpiresAt(): DateTime
-    {
+    public function getActivationTokenExpiresAt(): ?DateTime {
         return $this->activationTokenExpiresAt;
     }
 
-    public function setEmail(string $email): void
-    {
+    public function setEmail(string $email): void {
         $this->email = $email;
     }
 
-    public function setStudentEmail(string $studentEmail): void
-    {
+    public function setStudentEmail(string $studentEmail): void {
         $this->studentEmail = $studentEmail;
     }
 
-    public function setFullName(string $fullName): void
-    {
+    public function setFullName(string $fullName): void {
         $this->fullName = $fullName;
     }
 
-    public function setFirstName(string $firstName): void
-    {
+    public function setFirstName(string $firstName): void {
         $this->firstName = $firstName;
     }
 
-    public function setLastName(string $lastName): void
-    {
+    public function setLastName(string $lastName): void {
         $this->lastName = $lastName;
     }
 
-    public function setPasswordHash(string $passwordHash): void
-    {
+    public function setPasswordHash(string $passwordHash): void {
         $this->passwordHash = $passwordHash;
     }
 
-    public function setIsActive(bool $isActive): void
-    {
+    public function setIsActive(bool $isActive): void {
         $this->isActive = $isActive;
     }
 
-    public function setActivationToken(?string $activationToken): void
-    {
+    public function setActivationToken(?string $activationToken): void {
         $this->activationToken = $activationToken;
     }
 
-    public function setActivationTokenExpiresAt(?DateTime $activationTokenExpiresAt): void
-    {
+    public function setActivationTokenExpiresAt(?DateTime $activationTokenExpiresAt): void {
         $this->activationTokenExpiresAt = $activationTokenExpiresAt;
     }
 
-    public function addToGroup(UserGroup $group): void
-    {
+    public function addToGroup(UserGroup $group): void {
         $this->groups[] = $group;
     }
 
-    public function addToInternshipsCreated(Internship $internship): void
-    {
+    public function addToInternshipsCreated(Internship $internship): void {
         $this->internshipsCreated[] = $internship;
     }
 
-    public function addToInternshipsApplied(Internship $internship): void
-    {
+    public function addToInternshipsApplied(Internship $internship): void {
         $this->internshipsApplied[] = $internship;
     }
 }
