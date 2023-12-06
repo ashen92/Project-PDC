@@ -10,8 +10,8 @@ use App\Entities\Role;
 use App\Entities\User;
 use App\Entities\UserRequirement;
 
-require_once __DIR__ . "/../../vendor/autoload.php";
-require_once __DIR__ . "/../src/container.php";
+require_once __DIR__."/../../vendor/autoload.php";
+require_once __DIR__."/../src/container.php";
 
 $entityManager = $container->get("doctrine.entity_manager");
 
@@ -19,37 +19,34 @@ echo "Adding users... ";
 
 $passwordHash = "$2y$10\$dLij/BtPMbPKtt/CxpzqVuSn1FBVq.es9spKQ87sdGVJmlu4J3zwq";
 
-$user = new User("1@mail.com", "Green", $passwordHash);
 $user1 = new User("2@mail.com", "Admin", $passwordHash);
 $user2 = new User("coordinator@mail.com", "Coordinator", $passwordHash);
 $user3 = new User("student@mail.com", "Student", $passwordHash);
-$user4 = new User("5@mail.com", "Root", $passwordHash);
-$user5 = new User("6@mail.com", "Head", $passwordHash);
-$user6 = new User("partner@mail.com", "Apple", $passwordHash);
-$user7 = new User("8@mail.com", "Orange", $passwordHash);
-$user8 = new User("9@mail.com", "Willey", $passwordHash);
-$user9 = new User("10@mail.com", "Wood", $passwordHash);
-$user10 = new User("11@mail.com", "Cummings", $passwordHash);
+$user4 = new User("partner@mail.com", "Partner", $passwordHash);
 
-$user11 = new User(null, null, null);
-$user12 = new User(null, null, null);
-$user13 = new User(null, null, null);
-
-$user11->setStudentEmail("2021is084@stu.ucsc.cmb.ac.lk");
-$user11->setFullName("H.D.A.H. Sandaruwan");
-
-$entityManager->persist($user);
 $entityManager->persist($user1);
 $entityManager->persist($user2);
 $entityManager->persist($user3);
 $entityManager->persist($user4);
-$entityManager->persist($user5);
-$entityManager->persist($user6);
-$entityManager->persist($user7);
-$entityManager->persist($user8);
-$entityManager->persist($user9);
-$entityManager->persist($user10);
-$entityManager->persist($user11);
+
+// Add student users ----------------------------------------------
+
+$studentUsers = [];
+
+$studentUsers[0] = new User(null, null, null);
+$studentUsers[0]->setStudentEmail("2021is084@stu.ucsc.cmb.ac.lk");
+$studentUsers[0]->setFullName("H.D.A.H. Sandaruwan");
+$entityManager->persist($studentUsers[0]);
+
+for($i = 1; $i < 600; $i++) {
+    $studentUsers[$i] = new User(null, null, null);
+    $studentUsers[$i]->setStudentEmail("2021is084+{$i}@stu.ucsc.cmb.ac.lk");
+    $studentUsers[$i]->setFullName("Student User {$i}");
+    $entityManager->persist($studentUsers[$i]);
+}
+
+// ----------------------------------------------------------------
+
 $entityManager->flush();
 
 echo "Done.\nAdding groups...";
@@ -60,25 +57,31 @@ $groupStudents = new UserGroup("Students");
 $groupThirdYearStudents = new UserGroup("ThirdYearStudents");
 $groupFirstYearStudents = new UserGroup("FirstYearStudents");
 
-$groupThirdYearStudents->addUser($user);
+foreach($studentUsers as $user) {
+    $groupStudents->addUser($user);
+}
+
+for($i = 0; $i < 200; $i++) {
+    $groupThirdYearStudents->addUser($studentUsers[$i]);
+}
+
+for($i = 200; $i < 400; $i++) {
+    $groupFirstYearStudents->addUser($studentUsers[$i]);
+}
+
+$groupStudents->addUser($user3);
 $groupThirdYearStudents->addUser($user3);
-$groupFirstYearStudents->addUser($user4);
-$groupFirstYearStudents->addUser($user5);
-$groupPartners->addUser($user6);
-$groupPartners->addUser($user7);
+
+$groupPartners->addUser($user4);
+
 $groupCoordinators->addUser($user1);
 $groupCoordinators->addUser($user2);
-$groupStudents->addUser($user);
-$groupStudents->addUser($user3);
-$groupStudents->addUser($user4);
-$groupStudents->addUser($user5);
-$groupStudents->addUser($user11);
 
 $groupInternshipCycleStudents = new UserGroup("InternshipCycleStudents");
 $groupInternshipCycleStudents->addUser($user3);
 
 $groupInternshipCyclePartners = new UserGroup("InternshipCyclePartners");
-$groupInternshipCyclePartners->addUser($user6);
+$groupInternshipCyclePartners->addUser($user4);
 
 $entityManager->persist($groupInternshipCycleStudents);
 $entityManager->persist($groupInternshipCyclePartners);
@@ -154,8 +157,8 @@ $internData = [
 
 $internshipCycle = new InternshipCycle();
 
-foreach ($internData as $internship) {
-    $i = new Internship($internship[0], $internship[1], $user7, $internshipCycle);
+foreach($internData as $internship) {
+    $i = new Internship($internship[0], $internship[1], $user4, $internshipCycle);
     $entityManager->persist($i);
 }
 
@@ -229,7 +232,7 @@ $eventData = [
     ]
 ];
 
-foreach ($eventData as $eventData) {
+foreach($eventData as $eventData) {
     $event = new Event($eventData[0], $eventData[1], $eventData[3], $eventData[4], $eventData[2], $eventData[5]);
     $entityManager->persist($event);
 }
@@ -317,12 +320,8 @@ $entityManager->flush();
 
 echo "Done.\nAdding user requirements...";
 
-$userRequirement = new UserRequirement($user, $r1);
 $userRequirement1 = new UserRequirement($user3, $r1);
-$userRequirement2 = new UserRequirement($user, $r2);
-$userRequirement3 = new UserRequirement($user3, $r5);
-$entityManager->persist($userRequirement);
+$userRequirement2 = new UserRequirement($user3, $r5);
 $entityManager->persist($userRequirement1);
 $entityManager->persist($userRequirement2);
-$entityManager->persist($userRequirement3);
 $entityManager->flush();
