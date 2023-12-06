@@ -6,19 +6,14 @@ namespace App\Services;
 use App\Entities\Event;
 use App\Interfaces\IEventService;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Contracts\Cache\CacheInterface;
-use Symfony\Contracts\Cache\ItemInterface;
 
-class EventService implements IEventService
-{
+class EventService implements IEventService {
     public function __construct(
-        private EntityManagerInterface $entityManager,
-        private CacheInterface $cache
+        private EntityManagerInterface $entityManager
     ) {
     }
 
-    public function getEvents(): array
-    {
+    public function getEvents(): array {
         $queryBuilder = $this->entityManager->createQueryBuilder();
         $queryBuilder
             ->select("e")
@@ -27,8 +22,7 @@ class EventService implements IEventService
         return $queryBuilder->getQuery()->getArrayResult();
     }
 
-    public function getEventById(int $id): Event|null
-    {
+    public function getEventById(int $id): Event|null {
         $queryBuilder = $this->entityManager->createQueryBuilder();
         $queryBuilder
             ->select("e")
@@ -39,20 +33,17 @@ class EventService implements IEventService
         return $queryBuilder->getQuery()->getOneOrNullResult();
     }
 
-    public function createEvent(Event $event): void
-    {
+    public function createEvent(Event $event): void {
         $this->entityManager->persist($event);
         $this->entityManager->flush();
     }
 
-    public function editEvent(Event $event): void
-    {
+    public function editEvent(Event $event): void {
 
         $this->entityManager->persist($event);
         $this->entityManager->flush();
     }
-    public function deleteEvent(Event $event): void
-    {
+    public function deleteEvent(Event $event): void {
 
         $this->entityManager->remove($event); // Mark the event for removal.
         $this->entityManager->flush();

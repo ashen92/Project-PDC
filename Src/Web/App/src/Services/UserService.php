@@ -11,13 +11,10 @@ use App\Entities\User;
 use App\Interfaces\IPasswordHasher;
 use App\Interfaces\IUserService;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Contracts\Cache\CacheInterface;
-use Symfony\Contracts\Cache\ItemInterface;
 
 class UserService implements IUserService {
     public function __construct(
         private EntityManagerInterface $entityManager,
-        private CacheInterface $cache,
         private IPasswordHasher $passwordHasher
     ) {
     }
@@ -39,12 +36,7 @@ class UserService implements IUserService {
      * @return array An array of strings
      */
     public function getUserRoles(int $userId): array {
-        // $cacheKey = "user_roles_" . $userId;
-
-        // return $this->cache->get($cacheKey, function (ItemInterface $item) use ($userId) {
-        // $item->expiresAfter(3600);
         return $this->entityManager->getRepository(User::class)->getUserRoles($userId);
-        // });
     }
 
     public function invalidateUserCache(int $userId): void {

@@ -10,18 +10,14 @@ use App\Entities\UserGroup;
 use App\Interfaces\IInternshipCycleService;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Contracts\Cache\CacheInterface;
 
-class InternshipCycleService implements IInternshipCycleService
-{
+class InternshipCycleService implements IInternshipCycleService {
     public function __construct(
-        private EntityManagerInterface $entityManager,
-        private CacheInterface $cache
+        private EntityManagerInterface $entityManager
     ) {
     }
 
-    public function createInternshipCycle(CreateInternshipCycleDTO $createInternshipCycleDTO): InternshipCycle
-    {
+    public function createInternshipCycle(CreateInternshipCycleDTO $createInternshipCycleDTO): InternshipCycle {
         $internshipCycle = new InternshipCycle();
         $this->entityManager->persist($internshipCycle);
         $this->entityManager->flush();
@@ -32,15 +28,15 @@ class InternshipCycleService implements IInternshipCycleService
         $roleInternshipPartner = $this->entityManager
             ->getRepository(Role::class)
             ->findOneBy(
-                ["name" => "ROLE_INTERNSHIP_PARTNER"]
-            );
+        ["name" => "ROLE_INTERNSHIP_PARTNER"]
+        );
         $roleInternshipPartner->addGroup($partnerGroup);
 
         $roleInternshipStudent = $this->entityManager
             ->getRepository(Role::class)
             ->findOneBy(
-                ["name" => "ROLE_INTERNSHIP_STUDENT"]
-            );
+        ["name" => "ROLE_INTERNSHIP_STUDENT"]
+        );
         $roleInternshipStudent->addGroup($studentGroup);
 
         $partnerGroup->addUsersFrom(

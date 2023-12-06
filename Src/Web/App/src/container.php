@@ -64,29 +64,28 @@ $container->register(
 )
     ->setArguments([
         new Reference("doctrine.entity_manager"),
-        new Reference("app.cache"),
         new Reference("password_hasher")
     ]);
 
 $container->register("service.user_group", App\Services\UserGroupService::class)
     ->setArguments([
-        new Reference("doctrine.entity_manager"),
-        new Reference("app.cache")
+        new Reference("doctrine.entity_manager")
     ]);
 
 $container->register(
     "service.internship",
     App\Services\InternshipService::class
 )
-    ->setArguments([new Reference("doctrine.entity_manager"), new Reference("app.cache")]);
+    ->setArguments([
+        new Reference("doctrine.entity_manager")
+    ]);
 
 $container->register(
     "service.internship_cycle",
     App\Services\InternshipCycleService::class
 )
     ->setArguments([
-        new Reference("doctrine.entity_manager"),
-        new Reference("app.cache")
+        new Reference("doctrine.entity_manager")
     ]);
 
 $container->register(
@@ -95,7 +94,6 @@ $container->register(
 )
     ->setArguments([
         new Reference("doctrine.entity_manager"),
-        new Reference("app.cache"),
         new Reference("service.file_storage")
     ]);
 
@@ -103,7 +101,9 @@ $container->register(
     "service.event",
     App\Services\EventService::class
 )
-    ->setArguments([new Reference("doctrine.entity_manager"), new Reference("app.cache")]);
+    ->setArguments([
+        new Reference("doctrine.entity_manager")
+    ]);
 
 $container->register(
     "service.email",

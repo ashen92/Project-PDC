@@ -8,25 +8,14 @@ use App\Entities\Internship;
 use App\Interfaces\IInternshipService;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query\ResultSetMappingBuilder;
-use Symfony\Contracts\Cache\CacheInterface;
-use Symfony\Contracts\Cache\ItemInterface;
 
-class InternshipService implements IInternshipService
-{
+class InternshipService implements IInternshipService {
     public function __construct(
-        private EntityManagerInterface $entityManager,
-        private CacheInterface $cache
+        private EntityManagerInterface $entityManager
     ) {
     }
 
-    public function getInternships(): array
-    {
-        // $cacheKey = "internships";
-        // return $this->cache->get($cacheKey, function (ItemInterface $item) {
-        // $item->expiresAfter(3600);
-        // return $internships;
-        // });
-
+    public function getInternships(): array {
         $queryBuilder = $this->entityManager->createQueryBuilder();
         $queryBuilder
             ->select("i.id, i.title, i.description, u.firstName")
@@ -35,8 +24,7 @@ class InternshipService implements IInternshipService
         return $queryBuilder->getQuery()->getArrayResult();
     }
 
-    public function getInternshipsByUserId(int $userId): array
-    {
+    public function getInternshipsByUserId(int $userId): array {
         $queryBuilder = $this->entityManager->createQueryBuilder();
         $queryBuilder
             ->select("i.id, i.title, i.description, u.firstName")
@@ -47,8 +35,7 @@ class InternshipService implements IInternshipService
         return $queryBuilder->getQuery()->getArrayResult();
     }
 
-    public function getInternshipById(int $id): ?InternshipDetailsDTO
-    {
+    public function getInternshipById(int $id): ?InternshipDetailsDTO {
         $rsm = new ResultSetMappingBuilder($this->entityManager);
         $rsm->addRootEntityFromClassMetadata('App\Entities\Internship', 'i');
 
@@ -56,7 +43,7 @@ class InternshipService implements IInternshipService
         $query = $this->entityManager->createNativeQuery($sql, $rsm);
         $query->setParameter("id", $id);
         $internship = $query->getSingleResult();
-        if ($internship === null) {
+        if($internship === null) {
             return null;
         }
 
@@ -67,8 +54,7 @@ class InternshipService implements IInternshipService
         );
     }
 
-    public function deleteInternshipById(int $id): void
-    {
+    public function deleteInternshipById(int $id): void {
         $queryBuilder = $this->entityManager->createQueryBuilder();
         $queryBuilder
             ->delete()
@@ -78,8 +64,7 @@ class InternshipService implements IInternshipService
         $queryBuilder->getQuery()->execute();
     }
 
-    public function addInternship(string $title, string $description, int $userId): void
-    {
+    public function addInternship(string $title, string $description, int $userId): void {
         $user = $this->entityManager->getReference("App\Entities\User", $userId);
         $internshipCycle = $this->entityManager->getReference("App\Entities\InternshipCycle", 1);
         $internship = new Internship($title, $description, $user, $internshipCycle);
@@ -87,25 +72,22 @@ class InternshipService implements IInternshipService
         $this->entityManager->flush();
     }
 
-    public function updateInternship(int $id, string $title, string $description): void
-    {
+    public function updateInternship(int $id, string $title, string $description): void {
         $internship = $this->entityManager->getReference("App\Entities\Internship", $id);
         $internship->setTitle($title);
         $internship->setDescription($description);
         $this->entityManager->flush();
     }
 
-    public function applyToInternship(int $internshipId, int $userId): void
-    {
+    public function applyToInternship(int $internshipId, int $userId): void {
         $internship = $this->entityManager->getReference("App\Entities\Internship", $internshipId);
         $user = $this->entityManager->getReference("App\Entities\User", $userId);
         $internship->addApplicant($user);
         $this->entityManager->flush();
     }
 
-    public function getInternshipsBy(int|null $userId = null, string $searchQuery): array
-    {
-        if ($userId === null) {
+    public function getInternshipsBy(int|null $userId = null, string $searchQuery): array {
+        if($userId === null) {
             $queryBuilder = $this->entityManager->createQueryBuilder();
             $queryBuilder
                 ->select("i")
@@ -126,8 +108,6 @@ class InternshipService implements IInternshipService
                     $queryBuilder->expr()->like("LOWER(i.title)", ":searchQuery")
                 )
             )
-            // ->where("i.user = :userId")
-            // ->andWhere("LOWER(i.title) LIKE :searchQuery")
             ->setParameter("userId", $userId)
             ->setParameter("searchQuery", "%$searchQuery%");
         $query = $queryBuilder->getQuery();

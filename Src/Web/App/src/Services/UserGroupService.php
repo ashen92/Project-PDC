@@ -6,19 +6,15 @@ namespace App\Services;
 use App\Entities\UserGroup;
 use App\Interfaces\IUserGroupService;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Contracts\Cache\CacheInterface;
 
-class UserGroupService implements IUserGroupService
-{
+class UserGroupService implements IUserGroupService {
     public function __construct(
-        private EntityManagerInterface $entityManager,
-        private CacheInterface $cache
+        private EntityManagerInterface $entityManager
     ) {
 
     }
 
-    public function getUserGroupsForInternshipProgram(): array
-    {
+    public function getUserGroupsForInternshipProgram(): array {
         return $this->entityManager->getRepository(UserGroup::class)->findAll();
     }
 }
