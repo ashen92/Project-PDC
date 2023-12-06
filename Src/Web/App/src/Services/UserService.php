@@ -12,14 +12,16 @@ use App\Interfaces\IPasswordHasher;
 use App\Interfaces\IUserService;
 use Doctrine\ORM\EntityManagerInterface;
 
-class UserService implements IUserService {
+class UserService implements IUserService
+{
     public function __construct(
         private EntityManagerInterface $entityManager,
         private IPasswordHasher $passwordHasher
     ) {
     }
 
-    public function createStudentUser(CreateStudentUserDTO $createStudentDTO) {
+    public function createStudentUser(CreateStudentUserDTO $createStudentDTO)
+    {
         $user = $this->entityManager->getRepository(User::class)->find($createStudentDTO->id);
         $user->setFirstName($createStudentDTO->firstName);
         $user->setLastName($createStudentDTO->lastName);
@@ -35,22 +37,34 @@ class UserService implements IUserService {
     /**
      * @return array An array of strings
      */
-    public function getUserRoles(int $userId): array {
-        return $this->entityManager->getRepository(User::class)->getUserRoles($userId);
+    public function getUserRoles(int $userId): array
+    {
+        $queryBuilder = $this->entityManager->createQueryBuilder();
+        $queryBuilder
+            ->select("r.name")
+            ->from(User::class, "u")
+            ->innerJoin("u.groups", "g")
+            ->innerJoin("g.roles", "r")
+            ->where("u.id = :userId")
+            ->setParameter("userId", $userId);
+
+        return $queryBuilder->getQuery()->getSingleColumnResult();
     }
 
-    public function hasRole(int $userId, string $role): bool {
-        if($role == "")
+    public function hasRole(int $userId, string $role): bool
+    {
+        if ($role == "")
             return true;
         $roles = $this->getUserRoles($userId);
-        if(in_array($role, $roles))
+        if (in_array($role, $roles))
             return true;
         return false;
     }
 
-    public function getUserByEmail(string $email): ?UserViewDTO {
+    public function getUserByEmail(string $email): ?UserViewDTO
+    {
         $user = $this->entityManager->getRepository(User::class)->findOneBy(["email" => $email]);
-        if(!$user)
+        if (!$user)
             return null;
 
         return new UserViewDTO(
@@ -65,9 +79,10 @@ class UserService implements IUserService {
         );
     }
 
-    public function getUserByStudentEmail(string $email): ?StudentUserViewDTO {
+    public function getUserByStudentEmail(string $email): ?StudentUserViewDTO
+    {
         $user = $this->entityManager->getRepository(User::class)->findOneBy(["studentEmail" => $email]);
-        if(!$user)
+        if (!$user)
             return null;
 
         return new StudentUserViewDTO(
@@ -84,10 +99,11 @@ class UserService implements IUserService {
         );
     }
 
-    public function getUserByActivationToken(string $token): ?UserViewDTO {
+    public function getUserByActivationToken(string $token): ?UserViewDTO
+    {
         $user = $this->entityManager->getRepository(User::class)->findOneBy(["activationToken" => $token]);
 
-        if(!$user)
+        if (!$user)
             return null;
 
         return new UserViewDTO(
@@ -102,7 +118,8 @@ class UserService implements IUserService {
         );
     }
 
-    public function saveActivationToken(UserActivationTokenDTO $dto): void {
+    public function saveActivationToken(UserActivationTokenDTO $dto): void
+    {
         $user = $this->entityManager->getRepository(User::class)->find($dto->id);
         $user->setActivationToken($dto->activationToken);
         $user->setActivationTokenExpiresAt($dto->activationTokenExpiresAt);
