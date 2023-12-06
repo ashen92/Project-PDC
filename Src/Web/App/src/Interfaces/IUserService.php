@@ -11,7 +11,6 @@ use App\DTOs\UserViewDTO;
 interface IUserService {
     public function createStudentUser(CreateStudentUserDTO $createStudentDTO);
     public function getUserRoles(int $userId): array;
-    public function invalidateUserCache(int $userId): void;
     public function hasRole(int $userId, string $role): bool;
     public function getUserByEmail(string $email): ?UserViewDTO;
     public function getUserByStudentEmail(string $email): ?StudentUserViewDTO;

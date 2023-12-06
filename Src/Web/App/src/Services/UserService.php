@@ -39,14 +39,6 @@ class UserService implements IUserService {
         return $this->entityManager->getRepository(User::class)->getUserRoles($userId);
     }
 
-    public function invalidateUserCache(int $userId): void {
-        $this->invalidateUserRolesCache($userId);
-    }
-
-    public function invalidateUserRolesCache(int $userId): void {
-        $this->cache->delete("user_roles_".$userId);
-    }
-
     public function hasRole(int $userId, string $role): bool {
         if($role == "")
             return true;
