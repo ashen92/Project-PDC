@@ -2,16 +2,16 @@
 
 use App\DTOs\CreateRequirementDTO;
 use App\Entities\Event;
-use App\Entities\UserGroup;
 use App\Entities\Internship;
 use App\Entities\InternshipCycle;
 use App\Entities\Requirement;
 use App\Entities\Role;
 use App\Entities\User;
+use App\Entities\UserGroup;
 use App\Entities\UserRequirement;
 
-require_once __DIR__."/../../vendor/autoload.php";
-require_once __DIR__."/../src/container.php";
+require_once __DIR__ . "/../../vendor/autoload.php";
+require_once __DIR__ . "/../src/container.php";
 
 $entityManager = $container->get("doctrine.entity_manager");
 
@@ -38,11 +38,129 @@ $studentUsers[0]->setStudentEmail("2021is084@stu.ucsc.cmb.ac.lk");
 $studentUsers[0]->setFullName("H.D.A.H. Sandaruwan");
 $entityManager->persist($studentUsers[0]);
 
-for($i = 1; $i < 600; $i++) {
+for ($i = 1; $i < 600; $i++) {
     $studentUsers[$i] = new User(null, null, null);
     $studentUsers[$i]->setStudentEmail("2021is084+{$i}@stu.ucsc.cmb.ac.lk");
     $studentUsers[$i]->setFullName("Student User {$i}");
     $entityManager->persist($studentUsers[$i]);
+}
+
+// ----------------------------------------------------------------
+
+// Add partner users ----------------------------------------------
+
+$partnerUsers = [];
+
+$partnerUsersData = [
+    "Kaylie Moss",
+    "Porter Stafford",
+    "Bridget Whitney",
+    "Jeffery Rangel",
+    "Gloria Pham",
+    "Russell Munoz",
+    "Kehlani Burton",
+    "Zander McKenzie",
+    "Briar Compton",
+    "Abner Elliott",
+    "Noelle Hill",
+    "Isaac Goodman",
+    "Carolina Rich",
+    "Miller Chambers",
+    "Makayla Nicholson",
+    "Rodrigo Swanson",
+    "Helen Chase",
+    "Otis McDaniel",
+    "Dahlia Ibarra",
+    "Asa Sampson",
+    "Meilani Yu",
+    "Bryant Sutton",
+    "Izabella Carey",
+    "Watson Wang",
+    "Kailani Carson",
+    "Ares Velazquez",
+    "Jaliyah O’Neal",
+    "Eddie Cochran",
+    "Alma Rivera",
+    "Charles Cantrell",
+    "Yamileth Hampton",
+    "Hank Andrade",
+    "Emmy Bowers",
+    "Dorian Hendricks",
+    "Dani Berry",
+    "Adonis Yu",
+    "Navy Felix",
+    "Rodney Valenzuela",
+    "Henley Lara",
+    "Caiden Hahn",
+    "Fallon Russell",
+    "Weston Montgomery",
+    "Evangeline Trujillo",
+    "Apollo Truong",
+    "Judith Hamilton",
+    "Jason Wall",
+    "Jayda Todd",
+    "Baylor Patrick",
+    "Lyra Perez",
+    "Owen Hurley",
+    "Rylan Ortiz",
+    "Landon Espinoza",
+    "Lucille Harvey",
+    "Cayden Harvey",
+    "Nicole Martin",
+    "Mateo Mays",
+    "Denisse Rose",
+    "Hayden Mayo",
+    "Aarya Ward",
+    "Jameson Anthony",
+    "Macy Osborne",
+    "Augustus Pope",
+    "Aurelia Copeland",
+    "Axton Watson",
+    "Hailey Tang",
+    "Rogelio Boyer",
+    "Chaya Wilkinson",
+    "Leonard Kemp",
+    "Anika Johnston",
+    "Felix Hickman",
+    "Scarlette Ruiz",
+    "Austin Hebert",
+    "Kyleigh Snow",
+    "Houston Barrera",
+    "Beatrice Waters",
+    "Maximilian Travis",
+    "Mazikee Crawford",
+    "Kevin Zhang",
+    "Sarai Hendrix",
+    "Korbyn Alvarez",
+    "Leilani Nielsen",
+    "Tru Gillespie",
+    "Alianna Harrington",
+    "Omari Byrd",
+    "Giselle Navarro",
+    "Reid Barker",
+    "Remington Andrews",
+    "Lukas Conley",
+    "Salem Vaughn",
+    "Remy O’Neal",
+    "Treasure Blake",
+    "Zyaire Kemp",
+    "Anika Fowler",
+    "Kameron Harris",
+    "Penelope Powers",
+    "Sean Bradford",
+    "Rhea Sierra",
+    "Dayton Bowen",
+    "Dream Blair",
+    "Troy Jensen",
+];
+
+for ($i = 0; $i < 100; $i++) {
+    $partnerUsers[$i] = new User(
+        "partner{$i}@mail.com",
+        $partnerUsersData[$i],
+        $passwordHash
+    );
+    $entityManager->persist($partnerUsers[$i]);
 }
 
 // ----------------------------------------------------------------
@@ -57,16 +175,20 @@ $groupStudents = new UserGroup("Students");
 $groupThirdYearStudents = new UserGroup("ThirdYearStudents");
 $groupFirstYearStudents = new UserGroup("FirstYearStudents");
 
-foreach($studentUsers as $user) {
+foreach ($studentUsers as $user) {
     $groupStudents->addUser($user);
 }
 
-for($i = 0; $i < 200; $i++) {
+for ($i = 0; $i < 200; $i++) {
     $groupThirdYearStudents->addUser($studentUsers[$i]);
 }
 
-for($i = 200; $i < 400; $i++) {
+for ($i = 200; $i < 400; $i++) {
     $groupFirstYearStudents->addUser($studentUsers[$i]);
+}
+
+foreach ($partnerUsers as $user) {
+    $groupPartners->addUser($user);
 }
 
 $groupStudents->addUser($user3);
@@ -157,7 +279,7 @@ $internData = [
 
 $internshipCycle = new InternshipCycle();
 
-foreach($internData as $internship) {
+foreach ($internData as $internship) {
     $i = new Internship($internship[0], $internship[1], $user4, $internshipCycle);
     $entityManager->persist($i);
 }
@@ -232,7 +354,7 @@ $eventData = [
     ]
 ];
 
-foreach($eventData as $eventData) {
+foreach ($eventData as $eventData) {
     $event = new Event($eventData[0], $eventData[1], $eventData[3], $eventData[4], $eventData[2], $eventData[5]);
     $entityManager->persist($event);
 }
