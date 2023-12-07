@@ -28,9 +28,9 @@
                 </li>
             </ul>
             <ul class="navbar-end">
-                {# <li>
-                    <a href="">Name</a>
-                </li> #}
+                <li>
+                    <a href="">{{ app.session.get("user_first_name") }}</a>
+                </li>
                 <li>
                     <a href="/logout">Sign out</a>
                 </li>
