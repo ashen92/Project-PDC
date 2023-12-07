@@ -16,11 +16,17 @@
                         TechTalks
                     </a>
                 </li>
+                {% if
+                "ROLE_ADMIN" in user_roles or
+                "ROLE_INTERNSHIP_PARTNER" in user_roles or
+                "ROLE_INTERNSHIP_STUDENT" in user_roles
+                %}
                 <li>
                     <a href="/internship-program">
                         Internship Program
                     </a>
                 </li>
+                {% endif %}
                 <li>
                     <a href="/events">
                         Events
@@ -42,11 +48,17 @@
                     TechTalks
                 </a>
             </li>
+            {% if
+            "ROLE_ADMIN" in user_roles or
+            "ROLE_INTERNSHIP_PARTNER" in user_roles or
+            "ROLE_INTERNSHIP_STUDENT" in user_roles
+            %}
             <li>
                 <a href="/internship-program">
                     Internship Program
                 </a>
             </li>
+            {% endif %}
             <li>
                 <a href="/events">
                     Events

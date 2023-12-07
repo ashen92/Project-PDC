@@ -8,7 +8,7 @@ use Attribute;
 #[Attribute]
 class RequiredRole
 {
-    public function __construct(public string $role)
+    public function __construct(public string|array $role)
     {
 
     }

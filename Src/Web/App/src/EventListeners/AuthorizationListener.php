@@ -86,9 +86,17 @@ class AuthorizationListener implements EventSubscriberInterface
             return $requiredRole;
         });
 
-        if (!$this->userService->hasRole((int) $this->session->get("user_id"), $cachedRole)) {
-            $event->setController(fn() => $this->errorController->notFound());
+        if (empty($cachedRole) || $cachedRole === "") {
+            return;
         }
+
+        $userId = (int) $this->session->get("user_id");
+        foreach ($cachedRole as $role) {
+            if ($this->userService->hasRole($userId, $role)) {
+                return;
+            }
+        }
+        $event->setController(fn() => $this->errorController->notFound());
     }
 
     public static function getSubscribedEvents()

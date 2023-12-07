@@ -23,7 +23,13 @@
 <section class="content">
     <div class="card-container">
         <a class="card" href="/techtalks">TechTalks</a>
+        {% if
+        "ROLE_ADMIN" in user_roles or
+        "ROLE_INTERNSHIP_PARTNER" in user_roles or
+        "ROLE_INTERNSHIP_STUDENT" in user_roles
+        %}
         <a class="card" href="/internship-program">Internship Program</a>
+        {% endif %}
         <a class="card" href="/events">Events</a>
         {% if "ROLE_ADMIN" in user_roles %}
         <a class="card" href="/users">Manage Users</a>
