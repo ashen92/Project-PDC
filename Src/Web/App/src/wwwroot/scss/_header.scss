@@ -4,6 +4,7 @@
 .header {
     height: 3.75rem;
     box-shadow: rgba(57, 76, 96, 0.15) 0px 2px 4px -1px;
+    background-color: #006bbd;
 
     .navbar {
         display: flex;
@@ -22,10 +23,11 @@
         &-toggler {
             display: none;
             padding: .5rem;
-            border-radius: $rounded-2;
+            border-radius: $rounded-1 - 2;
             cursor: pointer;
             min-width: 3rem;
             max-width: 3rem;
+            color: #fff;
 
             >.i-list {
                 font-size: 1.5rem;
@@ -36,11 +38,11 @@
             }
 
             &:hover {
-                background-color: #e5e5e5;
+                background-color: #007dce;
             }
 
             &:active {
-                background-color: #d3d3d3;
+                background-color: #0085de;
             }
         }
 
@@ -51,7 +53,7 @@
             left: 0;
             width: 100%;
             z-index: 1;
-            background-color: #fff;
+            background-color: #006bbd;
             padding: 1.5rem;
             box-shadow: rgba(57, 76, 96, 0.15) 0px 2px 4px -1px;
         }
@@ -78,19 +80,21 @@
         }
 
         a {
+            color: #fff;
+            font-weight: $fw-medium;
             width: 100%;
             height: 100%;
             display: block;
             padding: 0.7rem 1rem 0.7rem 1rem;
-            border-radius: 20px;
+            border-radius: $rounded-1 - 2;
             transition: background-color .1s cubic-bezier(0.02, 1, 1, 1);
 
             &:hover {
-                background-color: #e5e5e5;
+                background-color: #007dce;
             }
 
             &:active {
-                background-color: #d3d3d3;
+                background-color: #0085de;
             }
         }
 
