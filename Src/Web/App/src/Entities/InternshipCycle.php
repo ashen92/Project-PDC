@@ -62,6 +62,36 @@ class InternshipCycle
         return $this->id;
     }
 
+    public function getCreatedAt(): DateTime
+    {
+        return $this->createdAt;
+    }
+
+    public function getEndedAt(): ?DateTime
+    {
+        return $this->endedAt;
+    }
+
+    public function getCollectionStartDate(): ?DateTime
+    {
+        return $this->collectionStartDate;
+    }
+
+    public function getCollectionEndDate(): ?DateTime
+    {
+        return $this->collectionEndDate;
+    }
+
+    public function getApplicationStartDate(): ?DateTime
+    {
+        return $this->applicationStartDate;
+    }
+
+    public function getApplicationEndDate(): ?DateTime
+    {
+        return $this->applicationEndDate;
+    }
+
     public function setCollectionStartDate(DateTime $collectionStartDate): void
     {
         $this->collectionStartDate = $collectionStartDate;

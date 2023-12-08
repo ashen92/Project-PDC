@@ -16,19 +16,19 @@
 
 <section>
     {% if "ROLE_ADMIN" in user_roles %}
-    {# if there is no active internship cycle #}
+
+    {% if internshipCycle.endedAt is not null %}
     <div class="info-card">
         <p>There is no active internship cycle</p>
         <a class="btn btn-primary" role="button" href="/internship-program/cycle/create">Create an internship cycle</a>
     </div>
-    {# end #}
-
-    {# if there is an active internship cycle #}
+    {% else %}
     <div class="info-card">
         <p>Click on the following link to view or modify the current internship cycle.</p>
         <a class="btn btn-primary" role="button" href="/internship-program/cycle/details">View internship cycle</a>
     </div>
-    {# end #}
+    {% endif %}
+
     {% endif %}
 
     {% if "ROLE_INTERNSHIP_PARTNER" in user_roles %}

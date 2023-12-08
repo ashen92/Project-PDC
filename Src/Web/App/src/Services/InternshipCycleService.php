@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\DTOs\CreateInternshipCycleDTO;
+use App\DTOs\InternshipCycleViewDTO;
 use App\DTOs\InternshipStudentUserViewDTO;
 use App\Entities\InternshipCycle;
 use App\Entities\Role;
@@ -26,6 +27,22 @@ class InternshipCycleService implements IInternshipCycleService
             ->getRepository(InternshipCycle::class)
             ->findBy([], ["createdAt" => "DESC"], 1);
         return $latestInternshipCycle[0] ? $latestInternshipCycle[0]->getId() : null;
+    }
+
+    public function getLatestInternshipCycle(): InternshipCycleViewDTO
+    {
+        $latestInternshipCycle = $this->entityManager
+            ->getRepository(InternshipCycle::class)
+            ->findBy([], ["createdAt" => "DESC"], 1);
+        return new InternshipCycleViewDTO(
+            $latestInternshipCycle[0]->getId(),
+            $latestInternshipCycle[0]->getCreatedAt(),
+            $latestInternshipCycle[0]->getEndedAt(),
+            $latestInternshipCycle[0]->getCollectionStartDate(),
+            $latestInternshipCycle[0]->getCollectionEndDate(),
+            $latestInternshipCycle[0]->getApplicationStartDate(),
+            $latestInternshipCycle[0]->getApplicationEndDate()
+        );
     }
 
     public function createInternshipCycle(CreateInternshipCycleDTO $createInternshipCycleDTO): InternshipCycle

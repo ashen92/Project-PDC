@@ -45,7 +45,13 @@ class InternshipProgramController extends PageControllerBase
     #[Route(["", "/", "/home"], name: "home")]
     public function home(Request $request): Response
     {
-        return $this->render("internship-program/home.html", ["section" => "home"]);
+        return $this->render(
+            "internship-program/home.html",
+            [
+                "section" => "home",
+                "internshipCycle" => $this->internshipCycleService->getLatestInternshipCycle()
+            ]
+        );
     }
 
     #[Route("/cycle/create", methods: ["GET"])]
