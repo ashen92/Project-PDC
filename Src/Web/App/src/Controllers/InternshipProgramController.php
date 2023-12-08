@@ -105,9 +105,7 @@ class InternshipProgramController extends PageControllerBase
             "internship-program/monitoring/student-users.html",
             [
                 "section" => "monitoring",
-                "users" => $this->internshipCycleService->getStudentUsers(
-                    $request->getSession()->get("internship-cycle-id")
-                )
+                "users" => $this->internshipCycleService->getStudentUsers()
             ]
         );
     }

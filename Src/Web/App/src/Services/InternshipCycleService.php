@@ -20,6 +20,14 @@ class InternshipCycleService implements IInternshipCycleService
     ) {
     }
 
+    public function getLatestInternshipCycleId(): ?int
+    {
+        $latestInternshipCycle = $this->entityManager
+            ->getRepository(InternshipCycle::class)
+            ->findBy([], ["createdAt" => "DESC"], 1);
+        return $latestInternshipCycle[0] ? $latestInternshipCycle[0]->getId() : null;
+    }
+
     public function createInternshipCycle(CreateInternshipCycleDTO $createInternshipCycleDTO): InternshipCycle
     {
         $internshipCycle = new InternshipCycle();
@@ -76,8 +84,12 @@ class InternshipCycleService implements IInternshipCycleService
     /**
      * @return array An array of InternshipStudentUserViewDTO
      */
-    public function getStudentUsers(int $internshipCycleId): array
+    public function getStudentUsers(?int $internshipCycleId = null): array
     {
+        if ($internshipCycleId === null) {
+            $internshipCycleId = $this->getLatestInternshipCycleId();
+        }
+
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult("id", "id");
         $rsm->addScalarResult("studentEmail", "studentEmail");
