@@ -28,6 +28,10 @@ class User
     #[ORM\Column(nullable: true)]
     private string $fullName;
 
+    // For students. Should not be nullable
+    #[ORM\Column(nullable: true)]
+    private string $indexNumber;
+
     #[ORM\Column(nullable: true)]
     private ?string $firstName;
 
@@ -95,6 +99,11 @@ class User
         return $this->fullName;
     }
 
+    public function getIndexNumber(): string
+    {
+        return $this->indexNumber;
+    }
+
     public function getFirstName(): ?string
     {
         return $this->firstName;
@@ -138,6 +147,11 @@ class User
     public function setFullName(string $fullName): void
     {
         $this->fullName = $fullName;
+    }
+
+    public function setIndexNumber(string $indexNumber): void
+    {
+        $this->indexNumber = $indexNumber;
     }
 
     public function setFirstName(string $firstName): void

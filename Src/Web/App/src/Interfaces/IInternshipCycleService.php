@@ -9,4 +9,5 @@ use App\Entities\InternshipCycle;
 interface IInternshipCycleService
 {
     public function createInternshipCycle(CreateInternshipCycleDTO $createInternshipCycleDTO): InternshipCycle;
+    public function getStudentUsers(int $internshipCycleId): array;
 }

@@ -74,8 +74,9 @@ class InternshipProgramController extends PageControllerBase
         // validate DTO
         // todo
 
-        $this->internshipCycleService->createInternshipCycle($createInternshipCycleDTO);
+        $internshipCycle = $this->internshipCycleService->createInternshipCycle($createInternshipCycleDTO);
 
+        $request->getSession()->set("internship-cycle-id", $internshipCycle->getId());
         return $this->redirect("/internship-program/cycle/details");
     }
 
@@ -93,6 +94,20 @@ class InternshipProgramController extends PageControllerBase
             [
                 "section" => "monitoring",
                 "requirements" => $this->requirementService->getRequirements()
+            ]
+        );
+    }
+
+    #[Route("/monitoring/students", methods: ["GET"])]
+    public function monitoringStudentUsers(Request $request): Response
+    {
+        return $this->render(
+            "internship-program/monitoring/student-users.html",
+            [
+                "section" => "monitoring",
+                "users" => $this->internshipCycleService->getStudentUsers(
+                    $request->getSession()->get("internship-cycle-id")
+                )
             ]
         );
     }

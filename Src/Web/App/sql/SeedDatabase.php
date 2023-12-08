@@ -36,12 +36,14 @@ $studentUsers = [];
 $studentUsers[0] = new User(null, null, null);
 $studentUsers[0]->setStudentEmail("2021is084@stu.ucsc.cmb.ac.lk");
 $studentUsers[0]->setFullName("H.D.A.H. Sandaruwan");
+$studentUsers[0]->setIndexNumber("2021is084");
 $entityManager->persist($studentUsers[0]);
 
 for ($i = 1; $i < 600; $i++) {
     $studentUsers[$i] = new User(null, null, null);
     $studentUsers[$i]->setStudentEmail("2021is084+{$i}@stu.ucsc.cmb.ac.lk");
     $studentUsers[$i]->setFullName("Student User {$i}");
+    $studentUsers[$i]->setIndexNumber("2021is084+{$i}");
     $entityManager->persist($studentUsers[$i]);
 }
 
@@ -179,7 +181,7 @@ foreach ($studentUsers as $user) {
     $groupStudents->addUser($user);
 }
 
-for ($i = 0; $i < 200; $i++) {
+for ($i = 1; $i < 200; $i++) {
     $groupThirdYearStudents->addUser($studentUsers[$i]);
 }
 
@@ -192,8 +194,6 @@ foreach ($partnerUsers as $user) {
 }
 
 $groupStudents->addUser($user3);
-$groupThirdYearStudents->addUser($user3);
-
 $groupPartners->addUser($user4);
 
 $groupCoordinators->addUser($user1);

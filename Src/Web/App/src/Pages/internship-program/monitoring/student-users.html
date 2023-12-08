@@ -1,0 +1,44 @@
+{% extends "shared/layout-left-nav.html" %}
+
+{% block title %}Student Users{% endblock %}
+
+{% block left_nav %}
+{% include "internship-program/left-nav.html" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="mb-20">
+    <h5>
+        Student users
+    </h5>
+    <p class="fs-small">1000 users found</p>
+</div>
+<table class="table table-hover border-0 table-compact">
+    <colgroup>
+        <col class="w-2-12">
+        <col class="w-2-12">
+        <col class="w-2-12">
+        <col class="w-6-12">
+    </colgroup>
+    <thead>
+        <tr>
+            <th>First name</th>
+            <th>Full name</th>
+            <th>Index number</th>
+            <th>Student email</th>
+        </tr>
+    </thead>
+    <tbody class="table-rows-clickable">
+        {% for i in users %}
+        <tr data-href="students?user={{ i.id }}">
+            <td class="capitalize">{{ i.firstName }}</td>
+            <td class="capitalize">{{ i.fullName }}</td>
+            <td>{{ i.indexNumber }}</td>
+            <td>{{ i.studentEmail }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

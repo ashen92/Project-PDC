@@ -39,7 +39,7 @@
         height: 2.75rem;
 
         * {
-            border-bottom: $border-1;
+            border-bottom: 1px solid rgb(237, 235, 233);
         }
 
         &:last-child {
@@ -54,6 +54,16 @@
             background-color: $table-row-hover-bg;
             cursor: pointer;
             user-select: none;
+        }
+    }
+}
+
+.table-compact {
+
+    thead,
+    tbody {
+        tr {
+            height: 2.25rem;
         }
     }
 }
