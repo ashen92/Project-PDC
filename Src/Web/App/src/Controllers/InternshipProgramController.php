@@ -74,9 +74,7 @@ class InternshipProgramController extends PageControllerBase
         // validate DTO
         // todo
 
-        $internshipCycle = $this->internshipCycleService->createInternshipCycle($createInternshipCycleDTO);
-
-        $request->getSession()->set("internship-cycle-id", $internshipCycle->getId());
+        $this->internshipCycleService->createInternshipCycle($createInternshipCycleDTO);
         return $this->redirect("/internship-program/cycle/details");
     }
 
