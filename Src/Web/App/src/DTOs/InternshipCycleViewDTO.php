@@ -15,6 +15,8 @@ class InternshipCycleViewDTO
         public ?DateTime $collectionEndDate,
         public ?DateTime $applicationStartDate,
         public ?DateTime $applicationEndDate,
+        public string $partnerUserGroupName,
+        public string $studentUserGroupName
     ) {
     }
 }

@@ -17,7 +17,7 @@
 <section>
     {% if "ROLE_ADMIN" in user_roles %}
 
-    {% if internshipCycle.endedAt is not null %}
+    {% if internshipCycle.endedAt is not null or internshipCycle is null %}
     <div class="info-card">
         <p>There is no active internship cycle</p>
         <a class="btn btn-primary" role="button" href="/internship-program/cycle/create">Create an internship cycle</a>

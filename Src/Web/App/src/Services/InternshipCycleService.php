@@ -29,11 +29,16 @@ class InternshipCycleService implements IInternshipCycleService
         return $latestInternshipCycle[0] ? $latestInternshipCycle[0]->getId() : null;
     }
 
-    public function getLatestInternshipCycle(): InternshipCycleViewDTO
+    public function getLatestInternshipCycle(): ?InternshipCycleViewDTO
     {
         $latestInternshipCycle = $this->entityManager
             ->getRepository(InternshipCycle::class)
             ->findBy([], ["createdAt" => "DESC"], 1);
+
+        if (empty($latestInternshipCycle)) {
+            return null;
+        }
+
         return new InternshipCycleViewDTO(
             $latestInternshipCycle[0]->getId(),
             $latestInternshipCycle[0]->getCreatedAt(),
@@ -41,7 +46,9 @@ class InternshipCycleService implements IInternshipCycleService
             $latestInternshipCycle[0]->getCollectionStartDate(),
             $latestInternshipCycle[0]->getCollectionEndDate(),
             $latestInternshipCycle[0]->getApplicationStartDate(),
-            $latestInternshipCycle[0]->getApplicationEndDate()
+            $latestInternshipCycle[0]->getApplicationEndDate(),
+            $latestInternshipCycle[0]->getPartnerGroup()->getName(),
+            $latestInternshipCycle[0]->getStudentGroup()->getName()
         );
     }
 

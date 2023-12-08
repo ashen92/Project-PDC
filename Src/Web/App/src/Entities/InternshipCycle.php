@@ -17,10 +17,10 @@ class InternshipCycle
     #[ORM\Column(type: "integer")]
     private int $id;
 
-    #[ORM\Column(type: "date")]
+    #[ORM\Column(type: "datetime")]
     private DateTime $createdAt;
 
-    #[ORM\Column(type: "date", nullable: true)]
+    #[ORM\Column(type: "datetime", nullable: true)]
     private ?DateTime $endedAt;
 
     #[ORM\Column(type: "date", nullable: true)]
@@ -90,6 +90,16 @@ class InternshipCycle
     public function getApplicationEndDate(): ?DateTime
     {
         return $this->applicationEndDate;
+    }
+
+    public function getPartnerGroup(): UserGroup
+    {
+        return $this->partnerGroup;
+    }
+
+    public function getStudentGroup(): UserGroup
+    {
+        return $this->studentGroup;
     }
 
     public function setCollectionStartDate(DateTime $collectionStartDate): void

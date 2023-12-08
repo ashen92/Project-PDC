@@ -13,56 +13,57 @@
         Current Internship Cycle
     </h2>
 </div>
-<form>
-    <div class="mb-40">
-        <div class="fs-6 fw-semibold pb-20">Internship gathering phase</div>
-        <div class="row-cols-2 mb-5">
-            <div>Start date</div>
-            <div>Date</div>
+<section>
+    <form>
+        <div class="grid-details">
+            <p>Created at</p>
+            <p>:</p>
+            <p>{{ internshipCycle.createdAt.format("Y-m-d H:i:s") }}</p>
+
+            {% if internshipCycle.endedAt is not null %}
+            <p>Ended at</p>
+            <p>:</p>
+            <p>{{ internshipCycle.endedAt.format("Y-m-d H:i:s") }}</p>
+            {% endif %}
         </div>
-        <div class="row-cols-2 mb-5">
-            <div>End date</div>
-            <div>Date</div>
+
+        <p class="mt-30 mb-20 fw-semibold">Internship gathering phase</p>
+        <div class="grid-details">
+            <p>Start date</p>
+            <p>:</p>
+            <p>{{ internshipCycle.collectionStartDate.format("Y-m-d") }}</p>
+
+            <p>End date</p>
+            <p>:</p>
+            <p>{{ internshipCycle.collectionEndDate.format("Y-m-d") }}</p>
         </div>
-        <div class="row-cols-2 mb-5">
-            <div>Automatically send emails to partners when the start date is reached.</div>
-            <div>Yes or No</div>
+
+        <p class="mt-30 mb-20 fw-semibold">Internship gathering phase</p>
+        <div class="grid-details">
+            <p>Start date</p>
+            <p>:</p>
+            <p>{{ internshipCycle.applicationStartDate.format("Y-m-d") }}</p>
+
+            <p>End date</p>
+            <p>:</p>
+            <p>{{ internshipCycle.applicationEndDate.format("Y-m-d") }}</p>
         </div>
-    </div>
-    <div class="mb-40">
-        <div class="fs-6 fw-semibold pb-20">Internship phase</div>
-        <div class="row-cols-2 mb-5">
-            <div>Start date</div>
-            <div>Date</div>
+
+        <p class="mt-30 mb-20 fw-semibold">Participants</p>
+        <div class="grid-details">
+            <p>Partner user group name</p>
+            <p>:</p>
+            <p>{{ internshipCycle.partnerUserGroupName }}</p>
+
+            <p>Student user group name</p>
+            <p>:</p>
+            <p>{{ internshipCycle.studentUserGroupName }}</p>
         </div>
-        <div class="row-cols-2 mb-5">
-            <div>End date</div>
-            <div>Date</div>
+
+        <div class="actions">
+            <button class="btn" type="button">Modify</button>
         </div>
-        <div class="row-cols-2">
-            <div>Automatically send emails to Undergraduates when the start date is reached.
-            </div>
-            <div>Yes or No</div>
-        </div>
-    </div>
-    <div class="mb-40">
-        <div class="fs-6 fw-semibold pb-20">Who participates in this cycle</div>
-        <div class="row-cols-2 mb-5">
-            <div>User group students belong to</div>
-            <div>
-                User Group Name
-            </div>
-        </div>
-        <div class="row-cols-2">
-            <div>User group partners belong to</div>
-            <div>
-                User Group Name
-            </div>
-        </div>
-    </div>
-    <div class="actions">
-        <input class="btn" type="submit" value="Modify">
-    </div>
-</form>
+    </form>
+</section>
 
 {% endblock %}

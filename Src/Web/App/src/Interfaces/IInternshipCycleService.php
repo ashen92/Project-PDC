@@ -10,7 +10,7 @@ use App\Entities\InternshipCycle;
 interface IInternshipCycleService
 {
     public function getLatestInternshipCycleId(): ?int;
-    public function getLatestInternshipCycle(): InternshipCycleViewDTO;
+    public function getLatestInternshipCycle(): ?InternshipCycleViewDTO;
     public function createInternshipCycle(CreateInternshipCycleDTO $createInternshipCycleDTO): InternshipCycle;
     public function getStudentUsers(?int $internshipCycleId = null): array;
 }
