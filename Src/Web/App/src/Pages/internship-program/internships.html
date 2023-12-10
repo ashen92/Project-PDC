@@ -22,7 +22,7 @@
         </div>
 
         {% if ("ROLE_ADMIN" in user_roles) or ("ROLE_STUDENT" in user_roles) %}
-        <div class="item">
+        <div class="item" id="filter-by-company">
             Company
             <i class="i i-chevron-down"></i>
         </div>
@@ -85,6 +85,24 @@
                     <div class="formatted-text-area" id="job-description"></div>
                 </div>
             </div>
+        </div>
+    </div>
+    <div class="pop-up-multi-select-list hidden" id="company-multi-select-list">
+        <h4>Companies</h4>
+        <ul>
+            {% set counter = 0 %}
+            {% for i in companies %}
+            <li>
+                {% set counter = counter + 1 %}
+                <input type="checkbox" name="" id="{{ counter }}">
+                <label for="{{ counter }}">{{ i }}</label>
+            </li>
+            {% endfor %}
+        </ul>
+        <div class="actions">
+            <button type="button" class="btn" id="company-multi-select-list-apply-btn">Apply</button>
+            <button type="button" class="btn btn-secondary" id="company-multi-select-list-reset-btn">Reset</button>
+            <button type="button" class="btn btn-secondary" id="company-multi-select-list-hide-btn">Hide</button>
         </div>
     </div>
 </div>

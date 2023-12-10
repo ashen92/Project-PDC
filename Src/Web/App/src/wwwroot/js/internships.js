@@ -42,8 +42,8 @@ jobList.addEventListener("click", function (event) {
                 jobTitle.innerHTML = data.title;
                 jobDescription.innerHTML = data.description;
 
-                previouslySelectedItemCard.classList.remove("active");
-                itemCard.classList.add("active");
+                previouslySelectedItemCard.classList.toggle("active");
+                itemCard.classList.toggle("active");
                 previouslySelectedItemCard = itemCard;
             })
             .catch(error => console.error("Error retrieving job:", error));
@@ -54,7 +54,7 @@ const jobDetailsContent = document.getElementById("job-details-content");
 const jobDetailsSkeleton = document.getElementById("job-details-skeleton");
 const itemCard = document.querySelector(".item-card");
 document.addEventListener("DOMContentLoaded", () => {
-    itemCard.classList.add("active");
+    itemCard.classList.toggle("active");
     previouslySelectedItemCard = itemCard;
 
     fetch("/internship-program/internships/" + itemCard.getAttribute("data-job-id"), { method: "GET" })
@@ -62,8 +62,8 @@ document.addEventListener("DOMContentLoaded", () => {
         .then(data => {
             jobTitle.innerHTML = data.title;
             jobDescription.innerHTML = data.description;
-            jobDetailsSkeleton.style.display = "none";
-            jobDetailsContent.style.display = "block";
+            jobDetailsSkeleton.classList.toggle("hidden");
+            jobDetailsContent.classList.toggle("hidden");
         })
         .catch(error => console.error("Error retrieving job:", error));
 });
@@ -87,4 +87,44 @@ removeJobBtn.addEventListener("click", () => {
             window.location.href = `${window.location.pathname}`;
         })
         .catch(error => console.error("Error deleting job:", error));
+});
+
+const filterByCompany = document.getElementById("filter-by-company");
+const companyMultiSelectList = document.getElementById("company-multi-select-list");
+
+filterByCompany.addEventListener("click", () => {
+    companyMultiSelectList.classList.toggle("hidden");
+});
+
+const companyMultiSelectApplyBtn = document.getElementById("company-multi-select-list-apply-btn");
+const companyMultiSelectResetBtn = document.getElementById("company-multi-select-list-reset-btn");
+const companyMultiSelectHideBtn = document.getElementById("company-multi-select-list-hide-btn");
+
+let companyCheckboxes = document.querySelectorAll("#company-multi-select-list input[type=checkbox]");
+
+companyMultiSelectResetBtn.addEventListener("click", () => {
+    companyCheckboxes.forEach(checkbox => {
+        checkbox.checked = false;
+    });
+});
+
+companyMultiSelectHideBtn.addEventListener("click", () => {
+    companyMultiSelectList.classList.toggle("hidden");
+});
+
+companyMultiSelectApplyBtn.addEventListener("click", () => {
+    let companies = [];
+    companyCheckboxes.forEach(checkbox => {
+        if (checkbox.checked) {
+            companies.push(checkbox.getAttribute("id"));
+        }
+    });
+
+    if (companies.length > 0) {
+        params.set("c", companies.join(","));
+    } else {
+        params.delete("c");
+    }
+
+    window.location.href = `${window.location.pathname}?${params.toString()}`;
 });
