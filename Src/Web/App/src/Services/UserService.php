@@ -4,8 +4,6 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\DTOs\CreateStudentUserDTO;
-use App\DTOs\StudentUserViewDTO;
-use App\DTOs\UserActivationTokenDTO;
 use App\DTOs\UserViewDTO;
 use App\Entities\User;
 use App\Interfaces\IPasswordHasher;
@@ -79,50 +77,18 @@ class UserService implements IUserService
         );
     }
 
-    public function getUserByStudentEmail(string $email): ?StudentUserViewDTO
+    public function getUserByStudentEmail(string $email): ?User
     {
-        $user = $this->entityManager->getRepository(User::class)->findOneBy(["studentEmail" => $email]);
-        if (!$user)
-            return null;
-
-        return new StudentUserViewDTO(
-            $user->getStudentEmail(),
-            $user->getFullName(),
-            $user->getId(),
-            $user->getEmail(),
-            $user->getFirstName(),
-            $user->getLastName(),
-            $user->getPasswordHash(),
-            $user->getIsActive(),
-            $user->getActivationToken(),
-            $user->getActivationTokenExpiresAt()
-        );
+        return $this->entityManager->getRepository(User::class)->findOneBy(["studentEmail" => $email]);
     }
 
-    public function getUserByActivationToken(string $token): ?UserViewDTO
+    public function getUserByActivationToken(string $token): ?User
     {
-        $user = $this->entityManager->getRepository(User::class)->findOneBy(["activationToken" => $token]);
-
-        if (!$user)
-            return null;
-
-        return new UserViewDTO(
-            $user->getId(),
-            $user->getEmail(),
-            $user->getFirstName(),
-            $user->getLastName(),
-            $user->getPasswordHash(),
-            $user->getIsActive(),
-            $user->getActivationToken(),
-            $user->getActivationTokenExpiresAt()
-        );
+        return $this->entityManager->getRepository(User::class)->findOneBy(["activationToken" => $token]);
     }
 
-    public function saveActivationToken(UserActivationTokenDTO $dto): void
+    public function saveUser(User $user): void
     {
-        $user = $this->entityManager->getRepository(User::class)->find($dto->id);
-        $user->setActivationToken($dto->activationToken);
-        $user->setActivationTokenExpiresAt($dto->activationTokenExpiresAt);
         $this->entityManager->persist($user);
         $this->entityManager->flush();
     }

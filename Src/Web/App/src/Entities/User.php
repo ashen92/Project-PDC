@@ -79,6 +79,19 @@ class User
         $this->internshipsCreated = new ArrayCollection();
     }
 
+    public function generateActivationToken(): string
+    {
+        $this->activationToken = bin2hex(random_bytes(32));
+        $this->activationTokenExpiresAt = new DateTime("+1 day");
+        return $this->activationToken;
+    }
+
+    public function resetActivationToken(): void
+    {
+        $this->activationToken = null;
+        $this->activationTokenExpiresAt = null;
+    }
+
     public function getId(): int
     {
         return $this->id;
@@ -119,7 +132,7 @@ class User
         return $this->passwordHash;
     }
 
-    public function getIsActive(): bool
+    public function isActive(): bool
     {
         return $this->isActive;
     }
