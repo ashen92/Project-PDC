@@ -66,7 +66,11 @@ class InternshipController extends PageControllerBase
     {
         $internship = $this->internshipService->getInternshipById($id);
         if ($internship) {
-            return new Response(json_encode($internship), 200, ["Content-Type" => "application/json"]);
+            $data = [
+                "title" => $internship->getTitle(),
+                "description" => $internship->getDescription(),
+            ];
+            return new Response(json_encode($data), 200, ["Content-Type" => "application/json"]);
         }
         return $this->redirect("/internship-program");
     }
