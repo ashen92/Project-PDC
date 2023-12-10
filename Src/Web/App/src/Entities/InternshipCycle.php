@@ -102,6 +102,16 @@ class InternshipCycle
         return $this->studentGroup;
     }
 
+    public function getPartnerUserGroupName(): string
+    {
+        return $this->partnerGroup->getName();
+    }
+
+    public function getStudentUserGroupName(): string
+    {
+        return $this->studentGroup->getName();
+    }
+
     public function setCollectionStartDate(DateTime $collectionStartDate): void
     {
         $this->collectionStartDate = $collectionStartDate;
