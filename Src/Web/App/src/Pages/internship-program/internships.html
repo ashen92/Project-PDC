@@ -47,8 +47,11 @@
             {% endif %}
             {% for item in internships %}
             <div class="item-card" data-job-id="{{ item.id }}">
-                <div class="title">{{ item.title }}</div>
-                <div>{{item.firstName}}</div>
+                <img class="item-card-logo" src="/images/for-testing-only-google-logo.png" alt="">
+                <div class="item-card-text">
+                    <div class="title">{{ item.title }}</div>
+                    <div>{{item.firstName}}</div>
+                </div>
             </div>
             {% endfor %}
         </div>

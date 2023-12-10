@@ -106,6 +106,8 @@ $filter-item-active-bg-color: #c8c6c6;
                 border: 2px solid;
                 border-color: #cfcece;
                 border-radius: $rounded-1;
+                display: flex;
+                align-items: center;
 
                 &:hover {
                     background-color: #f8f8f8;
@@ -121,9 +123,18 @@ $filter-item-active-bg-color: #c8c6c6;
                     border-color: rgb(0, 120, 180);
                 }
 
-                >.title {
-                    font-weight: $fw-semibold;
-                    margin-bottom: 0.5rem;
+                &-logo {
+                    width: 2.7rem;
+                    height: 2.7rem;
+                }
+
+                &-text {
+                    margin-left: 1.5rem;
+
+                    >.title {
+                        font-weight: $fw-semibold;
+                        margin-bottom: 0.5rem;
+                    }
                 }
             }
         }
