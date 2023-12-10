@@ -70,4 +70,9 @@ class UserGroup
     {
         $this->roles[] = $role;
     }
+
+    public function removeFromRole(Role $role): void
+    {
+        $this->roles->removeElement($role);
+    }
 }

@@ -22,6 +22,9 @@ $passwordHash = "$2y$10\$dLij/BtPMbPKtt/CxpzqVuSn1FBVq.es9spKQ87sdGVJmlu4J3zwq";
 $user1 = new User("2@mail.com", "Admin", $passwordHash);
 $user2 = new User("coordinator@mail.com", "Coordinator", $passwordHash);
 $user3 = new User("student@mail.com", "Student", $passwordHash);
+$user3->setStudentEmail("student-email@mail.com");
+$user3->setFullName("Default Student User");
+$user3->setIndexNumber("1990is000");
 $user4 = new User("partner@mail.com", "Partner", $passwordHash);
 
 $entityManager->persist($user1);
@@ -278,6 +281,8 @@ $internData = [
 ];
 
 $internshipCycle = new InternshipCycle();
+$internshipCycle->setPartnerGroup($groupInternshipCyclePartners);
+$internshipCycle->setStudentGroup($groupInternshipCycleStudents);
 
 foreach ($internData as $internship) {
     $i = new Internship($internship[0], $internship[1], $user4, $internshipCycle);

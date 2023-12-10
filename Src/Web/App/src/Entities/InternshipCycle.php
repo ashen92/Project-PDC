@@ -57,6 +57,11 @@ class InternshipCycle
         $this->requirements = new ArrayCollection();
     }
 
+    public function end(): void
+    {
+        $this->endedAt = new DateTime("now");
+    }
+
     public function getId(): int
     {
         return $this->id;

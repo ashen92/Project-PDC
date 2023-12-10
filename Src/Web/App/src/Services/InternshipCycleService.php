@@ -121,4 +121,41 @@ class InternshipCycleService implements IInternshipCycleService
         $queryBuilder->setParameter("internshipCycleId", $internshipCycleId);
         return $queryBuilder->getResult();
     }
+
+    public function endInternshipCycle(?int $id = null): bool
+    {
+        $internshipCycle = null;
+        if ($id === null) {
+            $internshipCycle = $this->getLatestInternshipCycle();
+        } else {
+            $internshipCycle = $this->entityManager
+                ->getRepository(InternshipCycle::class)
+                ->find($id);
+        }
+
+        if ($internshipCycle === null) {
+            return false;
+        }
+
+        $internshipCycle->end();
+
+        $roleInternshipPartner = $this->entityManager
+            ->getRepository(Role::class)
+            ->findOneBy(
+                ["name" => "ROLE_INTERNSHIP_PARTNER"]
+            );
+
+        $roleInternshipPartner->removeGroup($internshipCycle->getPartnerGroup());
+
+        $roleInternshipStudent = $this->entityManager
+            ->getRepository(Role::class)
+            ->findOneBy(
+                ["name" => "ROLE_INTERNSHIP_STUDENT"]
+            );
+        $roleInternshipStudent->removeGroup($internshipCycle->getStudentGroup());
+
+        $this->entityManager->persist($internshipCycle);
+        $this->entityManager->flush();
+        return true;
+    }
 }

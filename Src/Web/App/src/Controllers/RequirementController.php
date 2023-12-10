@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+use App\Attributes\RequiredRole;
 use App\DTOs\CreateRequirementDTO;
 use App\DTOs\UserRequirementCompletionDTO;
 use App\Interfaces\IInternshipService;
@@ -14,6 +15,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
 
+#[RequiredRole([
+    "ROLE_ADMIN",
+    "ROLE_INTERNSHIP_PARTNER",
+    "ROLE_INTERNSHIP_STUDENT"
+])]
 #[Route("/internship-program/requirements")]
 class RequirementController extends PageControllerBase
 {

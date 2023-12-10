@@ -84,7 +84,7 @@ class InternshipProgramController extends PageControllerBase
         return $this->redirect("/internship-program/cycle/details");
     }
 
-    #[Route("/cycle/details", name: "cycle_details")]
+    #[Route("/cycle/details")]
     public function cycleDetails(Request $request): Response
     {
         return $this->render(
@@ -93,6 +93,13 @@ class InternshipProgramController extends PageControllerBase
                 "section" => "home",
                 "internshipCycle" => $this->internshipCycleService->getLatestInternshipCycle()
             ]);
+    }
+
+    #[Route("/cycle/end")]
+    public function cycleEnd(Request $request): RedirectResponse
+    {
+        $this->internshipCycleService->endInternshipCycle();
+        return $this->redirect("/internship-program");
     }
 
     #[Route("/monitoring", methods: ["GET"])]
@@ -119,13 +126,13 @@ class InternshipProgramController extends PageControllerBase
         );
     }
 
-    #[Route("/documents", name: "documents")]
+    #[Route("/documents")]
     public function cycleDocuments(Request $request): Response
     {
         return $this->render("internship-program/documents.html", ["section" => "documents"]);
     }
 
-    #[Route("/feedback", name: "feedback")]
+    #[Route("/feedback")]
     public function cycleFeedback(Request $request): Response
     {
         return $this->render("internship-program/feedback.html", ["section" => "feedback"]);

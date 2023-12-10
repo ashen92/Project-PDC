@@ -57,4 +57,12 @@ class Role
             $policy->addToRole($this);
         }
     }
+
+    public function removeGroup(UserGroup $group): void
+    {
+        if ($this->groups->contains($group)) {
+            $this->groups->removeElement($group);
+            $group->removeFromRole($this);
+        }
+    }
 }
