@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\DTOs\CreateStudentUserDTO;
-use App\DTOs\UserViewDTO;
 use App\Entities\User;
 use App\Interfaces\IPasswordHasher;
 use App\Interfaces\IUserService;
@@ -59,22 +58,9 @@ class UserService implements IUserService
         return false;
     }
 
-    public function getUserByEmail(string $email): ?UserViewDTO
+    public function getUserByEmail(string $email): ?User
     {
-        $user = $this->entityManager->getRepository(User::class)->findOneBy(["email" => $email]);
-        if (!$user)
-            return null;
-
-        return new UserViewDTO(
-            $user->getId(),
-            $user->getEmail(),
-            $user->getFirstName(),
-            $user->getLastName(),
-            $user->getPasswordHash(),
-            $user->getIsActive(),
-            $user->getActivationToken(),
-            $user->getActivationTokenExpiresAt()
-        );
+        return $this->entityManager->getRepository(User::class)->findOneBy(["email" => $email]);
     }
 
     public function getUserByStudentEmail(string $email): ?User
