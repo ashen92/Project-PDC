@@ -88,8 +88,6 @@ $filter-item-active-bg-color: #c8c6c6;
 
         .item-list {
             min-width: 23rem;
-            border: $border-1;
-            border-radius: $rounded-1;
             height: max-content;
 
             .empty-list {
@@ -101,9 +99,13 @@ $filter-item-active-bg-color: #c8c6c6;
 
             .item-card {
                 padding: 1.25rem;
-                border-bottom: $border-1;
                 user-select: none;
                 cursor: pointer;
+                transition: background 80ms linear;
+                margin-bottom: 0.5rem;
+                border: 2px solid;
+                border-color: #cfcece;
+                border-radius: $rounded-1;
 
                 &:hover {
                     background-color: #f8f8f8;
@@ -113,6 +115,10 @@ $filter-item-active-bg-color: #c8c6c6;
                 &:active,
                 &.active {
                     background-color: #deecf9
+                }
+
+                &.active {
+                    border-color: rgb(0, 120, 180);
                 }
 
                 >.title {
