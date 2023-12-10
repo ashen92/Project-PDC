@@ -5,7 +5,6 @@ namespace App\Services;
 
 use App\DTOs\CreateRequirementDTO;
 use App\DTOs\UserRequirementCompletionDTO;
-use App\DTOs\UserRequirementViewDTO;
 use App\Entities\Requirement;
 use App\Entities\UserRequirement;
 use App\Interfaces\IFileStorageService;
@@ -65,7 +64,7 @@ class RequirementService implements IRequirementService
         return $query->getArrayResult();
     }
 
-    public function getUserRequirement(int $id): UserRequirementViewDTO|null
+    public function getUserRequirement(int $id): ?UserRequirement
     {
         $rsm = new ResultSetMappingBuilder($this->entityManager);
         $rsm->addRootEntityFromClassMetadata('App\Entities\UserRequirement', 'i');
@@ -77,35 +76,7 @@ class RequirementService implements IRequirementService
                 WHERE ur.id = :id";
         $query = $this->entityManager->createNativeQuery($sql, $rsm);
         $query->setParameter("id", $id);
-        $ur = $query->getOneOrNullResult();
-        if ($ur === null) {
-            return null;
-        }
-
-        $rsm = new ResultSetMappingBuilder($this->entityManager);
-        $rsm->addRootEntityFromClassMetadata('App\Entities\Requirement', 'i');
-        $sql = "SELECT r.* 
-                FROM user_requirements ur 
-                INNER JOIN requirements r ON ur.requirement_id = r.id
-                INNER JOIN users u ON ur.user_id = u.id
-                WHERE ur.id = :id";
-        $query = $this->entityManager->createNativeQuery($sql, $rsm);
-        $query->setParameter("id", $id);
-        $r = $query->getOneOrNullResult();
-
-        return new UserRequirementViewDTO(
-            $ur->getId(),
-            $r->getName(),
-            $r->getDescription(),
-            $ur->getStartDate(),
-            $ur->getEndDate(),
-            $ur->getCompletedAt(),
-            $ur->getStatus(),
-            $r->getFulfillMethod(),
-            $r->getAllowedFileTypes(),
-            $r->getMaxFileSize(),
-            $r->getMaxFileCount()
-        );
+        return $query->getOneOrNullResult();
     }
 
     public function completeUserRequirement(UserRequirementCompletionDTO $urCompletionDTO): void

@@ -86,6 +86,36 @@ class UserRequirement
         return $this->filePaths;
     }
 
+    public function getName(): string
+    {
+        return $this->requirement->getName();
+    }
+
+    public function getDescription(): string
+    {
+        return $this->requirement->getDescription();
+    }
+
+    public function getFulfillMethod(): string
+    {
+        return $this->requirement->getFulfillMethod();
+    }
+
+    public function getAllowedFileTypes(): ?array
+    {
+        return $this->requirement->getAllowedFileTypes();
+    }
+
+    public function getMaxFileSize(): ?int
+    {
+        return $this->requirement->getMaxFileSize();
+    }
+
+    public function getMaxFileCount(): ?int
+    {
+        return $this->requirement->getMaxFileCount();
+    }
+
     public function setCompletedAt(DateTime $completedAt): void
     {
         $this->completedAt = $completedAt;
