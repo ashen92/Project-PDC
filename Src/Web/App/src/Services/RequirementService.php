@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\DTOs\CreateRequirementDTO;
-use App\DTOs\RequirementViewDTO;
 use App\DTOs\UserRequirementCompletionDTO;
 use App\DTOs\UserRequirementViewDTO;
 use App\Entities\Requirement;
@@ -15,7 +14,8 @@ use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query\ResultSetMappingBuilder;
 
-class RequirementService implements IRequirementService {
+class RequirementService implements IRequirementService
+{
     public function __construct(
         private EntityManagerInterface $entityManager,
         private IFileStorageService $fileStorageService
@@ -23,7 +23,8 @@ class RequirementService implements IRequirementService {
 
     }
 
-    public function getRequirements(): array {
+    public function getRequirements(): array
+    {
         $queryBuilder = $this->entityManager->createQueryBuilder();
         $queryBuilder
             ->select("r.id, r.name, r.description, r.type, r.startDate, r.endBeforeDate, r.repeatInterval")
@@ -32,40 +33,26 @@ class RequirementService implements IRequirementService {
         return $query->getArrayResult();
     }
 
-    public function getRequirement(int $id): ?RequirementViewDTO {
+    public function getRequirement(int $id): ?Requirement
+    {
         $rsm = new ResultSetMappingBuilder($this->entityManager);
         $rsm->addRootEntityFromClassMetadata('App\Entities\Requirement', 'i');
 
         $sql = "SELECT r.* FROM requirements r WHERE r.id = :id";
         $query = $this->entityManager->createNativeQuery($sql, $rsm);
         $query->setParameter("id", $id);
-        $r = $query->getOneOrNullResult();
-        if($r === null) {
-            return null;
-        }
-
-        return new RequirementViewDTO(
-            $r->getId(),
-            $r->getName(),
-            $r->getDescription(),
-            $r->getType(),
-            $r->getStartDate(),
-            $r->getEndBeforeDate(),
-            $r->getRepeatInterval(),
-            $r->getFulfillMethod(),
-            $r->getAllowedFileTypes(),
-            $r->getMaxFileSize(),
-            $r->getMaxFileCount()
-        );
+        return $query->getOneOrNullResult();
     }
 
-    public function createRequirement(CreateRequirementDTO $requirementDTO): void {
+    public function createRequirement(CreateRequirementDTO $requirementDTO): void
+    {
         $requirement = new Requirement($requirementDTO);
         $this->entityManager->persist($requirement);
         $this->entityManager->flush();
     }
 
-    public function getUserRequirements(int $userId): array {
+    public function getUserRequirements(int $userId): array
+    {
         $queryBuilder = $this->entityManager->createQueryBuilder();
         $queryBuilder
             ->select("ur.id, r.id as r_id, r.name, r.description, r.type, r.startDate, r.repeatInterval")
@@ -78,7 +65,8 @@ class RequirementService implements IRequirementService {
         return $query->getArrayResult();
     }
 
-    public function getUserRequirement(int $id): UserRequirementViewDTO|null {
+    public function getUserRequirement(int $id): UserRequirementViewDTO|null
+    {
         $rsm = new ResultSetMappingBuilder($this->entityManager);
         $rsm->addRootEntityFromClassMetadata('App\Entities\UserRequirement', 'i');
 
@@ -90,7 +78,7 @@ class RequirementService implements IRequirementService {
         $query = $this->entityManager->createNativeQuery($sql, $rsm);
         $query->setParameter("id", $id);
         $ur = $query->getOneOrNullResult();
-        if($ur === null) {
+        if ($ur === null) {
             return null;
         }
 
@@ -120,7 +108,8 @@ class RequirementService implements IRequirementService {
         );
     }
 
-    public function completeUserRequirement(UserRequirementCompletionDTO $urCompletionDTO): void {
+    public function completeUserRequirement(UserRequirementCompletionDTO $urCompletionDTO): void
+    {
         $response = $this->fileStorageService->upload($urCompletionDTO->files);
         $ur = $this->entityManager
             ->getRepository(UserRequirement::class)
@@ -128,7 +117,7 @@ class RequirementService implements IRequirementService {
 
         $filePaths = [];
 
-        foreach($response["properties"] as $fileProperty) {
+        foreach ($response["properties"] as $fileProperty) {
             $filePaths[] = $fileProperty["filePath"];
         }
 
