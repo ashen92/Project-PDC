@@ -4,14 +4,13 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\DTOs\CreateInternshipCycleDTO;
-use App\DTOs\InternshipStudentUserViewDTO;
 use App\Entities\InternshipCycle;
 use App\Entities\Role;
 use App\Entities\UserGroup;
 use App\Interfaces\IInternshipCycleService;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Query\ResultSetMapping;
+use Doctrine\ORM\Query\ResultSetMappingBuilder;
 
 class InternshipCycleService implements IInternshipCycleService
 {
@@ -95,7 +94,7 @@ class InternshipCycleService implements IInternshipCycleService
     }
 
     /**
-     * @return array An array of InternshipStudentUserViewDTO
+     * @return array An array of App\Entities\User objects
      */
     public function getStudentUsers(?int $internshipCycleId = null): array
     {
@@ -103,20 +102,11 @@ class InternshipCycleService implements IInternshipCycleService
             $internshipCycleId = $this->getLatestInternshipCycleId();
         }
 
-        $rsm = new ResultSetMapping();
-        $rsm->addScalarResult("id", "id");
-        $rsm->addScalarResult("studentEmail", "studentEmail");
-        $rsm->addScalarResult("fullName", "fullName");
-        $rsm->addScalarResult("indexNumber", "indexNumber");
-        $rsm->addScalarResult("firstName", "firstName");
+        $rsm = new ResultSetMappingBuilder($this->entityManager);
+        $rsm->addRootEntityFromClassMetadata('App\Entities\User', 'u');
 
         $queryBuilder = $this->entityManager->createNativeQuery(
-            "SELECT
-                u.id,
-                u.studentEmail,
-                u.fullName,
-                u.indexNumber,
-                u.firstName
+            "SELECT u.*
             FROM user_groups ug
             JOIN user_group_membership ugm ON ug.id = ugm.usergroup_id
             JOIN users u ON ugm.user_id = u.id
@@ -129,19 +119,6 @@ class InternshipCycleService implements IInternshipCycleService
         );
 
         $queryBuilder->setParameter("internshipCycleId", $internshipCycleId);
-        $result = $queryBuilder->getResult();
-
-        $studentUsers = [];
-        foreach ($result as $user) {
-            $studentUsers[] = new InternshipStudentUserViewDTO(
-                $user["id"],
-                $user["studentEmail"] ?? "",
-                $user["fullName"] ?? "",
-                $user["indexNumber"] ?? "",
-                $user["firstName"] ?? ""
-            );
-        }
-
-        return $studentUsers;
+        return $queryBuilder->getResult();
     }
 }
