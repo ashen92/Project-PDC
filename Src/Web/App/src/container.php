@@ -17,6 +17,14 @@ $container->register(
 )
     ->setArguments(["app"]);
 
+// Repositories ---------------------------------------------------------------
+
+$container->register(
+    "repository.user",
+    App\Repositories\UserRepository::class
+)
+    ->setArguments([new Reference("doctrine.entity_manager")]);
+
 // Services
 
 $dbParams = require_once "doctrine-config.php";
@@ -63,7 +71,7 @@ $container->register(
     App\Services\UserService::class
 )
     ->setArguments([
-        new Reference("doctrine.entity_manager"),
+        new Reference("repository.user"),
         new Reference("password_hasher")
     ]);
 
