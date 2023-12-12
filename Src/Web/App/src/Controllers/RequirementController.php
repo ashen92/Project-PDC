@@ -70,14 +70,25 @@ class RequirementController extends PageControllerBase
     #[Route("/create", methods: ["POST"])]
     public function requirementAddPOST(Request $request): RedirectResponse
     {
+        $fileTypes = $request->get("file-types");
+        if (!is_array($fileTypes)) {
+            $fileTypes = [$fileTypes];
+        }
+
         $requirementDTO = new CreateRequirementDTO(
             $request->get("name"),
             $request->get("description"),
             $request->get("type"),
             new \DateTime($request->get("start-date")),
             new \DateTime($request->get("end-before")),
-            $request->get("repeat-interval")
+            $request->get("repeat-interval"),
+            $request->get("fulfill-method"),
+            $fileTypes,
+            (int) $request->get("max-file-size"),
+            (int) $request->get("max-file-count")
         );
+        // Validate DTO
+
         $this->requirementService->createRequirement($requirementDTO);
         return $this->redirect("/internship-program/requirements");
     }

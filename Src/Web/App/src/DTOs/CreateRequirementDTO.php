@@ -10,7 +10,7 @@ class CreateRequirementDTO
     public function __construct(
         public string $name,
         public string $description,
-        public string $type,
+        public string $requirementType,
         public DateTime $startDate,
         public ?DateTime $endBeforeDate,
         public ?string $repeatInterval,

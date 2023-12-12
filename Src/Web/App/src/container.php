@@ -25,6 +25,12 @@ $container->register(
 )
     ->setArguments([new Reference("doctrine.entity_manager")]);
 
+$container->register(
+    "repository.requirement",
+    App\Repositories\RequirementRepository::class
+)
+    ->setArguments([new Reference("doctrine.entity_manager")]);
+
 // Services
 
 $dbParams = require_once "doctrine-config.php";
@@ -33,6 +39,9 @@ $config = Doctrine\ORM\ORMSetup::createAttributeMetadataConfiguration(
     paths: array(__DIR__ . "/Entities"),
     isDevMode: true,
 );
+
+\Doctrine\DBAL\Types\Type::addType("requirement_type", "App\Models\RequirementTypeType");
+\Doctrine\DBAL\Types\Type::addType("requirement_repeat_interval", "App\Models\RequirementRepeatIntervalType");
 
 $connection = Doctrine\DBAL\DriverManager::getConnection($dbParams, $config);
 
@@ -102,6 +111,8 @@ $container->register(
 )
     ->setArguments([
         new Reference("doctrine.entity_manager"),
+        new Reference("repository.requirement"),
+        new Reference("service.internship_cycle"),
         new Reference("service.file_storage")
     ]);
 

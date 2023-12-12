@@ -43,10 +43,10 @@
             <tr data-href="/internship-program/requirements/{{ item.id }}">
                 <td>{{ item.name }}</td>
                 <td class="capitalize">
-                    {% if item.type == "recurring" %}
-                    {{ item.type }} ({{ item.repeatInterval }})
+                    {% if item.requirementType.toString == "recurring" %}
+                    {{ item.requirementType.toString }} ({{ item.repeatInterval.toString }})
                     {% else %}
-                    {{ item.type }}
+                    {{ item.requirementType.toString }}
                     {% endif %}
                 </td>
                 <td>{{ item.startDate.format("Y-m-d") }}</td>

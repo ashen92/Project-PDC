@@ -116,6 +116,16 @@ class UserRequirement
         return $this->requirement->getMaxFileCount();
     }
 
+    public function setStartDate(DateTime $startDate): void
+    {
+        $this->startDate = $startDate;
+    }
+
+    public function setEndDate(DateTime $endDate): void
+    {
+        $this->endDate = $endDate;
+    }
+
     public function setCompletedAt(DateTime $completedAt): void
     {
         $this->completedAt = $completedAt;
