@@ -110,7 +110,6 @@ $container->register(
     App\Services\RequirementService::class
 )
     ->setArguments([
-        new Reference("doctrine.entity_manager"),
         new Reference("repository.requirement"),
         new Reference("service.internship_cycle"),
         new Reference("service.file_storage")

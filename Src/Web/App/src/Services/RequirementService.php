@@ -15,13 +15,10 @@ use App\Models\RequirementType;
 use App\Repositories\RequirementRepository;
 use DateInterval;
 use DateTime;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Query\ResultSetMappingBuilder;
 
 class RequirementService implements IRequirementService
 {
     public function __construct(
-        private EntityManagerInterface $entityManager,
         private RequirementRepository $requirementRepository,
         private InternshipCycleService $internshipCycleService,
         private IFileStorageService $fileStorageService
@@ -29,25 +26,24 @@ class RequirementService implements IRequirementService
 
     }
 
-    public function getRequirements(): array
-    {
-        $queryBuilder = $this->entityManager->createQueryBuilder();
-        $queryBuilder
-            ->select("r.id, r.name, r.description, r.requirementType, r.startDate, r.endBeforeDate, r.repeatInterval")
-            ->from("App\Entities\Requirement", "r");
-        $query = $queryBuilder->getQuery();
-        return $query->getArrayResult();
-    }
-
     public function getRequirement(int $id): ?Requirement
     {
-        $rsm = new ResultSetMappingBuilder($this->entityManager);
-        $rsm->addRootEntityFromClassMetadata('App\Entities\Requirement', 'i');
+        return $this->requirementRepository->getRequirement($id);
+    }
 
-        $sql = "SELECT r.* FROM requirements r WHERE r.id = :id";
-        $query = $this->entityManager->createNativeQuery($sql, $rsm);
-        $query->setParameter("id", $id);
-        return $query->getOneOrNullResult();
+    public function getRequirements(): array
+    {
+        return $this->requirementRepository->getRequirements();
+    }
+
+    public function getUserRequirement(int $id): ?UserRequirement
+    {
+        return $this->requirementRepository->getUserRequirement($id);
+    }
+
+    public function getUserRequirements(int $userId): array
+    {
+        return $this->requirementRepository->getUserRequirements($userId);
     }
 
     public function createRequirement(CreateRequirementDTO $requirementDTO): void
@@ -113,41 +109,10 @@ class RequirementService implements IRequirementService
         }
     }
 
-    public function getUserRequirements(int $userId): array
-    {
-        $queryBuilder = $this->entityManager->createQueryBuilder();
-        $queryBuilder
-            ->select("ur.id, r.id as r_id, r.name, r.description, r.requirementType, r.startDate, r.repeatInterval")
-            ->from("App\Entities\UserRequirement", "ur")
-            ->innerJoin("ur.requirement", "r")
-            ->innerJoin("ur.user", "u")
-            ->where("u.id = :userId")
-            ->setParameter("userId", $userId);
-        $query = $queryBuilder->getQuery();
-        return $query->getArrayResult();
-    }
-
-    public function getUserRequirement(int $id): ?UserRequirement
-    {
-        $rsm = new ResultSetMappingBuilder($this->entityManager);
-        $rsm->addRootEntityFromClassMetadata('App\Entities\UserRequirement', 'i');
-
-        $sql = "SELECT ur.* 
-                FROM user_requirements ur 
-                INNER JOIN requirements r ON ur.requirement_id = r.id
-                INNER JOIN users u ON ur.user_id = u.id
-                WHERE ur.id = :id";
-        $query = $this->entityManager->createNativeQuery($sql, $rsm);
-        $query->setParameter("id", $id);
-        return $query->getOneOrNullResult();
-    }
-
     public function completeUserRequirement(UserRequirementCompletionDTO $urCompletionDTO): void
     {
         $response = $this->fileStorageService->upload($urCompletionDTO->files);
-        $ur = $this->entityManager
-            ->getRepository(UserRequirement::class)
-            ->find($urCompletionDTO->requirementId);
+        $ur = $this->getUserRequirement($urCompletionDTO->requirementId);
 
         $filePaths = [];
 
@@ -158,6 +123,6 @@ class RequirementService implements IRequirementService
         $ur->setFilePaths($filePaths);
         $ur->setCompletedAt(new DateTime("now"));
         $ur->setStatus("completed");
-        $this->entityManager->flush();
+        $this->requirementRepository->saveUserRequirement($ur);
     }
 }

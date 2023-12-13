@@ -13,6 +13,56 @@ use Doctrine\ORM\Query\ResultSetMappingBuilder;
 
 class RequirementRepository extends Repository
 {
+    public function getRequirement(int $id): ?Requirement
+    {
+        $rsm = new ResultSetMappingBuilder($this->entityManager);
+        $rsm->addRootEntityFromClassMetadata('App\Entities\Requirement', 'i');
+
+        $sql = "SELECT r.* FROM requirements r WHERE r.id = :id";
+        $query = $this->entityManager->createNativeQuery($sql, $rsm);
+        $query->setParameter("id", $id);
+        return $query->getOneOrNullResult();
+    }
+
+    public function getRequirements(): array
+    {
+        $queryBuilder = $this->entityManager->createQueryBuilder();
+        $queryBuilder
+            ->select("r.id, r.name, r.description, r.requirementType, r.startDate, r.endBeforeDate, r.repeatInterval")
+            ->from("App\Entities\Requirement", "r");
+        $query = $queryBuilder->getQuery();
+        return $query->getArrayResult();
+    }
+
+    public function getUserRequirement(int $id): ?UserRequirement
+    {
+        $rsm = new ResultSetMappingBuilder($this->entityManager);
+        $rsm->addRootEntityFromClassMetadata('App\Entities\UserRequirement', 'i');
+
+        $sql = "SELECT ur.* 
+                FROM user_requirements ur 
+                INNER JOIN requirements r ON ur.requirement_id = r.id
+                INNER JOIN users u ON ur.user_id = u.id
+                WHERE ur.id = :id";
+        $query = $this->entityManager->createNativeQuery($sql, $rsm);
+        $query->setParameter("id", $id);
+        return $query->getOneOrNullResult();
+    }
+
+    public function getUserRequirements(int $userId): array
+    {
+        $queryBuilder = $this->entityManager->createQueryBuilder();
+        $queryBuilder
+            ->select("ur.id, r.id as r_id, r.name, r.description, r.requirementType, r.startDate, r.repeatInterval")
+            ->from("App\Entities\UserRequirement", "ur")
+            ->innerJoin("ur.requirement", "r")
+            ->innerJoin("ur.user", "u")
+            ->where("u.id = :userId")
+            ->setParameter("userId", $userId);
+        $query = $queryBuilder->getQuery();
+        return $query->getArrayResult();
+    }
+
     public function getInternshipCycle(Requirement $requirement): InternshipCycle
     {
         $queryBuilder = $this->entityManager->createQueryBuilder();
