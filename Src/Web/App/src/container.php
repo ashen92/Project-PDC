@@ -125,7 +125,7 @@ $container->register(
 
 $container->register(
     "service.email",
-    App\Services\EmailAPI::class
+    App\Services\EmailService::class
 )
     ->setArguments([
         new Reference("http_client"),

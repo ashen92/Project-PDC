@@ -7,7 +7,7 @@ use App\Interfaces\IEmailService;
 use App\Models\Email;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-class EmailAPI implements IEmailService
+class EmailService implements IEmailService
 {
     public function __construct(
         private HttpClientInterface $httpClient,
