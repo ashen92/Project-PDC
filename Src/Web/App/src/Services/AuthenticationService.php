@@ -17,7 +17,7 @@ class AuthenticationService implements IAuthenticationService
     ) {
     }
 
-    public function authenticate(string $email, string $password): bool
+    public function login(string $email, string $password): bool
     {
         $user = $this->userService->getUserByEmail($email);
 

@@ -144,7 +144,7 @@ class AuthenticationController extends PageControllerBase
         // validate form data
         // todo
 
-        if ($this->authn->authenticate($email, $password)) {
+        if ($this->authn->login($email, $password)) {
             return new RedirectResponse("/home");
         }
 
