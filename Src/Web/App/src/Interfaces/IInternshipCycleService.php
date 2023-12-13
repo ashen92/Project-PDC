@@ -8,6 +8,8 @@ use App\Entities\InternshipCycle;
 
 interface IInternshipCycleService
 {
+    public function getEligibleStudentGroupsForInternshipCycle(): array;
+    public function getEligiblePartnerGroupsForInternshipCycle(): array;
     public function getLatestInternshipCycleId(): ?int;
     public function getLatestInternshipCycle(): ?InternshipCycle;
     public function createInternshipCycle(CreateInternshipCycleDTO $createInternshipCycleDTO): InternshipCycle;

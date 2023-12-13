@@ -41,7 +41,7 @@
         <div class="field row">
             <label for="partner-group">Select the group partners belong to</label>
             <select name="partner-group" id="partner-group">
-                {% for group in userGroups %}
+                {% for group in eligiblePartnerGroups %}
                 <option value="{{ group.name }}">{{ group.name }}</option>
                 {% endfor %}
             </select>
@@ -49,7 +49,7 @@
         <div class="field row">
             <label for="student-group">Select the group students belong to</label>
             <select name="student-group" id="student-group">
-                {% for group in userGroups %}
+                {% for group in eligibleStudentGroups %}
                 <option value="{{ group.name }}">{{ group.name }}</option>
                 {% endfor %}
             </select>

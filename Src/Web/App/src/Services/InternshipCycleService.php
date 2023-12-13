@@ -19,6 +19,50 @@ class InternshipCycleService implements IInternshipCycleService
     ) {
     }
 
+    public function getEligibleStudentGroupsForInternshipCycle(): array
+    {
+        $groups = $this->entityManager->getRepository(UserGroup::class)->findAll();
+        $eligibleGroups = [];
+        foreach ($groups as $group) {
+            if (str_contains(strtolower($group->getName()), "admin")) {
+                continue;
+            }
+            if (str_contains(strtolower($group->getName()), "coordinator")) {
+                continue;
+            }
+            if (str_contains(strtolower($group->getName()), "partner")) {
+                continue;
+            }
+            if (str_starts_with($group->getName(), "InternshipCycle-")) {
+                continue;
+            }
+            $eligibleGroups[] = $group;
+        }
+        return $eligibleGroups;
+    }
+
+    public function getEligiblePartnerGroupsForInternshipCycle(): array
+    {
+        $groups = $this->entityManager->getRepository(UserGroup::class)->findAll();
+        $eligibleGroups = [];
+        foreach ($groups as $group) {
+            if (str_contains(strtolower($group->getName()), "admin")) {
+                continue;
+            }
+            if (str_contains(strtolower($group->getName()), "coordinator")) {
+                continue;
+            }
+            if (str_contains(strtolower($group->getName()), "student")) {
+                continue;
+            }
+            if (str_starts_with(strtolower($group->getName()), "InternshipCycle-")) {
+                continue;
+            }
+            $eligibleGroups[] = $group;
+        }
+        return $eligibleGroups;
+    }
+
     public function getLatestInternshipCycleId(): ?int
     {
         $latestInternshipCycle = $this->entityManager

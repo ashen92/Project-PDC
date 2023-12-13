@@ -7,8 +7,6 @@ use App\Attributes\RequiredRole;
 use App\DTOs\CreateInternshipCycleDTO;
 use App\Interfaces\IInternshipCycleService;
 use App\Interfaces\IRequirementService;
-use App\Interfaces\IUserGroupService;
-use App\Interfaces\IUserService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,8 +23,6 @@ class InternshipProgramController extends PageControllerBase
 {
     public function __construct(
         Environment $twig,
-        private IUserService $userService,
-        private IUserGroupService $userGroupService,
         private IInternshipCycleService $internshipCycleService,
         private IRequirementService $requirementService
     ) {
@@ -52,13 +48,16 @@ class InternshipProgramController extends PageControllerBase
             "internship-program/cycle/create.html",
             [
                 "section" => "home",
-                "userGroups" => $this->userGroupService->getUserGroupsForInternshipProgram()
+                "eligiblePartnerGroups" => $this->internshipCycleService
+                    ->getEligiblePartnerGroupsForInternshipCycle(),
+                "eligibleStudentGroups" => $this->internshipCycleService
+                    ->getEligibleStudentGroupsForInternshipCycle()
             ]
         );
     }
 
     #[Route("/cycle/create", methods: ["POST"])]
-    public function cycleCreatePost(Request $request): RedirectResponse
+    public function cycleCreatePOST(Request $request): RedirectResponse
     {
         $createInternshipCycleDTO = new CreateInternshipCycleDTO(
             $request->get("collection-start-date"),

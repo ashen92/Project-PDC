@@ -202,10 +202,10 @@ $groupPartners->addUser($user4);
 $groupCoordinators->addUser($user1);
 $groupCoordinators->addUser($user2);
 
-$groupInternshipCycleStudents = new UserGroup("InternshipCycleStudents");
+$groupInternshipCycleStudents = new UserGroup("InternshipCycle-Students");
 $groupInternshipCycleStudents->addUser($user3);
 
-$groupInternshipCyclePartners = new UserGroup("InternshipCyclePartners");
+$groupInternshipCyclePartners = new UserGroup("InternshipCycle-Partners");
 $groupInternshipCyclePartners->addUser($user4);
 
 $entityManager->persist($groupInternshipCycleStudents);
