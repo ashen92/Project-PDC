@@ -20,16 +20,11 @@ use Twig\Environment;
 #[Route("/internship-program/internships")]
 class InternshipController extends PageControllerBase
 {
-    private IInternshipService $internshipService;
-    private IUserService $userService;
-
     public function __construct(
         Environment $twig,
-        IInternshipService $internshipService,
-        IUserService $userService,
+        private IInternshipService $internshipService,
+        private IUserService $userService,
     ) {
-        $this->internshipService = $internshipService;
-        $this->userService = $userService;
         parent::__construct($twig);
     }
 

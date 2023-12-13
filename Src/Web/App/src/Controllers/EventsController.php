@@ -14,13 +14,10 @@ use Twig\Environment;
 #[Route("/events", name: "events_")]
 class EventsController extends PageControllerBase
 {
-    private IEventService $eventService;
-
     public function __construct(
         Environment $twig,
-        IEventService $eventService
+        private IEventService $eventService
     ) {
-        $this->eventService = $eventService;
         parent::__construct($twig);
     }
 

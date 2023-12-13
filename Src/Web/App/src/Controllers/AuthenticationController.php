@@ -17,19 +17,12 @@ use Twig\Environment;
 
 class AuthenticationController extends PageControllerBase
 {
-    private IAuthenticationService $authn;
-    private IUserService $userService;
-    private IEmailService $emailService;
-
     public function __construct(
         Environment $twig,
-        IAuthenticationService $authn,
-        IUserService $userService,
-        IEmailService $emailService
+        private IAuthenticationService $authn,
+        private IUserService $userService,
+        private IEmailService $emailService
     ) {
-        $this->authn = $authn;
-        $this->userService = $userService;
-        $this->emailService = $emailService;
         parent::__construct($twig);
     }
 
