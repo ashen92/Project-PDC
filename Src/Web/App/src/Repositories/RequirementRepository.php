@@ -24,12 +24,16 @@ class RequirementRepository extends Repository
         return $query->getOneOrNullResult();
     }
 
-    public function getRequirements(): array
+    public function getRequirements(int $internshipCycleId): array
     {
         $queryBuilder = $this->entityManager->createQueryBuilder();
         $queryBuilder
             ->select("r.id, r.name, r.description, r.requirementType, r.startDate, r.endBeforeDate, r.repeatInterval")
-            ->from("App\Entities\Requirement", "r");
+            ->from("App\Entities\Requirement", "r")
+            ->innerJoin("r.internshipCycle", "ic")
+            ->where("ic.id = :internshipCycleId")
+            ->setParameter("internshipCycleId", $internshipCycleId);
+
         $query = $queryBuilder->getQuery();
         return $query->getArrayResult();
     }
@@ -49,16 +53,19 @@ class RequirementRepository extends Repository
         return $query->getOneOrNullResult();
     }
 
-    public function getUserRequirements(int $userId): array
+    public function getUserRequirements(int $userId, int $internshipCycleId): array
     {
         $queryBuilder = $this->entityManager->createQueryBuilder();
         $queryBuilder
             ->select("ur.id, r.id as r_id, r.name, r.description, r.requirementType, r.startDate, r.repeatInterval")
             ->from("App\Entities\UserRequirement", "ur")
             ->innerJoin("ur.requirement", "r")
+            ->innerJoin("r.internshipCycle", "ic")
             ->innerJoin("ur.user", "u")
             ->where("u.id = :userId")
-            ->setParameter("userId", $userId);
+            ->andWhere("ic.id = :internshipCycleId")
+            ->setParameter("userId", $userId)
+            ->setParameter("internshipCycleId", $internshipCycleId);
         $query = $queryBuilder->getQuery();
         return $query->getArrayResult();
     }

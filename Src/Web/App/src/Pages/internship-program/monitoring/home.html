@@ -39,6 +39,10 @@
         </p>
     </div>
 
+    {% if requirements is empty %}
+    <p>No requirements have found.</p>
+    {% else %}
+
     <table class="table table-hover">
         <colgroup>
             <col class="w-3-5">
@@ -68,6 +72,8 @@
             {% endfor %}
         </tbody>
     </table>
+
+    {% endif %}
 </section>
 
 {% endblock %}

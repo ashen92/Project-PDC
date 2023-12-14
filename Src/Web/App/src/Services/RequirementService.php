@@ -31,9 +31,15 @@ class RequirementService implements IRequirementService
         return $this->requirementRepository->getRequirement($id);
     }
 
-    public function getRequirements(): array
+    public function getRequirements(?int $internshipCycleId = null): array
     {
-        return $this->requirementRepository->getRequirements();
+        if ($internshipCycleId === null)
+            $internshipCycleId = $this->internshipCycleService->getLatestInternshipCycleId();
+
+        if ($internshipCycleId === null)
+            return [];
+
+        return $this->requirementRepository->getRequirements($internshipCycleId);
     }
 
     public function getUserRequirement(int $id): ?UserRequirement
@@ -41,9 +47,15 @@ class RequirementService implements IRequirementService
         return $this->requirementRepository->getUserRequirement($id);
     }
 
-    public function getUserRequirements(int $userId): array
+    public function getUserRequirements(int $userId, ?int $internshipCycleId = null): array
     {
-        return $this->requirementRepository->getUserRequirements($userId);
+        if ($internshipCycleId === null)
+            $internshipCycleId = $this->internshipCycleService->getLatestInternshipCycleId();
+
+        if ($internshipCycleId === null)
+            return [];
+
+        return $this->requirementRepository->getUserRequirements($userId, $internshipCycleId);
     }
 
     public function createRequirement(CreateRequirementDTO $requirementDTO): void

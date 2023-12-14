@@ -55,7 +55,7 @@ class InternshipCycleService implements IInternshipCycleService
             if (str_contains(strtolower($group->getName()), "student")) {
                 continue;
             }
-            if (str_starts_with(strtolower($group->getName()), "InternshipCycle-")) {
+            if (str_starts_with($group->getName(), "InternshipCycle-")) {
                 continue;
             }
             $eligibleGroups[] = $group;
