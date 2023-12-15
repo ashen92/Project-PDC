@@ -2,7 +2,7 @@ import http from "http";
 // import "dotenv/config";
 import { parseIncomingFile } from "./fileParser.js";
 import { uploadFileToAzure } from "./azureUpload.js";
-import { getFileFromAzure } from "./azureGetFile.js";
+import { getFilePropertiesFromAzure, getFileFromAzure } from "./azureGetFile.js";
 
 const server = http.createServer(async (req, res) => {
     res.setHeader("Content-Security-Policy", "default-src 'none'; script-src 'self'; connect-src 'self'; img-src 'self'; style-src 'self';");
@@ -30,10 +30,10 @@ const server = http.createServer(async (req, res) => {
         }
     } else if (req.method === "GET" && req.url.startsWith("/api/files/")) {
         const filePath = req.url.slice("/api/files/".length);
-        const [containerName] = filePath.split("-uuid-");
         try {
+            const fileProperties = await getFilePropertiesFromAzure(filePath);
+            res.writeHead(200, { "Content-Type": fileProperties.contentType });
             await getFileFromAzure(filePath, res);
-            res.writeHead(200, { "Content-Type": containerName });
         } catch (error) {
             console.error("Error getting file:", error);
             if (error.message.includes("not found")) {

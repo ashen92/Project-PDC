@@ -27,3 +27,16 @@ export async function getFileFromAzure(filePath, writableStream) {
     downloadResponse.readableStreamBody.pipe(writableStream);
     console.log(`Download of ${blobName} succeeded`);
 }
+
+export async function getFilePropertiesFromAzure(filePath) {
+    const [containerName, blobName] = filePath.split("-uuid-");
+
+    const containerClient = blobServiceClient.getContainerClient(containerName);
+    const blobClient = containerClient.getBlobClient(blobName);
+
+    if (!(await blobClient.exists())) {
+        throw new Error(`File ${blobName} not found`);
+    }
+
+    return await blobClient.getProperties();
+}
