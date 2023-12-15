@@ -48,4 +48,27 @@ class FileStorageService implements IFileStorageService
             return false;
         }
     }
+
+    public function get(string $filePath): array|bool
+    {
+        try {
+            $response = $this->httpClient->request(
+                "GET",
+                $this->fileStorageAPIEndpoint . "/" . $filePath
+            );
+
+            $return = [];
+
+            if ($response->getStatusCode() === 200) {
+                $return["content"] = $response->getContent();
+                $return["mimeType"] = $response->getHeaders()["content-type"][0];
+                return $return;
+            } else {
+                return false;
+            }
+
+        } catch (\Throwable $th) {
+            return false;
+        }
+    }
 }

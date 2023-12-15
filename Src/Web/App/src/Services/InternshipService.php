@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Entities\Internship;
+use App\Interfaces\IFileStorageService;
 use App\Interfaces\IInternshipService;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query\ResultSetMappingBuilder;
@@ -11,7 +12,8 @@ use Doctrine\ORM\Query\ResultSetMappingBuilder;
 class InternshipService implements IInternshipService
 {
     public function __construct(
-        private EntityManagerInterface $entityManager
+        private EntityManagerInterface $entityManager,
+        private IFileStorageService $fileStorageService
     ) {
     }
 
@@ -19,10 +21,23 @@ class InternshipService implements IInternshipService
     {
         $queryBuilder = $this->entityManager->createQueryBuilder();
         $queryBuilder
-            ->select("i.id, i.title, i.description, u.firstName")
+            ->select("i.id, i.title, i.description, o.name as orgName, o.logoFilePath")
             ->from("App\Entities\Internship", "i")
-            ->leftJoin("i.owner", "u");
-        return $queryBuilder->getQuery()->getArrayResult();
+            ->leftJoin("i.owner", "u")
+            ->leftJoin("u.organization", "o");
+
+        $result = $queryBuilder->getQuery()->getArrayResult();
+
+        foreach ($result as &$internship) {
+            $logo = $this->fileStorageService->get($internship["logoFilePath"]);
+            if ($logo !== false) {
+                $internship["logoBase64"] = "data:{$logo['mimeType']};base64," . base64_encode($logo["content"]);
+            } else {
+                $internship["logoBase64"] = null;
+            }
+        }
+
+        return $result;
     }
 
     public function getInternshipsByUserId(int $userId): array

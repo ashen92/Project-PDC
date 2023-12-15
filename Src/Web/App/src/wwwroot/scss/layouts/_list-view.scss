@@ -98,7 +98,7 @@ $filter-item-active-bg-color: #c8c6c6;
             }
 
             .item-card {
-                padding: 1.25rem;
+                padding: 1rem 1.4rem 1.2rem 1.2rem;
                 user-select: none;
                 cursor: pointer;
                 transition: background 80ms linear;
@@ -126,6 +126,16 @@ $filter-item-active-bg-color: #c8c6c6;
                 &-logo {
                     width: 2.7rem;
                     height: 2.7rem;
+
+                    &.placeholder {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+
+                        >.i {
+                            font-size: 1.5rem;
+                        }
+                    }
                 }
 
                 &-text {

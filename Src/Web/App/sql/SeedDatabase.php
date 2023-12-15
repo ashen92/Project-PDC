@@ -4,6 +4,7 @@ use App\DTOs\CreateRequirementDTO;
 use App\Entities\Event;
 use App\Entities\Internship;
 use App\Entities\InternshipCycle;
+use App\Entities\Organization;
 use App\Entities\Partner;
 use App\Entities\Requirement;
 use App\Entities\Role;
@@ -168,13 +169,90 @@ $partnerUsersData = [
 ];
 
 for ($i = 0; $i < 100; $i++) {
-    $partnerUsers[$i] = new User(
+    $partnerUsers[$i] = new Partner(
         "partner{$i}@mail.com",
         $partnerUsersData[$i],
         $passwordHash
     );
     $entityManager->persist($partnerUsers[$i]);
 }
+$entityManager->flush();
+
+// Add organizations ----------------------------------------------
+
+echo "Done.\nAdding organizations...";
+
+$orgData = [
+    [
+        "Microsoft",
+        "One Microsoft Way, Redmond, WA 98052, United States",
+        "Redmond",
+        "Technology",
+        "https://www.microsoft.com/",
+        "Be what's next",
+        "image-jpeg-uuid-49df2eb0-9b7b-11ee-a730-9109ff162764",
+    ],
+    [
+        "Google",
+        "1600 Amphitheatre Parkway, Mountain View, CA 94043, United States",
+        "Mountain View",
+        "Technology",
+        "https://www.google.com/",
+        "Do the right thing",
+        "image-jpeg-uuid-49dbd350-9b7b-11ee-a730-9109ff162764",
+    ],
+    [
+        "Amazon",
+        "410 Terry Ave N, Seattle, WA 98109, United States",
+        "Seattle",
+        "Technology",
+        "https://www.amazon.com/",
+        "Work hard. Have fun. Make history.",
+        "image-jpeg-uuid-49d850e0-9b7b-11ee-a730-9109ff162764",
+    ],
+    [
+        "Meta",
+        "1 Hacker Way, Menlo Park, CA 94025, United States",
+        "Menlo Park",
+        "Technology",
+        "https://www.meta.com/",
+        "Bring the world closer together",
+        "image-jpeg-uuid-49dda810-9b7b-11ee-a730-9109ff162764",
+    ],
+    [
+        "Apple",
+        "1 Apple Park Way, Cupertino, CA 95014, United States",
+        "Cupertino",
+        "Technology",
+        "https://www.apple.com/",
+        "Think different",
+        "image-jpeg-uuid-49da25a0-9b7b-11ee-a730-9109ff162764",
+    ]
+];
+
+$organizations = [];
+
+foreach ($orgData as $org) {
+    $o = new Organization(
+        $org[0],
+        $org[1],
+        $org[2],
+        $org[3],
+        $org[4],
+        $org[5],
+        $org[6]
+    );
+    $entityManager->persist($o);
+    $organizations[] = $o;
+}
+
+$user4->setOrganization($organizations[0]);
+$partnerUsers[0]->setOrganization($organizations[1]);
+$partnerUsers[1]->setOrganization($organizations[2]);
+$partnerUsers[2]->setOrganization($organizations[3]);
+$partnerUsers[3]->setOrganization($organizations[4]);
+
+$entityManager->persist($user4);
 $entityManager->flush();
 
 // ----------------------------------------------------------------
@@ -291,27 +369,31 @@ $internshipCycle = new InternshipCycle();
 $internshipCycle->setPartnerGroup($groupInternshipCyclePartners);
 $internshipCycle->setStudentGroup($groupInternshipCycleStudents);
 
+$internships = [];
+
+$counter = 0;
+
 foreach ($internData as $internship) {
-    $i = new Internship($internship[0], $internship[1], $user4, $internshipCycle);
+    $i = null;
+    $mod = $counter % 10;
+    if ($mod == 0) {
+        $i = new Internship($internship[0], $internship[1], $user4, $internshipCycle);
+    } else if ($mod == 1) {
+        $i = new Internship($internship[0], $internship[1], $partnerUsers[0], $internshipCycle);
+    } else if ($mod == 2) {
+        $i = new Internship($internship[0], $internship[1], $partnerUsers[1], $internshipCycle);
+    } else if ($mod == 3) {
+        $i = new Internship($internship[0], $internship[1], $partnerUsers[2], $internshipCycle);
+    } else {
+        $i = new Internship($internship[0], $internship[1], $partnerUsers[3], $internshipCycle);
+    }
     $entityManager->persist($i);
+    $internships[] = $i;
+    $counter += 3;
 }
 
 $entityManager->persist($internshipCycle);
 $entityManager->flush();
-
-// $internship0 = new Internship($internData[0][0], $internData[0][1], $user7, $internshipCycle);
-// $internship1 = new Internship($internData[1][0], $internData[1][1], $user7, $internshipCycle);
-// $internship2 = new Internship($internData[2][0], $internData[2][1], $user7, $internshipCycle);
-// $internship3 = new Internship($internData[3][0], $internData[3][1], $user7, $internshipCycle);
-// $internship4 = new Internship($internData[4][0], $internData[4][1], $user7, $internshipCycle);
-
-// $entityManager->persist($internshipCycle);
-// $entityManager->persist($internship0);
-// $entityManager->persist($internship1);
-// $entityManager->persist($internship2);
-// $entityManager->persist($internship3);
-// $entityManager->persist($internship4);
-// $entityManager->flush();
 
 echo "Done.\nAdding events...";
 
