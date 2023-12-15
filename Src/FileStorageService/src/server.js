@@ -32,12 +32,17 @@ const server = http.createServer(async (req, res) => {
         const filePath = req.url.slice("/api/files/".length);
         const [containerName] = filePath.split("-uuid-");
         try {
-            res.writeHead(200, { "Content-Type": containerName });
             await getFileFromAzure(filePath, res);
+            res.writeHead(200, { "Content-Type": containerName });
         } catch (error) {
             console.error("Error getting file:", error);
-            res.writeHead(500);
-            res.end();
+            if (error.message.includes("not found")) {
+                res.writeHead(404);
+                res.end("File Not Found");
+            } else {
+                res.writeHead(500);
+                res.end();
+            }
         }
     } else {
         res.writeHead(404);

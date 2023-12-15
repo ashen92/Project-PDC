@@ -18,6 +18,10 @@ export async function getFileFromAzure(filePath, writableStream) {
     const containerClient = blobServiceClient.getContainerClient(containerName);
     const blobClient = containerClient.getBlobClient(blobName);
 
+    if (!(await blobClient.exists())) {
+        throw new Error(`File ${blobName} not found`);
+    }
+
     const downloadResponse = await blobClient.download();
 
     downloadResponse.readableStreamBody.pipe(writableStream);
