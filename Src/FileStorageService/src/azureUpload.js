@@ -37,7 +37,12 @@ export async function uploadFileToAzure(files) {
         );
 
         const data = fs.readFileSync(file.filepath);
-        const uploadBlobResponse = await blockBlobClient.upload(data, data.length);
+        const uploadBlobResponse = await blockBlobClient.upload(data, data.length,
+            {
+                blobHTTPHeaders: {
+                    blobContentType: file.mimetype
+                }
+            });
         console.log(
             `Blob was uploaded successfully. requestId: ${uploadBlobResponse.requestId}`
         );
