@@ -2,6 +2,7 @@ import http from "http";
 // import "dotenv/config";
 import { parseIncomingFile } from "./fileParser.js";
 import { uploadFileToAzure } from "./azureUpload.js";
+import { getFileFromAzure } from "./azureGetFile.js";
 
 const server = http.createServer(async (req, res) => {
     res.setHeader("Content-Security-Policy", "default-src 'none'; script-src 'self'; connect-src 'self'; img-src 'self'; style-src 'self';");
@@ -26,6 +27,17 @@ const server = http.createServer(async (req, res) => {
             console.error("Error parsing file:", error);
             res.writeHead(500);
             res.end("Internal Server Error");
+        }
+    } else if (req.method === "GET" && req.url.startsWith("/api/files/")) {
+        const filePath = req.url.slice("/api/files/".length);
+        const [containerName] = filePath.split("-uuid-");
+        try {
+            res.writeHead(200, { "Content-Type": containerName });
+            await getFileFromAzure(filePath, res);
+        } catch (error) {
+            console.error("Error getting file:", error);
+            res.writeHead(500);
+            res.end();
         }
     } else {
         res.writeHead(404);
