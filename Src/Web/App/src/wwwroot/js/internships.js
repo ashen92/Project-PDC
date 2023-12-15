@@ -72,22 +72,28 @@ const applicantsJobBtn = document.getElementById("applicants-job-btn");
 const modifyJobBtn = document.getElementById("modify-job-btn");
 const removeJobBtn = document.getElementById("remove-job-btn");
 
-applicantsJobBtn.addEventListener("click", () => {
-    console.log(previouslySelectedItemCard.getAttribute("data-job-id"));
-    window.location.href = `${window.location.pathname}/${previouslySelectedItemCard.getAttribute("data-job-id")}/applicants`;
-});
+if (applicantsJobBtn) {
+    applicantsJobBtn.addEventListener("click", () => {
+        console.log(previouslySelectedItemCard.getAttribute("data-job-id"));
+        window.location.href = `${window.location.pathname}/${previouslySelectedItemCard.getAttribute("data-job-id")}/applicants`;
+    });
+}
 
-modifyJobBtn.addEventListener("click", () => {
-    window.location.href = `${window.location.pathname}/${previouslySelectedItemCard.getAttribute("data-job-id")}/modify`;
-});
+if (modifyJobBtn) {
+    modifyJobBtn.addEventListener("click", () => {
+        window.location.href = `${window.location.pathname}/${previouslySelectedItemCard.getAttribute("data-job-id")}/modify`;
+    });
+}
 
-removeJobBtn.addEventListener("click", () => {
-    fetch("/internship-program/internships/" + previouslySelectedItemCard.getAttribute("data-job-id"), { method: "DELETE" })
-        .then(() => {
-            window.location.href = `${window.location.pathname}`;
-        })
-        .catch(error => console.error("Error deleting job:", error));
-});
+if (removeJobBtn) {
+    removeJobBtn.addEventListener("click", () => {
+        fetch("/internship-program/internships/" + previouslySelectedItemCard.getAttribute("data-job-id"), { method: "DELETE" })
+            .then(() => {
+                window.location.href = `${window.location.pathname}`;
+            })
+            .catch(error => console.error("Error deleting job:", error));
+    });
+}
 
 const filterByCompany = document.getElementById("filter-by-company");
 const companyMultiSelectList = document.getElementById("company-multi-select-list");
