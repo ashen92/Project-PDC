@@ -137,9 +137,6 @@ class InternshipCycleService implements IInternshipCycleService
         return $internshipCycle;
     }
 
-    /**
-     * @return array An array of App\Entities\User objects
-     */
     public function getStudentUsers(?int $internshipCycleId = null): array
     {
         if ($internshipCycleId === null) {
@@ -147,13 +144,19 @@ class InternshipCycleService implements IInternshipCycleService
         }
 
         $rsm = new ResultSetMappingBuilder($this->entityManager);
-        $rsm->addRootEntityFromClassMetadata('App\Entities\User', 'u');
+        $rsm->addScalarResult('id', 'id');
+        $rsm->addScalarResult('firstName', 'firstName');
+        $rsm->addScalarResult('studentEmail', 'studentEmail');
+        $rsm->addScalarResult('fullName', 'fullName');
+        $rsm->addScalarResult('indexNumber', 'indexNumber');
+
 
         $queryBuilder = $this->entityManager->createNativeQuery(
-            "SELECT u.*
+            "SELECT u.*, s.*
             FROM user_groups ug
             JOIN user_group_membership ugm ON ug.id = ugm.usergroup_id
             JOIN users u ON ugm.user_id = u.id
+            JOIN students s ON u.id = s.id
             WHERE ug.id = (
                 SELECT student_group_id
                 FROM internship_cycles

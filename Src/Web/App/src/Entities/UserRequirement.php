@@ -15,7 +15,7 @@ class UserRequirement
     #[ORM\Column(type: "integer")]
     private int $id;
 
-    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: "assignedRequirements")]
+    #[ORM\ManyToOne(targetEntity: Student::class, inversedBy: "assignedRequirements")]
     #[ORM\JoinColumn(name: "user_id", referencedColumnName: "id")]
     private User $user;
 

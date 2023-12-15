@@ -9,6 +9,13 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
+#[ORM\InheritanceType("JOINED")]
+#[ORM\DiscriminatorColumn(name: "type", type: "string")]
+#[ORM\DiscriminatorMap([
+    "user" => User::class,
+    "partner" => Partner::class,
+    "student" => Student::class
+])]
 #[ORM\Table(name: "users")]
 class User
 {
@@ -19,18 +26,6 @@ class User
 
     #[ORM\Column(nullable: true)]
     private ?string $email;
-
-    // For students. Should not be nullable
-    #[ORM\Column(nullable: true)]
-    private string $studentEmail;
-
-    // For students. Should not be nullable
-    #[ORM\Column(nullable: true)]
-    private string $fullName;
-
-    // For students. Should not be nullable
-    #[ORM\Column(nullable: true)]
-    private string $indexNumber;
 
     #[ORM\Column(nullable: true)]
     private ?string $firstName;
@@ -57,26 +52,12 @@ class User
     #[ORM\ManyToMany(targetEntity: UserGroup::class, mappedBy: "users")]
     private Collection $groups;
 
-    #[ORM\OneToMany(targetEntity: Internship::class, mappedBy: "owner")]
-    private Collection $internshipsCreated;
-
-    /**
-     * Many Users apply to Many Internships.
-     * @var Collection<int, Internship>
-     */
-    #[ORM\ManyToMany(targetEntity: Internship::class, mappedBy: "applicants")]
-    private Collection $internshipsApplied;
-
-    #[ORM\OneToMany(targetEntity: UserRequirement::class, mappedBy: "user")]
-    private Collection $assignedRequirements;
-
     public function __construct(?string $email, ?string $firstName, ?string $passwordHash)
     {
         $this->email = $email;
         $this->firstName = $firstName;
         $this->passwordHash = $passwordHash;
         $this->groups = new ArrayCollection();
-        $this->internshipsCreated = new ArrayCollection();
     }
 
     public function generateActivationToken(): string
@@ -100,21 +81,6 @@ class User
     public function getEmail(): ?string
     {
         return $this->email;
-    }
-
-    public function getStudentEmail(): string
-    {
-        return $this->studentEmail;
-    }
-
-    public function getFullName(): string
-    {
-        return $this->fullName;
-    }
-
-    public function getIndexNumber(): string
-    {
-        return $this->indexNumber;
     }
 
     public function getFirstName(): ?string
@@ -152,21 +118,6 @@ class User
         $this->email = $email;
     }
 
-    public function setStudentEmail(string $studentEmail): void
-    {
-        $this->studentEmail = $studentEmail;
-    }
-
-    public function setFullName(string $fullName): void
-    {
-        $this->fullName = $fullName;
-    }
-
-    public function setIndexNumber(string $indexNumber): void
-    {
-        $this->indexNumber = $indexNumber;
-    }
-
     public function setFirstName(string $firstName): void
     {
         $this->firstName = $firstName;
@@ -200,15 +151,5 @@ class User
     public function addToGroup(UserGroup $group): void
     {
         $this->groups[] = $group;
-    }
-
-    public function addToInternshipsCreated(Internship $internship): void
-    {
-        $this->internshipsCreated[] = $internship;
-    }
-
-    public function addToInternshipsApplied(Internship $internship): void
-    {
-        $this->internshipsApplied[] = $internship;
     }
 }

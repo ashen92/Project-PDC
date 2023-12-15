@@ -21,15 +21,15 @@ class Internship
     #[ORM\Column(type: "text")]
     private string $description;
 
-    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: "internshipsCreated")]
+    #[ORM\ManyToOne(targetEntity: Partner::class, inversedBy: "internshipsCreated")]
     #[ORM\JoinColumn(name: "user_id", referencedColumnName: "id")]
-    private User $owner;
+    private Partner $owner;
 
     /**
-     * Many Internships have Many Users who applied to it.
-     * @var Collection<int, User>
+     * Many Internships have Many Students who applied to it.
+     * @var Collection<int, Student>
      */
-    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: "internshipsApplied")]
+    #[ORM\ManyToMany(targetEntity: Student::class, inversedBy: "internshipsApplied")]
     #[ORM\JoinTable(name: "internship_applicants")]
     private Collection $applicants;
 
@@ -37,7 +37,7 @@ class Internship
     #[ORM\JoinColumn(name: "internship_cycle_id", referencedColumnName: "id")]
     private InternshipCycle $internshipCycle;
 
-    public function __construct(string $title, string $description, User $owner, InternshipCycle $internshipCycle)
+    public function __construct(string $title, string $description, Partner $owner, InternshipCycle $internshipCycle)
     {
         $this->title = $title;
         $this->description = $description;
@@ -71,7 +71,7 @@ class Internship
         $this->description = $description;
     }
 
-    public function addApplicant(User $user): void
+    public function addApplicant(Student $user): void
     {
         $this->applicants[] = $user;
         $user->addToInternshipsApplied($this);

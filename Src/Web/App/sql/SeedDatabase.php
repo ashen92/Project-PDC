@@ -4,8 +4,10 @@ use App\DTOs\CreateRequirementDTO;
 use App\Entities\Event;
 use App\Entities\Internship;
 use App\Entities\InternshipCycle;
+use App\Entities\Partner;
 use App\Entities\Requirement;
 use App\Entities\Role;
+use App\Entities\Student;
 use App\Entities\User;
 use App\Entities\UserGroup;
 use App\Entities\UserRequirement;
@@ -21,11 +23,15 @@ $passwordHash = "$2y$10\$dLij/BtPMbPKtt/CxpzqVuSn1FBVq.es9spKQ87sdGVJmlu4J3zwq";
 
 $user1 = new User("2@mail.com", "Admin", $passwordHash);
 $user2 = new User("coordinator@mail.com", "Coordinator", $passwordHash);
-$user3 = new User("student@mail.com", "Student", $passwordHash);
-$user3->setStudentEmail("student-email@mail.com");
-$user3->setFullName("Default Student User");
-$user3->setIndexNumber("1990is000");
-$user4 = new User("partner@mail.com", "Partner", $passwordHash);
+$user3 = new Student(
+    "student-email@mail.com",
+    "Default Student User",
+    "19090111",
+    "student@mail.com",
+    "Student",
+    $passwordHash
+);
+$user4 = new Partner("partner@mail.com", "Partner", $passwordHash);
 
 $entityManager->persist($user1);
 $entityManager->persist($user2);
@@ -36,17 +42,19 @@ $entityManager->persist($user4);
 
 $studentUsers = [];
 
-$studentUsers[0] = new User(null, null, null);
-$studentUsers[0]->setStudentEmail("2021is084@stu.ucsc.cmb.ac.lk");
-$studentUsers[0]->setFullName("H.D.A.H. Sandaruwan");
-$studentUsers[0]->setIndexNumber("2021is084");
+$studentUsers[0] = new Student(
+    "2021is084@stu.ucsc.cmb.ac.lk",
+    "H.D.A.H. Sandaruwan",
+    "21020841",
+);
 $entityManager->persist($studentUsers[0]);
 
 for ($i = 1; $i < 600; $i++) {
-    $studentUsers[$i] = new User(null, null, null);
-    $studentUsers[$i]->setStudentEmail("2021is084+{$i}@stu.ucsc.cmb.ac.lk");
-    $studentUsers[$i]->setFullName("Student User {$i}");
-    $studentUsers[$i]->setIndexNumber("2021is084+{$i}");
+    $studentUsers[$i] = new Student(
+        "2021is084+{$i}@stu.ucsc.cmb.ac.lk",
+        "Student User {$i}",
+        "21020841+{$i}",
+    );
     $entityManager->persist($studentUsers[$i]);
 }
 
@@ -167,10 +175,9 @@ for ($i = 0; $i < 100; $i++) {
     );
     $entityManager->persist($partnerUsers[$i]);
 }
+$entityManager->flush();
 
 // ----------------------------------------------------------------
-
-$entityManager->flush();
 
 echo "Done.\nAdding groups...";
 
@@ -367,88 +374,83 @@ $entityManager->flush();
 
 echo "Done.\nAdding requirements...";
 
-$r1DTO = new CreateRequirementDTO(
-    "Internship Contract",
-    "Upload the contract between you and the company.",
-    "one-time",
-    new DateTime("now"),
-    new DateTime("+1 month"),
-    null,
-    "file",
-    ["pdf"],
-    5,
-    3
-);
+$requirementData = [
+    new CreateRequirementDTO(
+        "Internship Contract",
+        "Upload the contract between you and the company.",
+        "one-time",
+        new DateTime("now"),
+        new DateTime("+1 month"),
+        null,
+        "file",
+        ["pdf"],
+        5,
+        3
+    ),
+    new CreateRequirementDTO(
+        "Monthly Report",
+        "Upload a report of your progress.",
+        "recurring",
+        new DateTime("now"),
+        null,
+        "monthly",
+        "file",
+        ["pdf"],
+        5,
+        1
+    ),
+    new CreateRequirementDTO(
+        "Daily Report",
+        "Upload a report of your progress.",
+        "recurring",
+        new DateTime("now"),
+        null,
+        "daily",
+        "file",
+        ["pdf"],
+        5,
+        1
+    ),
+    new CreateRequirementDTO(
+        "Weekly Report",
+        "Upload a report of your progress.",
+        "recurring",
+        new DateTime("now"),
+        null,
+        "weekly",
+        "file",
+        ["pdf"],
+        5,
+        1
+    ),
+    new CreateRequirementDTO(
+        "Your feedback about the internship",
+        "Upload the contract between you and the company.",
+        "one-time",
+        new DateTime("now"),
+        new DateTime("+1 month"),
+        null,
+        "text",
+        null,
+        null,
+        null
+    )
+];
 
-$r5DTO = new CreateRequirementDTO(
-    "Your feedback about the internship",
-    "Upload the contract between you and the company.",
-    "one-time",
-    new DateTime("now"),
-    new DateTime("+1 month"),
-    null,
-    "text",
-    null,
-    null,
-    null
-);
+$requirements = [];
 
-$r2DTO = new CreateRequirementDTO(
-    "Monthly Report",
-    "Upload a report of your progress.",
-    "recurring",
-    new DateTime("now"),
-    null,
-    "monthly",
-    "file",
-    ["pdf"],
-    5,
-    1
-);
-
-$r3DTO = new CreateRequirementDTO(
-    "Daily Report",
-    "Upload a report of your progress.",
-    "recurring",
-    new DateTime("now"),
-    null,
-    "daily",
-    "file",
-    ["pdf"],
-    5,
-    1
-);
-
-$r4DTO = new CreateRequirementDTO(
-    "Weekly Report",
-    "Upload a report of your progress.",
-    "recurring",
-    new DateTime("now"),
-    null,
-    "weekly",
-    "file",
-    ["pdf"],
-    5,
-    1
-);
-
-$r1 = new Requirement($r1DTO);
-$r2 = new Requirement($r2DTO);
-$r3 = new Requirement($r3DTO);
-$r4 = new Requirement($r4DTO);
-$r5 = new Requirement($r5DTO);
-
-$entityManager->persist($r1);
-$entityManager->persist($r2);
-$entityManager->persist($r3);
-$entityManager->persist($r4);
-$entityManager->persist($r5);
+foreach ($requirementData as $requirement) {
+    $r = new Requirement($requirement);
+    $r->setInternshipCycle($internshipCycle);
+    $entityManager->persist($r);
+    $requirements[] = $r;
+}
 $entityManager->flush();
 
 echo "Done.\nAdding user requirements...";
 
-$userRequirement1 = new UserRequirement($user3, $r1);
-$userRequirement2 = new UserRequirement($user3, $r5);
+$userRequirement1 = new UserRequirement($user3, $requirements[0]);
+$userRequirement2 = new UserRequirement($user3, $requirements[4]);
 $entityManager->persist($userRequirement1);
 $entityManager->persist($userRequirement2);
 $entityManager->flush();
