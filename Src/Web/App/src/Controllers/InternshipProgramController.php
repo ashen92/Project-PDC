@@ -134,16 +134,4 @@ class InternshipProgramController extends PageControllerBase
         }
         return $this->redirect("/internship-program/monitoring");
     }
-
-    #[Route("/documents")]
-    public function cycleDocuments(Request $request): Response
-    {
-        return $this->render("internship-program/documents.html", ["section" => "documents"]);
-    }
-
-    #[Route("/feedback")]
-    public function cycleFeedback(Request $request): Response
-    {
-        return $this->render("internship-program/feedback.html", ["section" => "feedback"]);
-    }
 }
