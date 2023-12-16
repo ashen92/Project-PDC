@@ -51,6 +51,9 @@ class FileStorageService implements IFileStorageService
 
     public function get(string $filePath): array|bool
     {
+        // Temporary solution
+        return false;
+
         try {
             $response = $this->httpClient->request(
                 "GET",
