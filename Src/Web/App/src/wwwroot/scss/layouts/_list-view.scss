@@ -193,11 +193,21 @@ $filter-item-active-bg-color: #c8c6c6;
                 overflow-y: auto;
                 border: $border-1;
                 border-radius: $rounded-2;
-                padding: 2.5rem;
+
+                >* {
+                    padding-left: 2.5rem;
+                    padding-right: 2.5rem;
+                }
 
                 >.title {
                     font-weight: $fw-semibold;
-                    margin-bottom: 1.5rem;
+                    padding-top: 2.5rem;
+                    padding-bottom: 2rem;
+                    margin-bottom: 0;
+                }
+
+                >.actions {
+                    padding-bottom: 2rem;
                 }
 
                 .job-description-container {

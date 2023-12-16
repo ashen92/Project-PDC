@@ -273,4 +273,8 @@ select {
         margin-left: 1.6rem;
         padding-left: 1.125rem;
     }
+
+    strong {
+        font-weight: $fw-semibold;
+    }
 }
