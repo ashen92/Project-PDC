@@ -24,7 +24,7 @@ class InternshipProgramController extends PageControllerBase
     public function __construct(
         Environment $twig,
         private IInternshipCycleService $internshipCycleService,
-        private IRequirementService $requirementService
+        private IRequirementService $requirementService,
     ) {
         parent::__construct($twig);
     }
@@ -114,6 +114,25 @@ class InternshipProgramController extends PageControllerBase
                 "users" => $this->internshipCycleService->getStudentUsers()
             ]
         );
+    }
+
+    #[Route("/monitoring/submissions", methods: ["GET"])]
+    public function requirementSubmissions(Request $request): Response|RedirectResponse
+    {
+        $id = (int) $request->get("r");
+
+        $requirement = $this->requirementService->getRequirement($id);
+        if ($requirement) {
+            return $this->render(
+                "internship-program/monitoring/submissions.html",
+                [
+                    "section" => "requirements",
+                    "requirement" => $requirement,
+                    "submissions" => $this->requirementService->getRequirementSubmissions($id)
+                ]
+            );
+        }
+        return $this->redirect("/internship-program/monitoring");
     }
 
     #[Route("/documents")]

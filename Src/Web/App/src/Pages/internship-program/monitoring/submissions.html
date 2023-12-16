@@ -1,0 +1,47 @@
+{% extends "shared/layout-left-nav.html" %}
+
+{% block title %}Student Users{% endblock %}
+
+{% block left_nav %}
+{% include "internship-program/left-nav.html" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="mb-20">
+    <h5>
+        All submissions for {{ requirement.name }}
+    </h5>
+    <p class="fs-small">{{ submissions|length }} submissions found</p>
+</div>
+<table class="table table-hover border-0 table-compact">
+    <colgroup>
+        <col class="w-2-12">
+        <col class="w-3-12">
+        <col class="w-2-12">
+        <col class="w-2-12">
+        <col class="w-5-12">
+    </colgroup>
+    <thead>
+        <tr>
+            <th>First name</th>
+            <th>Full name</th>
+            <th>Completed on</th>
+            <th>Index number</th>
+            <th>Student email</th>
+        </tr>
+    </thead>
+    <tbody class="table-rows-clickable">
+        {% for i in submissions %}
+        <tr data-href="submissions?r={{ requirement.id }}&u={{ i.id }}">
+            <td class="capitalize">{{ i.firstName }}</td>
+            <td class="capitalize">{{ i.fullName }}</td>
+            <td class="capitalize">{{ i.completedAt.format("Y-m-d") }}</td>
+            <td>{{ i.indexNumber }}</td>
+            <td>{{ i.studentEmail }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

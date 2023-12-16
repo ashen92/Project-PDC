@@ -58,7 +58,7 @@
         </thead>
         <tbody class="table-rows-clickable">
             {% for item in requirements %}
-            <tr data-href="/internship-program/requirements/{{ item.id }}">
+            <tr data-href="/internship-program/monitoring/submissions?r={{ item.id }}">
                 <td>{{ item.name }}</td>
                 <td class="capitalize">
                     {% set requirementType = item.requirementType.toString %}

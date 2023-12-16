@@ -38,6 +38,23 @@ class RequirementRepository extends Repository
         return $query->getArrayResult();
     }
 
+    public function getRequirementSubmissions(int $requirementId): array
+    {
+        $queryBuilder = $this->entityManager->createQueryBuilder();
+        $queryBuilder
+            ->select("ur.id, ur.completedAt, ur.status, u.id as u_id, u.firstName, u.fullName, u.indexNumber, u.studentEmail")
+            ->from("App\Entities\UserRequirement", "ur")
+            ->innerJoin("ur.user", "u")
+            ->innerJoin("ur.requirement", "r")
+            ->where("r.id = :requirementId")
+            ->andWhere("ur.status = :status")
+            ->setParameter("requirementId", $requirementId)
+            ->setParameter("status", "completed");
+
+        $query = $queryBuilder->getQuery();
+        return $query->getArrayResult();
+    }
+
     public function getUserRequirement(int $id): ?UserRequirement
     {
         $rsm = new ResultSetMappingBuilder($this->entityManager);
@@ -85,24 +102,20 @@ class RequirementRepository extends Repository
 
     public function getStudentUsers(InternshipCycle $internshipCycle): array
     {
-        $rsm = new ResultSetMappingBuilder($this->entityManager);
-        $rsm->addRootEntityFromClassMetadata('App\Entities\User', 'u');
+        return $internshipCycle->getStudentGroup()->getUsers()->toArray();
 
-        $queryBuilder = $this->entityManager->createNativeQuery(
-            "SELECT u.*
-            FROM user_groups ug
-            JOIN user_group_membership ugm ON ug.id = ugm.usergroup_id
-            JOIN users u ON ugm.user_id = u.id
-            WHERE ug.id = (
-                SELECT student_group_id
-                FROM internship_cycles
-                WHERE id = :internshipCycleId
-            )",
-            $rsm
-        );
-
-        $queryBuilder->setParameter("internshipCycleId", $internshipCycle->getId());
-        return $queryBuilder->getResult();
+        // $queryBuilder = $this->entityManager->createNativeQuery(
+        //     "SELECT u.*
+        //     FROM user_groups ug
+        //     JOIN user_group_membership ugm ON ug.id = ugm.usergroup_id
+        //     JOIN users u ON ugm.user_id = u.id
+        //     WHERE ug.id = (
+        //         SELECT student_group_id
+        //         FROM internship_cycles
+        //         WHERE id = :internshipCycleId
+        //     )",
+        //     $rsm
+        // );
     }
 
     public function createRequirement(

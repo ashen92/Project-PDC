@@ -12,6 +12,7 @@ interface IRequirementService
 {
     public function getRequirements(): array;
     public function getRequirement(int $id): ?Requirement;
+    public function getRequirementSubmissions(int $requirementId): array;
     public function createRequirement(CreateRequirementDTO $requirementDTO): void;
     public function getUserRequirements(int $userId): array;
     public function getUserRequirement(int $id): ?UserRequirement;

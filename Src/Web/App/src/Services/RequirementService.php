@@ -42,6 +42,11 @@ class RequirementService implements IRequirementService
         return $this->requirementRepository->getRequirements($internshipCycleId);
     }
 
+    public function getRequirementSubmissions(int $requirementId): array
+    {
+        return $this->requirementRepository->getRequirementSubmissions($requirementId);
+    }
+
     public function getUserRequirement(int $id): ?UserRequirement
     {
         return $this->requirementRepository->getUserRequirement($id);
