@@ -14,12 +14,14 @@
     <p>Manage requirements that students and partners must complete.</p>
     {% endif %}
 </div>
+
+{% if "ROLE_ADMIN" in user_roles %}
+<div class="actions mb-20">
+    <a class="btn btn-primary" role="button" href="requirements/create">Add Requirement</a>
+</div>
+{% endif %}
+
 <section>
-    {% if "ROLE_ADMIN" in user_roles %}
-    <div class="actions mb-20">
-        <a class="btn btn-primary" role="button" href="requirements/create">Add Requirement</a>
-    </div>
-    {% endif %}
 
     {% if requirements is empty %}
     <p>No requirements have found.</p>
@@ -43,10 +45,11 @@
             <tr data-href="/internship-program/requirements/{{ item.id }}">
                 <td>{{ item.name }}</td>
                 <td class="capitalize">
-                    {% if item.requirementType.toString == "recurring" %}
-                    {{ item.requirementType.toString }} ({{ item.repeatInterval.toString }})
+                    {% set requirementType = item.requirementType.toString %}
+                    {% if requirementType == "recurring" %}
+                    {{ requirementType }} ({{ item.repeatInterval.toString }})
                     {% else %}
-                    {{ item.requirementType.toString }}
+                    {{ requirementType }}
                     {% endif %}
                 </td>
                 <td>{{ item.startDate.format("Y-m-d") }}</td>

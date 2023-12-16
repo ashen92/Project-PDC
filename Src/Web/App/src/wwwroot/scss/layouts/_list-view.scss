@@ -17,6 +17,7 @@ $filter-item-active-bg-color: #c8c6c6;
         margin-bottom: 1.5rem;
         font-size: $text-field-font-size;
         font-weight: $btn-font-weight;
+        border: $border-1;
 
         >* {
             margin: auto 0;
@@ -89,6 +90,8 @@ $filter-item-active-bg-color: #c8c6c6;
         .item-list {
             min-width: 23rem;
             height: max-content;
+            border-radius: $rounded-1;
+            box-shadow: $shadow-4;
 
             .empty-list {
                 margin-top: 0.5rem;
@@ -102,12 +105,14 @@ $filter-item-active-bg-color: #c8c6c6;
                 user-select: none;
                 cursor: pointer;
                 transition: background 80ms linear;
-                margin-bottom: 0.5rem;
-                border: 2px solid;
-                border-color: #cfcece;
-                border-radius: $rounded-1;
+                border-bottom: 1px solid;
+                border-bottom-color: #cfcece;
                 display: flex;
                 align-items: center;
+
+                &:last-child {
+                    border-bottom: none;
+                }
 
                 &:hover {
                     background-color: #f8f8f8;
@@ -120,7 +125,9 @@ $filter-item-active-bg-color: #c8c6c6;
                 }
 
                 &.active {
-                    border-color: rgb(0, 120, 180);
+                    outline: 2px solid;
+                    outline-color: rgb(0, 120, 180);
+                    border-radius: $rounded-1;
                 }
 
                 &-logo {
@@ -157,8 +164,8 @@ $filter-item-active-bg-color: #c8c6c6;
 
             .skeleton {
                 padding: 2.5rem;
-                border: 1px solid #ccc;
                 border-radius: $rounded-2;
+                box-shadow: $shadow-3;
 
                 &-header {
                     height: 2.4rem;
@@ -191,8 +198,8 @@ $filter-item-active-bg-color: #c8c6c6;
             >.content {
                 max-height: 100%;
                 overflow-y: auto;
-                border: $border-1;
                 border-radius: $rounded-2;
+                box-shadow: $shadow-3;
 
                 >* {
                     padding-left: 2.5rem;
@@ -204,10 +211,12 @@ $filter-item-active-bg-color: #c8c6c6;
                     padding-top: 2.5rem;
                     padding-bottom: 2rem;
                     margin-bottom: 0;
+                    background-color: #EEEDE7;
                 }
 
                 >.actions {
                     padding-bottom: 2rem;
+                    background-color: #EEEDE7;
                 }
 
                 .job-description-container {
