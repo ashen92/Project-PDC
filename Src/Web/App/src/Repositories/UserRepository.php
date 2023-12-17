@@ -7,7 +7,12 @@ use App\Entities\User;
 
 class UserRepository extends Repository
 {
-    public function getUserRoles(int $userId): array
+    public function find(int $userId): ?User
+    {
+        return $this->entityManager->getRepository(User::class)->find($userId);
+    }
+
+    public function findUserRoles(int $userId): array
     {
         $queryBuilder = $this->entityManager->createQueryBuilder();
         $queryBuilder
@@ -21,22 +26,17 @@ class UserRepository extends Repository
         return $queryBuilder->getQuery()->getSingleColumnResult();
     }
 
-    public function getUserById(int $userId): ?User
-    {
-        return $this->entityManager->getRepository(User::class)->find($userId);
-    }
-
-    public function getUserByEmail(string $email): ?User
+    public function findByEmail(string $email): ?User
     {
         return $this->entityManager->getRepository(User::class)->findOneBy(["email" => $email]);
     }
 
-    public function getUserByStudentEmail(string $email): ?User
+    public function findByStudentEmail(string $email): ?User
     {
         return $this->entityManager->getRepository(User::class)->findOneBy(["studentEmail" => $email]);
     }
 
-    public function getUserByActivationToken(string $token): ?User
+    public function findByActivationToken(string $token): ?User
     {
         return $this->entityManager->getRepository(User::class)->findOneBy(["activationToken" => $token]);
     }

@@ -19,7 +19,7 @@ class UserService implements IUserService
 
     public function createStudentUser(CreateStudentUserDTO $createStudentDTO)
     {
-        $user = $this->userRepository->getUserById($createStudentDTO->id);
+        $user = $this->userRepository->find($createStudentDTO->id);
 
         $user->setFirstName($createStudentDTO->firstName);
         $user->setLastName($createStudentDTO->lastName);
@@ -37,14 +37,14 @@ class UserService implements IUserService
      */
     public function getUserRoles(int $userId): array
     {
-        return $this->userRepository->getUserRoles($userId);
+        return $this->userRepository->findUserRoles($userId);
     }
 
     public function hasRole(int $userId, string $role): bool
     {
         if ($role == "")
             return true;
-        $roles = $this->userRepository->getUserRoles($userId);
+        $roles = $this->userRepository->findUserRoles($userId);
         if (in_array($role, $roles))
             return true;
         return false;
@@ -52,17 +52,17 @@ class UserService implements IUserService
 
     public function getUserByEmail(string $email): ?User
     {
-        return $this->userRepository->getUserByEmail($email);
+        return $this->userRepository->findByEmail($email);
     }
 
     public function getUserByStudentEmail(string $email): ?User
     {
-        return $this->userRepository->getUserByStudentEmail($email);
+        return $this->userRepository->findByStudentEmail($email);
     }
 
     public function getUserByActivationToken(string $token): ?User
     {
-        return $this->userRepository->getUserByActivationToken($token);
+        return $this->userRepository->findByActivationToken($token);
     }
 
     public function saveUser(User $user): void

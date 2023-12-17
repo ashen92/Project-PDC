@@ -74,7 +74,7 @@ class InternshipService implements IInternshipService
 
     public function addInternship(InternshipDTO $dto): void
     {
-        $user = $this->userRepository->getUserById($dto->ownerId);
+        $user = $this->userRepository->find($dto->ownerId);
         $internshipCycle = $this->internshipCycleService->getLatestActiveInternshipCycle();
         $internship = new Internship($dto->title, $dto->description, $user, $internshipCycle);
         $this->internshipRepository->save($internship);
@@ -91,7 +91,7 @@ class InternshipService implements IInternshipService
     public function applyToInternship(int $internshipId, int $userId): void
     {
         $internship = $this->internshipRepository->find($internshipId);
-        $user = $this->userRepository->getUserById($userId);
+        $user = $this->userRepository->find($userId);
         $internship->addApplicant($user);
         $this->internshipRepository->save($internship);
     }
