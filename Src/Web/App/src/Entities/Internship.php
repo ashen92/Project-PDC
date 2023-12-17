@@ -61,6 +61,11 @@ class Internship
         return $this->description;
     }
 
+    public function getOwner(): Partner
+    {
+        return $this->owner;
+    }
+
     public function setTitle(string $title): void
     {
         $this->title = $title;

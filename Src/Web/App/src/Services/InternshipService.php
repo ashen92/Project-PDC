@@ -6,72 +6,68 @@ namespace App\Services;
 use App\Entities\Internship;
 use App\Interfaces\IFileStorageService;
 use App\Interfaces\IInternshipService;
+use App\Models\InternshipView;
+use App\Repositories\InternshipRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Query\ResultSetMappingBuilder;
 
 class InternshipService implements IInternshipService
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
+        private InternshipRepository $internshipRepository,
         private IFileStorageService $fileStorageService
     ) {
     }
 
-    public function getInternships(): array
+    /**
+     * Summary of mapToInternshipViews
+     * @param array Array of Internship
+     * @return array Array of InternshipView
+     */
+    private function mapToInternshipViews(array $internships): array
     {
-        $queryBuilder = $this->entityManager->createQueryBuilder();
-        $queryBuilder
-            ->select("i.id, i.title, i.description, o.name as orgName, o.logoFilePath")
-            ->from("App\Entities\Internship", "i")
-            ->leftJoin("i.owner", "u")
-            ->leftJoin("u.organization", "o");
+        $result = [];
 
-        $result = $queryBuilder->getQuery()->getArrayResult();
+        foreach ($internships as $internship) {
+            $company = $internship->getOwner()->getOrganization();
+            $internshipView = new InternshipView($internship, $company->getName());
 
-        foreach ($result as &$internship) {
-            $logo = $this->fileStorageService->get($internship["logoFilePath"]);
+            $logo = $this->fileStorageService->get($company->getLogoFilePath());
             if ($logo !== false) {
-                $internship["logoBase64"] = "data:{$logo['mimeType']};base64," . base64_encode($logo["content"]);
-            } else {
-                $internship["logoBase64"] = null;
+                $internshipView->organizationLogo = "data:{$logo['mimeType']};base64," . base64_encode($logo["content"]);
             }
+
+            $result[] = $internshipView;
         }
 
         return $result;
     }
 
+    public function getInternships(): array
+    {
+        $internships = $this->internshipRepository->findAll();
+        return $this->mapToInternshipViews($internships);
+    }
+
+    public function getInternshipsBy(string $searchQuery, ?int $ownerId = null): array
+    {
+        $internships = $this->internshipRepository->findByTitleAndOwner($searchQuery, $ownerId);
+        return $this->mapToInternshipViews($internships);
+    }
+
     public function getInternshipsByUserId(int $userId): array
     {
-        $queryBuilder = $this->entityManager->createQueryBuilder();
-        $queryBuilder
-            ->select("i.id, i.title, i.description, u.firstName")
-            ->from("App\Entities\Internship", "i")
-            ->leftJoin("i.owner", "u")
-            ->where("u.id = :userId")
-            ->setParameter("userId", $userId);
-        return $queryBuilder->getQuery()->getArrayResult();
+        return $this->mapToInternshipViews($this->internshipRepository->findByOwner($userId));
     }
 
     public function getInternshipById(int $id): ?Internship
     {
-        $rsm = new ResultSetMappingBuilder($this->entityManager);
-        $rsm->addRootEntityFromClassMetadata('App\Entities\Internship', 'i');
-
-        $sql = "SELECT i.* FROM internships i WHERE i.id = :id";
-        $query = $this->entityManager->createNativeQuery($sql, $rsm);
-        $query->setParameter("id", $id);
-        return $query->getOneOrNullResult();
+        return $this->internshipRepository->find($id);
     }
 
     public function deleteInternshipById(int $id): void
     {
-        $queryBuilder = $this->entityManager->createQueryBuilder();
-        $queryBuilder
-            ->delete()
-            ->from("App\Entities\Internship", "i")
-            ->where("i.id = :id")
-            ->setParameter("id", $id);
-        $queryBuilder->getQuery()->execute();
+        $this->internshipRepository->delete($id);
     }
 
     public function addInternship(string $title, string $description, int $userId): void
@@ -97,34 +93,5 @@ class InternshipService implements IInternshipService
         $user = $this->entityManager->getReference("App\Entities\User", $userId);
         $internship->addApplicant($user);
         $this->entityManager->flush();
-    }
-
-    public function getInternshipsBy(int|null $userId = null, string $searchQuery): array
-    {
-        if ($userId === null) {
-            $queryBuilder = $this->entityManager->createQueryBuilder();
-            $queryBuilder
-                ->select("i")
-                ->from("App\Entities\Internship", "i")
-                ->where("LOWER(i.title) LIKE :searchQuery")
-                ->setParameter("searchQuery", "%$searchQuery%");
-            $query = $queryBuilder->getQuery();
-            return $query->getArrayResult();
-        }
-
-        $queryBuilder = $this->entityManager->createQueryBuilder();
-        $queryBuilder
-            ->select("i")
-            ->from("App\Entities\Internship", "i")
-            ->where(
-                $queryBuilder->expr()->andX(
-                    $queryBuilder->expr()->eq("i.user", ":userId"),
-                    $queryBuilder->expr()->like("LOWER(i.title)", ":searchQuery")
-                )
-            )
-            ->setParameter("userId", $userId)
-            ->setParameter("searchQuery", "%$searchQuery%");
-        $query = $queryBuilder->getQuery();
-        return $query->getArrayResult();
     }
 }

@@ -24,6 +24,11 @@ class Partner extends User
         $this->internshipsCreated = new ArrayCollection();
     }
 
+    public function getOrganization(): Organization
+    {
+        return $this->organization;
+    }
+
     public function addToInternshipsCreated(Internship $internship): void
     {
         $this->internshipsCreated[] = $internship;

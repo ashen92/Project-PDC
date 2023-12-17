@@ -94,13 +94,13 @@ class InternshipController extends PageControllerBase
 
         if ($this->userService->hasRole($userId, "ROLE_PARTNER")) {
             if ($searchQuery) {
-                $internships = $this->internshipService->getInternshipsBy($userId, $searchQuery);
+                $internships = $this->internshipService->getInternshipsBy($searchQuery, $userId);
             } else {
                 $internships = $this->internshipService->getInternshipsByUserId($userId);
             }
         } else {
             if ($searchQuery) {
-                $internships = $this->internshipService->getInternshipsBy(null, $searchQuery);
+                $internships = $this->internshipService->getInternshipsBy($searchQuery);
             } else {
                 $internships = $this->internshipService->getInternships();
             }
