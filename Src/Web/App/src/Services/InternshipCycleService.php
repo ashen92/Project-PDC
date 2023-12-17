@@ -84,6 +84,19 @@ class InternshipCycleService implements IInternshipCycleService
         return $latestInternshipCycle[0];
     }
 
+    public function getLatestActiveInternshipCycle(): ?InternshipCycle
+    {
+        $cycle = $this->entityManager
+            ->getRepository(InternshipCycle::class)
+            ->findBy(["endedAt" => null], ["createdAt" => "DESC"], 1);
+
+        if (empty($cycle)) {
+            return null;
+        }
+
+        return $cycle[0];
+    }
+
     public function createInternshipCycle(CreateInternshipCycleDTO $createInternshipCycleDTO): InternshipCycle
     {
         $internshipCycle = new InternshipCycle();

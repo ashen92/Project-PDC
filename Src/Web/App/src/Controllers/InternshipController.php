@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Attributes\RequiredRole;
+use App\DTOs\InternshipDTO;
 use App\Interfaces\IInternshipService;
 use App\Interfaces\IUserService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -182,11 +183,14 @@ class InternshipController extends PageControllerBase
     #[Route("/create", methods: ["POST"])]
     public function addPOST(Request $request): RedirectResponse
     {
-        $this->internshipService->addInternship(
+        $internshipDTO = new InternshipDTO(
             $request->get("title"),
             $request->get("description"),
-            (int) $request->getSession()->get("user_id")
+            (int) $request->getSession()->get("user_id"),
         );
+        // TODO: Validate DTO
+
+        $this->internshipService->addInternship($internshipDTO);
         return $this->redirect("/internship-program/internships");
     }
 

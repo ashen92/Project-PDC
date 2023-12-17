@@ -3,25 +3,27 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\DTOs\InternshipDTO;
 use App\Entities\Internship;
 use App\Interfaces\IFileStorageService;
 use App\Interfaces\IInternshipService;
 use App\Models\InternshipView;
 use App\Repositories\InternshipRepository;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Repositories\UserRepository;
 
 class InternshipService implements IInternshipService
 {
     public function __construct(
-        private EntityManagerInterface $entityManager,
         private InternshipRepository $internshipRepository,
+        private UserRepository $userRepository,
+        private InternshipCycleService $internshipCycleService,
         private IFileStorageService $fileStorageService
     ) {
     }
 
     /**
      * Summary of mapToInternshipViews
-     * @param array Array of Internship
+     * @param array $internships Array of Internship
      * @return array Array of InternshipView
      */
     private function mapToInternshipViews(array $internships): array
@@ -70,28 +72,27 @@ class InternshipService implements IInternshipService
         $this->internshipRepository->delete($id);
     }
 
-    public function addInternship(string $title, string $description, int $userId): void
+    public function addInternship(InternshipDTO $dto): void
     {
-        $user = $this->entityManager->getReference("App\Entities\User", $userId);
-        $internshipCycle = $this->entityManager->getReference("App\Entities\InternshipCycle", 1);
-        $internship = new Internship($title, $description, $user, $internshipCycle);
-        $this->entityManager->persist($internship);
-        $this->entityManager->flush();
+        $user = $this->userRepository->getUserById($dto->ownerId);
+        $internshipCycle = $this->internshipCycleService->getLatestActiveInternshipCycle();
+        $internship = new Internship($dto->title, $dto->description, $user, $internshipCycle);
+        $this->internshipRepository->save($internship);
     }
 
     public function updateInternship(int $id, string $title, string $description): void
     {
-        $internship = $this->entityManager->getReference("App\Entities\Internship", $id);
+        $internship = $this->internshipRepository->find($id);
         $internship->setTitle($title);
         $internship->setDescription($description);
-        $this->entityManager->flush();
+        $this->internshipRepository->save($internship);
     }
 
     public function applyToInternship(int $internshipId, int $userId): void
     {
-        $internship = $this->entityManager->getReference("App\Entities\Internship", $internshipId);
-        $user = $this->entityManager->getReference("App\Entities\User", $userId);
+        $internship = $this->internshipRepository->find($internshipId);
+        $user = $this->userRepository->getUserById($userId);
         $internship->addApplicant($user);
-        $this->entityManager->flush();
+        $this->internshipRepository->save($internship);
     }
 }

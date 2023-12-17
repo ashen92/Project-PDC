@@ -95,8 +95,9 @@ $container->register(
     App\Services\InternshipService::class
 )
     ->setArguments([
-        new Reference("doctrine.entity_manager"),
         new Reference("repository.internship"),
+        new Reference("repository.user"),
+        new Reference("service.internship_cycle"),
         new Reference("service.file_storage")
     ]);
 
