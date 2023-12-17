@@ -13,7 +13,7 @@ use Doctrine\ORM\Query\ResultSetMappingBuilder;
 
 class RequirementRepository extends Repository
 {
-    public function getRequirement(int $id): ?Requirement
+    public function findRequirement(int $id): ?Requirement
     {
         $rsm = new ResultSetMappingBuilder($this->entityManager);
         $rsm->addRootEntityFromClassMetadata('App\Entities\Requirement', 'i');
@@ -24,7 +24,7 @@ class RequirementRepository extends Repository
         return $query->getOneOrNullResult();
     }
 
-    public function getRequirements(int $internshipCycleId): array
+    public function findAllRequirements(int $internshipCycleId): array
     {
         $queryBuilder = $this->entityManager->createQueryBuilder();
         $queryBuilder
@@ -38,24 +38,7 @@ class RequirementRepository extends Repository
         return $query->getArrayResult();
     }
 
-    public function getRequirementSubmissions(int $requirementId): array
-    {
-        $queryBuilder = $this->entityManager->createQueryBuilder();
-        $queryBuilder
-            ->select("ur.id, ur.completedAt, ur.status, u.id as u_id, u.firstName, u.fullName, u.indexNumber, u.studentEmail")
-            ->from("App\Entities\UserRequirement", "ur")
-            ->innerJoin("ur.user", "u")
-            ->innerJoin("ur.requirement", "r")
-            ->where("r.id = :requirementId")
-            ->andWhere("ur.status = :status")
-            ->setParameter("requirementId", $requirementId)
-            ->setParameter("status", "completed");
-
-        $query = $queryBuilder->getQuery();
-        return $query->getArrayResult();
-    }
-
-    public function getUserRequirement(int $id): ?UserRequirement
+    public function findUserRequirement(int $id): ?UserRequirement
     {
         $rsm = new ResultSetMappingBuilder($this->entityManager);
         $rsm->addRootEntityFromClassMetadata('App\Entities\UserRequirement', 'i');
@@ -70,52 +53,9 @@ class RequirementRepository extends Repository
         return $query->getOneOrNullResult();
     }
 
-    public function getUserRequirements(int $userId, int $internshipCycleId): array
+    public function findAllUserRequirements(array $criteria): array
     {
-        $queryBuilder = $this->entityManager->createQueryBuilder();
-        $queryBuilder
-            ->select("ur.id, r.id as r_id, r.name, r.description, r.requirementType, r.startDate, r.repeatInterval")
-            ->from("App\Entities\UserRequirement", "ur")
-            ->innerJoin("ur.requirement", "r")
-            ->innerJoin("r.internshipCycle", "ic")
-            ->innerJoin("ur.user", "u")
-            ->where("u.id = :userId")
-            ->andWhere("ic.id = :internshipCycleId")
-            ->setParameter("userId", $userId)
-            ->setParameter("internshipCycleId", $internshipCycleId);
-        $query = $queryBuilder->getQuery();
-        return $query->getArrayResult();
-    }
-
-    public function getInternshipCycle(Requirement $requirement): InternshipCycle
-    {
-        $queryBuilder = $this->entityManager->createQueryBuilder();
-        $queryBuilder
-            ->select("ic")
-            ->from(InternshipCycle::class, "ic")
-            ->innerJoin("ic.requirements", "r")
-            ->where("r.id = :requirementId")
-            ->setParameter("requirementId", $requirement->getId());
-
-        return $queryBuilder->getQuery()->getOneOrNullResult();
-    }
-
-    public function getStudentUsers(InternshipCycle $internshipCycle): array
-    {
-        return $internshipCycle->getStudentGroup()->getUsers()->toArray();
-
-        // $queryBuilder = $this->entityManager->createNativeQuery(
-        //     "SELECT u.*
-        //     FROM user_groups ug
-        //     JOIN user_group_membership ugm ON ug.id = ugm.usergroup_id
-        //     JOIN users u ON ugm.user_id = u.id
-        //     WHERE ug.id = (
-        //         SELECT student_group_id
-        //         FROM internship_cycles
-        //         WHERE id = :internshipCycleId
-        //     )",
-        //     $rsm
-        // );
+        return $this->entityManager->getRepository(UserRequirement::class)->findBy($criteria);
     }
 
     public function createRequirement(

@@ -128,7 +128,10 @@ class InternshipProgramController extends PageControllerBase
                 [
                     "section" => "requirements",
                     "requirement" => $requirement,
-                    "submissions" => $this->requirementService->getRequirementSubmissions($id)
+                    "userRequirements" => $this->requirementService->getUserRequirements(
+                        requirementId: $id,
+                        status: "completed"
+                    )
                 ]
             );
         }

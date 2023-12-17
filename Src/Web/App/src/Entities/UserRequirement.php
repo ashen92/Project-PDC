@@ -56,6 +56,16 @@ class UserRequirement
         return $this->id;
     }
 
+    public function getUser(): User
+    {
+        return $this->user;
+    }
+
+    public function getRequirement(): Requirement
+    {
+        return $this->requirement;
+    }
+
     public function getStartDate(): DateTime
     {
         return $this->startDate;

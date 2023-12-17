@@ -28,7 +28,7 @@ class RequirementService implements IRequirementService
 
     public function getRequirement(int $id): ?Requirement
     {
-        return $this->requirementRepository->getRequirement($id);
+        return $this->requirementRepository->findRequirement($id);
     }
 
     public function getRequirements(?int $internshipCycleId = null): array
@@ -39,28 +39,41 @@ class RequirementService implements IRequirementService
         if ($internshipCycleId === null)
             return [];
 
-        return $this->requirementRepository->getRequirements($internshipCycleId);
-    }
-
-    public function getRequirementSubmissions(int $requirementId): array
-    {
-        return $this->requirementRepository->getRequirementSubmissions($requirementId);
+        return $this->requirementRepository->findAllRequirements($internshipCycleId);
     }
 
     public function getUserRequirement(int $id): ?UserRequirement
     {
-        return $this->requirementRepository->getUserRequirement($id);
+        return $this->requirementRepository->findUserRequirement($id);
     }
 
-    public function getUserRequirements(int $userId, ?int $internshipCycleId = null): array
-    {
+    public function getUserRequirements(
+        ?int $internshipCycleId = null,
+        ?int $requirementId = null,
+        ?int $userId = null,
+        ?string $status = null
+    ): array {
         if ($internshipCycleId === null)
             $internshipCycleId = $this->internshipCycleService->getLatestInternshipCycleId();
 
         if ($internshipCycleId === null)
             return [];
 
-        return $this->requirementRepository->getUserRequirements($userId, $internshipCycleId);
+        $criteria = [];
+
+        if ($requirementId !== null) {
+            $criteria["requirement"] = $requirementId;
+        }
+
+        if ($userId !== null) {
+            $criteria["user"] = $userId;
+        }
+
+        if ($status !== null) {
+            $criteria["status"] = $status;
+        }
+
+        return $this->requirementRepository->findAllUserRequirements($criteria);
     }
 
     public function createRequirement(CreateRequirementDTO $requirementDTO): void
@@ -82,10 +95,9 @@ class RequirementService implements IRequirementService
 
     private function createOneTimeUserRequirements(Requirement $requirement): void
     {
-        $internshipCycle = $this->requirementRepository->getInternshipCycle($requirement);
+        $internshipCycle = $requirement->getInternshipCycle();
 
-        $users = $this->requirementRepository->getStudentUsers($internshipCycle);
-        foreach ($users as $user) {
+        foreach ($internshipCycle->getStudentGroup()->getUsers() as $user) {
             $this->requirementRepository->createUserRequirement($requirement, $user);
         }
     }
@@ -115,10 +127,9 @@ class RequirementService implements IRequirementService
             );
         }
 
-        $internshipCycle = $this->requirementRepository->getInternshipCycle($requirement);
-        $users = $this->requirementRepository->getStudentUsers($internshipCycle);
+        $internshipCycle = $requirement->getInternshipCycle();
 
-        foreach ($users as $user) {
+        foreach ($internshipCycle->getStudentGroup()->getUsers() as $user) {
             foreach ($urDTOs as $urDTO) {
                 $this->requirementRepository
                     ->createUserRequirementFromDTO($requirement, $user, $urDTO);

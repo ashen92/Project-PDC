@@ -136,6 +136,16 @@ class Requirement
         return $this->maxFileCount;
     }
 
+    public function getUserRequirements(): Collection
+    {
+        return $this->userRequirements;
+    }
+
+    public function getInternshipCycle(): InternshipCycle
+    {
+        return $this->internshipCycle;
+    }
+
     public function setInternshipCycle(InternshipCycle $internshipCycle): void
     {
         $this->internshipCycle = $internshipCycle;

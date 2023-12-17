@@ -12,7 +12,7 @@
     <h5>
         All submissions for {{ requirement.name }}
     </h5>
-    <p class="fs-small">{{ submissions|length }} submissions found</p>
+    <p class="fs-small">{{ userRequirements|length }} submissions found</p>
 </div>
 <table class="table table-hover border-0 table-compact">
     <colgroup>
@@ -32,13 +32,13 @@
         </tr>
     </thead>
     <tbody class="table-rows-clickable">
-        {% for i in submissions %}
-        <tr data-href="submissions?r={{ requirement.id }}&u={{ i.id }}">
-            <td class="capitalize">{{ i.firstName }}</td>
-            <td class="capitalize">{{ i.fullName }}</td>
+        {% for i in userRequirements %}
+        <tr data-href="submissions?r={{ requirement.id }}&u={{ i.user.id }}">
+            <td class="capitalize">{{ i.user.firstName }}</td>
+            <td class="capitalize">{{ i.user.fullName }}</td>
             <td class="capitalize">{{ i.completedAt.format("Y-m-d") }}</td>
-            <td>{{ i.indexNumber }}</td>
-            <td>{{ i.studentEmail }}</td>
+            <td>{{ i.user.indexNumber }}</td>
+            <td>{{ i.user.studentEmail }}</td>
         </tr>
         {% endfor %}
     </tbody>
