@@ -30,16 +30,19 @@ class UserRequirement
     private DateTime $endDate;
 
     #[ORM\Column(type: "datetime", nullable: true)]
-    private DateTime|null $completedAt;
+    private ?DateTime $completedAt;
 
     #[ORM\Column]
     private string $status;
 
     #[ORM\Column(nullable: true)]
-    private string|null $originalFileName;
+    private ?string $originalFileName;
 
     #[ORM\Column(type: "simple_array", nullable: true)]
-    private array|null $filePaths;
+    private ?array $filePaths;
+
+    #[ORM\Column(type: "text", nullable: true)]
+    private ?string $textResponse;
 
     public function __construct(User $user, Requirement $requirement)
     {
@@ -96,34 +99,9 @@ class UserRequirement
         return $this->filePaths;
     }
 
-    public function getName(): string
+    public function getTextResponse(): string
     {
-        return $this->requirement->getName();
-    }
-
-    public function getDescription(): string
-    {
-        return $this->requirement->getDescription();
-    }
-
-    public function getFulfillMethod(): string
-    {
-        return $this->requirement->getFulfillMethod();
-    }
-
-    public function getAllowedFileTypes(): ?array
-    {
-        return $this->requirement->getAllowedFileTypes();
-    }
-
-    public function getMaxFileSize(): ?int
-    {
-        return $this->requirement->getMaxFileSize();
-    }
-
-    public function getMaxFileCount(): ?int
-    {
-        return $this->requirement->getMaxFileCount();
+        return $this->textResponse;
     }
 
     public function setStartDate(DateTime $startDate): void
@@ -154,5 +132,10 @@ class UserRequirement
     public function setFilePaths(array $filePaths): void
     {
         $this->filePaths = $filePaths;
+    }
+
+    public function setTextResponse(string $textResponse): void
+    {
+        $this->textResponse = $textResponse;
     }
 }

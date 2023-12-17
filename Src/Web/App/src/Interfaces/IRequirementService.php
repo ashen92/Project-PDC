@@ -20,5 +20,5 @@ interface IRequirementService
         ?string $status = null
     ): array;
     public function getUserRequirement(int $id): ?UserRequirement;
-    public function completeUserRequirement(UserRequirementCompletionDTO $completeUserRequirementDTO): void;
+    public function completeUserRequirement(UserRequirementCompletionDTO $completeUserRequirementDTO): bool;
 }

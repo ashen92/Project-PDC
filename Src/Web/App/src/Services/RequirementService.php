@@ -137,20 +137,32 @@ class RequirementService implements IRequirementService
         }
     }
 
-    public function completeUserRequirement(UserRequirementCompletionDTO $urCompletionDTO): void
+    public function completeUserRequirement(UserRequirementCompletionDTO $urCompletionDTO): bool
     {
-        $response = $this->fileStorageService->upload($urCompletionDTO->files);
-        $ur = $this->getUserRequirement($urCompletionDTO->requirementId);
+        $ur = $this->getUserRequirement($urCompletionDTO->userRequirementId);
 
-        $filePaths = [];
-
-        foreach ($response["properties"] as $fileProperty) {
-            $filePaths[] = $fileProperty["filePath"];
+        if (!$ur) {
+            return false;
         }
 
-        $ur->setFilePaths($filePaths);
+        if ($ur->getRequirement()->getFulfillMethod() === "file") {
+            $response = $this->fileStorageService->upload($urCompletionDTO->files);
+            $filePaths = [];
+
+            foreach ($response["properties"] as $fileProperty) {
+                $filePaths[] = $fileProperty["filePath"];
+            }
+
+            $ur->setFilePaths($filePaths);
+        }
+
+        if ($ur->getRequirement()->getFulfillMethod() === "text") {
+            $ur->setTextResponse($urCompletionDTO->textResponse);
+        }
+
         $ur->setCompletedAt(new DateTime("now"));
         $ur->setStatus("completed");
         $this->requirementRepository->saveUserRequirement($ur);
+        return true;
     }
 }

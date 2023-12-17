@@ -507,7 +507,7 @@ $requirementData = [
     ),
     new CreateRequirementDTO(
         "Your feedback about the internship",
-        "Upload the contract between you and the company.",
+        "What do you think about the company. How was your experience? Your feedback will not be shared with the company.",
         "one-time",
         new DateTime("now"),
         new DateTime("+1 month"),

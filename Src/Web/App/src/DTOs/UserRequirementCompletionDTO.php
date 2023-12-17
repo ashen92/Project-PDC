@@ -6,8 +6,9 @@ namespace App\DTOs;
 class UserRequirementCompletionDTO
 {
     public function __construct(
-        public int $requirementId,
-        public array $files
+        public int $userRequirementId,
+        public ?array $files,
+        public ?string $textResponse,
     ) {
     }
 }
