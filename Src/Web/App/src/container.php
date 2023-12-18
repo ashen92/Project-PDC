@@ -26,6 +26,12 @@ $container->register(
     ->setArguments([new Reference("doctrine.entity_manager")]);
 
 $container->register(
+    "repository.internship_cycle",
+    App\Repositories\InternshipCycleRepository::class
+)
+    ->setArguments([new Reference("doctrine.entity_manager")]);
+
+$container->register(
     "repository.internship",
     App\Repositories\InternshipRepository::class
 )
@@ -106,7 +112,8 @@ $container->register(
     App\Services\InternshipCycleService::class
 )
     ->setArguments([
-        new Reference("doctrine.entity_manager")
+        new Reference("repository.internship_cycle"),
+        new Reference("repository.user"),
     ]);
 
 $container->register(

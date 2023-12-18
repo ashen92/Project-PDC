@@ -10,8 +10,8 @@ class CreateInternshipCycleDTO
         public string $collectionEndDate,
         public string $applicationStartDate,
         public string $applicationEndDate,
-        public string $partnerGroup,
-        public string $studentGroup
+        public int $partnerGroup,
+        public int $studentGroup
     ) {
     }
 }

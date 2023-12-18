@@ -5,23 +5,22 @@ namespace App\Services;
 
 use App\DTOs\CreateInternshipCycleDTO;
 use App\Entities\InternshipCycle;
-use App\Entities\Role;
-use App\Entities\UserGroup;
 use App\Interfaces\IInternshipCycleService;
+use App\Repositories\InternshipCycleRepository;
+use App\Repositories\UserRepository;
 use DateTime;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Query\ResultSetMappingBuilder;
 
 class InternshipCycleService implements IInternshipCycleService
 {
     public function __construct(
-        private EntityManagerInterface $entityManager
+        private InternshipCycleRepository $internshipCycleRepository,
+        private UserRepository $userRepository
     ) {
     }
 
     public function getEligibleStudentGroupsForInternshipCycle(): array
     {
-        $groups = $this->entityManager->getRepository(UserGroup::class)->findAll();
+        $groups = $this->userRepository->findAllUserGroups();
         $eligibleGroups = [];
         foreach ($groups as $group) {
             if (str_contains(strtolower($group->getName()), "admin")) {
@@ -43,7 +42,7 @@ class InternshipCycleService implements IInternshipCycleService
 
     public function getEligiblePartnerGroupsForInternshipCycle(): array
     {
-        $groups = $this->entityManager->getRepository(UserGroup::class)->findAll();
+        $groups = $this->userRepository->findAllUserGroups();
         $eligibleGroups = [];
         foreach ($groups as $group) {
             if (str_contains(strtolower($group->getName()), "admin")) {
@@ -65,87 +64,55 @@ class InternshipCycleService implements IInternshipCycleService
 
     public function getLatestInternshipCycleId(): ?int
     {
-        $latestInternshipCycle = $this->entityManager
-            ->getRepository(InternshipCycle::class)
-            ->findBy([], ["createdAt" => "DESC"], 1);
-        return $latestInternshipCycle[0] ? $latestInternshipCycle[0]->getId() : null;
+        return $this->getLatestInternshipCycle()?->getId();
     }
 
     public function getLatestInternshipCycle(): ?InternshipCycle
     {
-        $latestInternshipCycle = $this->entityManager
-            ->getRepository(InternshipCycle::class)
-            ->findBy([], ["createdAt" => "DESC"], 1);
-
-        if (empty($latestInternshipCycle)) {
-            return null;
-        }
-
-        return $latestInternshipCycle[0];
+        return $this->internshipCycleRepository->findBy([], ["createdAt" => "DESC"], 1)[0] ?? null;
     }
 
     public function getLatestActiveInternshipCycle(): ?InternshipCycle
     {
-        $cycle = $this->entityManager
-            ->getRepository(InternshipCycle::class)
-            ->findBy(["endedAt" => null], ["createdAt" => "DESC"], 1);
-
-        if (empty($cycle)) {
-            return null;
-        }
-
-        return $cycle[0];
+        return $this->internshipCycleRepository->findBy(["endedAt" => null], ["createdAt" => "DESC"], 1)[0] ?? null;
     }
 
     public function createInternshipCycle(CreateInternshipCycleDTO $createInternshipCycleDTO): InternshipCycle
     {
         $internshipCycle = new InternshipCycle();
-        $this->entityManager->persist($internshipCycle);
-        $this->entityManager->flush();
+        $this->internshipCycleRepository->save($internshipCycle);
 
-        $partnerGroup = new UserGroup("InternshipCycle-{$internshipCycle->getId()}-Partners");
-        $studentGroup = new UserGroup("InternshipCycle-{$internshipCycle->getId()}-Students");
+        $partnerGroup = $this->userRepository
+            ->addUserGroup("InternshipCycle-{$internshipCycle->getId()}-Partners");
+        $studentGroup = $this->userRepository
+            ->addUserGroup("InternshipCycle-{$internshipCycle->getId()}-Students");
 
-        $roleInternshipPartner = $this->entityManager
-            ->getRepository(Role::class)
-            ->findOneBy(
-                ["name" => "ROLE_INTERNSHIP_PARTNER"]
-            );
-        $roleInternshipPartner->addGroup($partnerGroup);
+        $this->userRepository
+            ->addRoleToUserGroup($partnerGroup->getId(), "ROLE_INTERNSHIP_PARTNER");
+        $this->userRepository
+            ->addRoleToUserGroup($studentGroup->getId(), "ROLE_INTERNSHIP_STUDENT");
 
-        $roleInternshipStudent = $this->entityManager
-            ->getRepository(Role::class)
-            ->findOneBy(
-                ["name" => "ROLE_INTERNSHIP_STUDENT"]
-            );
-        $roleInternshipStudent->addGroup($studentGroup);
+        $this->userRepository
+            ->addUsersToUserGroup($partnerGroup->getId(), $createInternshipCycleDTO->partnerGroup);
+        $this->userRepository
+            ->addUsersToUserGroup($studentGroup->getId(), $createInternshipCycleDTO->studentGroup);
 
-        $partnerGroup->addUsersFrom(
-            $this->entityManager
-                ->getRepository(UserGroup::class)
-                ->findOneBy(
-                    ["name" => $createInternshipCycleDTO->partnerGroup]
-                )
+        $internshipCycle->setCollectionStartDate(
+            new DateTime($createInternshipCycleDTO->collectionStartDate)
         );
-
-        $studentGroup->addUsersFrom(
-            $this->entityManager
-                ->getRepository(UserGroup::class)
-                ->findOneBy(
-                    ["name" => $createInternshipCycleDTO->studentGroup]
-                )
+        $internshipCycle->setCollectionEndDate(
+            new DateTime($createInternshipCycleDTO->collectionEndDate)
         );
-
-        $internshipCycle->setCollectionStartDate(new DateTime($createInternshipCycleDTO->collectionStartDate));
-        $internshipCycle->setCollectionEndDate(new DateTime($createInternshipCycleDTO->collectionEndDate));
-        $internshipCycle->setApplicationStartDate(new DateTime($createInternshipCycleDTO->applicationStartDate));
-        $internshipCycle->setApplicationEndDate(new DateTime($createInternshipCycleDTO->applicationEndDate));
+        $internshipCycle->setApplicationStartDate(
+            new DateTime($createInternshipCycleDTO->applicationStartDate)
+        );
+        $internshipCycle->setApplicationEndDate(
+            new DateTime($createInternshipCycleDTO->applicationEndDate)
+        );
         $internshipCycle->setPartnerGroup($partnerGroup);
         $internshipCycle->setStudentGroup($studentGroup);
 
-        $this->entityManager->persist($partnerGroup);
-        $this->entityManager->persist($studentGroup);
-        $this->entityManager->flush();
+        $this->internshipCycleRepository->save($internshipCycle);
 
         return $internshipCycle;
     }
@@ -156,30 +123,11 @@ class InternshipCycleService implements IInternshipCycleService
             $internshipCycleId = $this->getLatestInternshipCycleId();
         }
 
-        $rsm = new ResultSetMappingBuilder($this->entityManager);
-        $rsm->addScalarResult('id', 'id');
-        $rsm->addScalarResult('firstName', 'firstName');
-        $rsm->addScalarResult('studentEmail', 'studentEmail');
-        $rsm->addScalarResult('fullName', 'fullName');
-        $rsm->addScalarResult('indexNumber', 'indexNumber');
+        if ($internshipCycleId === null) {
+            return [];
+        }
 
-
-        $queryBuilder = $this->entityManager->createNativeQuery(
-            "SELECT u.*, s.*
-            FROM user_groups ug
-            JOIN user_group_membership ugm ON ug.id = ugm.usergroup_id
-            JOIN users u ON ugm.user_id = u.id
-            JOIN students s ON u.id = s.id
-            WHERE ug.id = (
-                SELECT student_group_id
-                FROM internship_cycles
-                WHERE id = :internshipCycleId
-            )",
-            $rsm
-        );
-
-        $queryBuilder->setParameter("internshipCycleId", $internshipCycleId);
-        return $queryBuilder->getResult();
+        return $this->internshipCycleRepository->findStudentUsers($internshipCycleId);
     }
 
     public function endInternshipCycle(?int $id = null): bool
@@ -197,25 +145,19 @@ class InternshipCycleService implements IInternshipCycleService
             return false;
         }
 
-        $internshipCycle->end();
+        $internshipCycle->setEndedAt(new DateTime("now"));
 
-        $roleInternshipPartner = $this->entityManager
-            ->getRepository(Role::class)
-            ->findOneBy(
-                ["name" => "ROLE_INTERNSHIP_PARTNER"]
-            );
+        $this->userRepository->removeRoleFromUserGroup(
+            $internshipCycle->getPartnerGroup()->getId(),
+            "ROLE_INTERNSHIP_PARTNER"
+        );
 
-        $roleInternshipPartner->removeGroup($internshipCycle->getPartnerGroup());
+        $this->userRepository->removeRoleFromUserGroup(
+            $internshipCycle->getStudentGroup()->getId(),
+            "ROLE_INTERNSHIP_STUDENT"
+        );
 
-        $roleInternshipStudent = $this->entityManager
-            ->getRepository(Role::class)
-            ->findOneBy(
-                ["name" => "ROLE_INTERNSHIP_STUDENT"]
-            );
-        $roleInternshipStudent->removeGroup($internshipCycle->getStudentGroup());
-
-        $this->entityManager->persist($internshipCycle);
-        $this->entityManager->flush();
+        $this->internshipCycleRepository->save($internshipCycle);
         return true;
     }
 }

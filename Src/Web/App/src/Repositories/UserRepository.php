@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
+use App\Entities\Role;
 use App\Entities\User;
+use App\Entities\UserGroup;
 
 class UserRepository extends Repository
 {
@@ -44,6 +46,55 @@ class UserRepository extends Repository
     public function save(User $user): void
     {
         $this->entityManager->persist($user);
+        $this->entityManager->flush();
+    }
+
+    public function findUserGroup(int $groupId): ?UserGroup
+    {
+        return $this->entityManager->getRepository(UserGroup::class)->find($groupId);
+    }
+
+    public function findAllUserGroups(): array
+    {
+        return $this->entityManager->getRepository(UserGroup::class)->findAll();
+    }
+
+    public function findRoleByName(string $roleName): ?Role
+    {
+        return $this->entityManager->getRepository(Role::class)->findOneBy(["name" => $roleName]);
+    }
+
+    public function addUserGroup(string $groupName): UserGroup
+    {
+        $userGroup = new UserGroup($groupName);
+        $this->entityManager->persist($userGroup);
+        $this->entityManager->flush();
+        return $userGroup;
+    }
+
+    public function addUsersToUserGroup(int $groupId, int $fromUserGroupId): void
+    {
+        $userGroup = $this->findUserGroup($groupId);
+        $userGroup->addUsersFrom($this->findUserGroup($fromUserGroupId));
+        $this->entityManager->persist($userGroup);
+        $this->entityManager->flush();
+    }
+
+    public function addRoleToUserGroup(int $groupId, string $roleName): void
+    {
+        $userGroup = $this->findUserGroup($groupId);
+        $role = $this->entityManager->getRepository(Role::class)->findOneBy(["name" => $roleName]);
+        $role->addGroup($userGroup);
+        $this->entityManager->persist($userGroup);
+        $this->entityManager->flush();
+    }
+
+    public function removeRoleFromUserGroup(int $groupId, string $roleName): void
+    {
+        $userGroup = $this->findUserGroup($groupId);
+        $role = $this->entityManager->getRepository(Role::class)->findOneBy(["name" => $roleName]);
+        $role->removeGroup($userGroup);
+        $this->entityManager->persist($userGroup);
         $this->entityManager->flush();
     }
 }

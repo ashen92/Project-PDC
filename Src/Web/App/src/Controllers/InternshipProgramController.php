@@ -64,8 +64,8 @@ class InternshipProgramController extends PageControllerBase
             $request->get("collection-end-date"),
             $request->get("application-start-date"),
             $request->get("application-end-date"),
-            $request->get("partner-group"),
-            $request->get("student-group")
+            (int) $request->get("partner-group"),
+            (int) $request->get("student-group")
         );
         // validate DTO
         // todo

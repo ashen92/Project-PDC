@@ -18,7 +18,7 @@ class InternshipRepository extends Repository
         return $query->getResult();
     }
 
-    public function find(int $id): ?object
+    public function find(int $id): ?Internship
     {
         $query = $this->entityManager->createQuery(
             'SELECT i

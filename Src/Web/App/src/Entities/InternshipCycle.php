@@ -57,11 +57,6 @@ class InternshipCycle
         $this->requirements = new ArrayCollection();
     }
 
-    public function end(): void
-    {
-        $this->endedAt = new DateTime("now");
-    }
-
     public function getId(): int
     {
         return $this->id;
@@ -115,6 +110,11 @@ class InternshipCycle
     public function getStudentUserGroupName(): string
     {
         return $this->studentGroup->getName();
+    }
+
+    public function setEndedAt(DateTime $endedAt): void
+    {
+        $this->endedAt = $endedAt;
     }
 
     public function setCollectionStartDate(DateTime $collectionStartDate): void
