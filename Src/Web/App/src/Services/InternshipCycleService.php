@@ -136,9 +136,7 @@ class InternshipCycleService implements IInternshipCycleService
         if ($id === null) {
             $internshipCycle = $this->getLatestInternshipCycle();
         } else {
-            $internshipCycle = $this->entityManager
-                ->getRepository(InternshipCycle::class)
-                ->find($id);
+            $internshipCycle = $this->internshipCycleRepository->find($id);
         }
 
         if ($internshipCycle === null) {

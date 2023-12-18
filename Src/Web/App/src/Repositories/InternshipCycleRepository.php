@@ -7,7 +7,7 @@ use App\Entities\InternshipCycle;
 
 class InternshipCycleRepository extends Repository
 {
-    public function find($id): ?InternshipCycle
+    public function find(int $id): ?InternshipCycle
     {
         return $this->entityManager
             ->getRepository(InternshipCycle::class)
