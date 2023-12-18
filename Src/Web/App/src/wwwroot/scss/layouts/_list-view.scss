@@ -107,6 +107,8 @@ $filter-item-active-bg-color: #c8c6c6;
                 transition: background 80ms linear;
                 border-bottom: 1px solid;
                 border-bottom-color: #cfcece;
+                border-left: 4px solid;
+                border-left-color: transparent;
                 display: flex;
                 align-items: center;
 
@@ -125,9 +127,7 @@ $filter-item-active-bg-color: #c8c6c6;
                 }
 
                 &.active {
-                    outline: 2px solid;
-                    outline-color: rgb(0, 120, 180);
-                    border-radius: $rounded-1;
+                    border-left-color: rgb(0, 120, 180);
                 }
 
                 &-logo {

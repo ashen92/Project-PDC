@@ -26,32 +26,41 @@ if (query) {
     searchQueryElement.value = query;
 }
 
+const jobDetailsContent = document.getElementById("job-details-content");
+const jobDetailsSkeleton = document.getElementById("job-details-skeleton");
 const jobList = document.getElementById("job-list");
 const jobTitle = document.getElementById("job-title");
 const jobDescription = document.getElementById("job-description");
+
 let previouslySelectedItemCard = null;
+
 jobList.addEventListener("click", function (event) {
     let itemCard = event.target.closest(".item-card");
 
     if (itemCard) {
+        if (previouslySelectedItemCard == itemCard) { return; }
+
         let jobId = itemCard.getAttribute("data-job-id");
+
+        previouslySelectedItemCard.classList.toggle("active");
+        itemCard.classList.toggle("active");
+        previouslySelectedItemCard = itemCard;
+        jobDetailsSkeleton.classList.toggle("hidden");
+        jobDetailsContent.classList.toggle("hidden");
+
 
         fetch("/internship-program/internships/" + jobId, { method: "GET" })
             .then(response => response.json())
             .then(data => {
                 jobTitle.innerHTML = data.title;
                 jobDescription.innerHTML = data.description;
-
-                previouslySelectedItemCard.classList.toggle("active");
-                itemCard.classList.toggle("active");
-                previouslySelectedItemCard = itemCard;
+                jobDetailsSkeleton.classList.toggle("hidden");
+                jobDetailsContent.classList.toggle("hidden");
             })
             .catch(error => console.error("Error retrieving job:", error));
     }
 });
 
-const jobDetailsContent = document.getElementById("job-details-content");
-const jobDetailsSkeleton = document.getElementById("job-details-skeleton");
 const itemCard = document.querySelector(".item-card");
 document.addEventListener("DOMContentLoaded", () => {
     itemCard.classList.toggle("active");
