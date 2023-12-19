@@ -144,7 +144,16 @@ class AuthenticationController extends PageControllerBase
         // validate form data
         // todo
 
-        if ($this->authn->login($email, $password)) {
+        $user = $this->authn->login($email, $password);
+
+        if ($user) {
+            $session = $request->getSession();
+
+            $session->set("is_authenticated", true);
+            $session->set("user_id", $user->getId());
+            $session->set("user_email", $user->getEmail());
+            $session->set("user_first_name", $user->getFirstName() ?? "Not set");
+
             return new RedirectResponse("/home");
         }
 
@@ -154,9 +163,9 @@ class AuthenticationController extends PageControllerBase
     }
 
     #[Route("/logout", name: "logout")]
-    public function logout(): RedirectResponse
+    public function logout(Request $request): RedirectResponse
     {
-        $this->authn->logout();
+        $request->getSession()->invalidate();
         return new RedirectResponse("/");
     }
 }

@@ -3,37 +3,27 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Entities\User;
 use App\Interfaces\IAuthenticationService;
 use App\Interfaces\IPasswordHasher;
 use App\Interfaces\IUserService;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class AuthenticationService implements IAuthenticationService
 {
     public function __construct(
-        private SessionInterface $session,
         private IUserService $userService,
         private IPasswordHasher $passwordHasher
     ) {
     }
 
-    public function login(string $email, string $password): bool
+    public function login(string $email, string $password): ?User
     {
         $user = $this->userService->getUserByEmail($email);
 
         if (!$user || !$this->passwordHasher->verifyPassword($password, $user->getPasswordHash())) {
-            return false;
+            return null;
         }
 
-        $this->session->set("is_authenticated", true);
-        $this->session->set("user_id", $user->getId());
-        $this->session->set("user_email", $user->getEmail());
-        $this->session->set("user_first_name", $user->getFirstName() ?? "Not set");
-        return true;
-    }
-
-    public function logout(): void
-    {
-        $this->session->invalidate();
+        return $user;
     }
 }

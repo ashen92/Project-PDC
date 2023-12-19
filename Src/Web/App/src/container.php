@@ -82,7 +82,6 @@ $container->register(
     App\Services\AuthenticationService::class
 )
     ->setArguments([
-        new Reference("session"),
         new Reference("service.user"),
         new Reference("password_hasher")
     ]);
