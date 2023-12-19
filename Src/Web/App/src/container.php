@@ -4,18 +4,23 @@ declare(strict_types=1);
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
+\Doctrine\DBAL\Types\Type::addType("requirement_type", "App\Models\RequirementTypeType");
+\Doctrine\DBAL\Types\Type::addType("requirement_repeat_interval", "App\Models\RequirementRepeatIntervalType");
+
+$cachedContainerFile = __DIR__ . "/../cache/container.php";
+
+if (getenv("IS_PRODUCTION") && file_exists($cachedContainerFile)) {
+    require_once $cachedContainerFile;
+    return new CachedContainer();
+}
+
 $container = new ContainerBuilder();
 
 $container->register(
     "session",
     Symfony\Component\HttpFoundation\Session\Session::class
-);
-
-$container->register(
-    "app.cache",
-    Symfony\Component\Cache\Adapter\ApcuAdapter::class
 )
-    ->setArguments(["app"]);
+    ->setPublic(true);
 
 // Repositories ---------------------------------------------------------------
 
@@ -45,23 +50,36 @@ $container->register(
 
 // Services
 
-$dbParams = require_once "doctrine-config.php";
+$container->setParameter("doctrine.params", require_once "doctrine-config.php");
 
-$config = Doctrine\ORM\ORMSetup::createAttributeMetadataConfiguration(
-    paths: array(__DIR__ . "/Entities"),
-    isDevMode: true,
-);
+$container->register(
+    "doctrine.config",
+    Doctrine\ORM\ORMSetup::class
+)
+    ->setFactory([Doctrine\ORM\ORMSetup::class, "createAttributeMetadataConfiguration"])
+    ->setArguments([
+        array(__DIR__ . "/Entities"),
+        true,
+    ]);
 
-\Doctrine\DBAL\Types\Type::addType("requirement_type", "App\Models\RequirementTypeType");
-\Doctrine\DBAL\Types\Type::addType("requirement_repeat_interval", "App\Models\RequirementRepeatIntervalType");
-
-$connection = Doctrine\DBAL\DriverManager::getConnection($dbParams, $config);
+$container->register(
+    "doctrine.connection",
+    Doctrine\DBAL\DriverManager::class
+)
+    ->setFactory([Doctrine\DBAL\DriverManager::class, "getConnection"])
+    ->setArguments([
+        "%doctrine.params%",
+        new Reference("doctrine.config")
+    ]);
 
 $container->register(
     "doctrine.entity_manager",
     Doctrine\ORM\EntityManager::class
 )
-    ->setArguments([$connection, $config]);
+    ->setArguments([
+        new Reference("doctrine.connection"),
+        new Reference("doctrine.config")
+    ]);
 
 $container->register(
     "twig.loader",
@@ -73,9 +91,12 @@ $container->register(
     "twig",
     Twig\Environment::class
 )
-    ->setArguments([new Reference("twig.loader")]);
+    ->setArguments([new Reference("twig.loader")])->setPublic(true);
 
-$container->register("password_hasher", App\Services\PasswordHasher::class);
+$container->register(
+    "password_hasher",
+    App\Services\PasswordHasher::class
+);
 
 $container->register(
     "service.authentication",
@@ -165,7 +186,8 @@ $container->register(
         new Reference("twig"),
         new Reference("service.user"),
         new Reference("App\Controllers\ErrorController"),
-    ]);
+    ])
+    ->setPublic(true);
 
 // Controllers
 
@@ -173,7 +195,8 @@ $container->register(
     "App\Controllers\ErrorController",
     \App\Controllers\ErrorController::class
 )
-    ->setArguments([new Reference("twig")]);
+    ->setArguments([new Reference("twig")])
+    ->setPublic(true);
 
 $container->register(
     "App\Controllers\AuthenticationController",
@@ -184,20 +207,22 @@ $container->register(
         new Reference("service.authentication"),
         new Reference("service.user"),
         new Reference("service.email")
-    ]);
+    ])
+    ->setPublic(true);
 
 $container->register(
     "App\Controllers\HomeController",
     \App\Controllers\HomeController::class
 )
-    ->setArguments([new Reference("twig")]);
-
+    ->setArguments([new Reference("twig")])
+    ->setPublic(true);
 
 $container->register(
     "App\Controllers\TechTalksController",
     \App\Controllers\TechTalksController::class
 )
-    ->setArguments([new Reference("twig")]);
+    ->setArguments([new Reference("twig")])
+    ->setPublic(true);
 
 $container->register(
     "App\Controllers\InternshipProgramController",
@@ -207,7 +232,8 @@ $container->register(
         new Reference("twig"),
         new Reference("service.internship_cycle"),
         new Reference("service.requirement"),
-    ]);
+    ])
+    ->setPublic(true);
 
 $container->register(
     "App\Controllers\InternshipController",
@@ -217,7 +243,8 @@ $container->register(
         new Reference("twig"),
         new Reference("service.internship"),
         new Reference("service.user")
-    ]);
+    ])
+    ->setPublic(true);
 
 $container->register(
     "App\Controllers\RequirementController",
@@ -227,18 +254,31 @@ $container->register(
         new Reference("twig"),
         new Reference("service.user"),
         new Reference("service.requirement")
-    ]);
+    ])
+    ->setPublic(true);
 
 $container->register(
     "App\Controllers\UserController",
     \App\Controllers\UserController::class
 )
-    ->setArguments([new Reference("twig")]);
+    ->setArguments([new Reference("twig")])
+    ->setPublic(true);
 
 $container->register(
     "App\Controllers\EventsController",
     \App\Controllers\EventsController::class
 )
-    ->setArguments([new Reference("twig"), new Reference("service.event")]);
+    ->setArguments([
+        new Reference("twig"), new Reference("service.event")
+    ])
+    ->setPublic(true);
+
+$container->compile();
+
+$dumper = new Symfony\Component\DependencyInjection\Dumper\PhpDumper($container);
+file_put_contents(
+    $cachedContainerFile,
+    $dumper->dump(["class" => "CachedContainer"])
+);
 
 return $container;
