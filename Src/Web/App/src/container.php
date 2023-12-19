@@ -165,9 +165,7 @@ $container->register(
     ->setArguments([
         new Reference("twig"),
         new Reference("service.user"),
-        new Reference("app.cache"),
         new Reference("App\Controllers\ErrorController"),
-        new Reference("session")
     ]);
 
 // Controllers

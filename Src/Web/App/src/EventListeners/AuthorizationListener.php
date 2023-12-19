@@ -8,11 +8,9 @@ use App\Controllers\ErrorController;
 use App\Interfaces\IUserService;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Contracts\Cache\CacheInterface;
 use Twig\Environment;
 
 class AuthorizationListener implements EventSubscriberInterface
@@ -20,17 +18,8 @@ class AuthorizationListener implements EventSubscriberInterface
     public function __construct(
         private Environment $twig,
         private IUserService $userService,
-        private CacheInterface $cache,
         private ErrorController $errorController,
-        private SessionInterface $session
     ) {
-    }
-
-    private function isAuthenticated(): bool
-    {
-        if ($this->session->has("is_authenticated"))
-            return true;
-        return false;
     }
 
     public function onKernelRequest(RequestEvent $event): void
@@ -46,8 +35,8 @@ class AuthorizationListener implements EventSubscriberInterface
             "/register" => ["GET"],
         ];
 
-        if ($this->isAuthenticated()) {
-            $userId = (int) $this->session->get("user_id");
+        if ($event->getRequest()->getSession()->has("is_authenticated")) {
+            $userId = (int) $event->getRequest()->getSession()->get("user_id");
             $roles = $this->userService->getUserRoles($userId);
             $this->twig->addGlobal("user_roles", $roles);
             // logic for permissions
@@ -72,30 +61,56 @@ class AuthorizationListener implements EventSubscriberInterface
 
     public function onKernelController(ControllerEvent $event): void
     {
-        $controller = $event->getController();
-        $controller = is_array($controller) ? get_class($controller[0]) : get_class($controller);
+        $userId = (int) $event->getRequest()->getSession()->get("user_id");
 
-        $cacheKey = "roles_for_" . md5($controller);
-        $cachedRole = $this->cache->get($cacheKey, function () use ($controller) {
-            $controllerReflection = new \ReflectionClass($controller);
-            $attributes = $controllerReflection->getAttributes(RequiredRole::class);
-            $requiredRole = "";
-            if (!empty($attributes)) {
-                $requiredRole = $attributes[0]->newInstance()->role;
+        $reflector = $event->getControllerReflector();
+
+        $controllerReflection = $reflector->getDeclaringClass();
+        $controllerAttributes = $controllerReflection->getAttributes(RequiredRole::class);
+        $controllerRequiredRole = "";
+
+        $hasControllerAccess = false;
+
+        if (!empty($controllerAttributes)) {
+            $controllerRequiredRole = $controllerAttributes[0]->newInstance()->role;
+
+            if (is_array($controllerRequiredRole)) {
+                foreach ($controllerRequiredRole as $role) {
+                    if ($this->userService->hasRole($userId, $role)) {
+                        $hasControllerAccess = true;
+                    }
+                }
+            } else {
+                if ($this->userService->hasRole($userId, $controllerRequiredRole)) {
+                    $hasControllerAccess = true;
+                }
             }
-            return $requiredRole;
-        });
 
-        if (empty($cachedRole) || $cachedRole === "") {
-            return;
-        }
-
-        $userId = (int) $this->session->get("user_id");
-        foreach ($cachedRole as $role) {
-            if ($this->userService->hasRole($userId, $role)) {
+            if (!$hasControllerAccess) {
+                $event->setController(fn() => $this->errorController->notFound());
                 return;
             }
         }
+
+        $attributes = $reflector->getAttributes(RequiredRole::class);
+
+        if (empty($attributes))
+            return;
+
+        $requiredRole = $attributes[0]->newInstance()->role;
+
+        if (is_array($requiredRole)) {
+            foreach ($requiredRole as $role) {
+                if ($this->userService->hasRole($userId, $role)) {
+                    return;
+                }
+            }
+        } else {
+            if ($this->userService->hasRole($userId, $requiredRole)) {
+                return;
+            }
+        }
+
         $event->setController(fn() => $this->errorController->notFound());
     }
 
