@@ -112,13 +112,14 @@ class AuthorizationListener implements EventSubscriberInterface
         }
 
         $event->setController(fn() => $this->errorController->notFound());
+        $event->stopPropagation();
     }
 
     public static function getSubscribedEvents()
     {
         return [
             KernelEvents::REQUEST => "onKernelRequest",
-            KernelEvents::CONTROLLER => "onKernelController"
+            KernelEvents::CONTROLLER => ["onKernelController", 0]
         ];
     }
 }
