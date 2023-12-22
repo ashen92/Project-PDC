@@ -3,10 +3,9 @@ declare(strict_types=1);
 
 namespace App\Routing;
 
-use Symfony\Component\Routing\Loader\AttributeClassLoader;
 use Symfony\Component\Routing\Route;
 
-class CustomAnnotationClassLoader extends AttributeClassLoader
+class AttributeClassLoader extends \Symfony\Component\Routing\Loader\AttributeClassLoader
 {
     protected function configureRoute(Route $route, \ReflectionClass $class, \ReflectionMethod $method, object $annot)
     {
