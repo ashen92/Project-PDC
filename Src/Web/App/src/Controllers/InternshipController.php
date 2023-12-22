@@ -41,59 +41,6 @@ class InternshipController extends PageControllerBase
 
         $internships = [];
 
-        $companies = [
-            "Apple Inc.",
-            "Microsoft Corporation",
-            "Alphabet Inc. (Google)",
-            "Samsung Electronics",
-            "Amazon.com, Inc.",
-            "Huawei Technologies Co., Ltd.",
-            "Sony Corporation",
-            "Intel Corporation",
-            "Facebook, Inc. (Meta Platforms)",
-            "IBM Corporation",
-            "Tencent Holdings Ltd.",
-            "Dell Technologies Inc.",
-            "Oracle Corporation",
-            "Cisco Systems, Inc.",
-            "Xiaomi Corporation",
-            "SAP SE",
-            "Qualcomm Incorporated",
-            "Adobe Inc.",
-            "Nokia Corporation",
-            "Ericsson",
-            "Panasonic Corporation",
-            "Hitachi, Ltd.",
-            "LG Electronics Inc.",
-            "Lenovo Group Ltd.",
-            "ASUS (ASUSTeK Computer Inc.)",
-            "Broadcom Inc.",
-            "Salesforce.com, Inc.",
-            "Toshiba Corporation",
-            "Hewlett Packard Enterprise (HPE)",
-            "VMware, Inc.",
-            "Twitter, Inc.",
-            "AMD (Advanced Micro Devices, Inc.)",
-            "Philips (Koninklijke Philips N.V.)",
-            "Texas Instruments Incorporated",
-            "NEC Corporation",
-            "Sharp Corporation",
-            "Fujitsu Ltd.",
-            "Square, Inc. (Block, Inc.)",
-            "Spotify Technology S.A.",
-            "Symantec Corporation",
-            "Weibo Corporation",
-            "Baidu, Inc.",
-            "Zoom Video Communications, Inc.",
-            "NetApp, Inc.",
-            "Micron Technology, Inc.",
-            "Western Digital Corporation",
-            "Electronic Arts Inc. (EA)",
-            "Autodesk, Inc.",
-            "Rakuten, Inc.",
-            "McAfee Corp.",
-        ];
-
         if ($this->userService->hasRole($userId, "ROLE_PARTNER")) {
             $internships = $this->internshipService
                 ->getInternshipsBy($latestInternshipCycleId, $userId, $searchQuery);
@@ -102,12 +49,15 @@ class InternshipController extends PageControllerBase
                 ->getInternshipsBy($latestInternshipCycleId, null, $searchQuery);
         }
 
+        $i = array_map(fn($internship) => $internship->internship, $internships);
+        $organizations = $this->internshipService->getOrganizationsFrom($i);
+
         return $this->render(
             "internship-program/internships.html",
             array_merge(
                 ["section" => "internships"],
                 ["internships" => $internships],
-                ["companies" => $companies]
+                ["organizations" => $organizations],
             )
         );
     }

@@ -10,6 +10,7 @@ interface IInternshipService
 {
     public function getInternshipById(int $id, ?int $internshipCycleId = null): ?Internship;
     public function getInternshipsBy(?int $iCycleId, ?int $ownerId, ?string $searchQuery): array;
+    public function getOrganizationsFrom(array $internships): array;
     public function deleteInternshipById(int $id): void;
     public function addInternship(InternshipDTO $internshipDTO): void;
     public function updateInternship(int $id, string $title, string $description): void;

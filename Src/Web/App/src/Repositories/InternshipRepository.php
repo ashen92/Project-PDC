@@ -23,6 +23,22 @@ class InternshipRepository extends Repository
         return $this->entityManager->getRepository(Internship::class)->findBy($criteria);
     }
 
+    /**
+     * Summary of findOrganizations
+     * @param array $ids Array of int (Organization IDs)
+     * @return array Array of Organization
+     */
+    public function findOrganizations(array $ids): array
+    {
+        $query = $this->entityManager->createQuery(
+            'SELECT o
+            FROM App\Entities\Organization o
+            WHERE o.id IN (:ids)'
+        )->setParameter('ids', $ids);
+
+        return $query->getResult();
+    }
+
     public function delete(int $id): void
     {
         $query = $this->entityManager->createQuery(

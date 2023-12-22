@@ -106,12 +106,10 @@
     <div class="pop-up-multi-select-list hidden" id="company-multi-select-list">
         <h4>Companies</h4>
         <ul>
-            {% set counter = 0 %}
-            {% for i in companies %}
+            {% for i in organizations %}
             <li>
-                {% set counter = counter + 1 %}
-                <input type="checkbox" name="" id="{{ counter }}">
-                <label for="{{ counter }}">{{ i }}</label>
+                <input type="checkbox" name="{{ i.name }}" id="{{ i.id }}">
+                <label for="{{ i.id }}">{{ i.name }}</label>
             </li>
             {% endfor %}
         </ul>

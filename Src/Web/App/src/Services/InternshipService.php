@@ -69,6 +69,15 @@ class InternshipService implements IInternshipService
         return [];
     }
 
+    public function getOrganizationsFrom(array $internships): array
+    {
+        $ids = array_map(
+            fn(Internship $internship) => $internship->getOrganization()->getId(),
+            $internships
+        );
+        return $this->internshipRepository->findOrganizations($ids);
+    }
+
     public function deleteInternshipById(int $id): void
     {
         $this->internshipRepository->delete($id);
