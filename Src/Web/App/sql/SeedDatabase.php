@@ -13,11 +13,6 @@ use App\Entities\User;
 use App\Entities\UserGroup;
 use App\Entities\UserRequirement;
 
-require_once __DIR__ . "/../../vendor/autoload.php";
-require_once __DIR__ . "/../src/container.php";
-
-$entityManager = $container->get("doctrine.entity_manager");
-
 echo "Adding users... ";
 
 $passwordHash = "$2y$10\$dLij/BtPMbPKtt/CxpzqVuSn1FBVq.es9spKQ87sdGVJmlu4J3zwq";

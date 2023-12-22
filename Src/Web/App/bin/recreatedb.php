@@ -9,6 +9,11 @@ require_once __DIR__ . "/../src/container.php";
 $params = require __DIR__ . "/../src/doctrine-config.php";
 $params["dbname"] = null;
 
+$config = Doctrine\ORM\ORMSetup::createAttributeMetadataConfiguration(
+    [__DIR__ . "/../src/Entities"],
+    true,
+);
+
 $conn = Doctrine\DBAL\DriverManager::getConnection($params, $config);
 
 $sql = "SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = 'pdc'";
@@ -29,7 +34,9 @@ echo "Database created successfully\n";
 
 // ------------------------------------------------------------
 
-$entityManager = $container->get("doctrine.entity_manager");
+$params["dbname"] = "pdc";
+$conn = Doctrine\DBAL\DriverManager::getConnection($params, $config);
+$entityManager = new Doctrine\ORM\EntityManager($conn, $config);
 $schemaTool = new Doctrine\ORM\Tools\SchemaTool($entityManager);
 $classes = $entityManager->getMetadataFactory()->getAllMetadata();
 
