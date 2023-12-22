@@ -189,6 +189,17 @@ $container->register(
     ])
     ->setPublic(true);
 
+$container->register(
+    "listener.internship_cycle",
+    App\EventListeners\InternshipCycleListener::class
+)
+    ->setArguments([
+        new Reference("service.user"),
+        new Reference("service.internship_cycle"),
+        new Reference("App\Controllers\ErrorController"),
+    ])
+    ->setPublic(true);
+
 // Controllers
 
 $container->register(
