@@ -25,6 +25,10 @@ class Internship
     #[ORM\JoinColumn(name: "user_id", referencedColumnName: "id")]
     private Partner $owner;
 
+    #[ORM\ManyToOne(targetEntity: Organization::class)]
+    #[ORM\JoinColumn(name: "organization_id", referencedColumnName: "id")]
+    private Organization $organization;
+
     /**
      * Many Internships have Many Students who applied to it.
      * @var Collection<int, Student>
@@ -42,6 +46,7 @@ class Internship
         $this->title = $title;
         $this->description = $description;
         $this->owner = $owner;
+        $this->organization = $owner->getOrganization();
         $owner->addToInternshipsCreated($this);
         $this->internshipCycle = $internshipCycle;
     }
@@ -64,6 +69,11 @@ class Internship
     public function getOwner(): Partner
     {
         return $this->owner;
+    }
+
+    public function getOrganization(): Organization
+    {
+        return $this->organization;
     }
 
     public function setTitle(string $title): void
