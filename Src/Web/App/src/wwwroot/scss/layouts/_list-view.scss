@@ -8,6 +8,8 @@ $filter-item-hover-bg-color: #dad8d8;
 $filter-item-active-bg-color: #c8c6c6;
 
 .list-view {
+    height: 100%;
+
     .filters {
         display: flex;
         column-gap: 0.3rem;
@@ -92,13 +94,6 @@ $filter-item-active-bg-color: #c8c6c6;
             height: max-content;
             border-radius: $rounded-1;
             box-shadow: $shadow-4;
-
-            .empty-list {
-                margin-top: 0.5rem;
-                margin-bottom: 1.5rem;
-                padding: 1.25rem;
-                text-align: center;
-            }
 
             .item-card {
                 padding: 1rem 1.4rem 1.2rem 1.2rem;

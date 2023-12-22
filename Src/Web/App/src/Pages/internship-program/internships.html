@@ -35,16 +35,20 @@
         </div>
         {% endif %}
     </div>
+
+    {% if internships|length == 0 %}
+
+    <div class="grid h-1/3 items-end text-centre">
+        <h5 class="fw-semibold">Nothing found</h5>
+        {% if "ROLE_INTERNSHIP_STUDENT" in user_roles %}
+        <div class="description">Modify the search term or adjust the filters and try again.</div>
+        {% endif %}
+    </div>
+
+    {% else %}
+
     <div class="content-container">
         <div class="item-list" id="job-list">
-            {% if internships|length == 0 %}
-            <div class="empty-list">
-                <h5>No internships found</h5>
-                {% if "ROLE_INTERNSHIP_STUDENT" in user_roles %}
-                <div class="description">Try changing your search query or filters</div>
-                {% endif %}
-            </div>
-            {% endif %}
             {% for i in internships %}
             <div class="item-card" data-job-id="{{ i.internship.id }}">
                 {% if i.logo is null %}
@@ -96,6 +100,9 @@
             </div>
         </div>
     </div>
+
+    {% endif %}
+
     <div class="pop-up-multi-select-list hidden" id="company-multi-select-list">
         <h4>Companies</h4>
         <ul>
