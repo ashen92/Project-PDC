@@ -91,7 +91,10 @@ $filter-item-active-bg-color: #c8c6c6;
 
         .item-list {
             min-width: 23rem;
-            height: max-content;
+            position: sticky;
+            top: 2.5vh;
+            max-height: 95vh;
+            overflow: auto;
             border-radius: $rounded-1;
             box-shadow: $shadow-4;
 
@@ -152,9 +155,6 @@ $filter-item-active-bg-color: #c8c6c6;
         }
 
         .item-details {
-            position: sticky;
-            top: 20px;
-            height: min(max-content, 95vh);
             width: 100%;
 
             .skeleton {
