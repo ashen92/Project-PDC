@@ -22,11 +22,11 @@ class InternshipService implements IInternshipService
     }
 
     /**
-     * Summary of mapToInternshipViews
+     * Summary of mapToInternshipListViewDTOs
      * @param array $internships Array of Internship
-     * @return array Array of InternshipView
+     * @return array Array of InternshipListViewDTO
      */
-    private function mapToInternshipViews(array $internships): array
+    private function mapToInternshipListViewDTOs(array $internships): array
     {
         $result = [];
 
@@ -64,7 +64,7 @@ class InternshipService implements IInternshipService
             }
 
             $internships = $this->internshipRepository->findAllBy($criteria);
-            return $this->mapToInternshipViews($internships);
+            return $this->mapToInternshipListViewDTOs($internships);
         }
         return [];
     }
