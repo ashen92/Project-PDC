@@ -33,6 +33,7 @@ class InternshipController extends PageControllerBase
     public function internships(Request $request): Response
     {
         $userId = $request->getSession()->get("user_id");
+        $latestInternshipCycleId = $request->getSession()->get("latest_internship_cycle_id");
 
         $queryParams = $request->query->all();
 
@@ -94,17 +95,11 @@ class InternshipController extends PageControllerBase
         ];
 
         if ($this->userService->hasRole($userId, "ROLE_PARTNER")) {
-            if ($searchQuery) {
-                $internships = $this->internshipService->getInternshipsBy($searchQuery, $userId);
-            } else {
-                $internships = $this->internshipService->getInternshipsByUserId($userId);
-            }
+            $internships = $this->internshipService
+                ->getInternshipsBy($latestInternshipCycleId, $userId, $searchQuery);
         } else {
-            if ($searchQuery) {
-                $internships = $this->internshipService->getInternshipsBy($searchQuery);
-            } else {
-                $internships = $this->internshipService->getInternships();
-            }
+            $internships = $this->internshipService
+                ->getInternshipsBy($latestInternshipCycleId, null, $searchQuery);
         }
 
         return $this->render(

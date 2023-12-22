@@ -45,26 +45,28 @@ class InternshipService implements IInternshipService
         return $result;
     }
 
-    public function getInternships(): array
-    {
-        $internships = $this->internshipRepository->findAll();
-        return $this->mapToInternshipViews($internships);
-    }
-
-    public function getInternshipsBy(string $searchQuery, ?int $ownerId = null): array
-    {
-        $internships = $this->internshipRepository->findByTitleAndOwner($searchQuery, $ownerId);
-        return $this->mapToInternshipViews($internships);
-    }
-
-    public function getInternshipsByUserId(int $userId): array
-    {
-        return $this->mapToInternshipViews($this->internshipRepository->findByOwner($userId));
-    }
-
-    public function getInternshipById(int $id): ?Internship
+    public function getInternshipById(int $id, ?int $internshipCycleId = null): ?Internship
     {
         return $this->internshipRepository->find($id);
+    }
+
+    public function getInternshipsBy(?int $iCycleId, ?int $ownerId, ?string $searchQuery): array
+    {
+        if ($iCycleId) {
+            $criteria = [];
+
+            if ($searchQuery) {
+                $criteria["title"] = $searchQuery;
+            }
+
+            if ($ownerId) {
+                $criteria["owner"] = $ownerId;
+            }
+
+            $internships = $this->internshipRepository->findAllBy($criteria);
+            return $this->mapToInternshipViews($internships);
+        }
+        return [];
     }
 
     public function deleteInternshipById(int $id): void
