@@ -4,10 +4,10 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\DTOs\InternshipDTO;
+use App\DTOs\InternshipListViewDTO;
 use App\Entities\Internship;
 use App\Interfaces\IFileStorageService;
 use App\Interfaces\IInternshipService;
-use App\Models\InternshipView;
 use App\Repositories\InternshipRepository;
 use App\Repositories\UserRepository;
 
@@ -32,7 +32,7 @@ class InternshipService implements IInternshipService
 
         foreach ($internships as $internship) {
             $company = $internship->getOwner()->getOrganization();
-            $internshipView = new InternshipView($internship, $company->getName());
+            $internshipView = new InternshipListViewDTO($internship, $company->getName());
 
             $logo = $this->fileStorageService->get($company->getLogoFilePath());
             if ($logo !== false) {

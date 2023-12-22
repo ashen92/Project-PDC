@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Models;
+namespace App\DTOs;
 
 use App\Entities\Internship;
 
-class InternshipView
+class InternshipListViewDTO
 {
     public function __construct(
         public Internship $internship,
