@@ -49,7 +49,7 @@ jobList.addEventListener("click", function (event) {
         jobDetailsContent.classList.toggle("hidden");
 
 
-        fetch("/internship-program/internships/" + jobId, { method: "GET" })
+        fetch("/api/internships/" + jobId, { method: "GET" })
             .then(response => response.json())
             .then(data => {
                 jobTitle.innerHTML = data.title;
@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
     itemCard.classList.toggle("active");
     previouslySelectedItemCard = itemCard;
 
-    fetch("/internship-program/internships/" + itemCard.getAttribute("data-job-id"), { method: "GET" })
+    fetch("/api/internships/" + itemCard.getAttribute("data-job-id"), { method: "GET" })
         .then(response => response.json())
         .then(data => {
             jobTitle.innerHTML = data.title;

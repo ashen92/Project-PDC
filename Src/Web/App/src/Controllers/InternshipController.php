@@ -62,20 +62,6 @@ class InternshipController extends PageControllerBase
         );
     }
 
-    #[Route("/{id}", methods: ["GET"], requirements: ['id' => '\d+'])]
-    public function internship(int $id): Response|RedirectResponse
-    {
-        $internship = $this->internshipService->getInternshipById($id);
-        if ($internship) {
-            $data = [
-                "title" => $internship->getTitle(),
-                "description" => $internship->getDescription(),
-            ];
-            return new Response(json_encode($data), 200, ["Content-Type" => "application/json"]);
-        }
-        return $this->redirect("/internship-program");
-    }
-
     #[Route("/{id}", methods: ["DELETE"], requirements: ['id' => '\d+'])]
     public function delete(Request $request, int $id): Response
     {

@@ -200,6 +200,15 @@ $container->register(
     ])
     ->setPublic(true);
 
+// API Controllers
+
+$container->register(
+    "App\Controllers\API\InternshipController",
+    \App\Controllers\API\InternshipController::class
+)
+    ->setArguments([new Reference("service.internship")])
+    ->setPublic(true);
+
 // Controllers
 
 $container->register(
