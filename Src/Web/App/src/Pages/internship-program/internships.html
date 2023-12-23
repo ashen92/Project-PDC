@@ -28,12 +28,12 @@
         </div>
         {% endif %}
 
-        {% if ("ROLE_ADMIN" in user_roles) or ("ROLE_PARTNER" in user_roles) %}
+        {# {% if ("ROLE_ADMIN" in user_roles) or ("ROLE_PARTNER" in user_roles) %}
         <div class="item">
             Status
             <i class="i i-chevron-down"></i>
         </div>
-        {% endif %}
+        {% endif %} #}
     </div>
 
     {% if internships|length == 0 %}
@@ -48,22 +48,24 @@
     {% else %}
 
     <div class="content-container">
-        <div class="item-list" id="job-list">
-            {% for i in internships %}
-            <div class="item-card" data-job-id="{{ i.internship.id }}">
-                {% if i.logo is null %}
-                <div class="item-card-logo placeholder">
-                    <i class="i i-buildings"></i>
+        <div class="item-list-container" id="job-list">
+            <div class="item-list">
+                {% for i in internships %}
+                <div class="item-card" data-job-id="{{ i.internship.id }}">
+                    {% if i.logo is null %}
+                    <div class="item-card-logo placeholder">
+                        <i class="i i-buildings"></i>
+                    </div>
+                    {% else %}
+                    <img class="item-card-logo" src="{{ i.logo }}" alt="{{ i.organizationName }} logo">
+                    {% endif %}
+                    <div class="item-card-text">
+                        <div class="title">{{ i.internship.title }}</div>
+                        <div>{{ i.organizationName }}</div>
+                    </div>
                 </div>
-                {% else %}
-                <img class="item-card-logo" src="{{ i.logo }}" alt="{{ i.organizationName }} logo">
-                {% endif %}
-                <div class="item-card-text">
-                    <div class="title">{{ i.internship.title }}</div>
-                    <div>{{ i.organizationName }}</div>
-                </div>
+                {% endfor %}
             </div>
-            {% endfor %}
         </div>
         <div class="item-details" id="job-details">
             <div class="skeleton" id="job-details-skeleton">
