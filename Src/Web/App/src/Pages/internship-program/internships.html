@@ -52,12 +52,12 @@
             <div class="item-list">
                 {% for i in internships %}
                 <div class="item-card" data-job-id="{{ i.internship.id }}">
-                    {% if i.logo is null %}
+                    {% if i.organizationLogo is null %}
                     <div class="item-card-logo placeholder">
                         <i class="i i-buildings"></i>
                     </div>
                     {% else %}
-                    <img class="item-card-logo" src="{{ i.logo }}" alt="{{ i.organizationName }} logo">
+                    <img class="item-card-logo" src="{{ i.organizationLogo }}" alt="{{ i.organizationName }} logo">
                     {% endif %}
                     <div class="item-card-text">
                         <div class="title">{{ i.internship.title }}</div>

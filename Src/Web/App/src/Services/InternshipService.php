@@ -31,7 +31,7 @@ class InternshipService implements IInternshipService
         $result = [];
 
         foreach ($internships as $internship) {
-            $company = $internship->getOwner()->getOrganization();
+            $company = $internship->getOrganization();
             $internshipView = new InternshipListViewDTO($internship, $company->getName());
 
             $logo = $this->fileStorageService->get($company->getLogoFilePath());
