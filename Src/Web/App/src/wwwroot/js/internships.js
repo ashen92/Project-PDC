@@ -33,40 +33,10 @@ const jobTitle = document.getElementById("job-title");
 const jobDescription = document.getElementById("job-description");
 
 let previouslySelectedItemCard = null;
+let isLoading = false;
 
-jobList.addEventListener("click", function (event) {
-    let itemCard = event.target.closest(".item-card");
-
-    if (itemCard) {
-        if (previouslySelectedItemCard == itemCard) { return; }
-
-        let jobId = itemCard.getAttribute("data-job-id");
-
-        previouslySelectedItemCard.classList.toggle("active");
-        itemCard.classList.toggle("active");
-        previouslySelectedItemCard = itemCard;
-        jobDetailsSkeleton.classList.toggle("hidden");
-        jobDetailsContent.classList.toggle("hidden");
-
-
-        fetch("/api/internships/" + jobId, { method: "GET" })
-            .then(response => response.json())
-            .then(data => {
-                jobTitle.innerHTML = data.title;
-                jobDescription.innerHTML = data.description;
-                jobDetailsSkeleton.classList.toggle("hidden");
-                jobDetailsContent.classList.toggle("hidden");
-            })
-            .catch(error => console.error("Error retrieving job:", error));
-    }
-});
-
-const itemCard = document.querySelector(".item-card");
-document.addEventListener("DOMContentLoaded", () => {
-    itemCard.classList.toggle("active");
-    previouslySelectedItemCard = itemCard;
-
-    fetch("/api/internships/" + itemCard.getAttribute("data-job-id"), { method: "GET" })
+function fetchJobDetails(jobId) {
+    fetch(`/api/internships/${jobId}`, { method: "GET" })
         .then(response => response.json())
         .then(data => {
             jobTitle.innerHTML = data.title;
@@ -74,7 +44,38 @@ document.addEventListener("DOMContentLoaded", () => {
             jobDetailsSkeleton.classList.toggle("hidden");
             jobDetailsContent.classList.toggle("hidden");
         })
-        .catch(error => console.error("Error retrieving job:", error));
+        .catch(error => console.error("Error retrieving job:", error))
+        .finally(() => { isLoading = false; });
+}
+
+jobList.addEventListener("click", (event) => {
+    if (isLoading) { return; }
+
+    const itemCard = event.target.closest(".item-card");
+
+    if (itemCard && previouslySelectedItemCard !== itemCard) {
+
+        if (previouslySelectedItemCard) {
+            previouslySelectedItemCard.classList.toggle("active");
+        }
+
+        itemCard.classList.toggle("active");
+        previouslySelectedItemCard = itemCard;
+        jobDetailsSkeleton.classList.toggle("hidden");
+        jobDetailsContent.classList.toggle("hidden");
+
+        isLoading = true;
+        fetchJobDetails(itemCard.getAttribute("data-job-id"));
+    }
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+    const itemCard = document.querySelector(".item-card");
+    itemCard.classList.toggle("active");
+    previouslySelectedItemCard = itemCard;
+
+    isLoading = true;
+    fetchJobDetails(itemCard.getAttribute("data-job-id"));
 });
 
 const applicantsJobBtn = document.getElementById("applicants-job-btn");
