@@ -278,8 +278,8 @@ $container->register(
     ->setPublic(true);
 
 $container->register(
-    "App\Controllers\UserController",
-    \App\Controllers\UserController::class
+    "App\Controllers\PortalController",
+    \App\Controllers\PortalController::class
 )
     ->setArguments([new Reference("twig")])
     ->setPublic(true);
