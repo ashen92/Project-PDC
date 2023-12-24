@@ -1,20 +1,18 @@
-{% extends "shared/layout.html" %}
+{% extends "shared/layout-left-nav.html" %}
 
-{% block title %}User Management{% endblock %}
+{% block title %}Admin Portal{% endblock %}
+
+{% block left_nav %}
+{% include "portal/left-nav.html" %}
+{% endblock %}
 
 {% block content %}
 
-<h1 class="border-1 rounded-2 p-30 text-center">
-    User Management
-</h1>
-
-<div class="card-container">
-    <a class="card" href="">
-        Show Students
-    </a>
-    <a class="card" href="/portal/partners">
-        Show Partners
-    </a>
+<div class="title">
+    <h2>Admin Portal</h2>
 </div>
+
+<section>
+</section>
 
 {% endblock %}
