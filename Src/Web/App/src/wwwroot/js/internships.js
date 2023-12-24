@@ -51,7 +51,7 @@ function fetchJobDetails(jobId) {
 jobList.addEventListener("click", (event) => {
     if (isLoading) { return; }
 
-    const itemCard = event.target.closest(".item-card");
+    const itemCard = event.target.closest(".job");
 
     if (itemCard && previouslySelectedItemCard !== itemCard) {
 
@@ -70,7 +70,7 @@ jobList.addEventListener("click", (event) => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-    const itemCard = document.querySelector(".item-card");
+    const itemCard = document.querySelector(".job");
     itemCard.classList.toggle("active");
     previouslySelectedItemCard = itemCard;
 

@@ -47,19 +47,19 @@
 
     {% else %}
 
-    <div class="content-container">
-        <div class="item-list-container" id="job-list">
-            <div class="item-list">
+    <div class="container">
+        <div class="job-list-container" id="job-list">
+            <div class="job-list">
                 {% for i in internships %}
-                <div class="item-card" data-job-id="{{ i.internship.id }}">
+                <div class="job" data-job-id="{{ i.internship.id }}">
                     {% if i.organizationLogo is null %}
-                    <div class="item-card-logo placeholder">
+                    <div class="job-logo placeholder">
                         <i class="i i-buildings"></i>
                     </div>
                     {% else %}
-                    <img class="item-card-logo" src="{{ i.organizationLogo }}" alt="{{ i.organizationName }} logo">
+                    <img class="job-logo" src="{{ i.organizationLogo }}" alt="{{ i.organizationName }} logo">
                     {% endif %}
-                    <div class="item-card-text">
+                    <div class="job-text">
                         <div class="title">{{ i.internship.title }}</div>
                         <div>{{ i.organizationName }}</div>
                     </div>
@@ -67,7 +67,7 @@
                 {% endfor %}
             </div>
         </div>
-        <div class="item-details" id="job-details">
+        <div class="job-details" id="job-details">
             <div class="skeleton" id="job-details-skeleton">
                 <div class="skeleton-header"></div>
                 <div class="skeleton-header last"></div>
@@ -78,6 +78,12 @@
                 </div>
                 <div class="skeleton-body">
                     <div class="skeleton-line"></div>
+                    <div class="skeleton-line"></div>
+                    <div class="skeleton-line"></div>
+                    <div class="skeleton-line"></div>
+                    <div class="skeleton-line"></div>
+                </div>
+                <div class="skeleton-body">
                     <div class="skeleton-line"></div>
                     <div class="skeleton-line"></div>
                 </div>
@@ -95,7 +101,7 @@
                     <button type="button" class="btn">Apply</button>
                     {% endif %}
                 </div>
-                <div class="job-description-container">
+                <div class="description">
                     <h5 class="title">About the internship</h5>
                     <div class="formatted-text-area" id="job-description"></div>
                 </div>
