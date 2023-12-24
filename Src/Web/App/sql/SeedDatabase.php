@@ -178,7 +178,7 @@ $entityManager->flush();
 echo "Done.\nAdding organizations...";
 
 $orgData = [
-    [
+    1 => [
         "Microsoft",
         "One Microsoft Way, Redmond, WA 98052, United States",
         "Redmond",
@@ -187,7 +187,7 @@ $orgData = [
         "Be what's next",
         "image-jpeg-uuid-49df2eb0-9b7b-11ee-a730-9109ff162764",
     ],
-    [
+    2 => [
         "Google",
         "1600 Amphitheatre Parkway, Mountain View, CA 94043, United States",
         "Mountain View",
@@ -196,7 +196,7 @@ $orgData = [
         "Do the right thing",
         "image-jpeg-uuid-49dbd350-9b7b-11ee-a730-9109ff162764",
     ],
-    [
+    3 => [
         "Amazon",
         "410 Terry Ave N, Seattle, WA 98109, United States",
         "Seattle",
@@ -205,7 +205,7 @@ $orgData = [
         "Work hard. Have fun. Make history.",
         "image-jpeg-uuid-49d850e0-9b7b-11ee-a730-9109ff162764",
     ],
-    [
+    4 => [
         "Meta",
         "1 Hacker Way, Menlo Park, CA 94025, United States",
         "Menlo Park",
@@ -214,7 +214,7 @@ $orgData = [
         "Bring the world closer together",
         "image-jpeg-uuid-49dda810-9b7b-11ee-a730-9109ff162764",
     ],
-    [
+    5 => [
         "Apple",
         "1 Apple Park Way, Cupertino, CA 95014, United States",
         "Cupertino",
@@ -222,12 +222,12 @@ $orgData = [
         "https://www.apple.com/",
         "Think different",
         "image-jpeg-uuid-49da25a0-9b7b-11ee-a730-9109ff162764",
-    ]
+    ],
 ];
 
 $organizations = [];
 
-foreach ($orgData as $org) {
+foreach ($orgData as $key => $org) {
     $o = new Organization(
         $org[0],
         $org[1],
@@ -328,35 +328,43 @@ echo "Done.\nAdding internships...";
 $internData = [
     [
         "Software Development Intern",
-        "<p>Are you passionate about software development and eager to apply your skills in the real world? We are looking for a highly motivated Software Development Intern to join our dynamic team. This is an exciting opportunity to work on cutting-edge technologies and projects that will make a real impact. </p><p><br></p><p><strong>Responsibilities: </strong></p><ul><li>Assist in developing and maintaining our web-based applications. </li><li>Work closely with senior developers to implement new features and optimize existing ones. </li><li>Write clean, maintainable, and efficient code. </li><li>Participate in code reviews to maintain a high-quality codebase. </li><li>Test software rigorously and work on bug fixes. </li><li>Collaborate with cross-functional teams to deliver on project goals. </li></ul><p><br></p><p><strong>Qualifications: </strong></p><ul><li>Currently pursuing a degree in Computer Science, Software Engineering, or a related field. </li><li>Familiarity with programming languages such as PHP, Java, or Python. </li><li>Strong problem-solving skills and attention to detail. </li><li>Excellent written and verbal communication skills. </li><li>Previous experience in software development is a plus, but not required. </li></ul><p><br></p><p><strong>Duration: </strong></p><p>3-6 months, with the possibility of extension or full-time employment. </p><p><br></p><p><strong>Location: </strong></p><p>Remote or in our office located in [City, State]. </p><p><br></p><p>If you are a proactive learner and thrive in a fast-paced environment, we would love to hear from you! Apply now to kickstart your career in software development.</p>"
+        "<p>Are you passionate about software development and eager to apply your skills in the real world? We are looking for a highly motivated Software Development Intern to join our dynamic team. This is an exciting opportunity to work on cutting-edge technologies and projects that will make a real impact. </p><p><br></p><p><strong>Responsibilities: </strong></p><ul><li>Assist in developing and maintaining our web-based applications. </li><li>Work closely with senior developers to implement new features and optimize existing ones. </li><li>Write clean, maintainable, and efficient code. </li><li>Participate in code reviews to maintain a high-quality codebase. </li><li>Test software rigorously and work on bug fixes. </li><li>Collaborate with cross-functional teams to deliver on project goals. </li></ul><p><br></p><p><strong>Qualifications: </strong></p><ul><li>Currently pursuing a degree in Computer Science, Software Engineering, or a related field. </li><li>Familiarity with programming languages such as PHP, Java, or Python. </li><li>Strong problem-solving skills and attention to detail. </li><li>Excellent written and verbal communication skills. </li><li>Previous experience in software development is a plus, but not required. </li></ul><p><br></p><p><strong>Duration: </strong></p><p>3-6 months, with the possibility of extension or full-time employment. </p><p><br></p><p><strong>Location: </strong></p><p>Remote or in our office located in [City, State]. </p><p><br></p><p>If you are a proactive learner and thrive in a fast-paced environment, we would love to hear from you! Apply now to kickstart your career in software development.</p>",
+        $partnerUsers[3]
     ],
     [
         "Frontend Development Intern",
-        "<p>We are seeking a Frontend Development Intern to assist in building high-quality web applications. You will work closely with our experienced developers and designers to create user-friendly interfaces.</p><p><br></p><p><strong>Responsibilities:</strong></p><ul><li>Convert UI/UX designs to HTML, CSS, and JavaScript.</li><li>Assist in optimizing web pages for maximum speed and scalability.</li><li>Test website compatibility across different browsers.</li><li>Collaborate with backend developers to integrate RESTful APIs.</li></ul><p><br></p><p><strong>Qualifications: </strong></p><ul><li>Currently pursuing a degree in Computer Science, Web Development, or a related field.</li><li>Familiarity with HTML, CSS, and basic JavaScript.</li><li>Strong attention to detail and willingness to learn.</li></ul>"
+        "<p>We are seeking a Frontend Development Intern to assist in building high-quality web applications. You will work closely with our experienced developers and designers to create user-friendly interfaces.</p><p><br></p><p><strong>Responsibilities:</strong></p><ul><li>Convert UI/UX designs to HTML, CSS, and JavaScript.</li><li>Assist in optimizing web pages for maximum speed and scalability.</li><li>Test website compatibility across different browsers.</li><li>Collaborate with backend developers to integrate RESTful APIs.</li></ul><p><br></p><p><strong>Qualifications: </strong></p><ul><li>Currently pursuing a degree in Computer Science, Web Development, or a related field.</li><li>Familiarity with HTML, CSS, and basic JavaScript.</li><li>Strong attention to detail and willingness to learn.</li></ul>",
+        $partnerUsers[3]
     ],
     [
         "Mobile App Development Intern",
-        "<p>We are looking for an enthusiastic Mobile App Development Intern to join our mobile team. You'll work on developing features for our iOS and Android applications. </p><p><br></p><p><strong>Responsibilities: </strong></p><ul><li>Work on bug fixes and implement new features under guidance from senior developers. </li><li>Write clean, maintainable code following best practices. </li><li>Learn and apply new technologies quickly. </li></ul><p><br></p><p><strong>Qualifications: </strong></p><ul><li>Currently enrolled in a Computer Science or related degree program. </li><li>Basic understanding of Swift or Kotlin. </li><li>A strong passion for mobile app development.</li></ul>"
+        "<p>We are looking for an enthusiastic Mobile App Development Intern to join our mobile team. You'll work on developing features for our iOS and Android applications. </p><p><br></p><p><strong>Responsibilities: </strong></p><ul><li>Work on bug fixes and implement new features under guidance from senior developers. </li><li>Write clean, maintainable code following best practices. </li><li>Learn and apply new technologies quickly. </li></ul><p><br></p><p><strong>Qualifications: </strong></p><ul><li>Currently enrolled in a Computer Science or related degree program. </li><li>Basic understanding of Swift or Kotlin. </li><li>A strong passion for mobile app development.</li></ul>",
+        $partnerUsers[2]
     ],
     [
         "DevOps Intern",
-        "<p>Join us as a DevOps Intern to gain hands-on experience in automating, configuring, and optimizing our development pipelines for high performance. </p><p><br></p><p><strong>Responsibilities: </strong></p><ul><li>Assist in managing and deploying cloud-based applications. Monitor system performance and troubleshoot issues. </li><li>Learn about CI/CD pipelines and assist in their implementation. </li></ul><p><br></p><p><strong>Qualifications: </strong></p><ul><li>Pursuing a degree in Computer Science, Information Systems, or a related field. </li><li>Basic understanding of cloud services like AWS, Azure, or GCP. </li><li>Familiarity with Linux/Unix commands.</li></ul>"
+        "<p>Join us as a DevOps Intern to gain hands-on experience in automating, configuring, and optimizing our development pipelines for high performance. </p><p><br></p><p><strong>Responsibilities: </strong></p><ul><li>Assist in managing and deploying cloud-based applications. Monitor system performance and troubleshoot issues. </li><li>Learn about CI/CD pipelines and assist in their implementation. </li></ul><p><br></p><p><strong>Qualifications: </strong></p><ul><li>Pursuing a degree in Computer Science, Information Systems, or a related field. </li><li>Basic understanding of cloud services like AWS, Azure, or GCP. </li><li>Familiarity with Linux/Unix commands.</li></ul>",
+        $partnerUsers[1]
     ],
     [
         "Data Engineering Intern",
-        "<p>We are in search of a Data Engineering Intern to assist in developing, constructing, testing, and maintaining architectures such as databases and large-scale processing systems.</p><p><br></p><p><strong>Responsibilities: </strong></p><ul><li>Assist in building scalable, high-performance data pipelines. </li><li>Work closely with data scientists to implement algorithms and models. </li><li>Learn to write complex SQL queries and optimize them for performance.</li></ul><p><br></p><p><strong>Qualifications: </strong></p><ul><li>Currently pursuing a degree in Computer Science, Data Science, or a related field. </li><li>Familiarity with SQL and Python. </li><li>Strong analytical and problem-solving skills.</li></ul>"
+        "<p>We are in search of a Data Engineering Intern to assist in developing, constructing, testing, and maintaining architectures such as databases and large-scale processing systems.</p><p><br></p><p><strong>Responsibilities: </strong></p><ul><li>Assist in building scalable, high-performance data pipelines. </li><li>Work closely with data scientists to implement algorithms and models. </li><li>Learn to write complex SQL queries and optimize them for performance.</li></ul><p><br></p><p><strong>Qualifications: </strong></p><ul><li>Currently pursuing a degree in Computer Science, Data Science, or a related field. </li><li>Familiarity with SQL and Python. </li><li>Strong analytical and problem-solving skills.</li></ul>",
+        $partnerUsers[0]
     ],
     [
         "Cybersecurity Intern",
-        "<p>Are you passionate about cybersecurity and eager to apply your skills in the real world? We are looking for a highly motivated Cybersecurity Intern to join our dynamic team. This is an exciting opportunity to work on cutting-edge technologies and projects that will make a real impact. </p><p><br></p><p><strong>Responsibilities: </strong></p><ul><li>Assist in developing and maintaining our web-based applications. </li><li>Work closely with senior developers to implement new features and optimize existing ones. </li><li>Write clean, maintainable, and efficient code. </li><li>Participate in code reviews to maintain a high-quality codebase. </li><li>Test software rigorously and work on bug fixes. </li><li>Collaborate with cross-functional teams to deliver on project goals. </li></ul><p><br></p><p><strong>Qualifications: </strong></p><ul><li>Currently pursuing a degree in Computer Science, Software Engineering, or a related field. </li><li>Familiarity with programming languages such as PHP, Java, or Python. </li><li>Strong problem-solving skills and attention to detail. </li><li>Excellent written and verbal communication skills. </li><li>Previous experience in software development is a plus, but not required. </li></ul><p><br></p><p><strong>Duration: </strong></p><p>3-6 months, with the possibility of extension or full-time employment. </p><p><br></p><p><strong>Location: </strong></p><p>Remote or in our office located in [City, State]. </p><p><br></p><p>If you are a proactive learner and thrive in a fast-paced environment, we would love to hear from you! Apply now to kickstart your career in software development.</p>"
+        "<p>Are you passionate about cybersecurity and eager to apply your skills in the real world? We are looking for a highly motivated Cybersecurity Intern to join our dynamic team. This is an exciting opportunity to work on cutting-edge technologies and projects that will make a real impact. </p><p><br></p><p><strong>Responsibilities: </strong></p><ul><li>Assist in developing and maintaining our web-based applications. </li><li>Work closely with senior developers to implement new features and optimize existing ones. </li><li>Write clean, maintainable, and efficient code. </li><li>Participate in code reviews to maintain a high-quality codebase. </li><li>Test software rigorously and work on bug fixes. </li><li>Collaborate with cross-functional teams to deliver on project goals. </li></ul><p><br></p><p><strong>Qualifications: </strong></p><ul><li>Currently pursuing a degree in Computer Science, Software Engineering, or a related field. </li><li>Familiarity with programming languages such as PHP, Java, or Python. </li><li>Strong problem-solving skills and attention to detail. </li><li>Excellent written and verbal communication skills. </li><li>Previous experience in software development is a plus, but not required. </li></ul><p><br></p><p><strong>Duration: </strong></p><p>3-6 months, with the possibility of extension or full-time employment. </p><p><br></p><p><strong>Location: </strong></p><p>Remote or in our office located in [City, State]. </p><p><br></p><p>If you are a proactive learner and thrive in a fast-paced environment, we would love to hear from you! Apply now to kickstart your career in software development.</p>",
+        $partnerUsers[1]
     ],
     [
         "Web Developer Intern - Angular/React",
-        "<p><strong>Summary </strong></p><ul><li>We are seeking a highly motivated and talented Web Developer Intern with expertise in Angular/React to join our dynamic development team. As a Web Developer Intern, you will have the opportunity to gain hands-on experience in creating robust and interactive web applications using the Angular/React framework. This internship will provide you with valuable insights into the world of web development, allowing you to apply your skills and knowledge in a real-world professional setting. </li></ul><p><br></p><p><strong>Responsibilities </strong></p><ul><li>Collaborate with the development team to design, develop, and maintain web applications using the Angular/React framework. </li><li>Write clean, efficient, and well-documented code that adheres to best practices and coding standards. </li><li>Participate in the entire software development lifecycle, including requirements gathering, design, development, testing, and deployment. </li><li>Work closely with cross-functional teams to understand business requirements and translate them into technical solutions. </li><li>Conduct thorough testing and debugging of applications to ensure high-quality, reliable performance. </li><li>Stay up-to-date with the latest industry trends and technologies, and propose innovative ideas to enhance web development processes. </li></ul><p><br></p><p><strong>Requirements </strong></p><ul><li>Currently pursuing a degree in Computer Science, Software Engineering, or a related field. </li><li>Proficient in Angular/React framework, with experience in developing responsive, scalable web applications. </li><li>Strong understanding of web development concepts, HTML, CSS, TypeScript, and JavaScript. </li><li>Familiarity with RESTful APIs and integrating front-end applications with back-end services. </li><li>Solid problem-solving and analytical skills, with keen attention to detail. </li><li>Ability to work independently and collaboratively in a fast-paced, deadline-driven environment. </li><li>Excellent communication and interpersonal skills. </li></ul><p><br></p><p><strong>Job Type </strong></p><ul><li>Internship </li></ul><p><br></p><p><strong>Location </strong></p><ul><li>Remote </li></ul><p><br></p><p><strong>Duration </strong></p><ul><li>4 / 6 Months</li></ul>"
+        "<p><strong>Summary </strong></p><ul><li>We are seeking a highly motivated and talented Web Developer Intern with expertise in Angular/React to join our dynamic development team. As a Web Developer Intern, you will have the opportunity to gain hands-on experience in creating robust and interactive web applications using the Angular/React framework. This internship will provide you with valuable insights into the world of web development, allowing you to apply your skills and knowledge in a real-world professional setting. </li></ul><p><br></p><p><strong>Responsibilities </strong></p><ul><li>Collaborate with the development team to design, develop, and maintain web applications using the Angular/React framework. </li><li>Write clean, efficient, and well-documented code that adheres to best practices and coding standards. </li><li>Participate in the entire software development lifecycle, including requirements gathering, design, development, testing, and deployment. </li><li>Work closely with cross-functional teams to understand business requirements and translate them into technical solutions. </li><li>Conduct thorough testing and debugging of applications to ensure high-quality, reliable performance. </li><li>Stay up-to-date with the latest industry trends and technologies, and propose innovative ideas to enhance web development processes. </li></ul><p><br></p><p><strong>Requirements </strong></p><ul><li>Currently pursuing a degree in Computer Science, Software Engineering, or a related field. </li><li>Proficient in Angular/React framework, with experience in developing responsive, scalable web applications. </li><li>Strong understanding of web development concepts, HTML, CSS, TypeScript, and JavaScript. </li><li>Familiarity with RESTful APIs and integrating front-end applications with back-end services. </li><li>Solid problem-solving and analytical skills, with keen attention to detail. </li><li>Ability to work independently and collaboratively in a fast-paced, deadline-driven environment. </li><li>Excellent communication and interpersonal skills. </li></ul><p><br></p><p><strong>Job Type </strong></p><ul><li>Internship </li></ul><p><br></p><p><strong>Location </strong></p><ul><li>Remote </li></ul><p><br></p><p><strong>Duration </strong></p><ul><li>4 / 6 Months</li></ul>",
+        $partnerUsers[2]
     ],
     [
         "Intern, Quality Assurance",
-        "<p>The QA Intern will collaborate with cross-functional teams to execute test cases, identify software defects, and contribute to QA processes. This role offers hands-on experience in software testing methodologies and bug tracking, providing valuable insights into the software development lifecycle. </p><p><br></p><p><strong>Responsibilities </strong></p><ul><li>Collaborate with cross-functional teams to understand project requirements and specifications.</li><li>Execute test cases and analyze results to ensure software quality and functionality.</li><li>Identify, document, and track software defects to resolution.</li><li>Assist in creating and maintaining comprehensive test documentation.</li><li>Work closely with developers to reproduce, debug, and resolve issues.</li><li>Contribute to the improvement of QA processes and best practices. </li></ul><p><br></p><p><strong>Requirements</strong></p><ul><li>Pursuing a degree in Computer Science, Information Technology, or related field.</li><li>Strong analytical and problem-solving skills.</li><li>Excellent attention to detail and a passion for delivering high-quality software.</li><li>Basic understanding of software testing concepts and methodologies is a plus.</li><li>Ability to work independently and collaboratively in a team environment.</li><li>Strong communication skills, both written and verbal.</li></ul>"
+        "<p>The QA Intern will collaborate with cross-functional teams to execute test cases, identify software defects, and contribute to QA processes. This role offers hands-on experience in software testing methodologies and bug tracking, providing valuable insights into the software development lifecycle. </p><p><br></p><p><strong>Responsibilities </strong></p><ul><li>Collaborate with cross-functional teams to understand project requirements and specifications.</li><li>Execute test cases and analyze results to ensure software quality and functionality.</li><li>Identify, document, and track software defects to resolution.</li><li>Assist in creating and maintaining comprehensive test documentation.</li><li>Work closely with developers to reproduce, debug, and resolve issues.</li><li>Contribute to the improvement of QA processes and best practices. </li></ul><p><br></p><p><strong>Requirements</strong></p><ul><li>Pursuing a degree in Computer Science, Information Technology, or related field.</li><li>Strong analytical and problem-solving skills.</li><li>Excellent attention to detail and a passion for delivering high-quality software.</li><li>Basic understanding of software testing concepts and methodologies is a plus.</li><li>Ability to work independently and collaboratively in a team environment.</li><li>Strong communication skills, both written and verbal.</li></ul>",
+        $partnerUsers[0]
     ]
 ];
 
@@ -368,23 +376,14 @@ $internships = [];
 
 $counter = 0;
 
-foreach ($internData as $internship) {
-    $i = null;
-    $mod = $counter % 10;
-    if ($mod == 0) {
-        $i = new Internship($internship[0], $internship[1], $user4, $internshipCycle);
-    } else if ($mod == 1) {
-        $i = new Internship($internship[0], $internship[1], $partnerUsers[0], $internshipCycle);
-    } else if ($mod == 2) {
-        $i = new Internship($internship[0], $internship[1], $partnerUsers[1], $internshipCycle);
-    } else if ($mod == 3) {
-        $i = new Internship($internship[0], $internship[1], $partnerUsers[2], $internshipCycle);
-    } else {
-        $i = new Internship($internship[0], $internship[1], $partnerUsers[3], $internshipCycle);
-    }
+$i = new Internship($internData[0][0], $internData[0][1], $user4, $internshipCycle);
+$entityManager->persist($i);
+
+for ($x = 1; $x < count($internData); $x++) {
+    $data = $internData[$x];
+    $i = new Internship($data[0], $data[1], $data[2], $internshipCycle);
     $entityManager->persist($i);
     $internships[] = $i;
-    $counter += 3;
 }
 
 $entityManager->persist($internshipCycle);
