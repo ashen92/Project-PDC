@@ -7,6 +7,7 @@ use App\Attributes\RequiredRole;
 use App\DTOs\CreateInternshipCycleDTO;
 use App\Interfaces\IInternshipCycleService;
 use App\Interfaces\IRequirementService;
+use App\Interfaces\IUserService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,6 +24,7 @@ class InternshipProgramController extends PageControllerBase
 {
     public function __construct(
         Environment $twig,
+        private IUserService $userService,
         private IInternshipCycleService $internshipCycleService,
         private IRequirementService $requirementService,
     ) {
@@ -32,6 +34,17 @@ class InternshipProgramController extends PageControllerBase
     #[Route(["", "/", "/home"], name: "home")]
     public function home(Request $request): Response
     {
+        $userId = $request->getSession()->get("user_id");
+
+        if ($this->userService->hasRole($userId, "ROLE_ADMIN")) {
+            return $this->render(
+                "internship-program/home-admin.html",
+                [
+                    "section" => "home",
+                    "internshipCycle" => $this->internshipCycleService->getLatestInternshipCycle()
+                ]
+            );
+        }
         return $this->render(
             "internship-program/home.html",
             [
@@ -72,17 +85,6 @@ class InternshipProgramController extends PageControllerBase
 
         $this->internshipCycleService->createInternshipCycle($createInternshipCycleDTO);
         return $this->redirect("/internship-program/cycle/details");
-    }
-
-    #[Route("/cycle/details")]
-    public function cycleDetails(Request $request): Response
-    {
-        return $this->render(
-            "internship-program/cycle/details.html",
-            [
-                "section" => "home",
-                "internshipCycle" => $this->internshipCycleService->getLatestInternshipCycle()
-            ]);
     }
 
     #[Route("/cycle/end")]

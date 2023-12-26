@@ -250,6 +250,7 @@ $container->register(
 )
     ->setArguments([
         new Reference("twig"),
+        new Reference("service.user"),
         new Reference("service.internship_cycle"),
         new Reference("service.requirement"),
     ])

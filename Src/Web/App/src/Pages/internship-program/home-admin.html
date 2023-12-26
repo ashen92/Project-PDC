@@ -1,0 +1,95 @@
+{% extends "shared/layout-left-nav.html" %}
+
+{% block title %}Internship Program{% endblock %}
+
+{% block left_nav %}
+{% include "internship-program/left-nav.html" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="title">
+    <h2>
+        Internship Program
+    </h2>
+    <p>
+        Manage the internship program here. Create one or modify an existing internship cycle.
+    </p>
+</div>
+
+{% if internshipCycle.endedAt is not null or internshipCycle is null %}
+<div class="info-card">
+    <a class="btn" role="button" href="/internship-program/cycle/create">Create an internship cycle</a>
+</div>
+{% else %}
+<div class="info-card">
+    <a class="btn" role="button" href="/internship-program/cycle/end">End current internship cycle</a>
+</div>
+{% endif %}
+
+<section>
+    <div class="title">
+        <h5>Details of the internship cycle</h5>
+    </div>
+
+    {% if internshipCycle.endedAt is not null or internshipCycle is null %}
+
+    <p>There is no active internship cycle</p>
+
+    {% else %}
+
+    <form class="border-1 rounded-1 p-20 bg-grey-100">
+        <div class="grid-details">
+            <label>Created at</label>
+            <p>:</p>
+            <p>{{ internshipCycle.createdAt.format("Y-m-d H:i:s") ?? 'Not set' }}</p>
+
+            {% if internshipCycle.endedAt is not null %}
+            <label>Ended at</label>
+            <p>:</p>
+            <p>{{ internshipCycle.endedAt.format("Y-m-d H:i:s") ?? 'Not set' }}</p>
+            {% endif %}
+        </div>
+
+        <div class="grid-details">
+            <div class="title">Internship gathering phase</div>
+            <label>Start date</label>
+            <p>:</p>
+            <p>{{ internshipCycle.collectionStartDate.format("Y-m-d") ?? 'Not set' }}</p>
+
+            <label>End date</label>
+            <p>:</p>
+            <p>{{ internshipCycle.collectionEndDate.format("Y-m-d") ?? 'Not set' }}</p>
+        </div>
+
+        <div class="grid-details">
+            <div class="title">Application gathering phase</div>
+            <label>Start date</label>
+            <p>:</p>
+            <p>{{ internshipCycle.applicationStartDate.format("Y-m-d") ?? 'Not set' }}</p>
+
+            <label>End date</label>
+            <p>:</p>
+            <p>{{ internshipCycle.applicationEndDate.format("Y-m-d") ?? 'Not set' }}</p>
+        </div>
+
+        <div class="grid-details">
+            <div class="title">Participants</div>
+            <label>Partner user group name</label>
+            <p>:</p>
+            <p>{{ internshipCycle.partnerUserGroupName }}</p>
+
+            <label>Student user group name</label>
+            <p>:</p>
+            <p>{{ internshipCycle.studentUserGroupName }}</p>
+        </div>
+        <div class="actions">
+            <a class="link" href="/internship-program">Modify</a>
+        </div>
+    </form>
+
+    {% endif %}
+
+</section>
+
+{% endblock %}

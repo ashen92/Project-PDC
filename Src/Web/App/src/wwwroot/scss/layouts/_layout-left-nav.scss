@@ -41,16 +41,16 @@
             }
         }
 
+        .info-card {
+            >p {
+                margin-bottom: 0.75rem;
+            }
+
+            margin-bottom: 1.5rem;
+        }
+
         section {
             margin-top: 3rem;
-
-            .info-card {
-                >p {
-                    margin-bottom: 0.75rem;
-                }
-
-                margin-bottom: 1.5rem;
-            }
         }
     }
 }

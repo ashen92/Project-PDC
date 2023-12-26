@@ -12,62 +12,23 @@
     <h2>
         Internship Program
     </h2>
+    <p>
+        Subtitle here.
+    </p>
 </div>
 
-<section>
-    {% if "ROLE_ADMIN" in user_roles %}
-
-    {% if internshipCycle.endedAt is not null or internshipCycle is null %}
-    <div class="info-card">
-        <p>There is no active internship cycle</p>
-        <a class="btn" role="button" href="/internship-program/cycle/create">Create an internship cycle</a>
-    </div>
-    {% else %}
-    <div class="info-card">
-        <a class="btn" role="button" href="/internship-program/cycle/end">End current internship cycle</a>
-    </div>
-    <div class="info-card">
-        <p>Click on the following link to view or modify the current internship cycle.</p>
-        <a class="btn" role="button" href="/internship-program/cycle/details">View internship cycle</a>
-    </div>
-    {% endif %}
-
-    {% endif %}
-
-    {% if "ROLE_INTERNSHIP_PARTNER" in user_roles %}
-    <div class="info-card">
-        <p>Create an internship post.</p>
-        <a class="btn" role="button" href="/internship-program/internships/create">Post an internship</a>
-    </div>
-    {% endif %}
-
-</section>
-<section>
-    <h4>Timeline of the internship cycle</h4>
-</section>
-
-
-
-{#
-
-<div class="fs-4 pt-20 pb-30 pl-20">Timeline of the Internship Program</div>
-<div class="row-cols-2">
-    <div>
-        Students can apply for internships starting from <br>
-        Deadline is
-    </div>
-    <div>
-        Start Date <br>
-        End Date
-    </div>
+{% if "ROLE_INTERNSHIP_PARTNER" in user_roles %}
+<div class="info-card">
+    <p>Create an internship post.</p>
+    <a class="btn" role="button" href="/internship-program/internships/create">Post an internship</a>
 </div>
-<div class="row-cols-2">
-    <div>
-        Interning Duration is
+{% endif %}
+
+<section>
+    <div class="title">
+        <h5>Important notices</h5>
     </div>
-    <div>
-        Start Date to End Date
-    </div>
-</div> #}
+
+</section>
 
 {% endblock %}
