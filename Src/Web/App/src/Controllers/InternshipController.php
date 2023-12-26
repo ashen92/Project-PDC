@@ -21,6 +21,8 @@ use Twig\Environment;
 #[Route("/internship-program/internships")]
 class InternshipController extends PageControllerBase
 {
+    const MAX_INTERNSHIP_RESULTS_PER_PAGE = 20;
+
     public function __construct(
         Environment $twig,
         private IInternshipService $internshipService,
@@ -38,16 +40,45 @@ class InternshipController extends PageControllerBase
         $queryParams = $request->query->all();
 
         $searchQuery = $queryParams["q"] ?? null;
+        $pageNumber = $queryParams["p"] ?? 1;
+
+        // TODO: Validate query params
 
         $internships = [];
+        $numberOfResults = 0;
 
         if ($this->userService->hasRole($userId, "ROLE_PARTNER")) {
             $internships = $this->internshipService
-                ->getInternshipsBy($latestInternshipCycleId, $userId, $searchQuery);
+                ->getInternshipsBy(
+                    $latestInternshipCycleId,
+                    $userId,
+                    $searchQuery,
+                    self::MAX_INTERNSHIP_RESULTS_PER_PAGE,
+                    (int) (($pageNumber - 1) * self::MAX_INTERNSHIP_RESULTS_PER_PAGE)
+                );
+            $numberOfResults = $this->internshipService->getNumberOfInternships(
+                $latestInternshipCycleId,
+                $userId,
+                $searchQuery
+            );
         } else {
             $internships = $this->internshipService
-                ->getInternshipsBy($latestInternshipCycleId, null, $searchQuery);
+                ->getInternshipsBy(
+                    $latestInternshipCycleId,
+                    null,
+                    $searchQuery,
+                    self::MAX_INTERNSHIP_RESULTS_PER_PAGE,
+                    (int) (($pageNumber - 1) * self::MAX_INTERNSHIP_RESULTS_PER_PAGE)
+                );
+
+            $numberOfResults = $this->internshipService->getNumberOfInternships(
+                $latestInternshipCycleId,
+                null,
+                $searchQuery
+            );
         }
+
+        $pages = (int) ceil($numberOfResults / self::MAX_INTERNSHIP_RESULTS_PER_PAGE);
 
         $i = array_map(fn($internship) => $internship->internship, $internships);
         $organizations = $this->internshipService->getOrganizationsFrom($i);
@@ -58,8 +89,8 @@ class InternshipController extends PageControllerBase
                 ["section" => "internships"],
                 ["internships" => $internships],
                 ["organizations" => $organizations],
-                ["page" => 1],
-                ["pages" => 5],
+                ["page" => $pageNumber],
+                ["pages" => $pages],
             )
         );
     }

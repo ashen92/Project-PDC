@@ -50,7 +50,32 @@ class InternshipService implements IInternshipService
         return $this->internshipRepository->find($id);
     }
 
-    public function getInternshipsBy(?int $iCycleId, ?int $ownerId, ?string $searchQuery): array
+    public function getInternshipsBy(
+        ?int $iCycleId,
+        ?int $ownerId,
+        ?string $searchQuery,
+        ?int $numberOfResults,
+        ?int $offsetBy,
+    ): array {
+        if ($iCycleId) {
+            $criteria = [];
+
+            if ($searchQuery) {
+                $criteria["title"] = $searchQuery;
+            }
+
+            if ($ownerId) {
+                $criteria["owner"] = $ownerId;
+            }
+
+            $internships = $this->internshipRepository
+                ->findAllBy($criteria, null, $numberOfResults, $offsetBy);
+            return $this->mapToInternshipListViewDTOs($internships);
+        }
+        return [];
+    }
+
+    public function getNumberOfInternships(?int $iCycleId, ?int $ownerId, ?string $searchQuery): int
     {
         if ($iCycleId) {
             $criteria = [];
@@ -63,10 +88,9 @@ class InternshipService implements IInternshipService
                 $criteria["owner"] = $ownerId;
             }
 
-            $internships = $this->internshipRepository->findAllBy($criteria);
-            return $this->mapToInternshipListViewDTOs($internships);
+            return $this->internshipRepository->count($criteria);
         }
-        return [];
+        return 0;
     }
 
     public function getOrganizationsFrom(array $internships): array

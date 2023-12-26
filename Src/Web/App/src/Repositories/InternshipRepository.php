@@ -18,9 +18,15 @@ class InternshipRepository extends Repository
         return $query->getOneOrNullResult();
     }
 
-    public function findAllBy(array $criteria): array
-    {
-        return $this->entityManager->getRepository(Internship::class)->findBy($criteria);
+    public function findAllBy(
+        array $criteria,
+        ?array $orderBy = null,
+        ?int $limit = null,
+        ?int $offset = null,
+    ): array {
+        return $this->entityManager
+            ->getRepository(Internship::class)
+            ->findBy($criteria, $orderBy, $limit, $offset);
     }
 
     /**
@@ -37,6 +43,13 @@ class InternshipRepository extends Repository
         )->setParameter('ids', $ids);
 
         return $query->getResult();
+    }
+
+    public function count(array $criteria): int
+    {
+        return $this->entityManager
+            ->getRepository(Internship::class)
+            ->count($criteria);
     }
 
     public function delete(int $id): void
