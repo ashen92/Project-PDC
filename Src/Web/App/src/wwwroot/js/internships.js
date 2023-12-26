@@ -144,3 +144,23 @@ companyMultiSelectApplyBtn.addEventListener("click", () => {
 
     window.location.href = `${window.location.pathname}?${params.toString()}`;
 });
+
+// --------------------------------------------------------------------------------------------
+// This section handles the pagination of the job list
+
+let btnNextPage = document.getElementById("btn-next-page");
+let btnPreviousPage = document.getElementById("btn-previous-page");
+
+let currentPage = parseInt(params.get("p")) || 1;
+
+btnNextPage.addEventListener("click", () => {
+    params.set("p", currentPage + 1);
+    window.location.href = `${window.location.pathname}?${params.toString()}`;
+});
+
+btnPreviousPage.addEventListener("click", () => {
+    params.set("p", currentPage - 1);
+    window.location.href = `${window.location.pathname}?${params.toString()}`;
+});
+
+// --------------------------------------------------------------------------------------------

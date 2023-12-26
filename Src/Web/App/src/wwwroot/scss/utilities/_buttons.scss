@@ -37,12 +37,35 @@
     }
 
     &:disabled,
-    &.disabled & {
+    &.disabled {
         color: $btn-disabled-color;
         pointer-events: none;
         background-color: $btn-disabled-bg;
         border-color: $btn-disabled-border-color;
         box-shadow: none;
+    }
+
+    &.btn-regular {
+        color: $btn-regular;
+        background-color: $btn-regular-bg;
+        border: none;
+        box-shadow: none;
+
+        &:hover {
+            color: $btn-regular;
+            background-color: $btn-regular-hover-bg;
+        }
+
+        &:active {
+            color: $btn-regular;
+            background-color: $btn-regular-active-bg;
+        }
+
+        &:disabled,
+        &.disabled {
+            color: $btn-regular-disabled-color;
+            pointer-events: none;
+        }
     }
 
     &.btn-secondary {

@@ -58,6 +58,8 @@ class InternshipController extends PageControllerBase
                 ["section" => "internships"],
                 ["internships" => $internships],
                 ["organizations" => $organizations],
+                ["page" => 1],
+                ["pages" => 5],
             )
         );
     }

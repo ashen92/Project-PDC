@@ -48,23 +48,54 @@
     {% else %}
 
     <div class="container">
-        <div class="job-list-container" id="job-list">
-            <div class="job-list">
-                {% for i in internships %}
-                <div class="job" data-job-id="{{ i.internship.id }}">
-                    {% if i.organizationLogo is null %}
-                    <div class="job-logo placeholder">
-                        <i class="i i-buildings"></i>
-                    </div>
-                    {% else %}
-                    <img class="job-logo" src="{{ i.organizationLogo }}" alt="{{ i.organizationName }} logo">
-                    {% endif %}
-                    <div class="job-text">
-                        <div class="title">{{ i.internship.title }}</div>
-                        <div>{{ i.organizationName }}</div>
-                    </div>
+        <div>
+            {% if "ROLE_INTERNSHIP_STUDENT" not in user_roles %}
+
+            <div class="mb-10 text-right">
+                <a class="btn" role="button" href="/internship-program/internships/create">Post an internship</a>
+            </div>
+
+            {% endif %}
+
+            <div class="job-list-navigation">
+                <div>
+                    Page {{ page }} of {{ pages }}
                 </div>
-                {% endfor %}
+                <div class="flex actions">
+                    <button id="btn-previous-page" type="button" class="btn btn-icon btn-regular" {% if page==1
+                        %}disabled{% endif %}>
+                        <i class="i i-chevron-left"></i>
+                        <span>
+                            Prev
+                        </span>
+                    </button>
+
+                    <button id="btn-next-page" type="button" class="btn btn-icon btn-regular" {% if page==pages
+                        %}disabled{% endif %}>
+                        <span>Next</span>
+                        <i class="i i-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="job-list-container" id="job-list">
+                <div class="job-list">
+                    {% for i in internships %}
+                    <div class="job" data-job-id="{{ i.internship.id }}">
+                        {% if i.organizationLogo is null %}
+                        <div class="job-logo placeholder">
+                            <i class="i i-buildings"></i>
+                        </div>
+                        {% else %}
+                        <img class="job-logo" src="{{ i.organizationLogo }}" alt="{{ i.organizationName }} logo">
+                        {% endif %}
+                        <div class="job-text">
+                            <div class="title">{{ i.internship.title }}</div>
+                            <div>{{ i.organizationName }}</div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
             </div>
         </div>
         <div class="job-details" id="job-details">
