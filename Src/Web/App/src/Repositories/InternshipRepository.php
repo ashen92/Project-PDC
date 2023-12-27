@@ -52,6 +52,21 @@ class InternshipRepository extends Repository
             ->count($criteria);
     }
 
+    public function hasApplied(int $internshipId, int $userId): bool
+    {
+        $query = $this->entityManager->createQuery(
+            'SELECT COUNT(i)
+            FROM App\Entities\Internship i
+            WHERE i = :internshipId
+            AND :userId MEMBER OF i.applicants'
+        )->setParameters([
+                    'internshipId' => $internshipId,
+                    'userId' => $userId
+                ]);
+
+        return $query->getSingleScalarResult() > 0;
+    }
+
     public function delete(int $id): void
     {
         $query = $this->entityManager->createQuery(

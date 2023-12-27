@@ -77,4 +77,9 @@ class Student extends User
     {
         $this->internshipsApplied[] = $internship;
     }
+
+    public function removeFromInternshipsApplied(Internship $internship): void
+    {
+        $this->internshipsApplied->removeElement($internship);
+    }
 }

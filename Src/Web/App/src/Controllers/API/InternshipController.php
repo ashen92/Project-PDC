@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace App\Controllers\API;
 
-use App\Services\InternshipService;
+use App\Interfaces\IInternshipService;
+use App\Interfaces\IUserService;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -11,12 +13,13 @@ use Symfony\Component\Routing\Annotation\Route;
 class InternshipController
 {
     public function __construct(
-        private InternshipService $internshipService,
+        private IInternshipService $internshipService,
+        private IUserService $userService,
     ) {
     }
 
     #[Route("/{id}", methods: ["GET"], requirements: ['id' => '\d+'])]
-    public function internship(int $id): Response
+    public function internship(Request $request, int $id): Response
     {
         $internship = $this->internshipService->getInternshipById($id);
         if ($internship) {
@@ -24,8 +27,34 @@ class InternshipController
                 "title" => $internship->getTitle(),
                 "description" => $internship->getDescription(),
             ];
+
+            $userId = $request->getSession()->get("user_id");
+            if ($this->userService->hasRole($userId, "ROLE_STUDENT")) {
+                $data["hasApplied"] = $this->internshipService->hasAppliedToInternship($id, $userId);
+            }
+
             return new Response(json_encode($data), 200, ["Content-Type" => "application/json"]);
         }
         return new Response(null, 404);
+    }
+
+    #[Route("/{id}/apply", methods: ["PUT"], requirements: ['id' => '\d+'])]
+    public function apply(Request $request, int $id): Response
+    {
+        // TODO: Validate
+
+        $this->internshipService
+            ->applyToInternship($id, (int) $request->getSession()->get("user_id"));
+        return new Response(null, 204);
+    }
+
+    #[Route("/{id}/apply", methods: ["DELETE"], requirements: ['id' => '\d+'])]
+    public function cancelApplication(Request $request, int $id): Response
+    {
+        // TODO: Validate
+
+        $this->internshipService
+            ->undoApplyToInternship($id, (int) $request->getSession()->get("user_id"));
+        return new Response(null, 204);
     }
 }

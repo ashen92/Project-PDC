@@ -23,4 +23,6 @@ interface IInternshipService
     public function addInternship(InternshipDTO $internshipDTO): void;
     public function updateInternship(int $id, string $title, string $description): void;
     public function applyToInternship(int $internshipId, int $userId): void;
+    public function undoApplyToInternship(int $internshipId, int $userId): void;
+    public function hasAppliedToInternship(int $internshipId, int $userId): bool;
 }

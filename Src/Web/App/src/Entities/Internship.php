@@ -96,4 +96,10 @@ class Internship
         $this->applicants[] = $user;
         $user->addToInternshipsApplied($this);
     }
+
+    public function removeApplicant(Student $user): void
+    {
+        $this->applicants->removeElement($user);
+        $user->removeFromInternshipsApplied($this);
+    }
 }

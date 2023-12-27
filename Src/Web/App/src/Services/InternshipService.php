@@ -136,4 +136,17 @@ class InternshipService implements IInternshipService
         $internship->addApplicant($user);
         $this->internshipRepository->save($internship);
     }
+
+    public function undoApplyToInternship(int $internshipId, int $userId): void
+    {
+        $internship = $this->internshipRepository->find($internshipId);
+        $user = $this->userRepository->find($userId);
+        $internship->removeApplicant($user);
+        $this->internshipRepository->save($internship);
+    }
+
+    public function hasAppliedToInternship(int $internshipId, int $userId): bool
+    {
+        return $this->internshipRepository->hasApplied($internshipId, $userId);
+    }
 }

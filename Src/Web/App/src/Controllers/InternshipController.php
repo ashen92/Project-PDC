@@ -151,11 +151,4 @@ class InternshipController extends PageControllerBase
         $this->internshipService->addInternship($internshipDTO);
         return $this->redirect("/internship-program/internships");
     }
-
-    #[Route("/{id}/apply")]
-    public function apply(Request $request, int $id): Response
-    {
-        $this->internshipService->applyToInternship($id, (int) $request->getSession()->get("user_id"));
-        return $this->redirect("/internship-program/internships");
-    }
 }

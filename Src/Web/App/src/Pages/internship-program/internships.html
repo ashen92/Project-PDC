@@ -129,7 +129,8 @@
                     {% endif %}
 
                     {% if "ROLE_STUDENT" in user_roles %}
-                    <button type="button" class="btn">Apply</button>
+                    <button type="button" class="btn" id="btn-apply">Apply</button>
+                    <button type="button" class="btn hidden" id="btn-undo-apply">Cancel Application</button>
                     {% endif %}
                 </div>
                 <div class="description">
