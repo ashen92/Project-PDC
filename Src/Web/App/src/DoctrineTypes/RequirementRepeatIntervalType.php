@@ -1,8 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Models;
+namespace App\DoctrineTypes;
 
+use App\Models\RequirementRepeatInterval;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
 
