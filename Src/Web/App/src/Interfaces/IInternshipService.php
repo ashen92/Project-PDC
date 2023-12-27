@@ -17,6 +17,7 @@ interface IInternshipService
         ?int $offsetBy,
     ): array;
     public function getNumberOfInternships(?int $iCycleId, ?int $ownerId, ?string $searchQuery): int;
+    public function getApplicants(int $internshipId): array;
     public function getOrganizationsFrom(array $internships): array;
     public function deleteInternshipById(int $id): void;
     public function addInternship(InternshipDTO $internshipDTO): void;

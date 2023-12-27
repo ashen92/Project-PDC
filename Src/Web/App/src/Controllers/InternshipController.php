@@ -107,14 +107,8 @@ class InternshipController extends PageControllerBase
     {
         return $this->render("internship-program/internship/applicants.html", [
             "section" => "internships",
-            "applicants" => [
-                "Ashen",
-                "Smith",
-                "James",
-                "Green",
-                "Head",
-                "Jimmy",
-            ]
+            "internship" => $this->internshipService->getInternshipById($id),
+            "applicants" => $this->internshipService->getApplicants($id)
         ]);
     }
 

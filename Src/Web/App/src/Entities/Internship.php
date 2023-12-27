@@ -76,6 +76,11 @@ class Internship
         return $this->organization;
     }
 
+    public function getApplicants(): array
+    {
+        return $this->applicants->toArray();
+    }
+
     public function setTitle(string $title): void
     {
         $this->title = $title;

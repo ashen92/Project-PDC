@@ -93,6 +93,12 @@ class InternshipService implements IInternshipService
         return 0;
     }
 
+    public function getApplicants(int $internshipId): array
+    {
+        $internship = $this->internshipRepository->find($internshipId);
+        return $internship->getApplicants();
+    }
+
     public function getOrganizationsFrom(array $internships): array
     {
         $ids = array_map(
