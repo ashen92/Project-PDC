@@ -60,24 +60,25 @@ class Requirement
     #[ORM\OneToMany(targetEntity: UserRequirement::class, mappedBy: 'requirement')]
     private Collection $userRequirements;
 
-    public function __construct(CreateRequirementDTO $requirementDTO)
+    public function __construct(CreateRequirementDTO $dto)
     {
-        $this->name = $requirementDTO->name;
-        $this->description = $requirementDTO->description;
-        $this->requirementType = Type::fromString($requirementDTO->requirementType);
-        $this->startDate = $requirementDTO->startDate;
-        $this->endBeforeDate = $requirementDTO->endBeforeDate;
+        $this->name = $dto->name;
+        $this->description = $dto->description;
+        $this->requirementType = Type::fromString($dto->requirementType);
+        $this->startDate = $dto->startDate;
 
-        if ($requirementDTO->repeatInterval) {
-            $this->repeatInterval = RepeatInterval::fromString($requirementDTO->repeatInterval);
-        } else {
+        if ($this->requirementType === Type::ONE_TIME) {
+            $this->endBeforeDate = $dto->endBeforeDate;
             $this->repeatInterval = null;
+        } else {
+            $this->repeatInterval = RepeatInterval::fromString($dto->repeatInterval);
+            $this->endBeforeDate = null;
         }
 
-        $this->fulfillMethod = $requirementDTO->fulfillMethod;
-        $this->allowedFileTypes = $requirementDTO->allowedFileTypes;
-        $this->maxFileSize = $requirementDTO->maxFileSize;
-        $this->maxFileCount = $requirementDTO->maxFileCount;
+        $this->fulfillMethod = $dto->fulfillMethod;
+        $this->allowedFileTypes = $dto->allowedFileTypes;
+        $this->maxFileSize = $dto->maxFileSize;
+        $this->maxFileCount = $dto->maxFileCount;
         $this->userRequirements = new ArrayCollection();
     }
 
