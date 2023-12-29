@@ -1,20 +1,20 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Models;
+namespace App\Models\Requirement;
 
-enum RequirementStatus
+enum Status
 {
     case PENDING;
     case COMPLETED;
 
-    public static function fromString(string $type): RequirementStatus
+    public static function fromString(string $type): Status
     {
         switch ($type) {
             case "pending":
-                return RequirementStatus::PENDING;
+                return Status::PENDING;
             case "completed":
-                return RequirementStatus::COMPLETED;
+                return Status::COMPLETED;
             default:
                 throw new \InvalidArgumentException("Invalid requirement status: $type");
         }
@@ -23,8 +23,8 @@ enum RequirementStatus
     public function toString(): string
     {
         return match ($this) {
-            RequirementStatus::PENDING => "pending",
-            RequirementStatus::COMPLETED => "completed",
+            Status::PENDING => "pending",
+            Status::COMPLETED => "completed",
         };
     }
 }

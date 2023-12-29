@@ -4,8 +4,8 @@ declare(strict_types=1);
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
-\Doctrine\DBAL\Types\Type::addType("requirement_type", "App\DoctrineTypes\RequirementTypeType");
-\Doctrine\DBAL\Types\Type::addType("requirement_repeat_interval", "App\DoctrineTypes\RequirementRepeatIntervalType");
+\Doctrine\DBAL\Types\Type::addType("requirement_type", "App\DoctrineTypes\Requirement\TypeType");
+\Doctrine\DBAL\Types\Type::addType("requirement_repeat_interval", "App\DoctrineTypes\Requirement\RepeatIntervalType");
 
 $cachedContainerFile = __DIR__ . "/../cache/container.php";
 
@@ -293,7 +293,8 @@ $container->register(
     \App\Controllers\EventsController::class
 )
     ->setArguments([
-        new Reference("twig"), new Reference("service.event")
+        new Reference("twig"),
+        new Reference("service.event")
     ])
     ->setPublic(true);
 

@@ -1,13 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace App\DoctrineTypes;
+namespace App\DoctrineTypes\Requirement;
 
-use App\Models\RequirementType;
+use App\Models\Requirement;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Types\Type;
 
-class RequirementTypeType extends Type
+class TypeType extends \Doctrine\DBAL\Types\Type
 {
     public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
     {
@@ -16,7 +15,7 @@ class RequirementTypeType extends Type
 
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
-        return RequirementType::fromString($value);
+        return Requirement\Type::fromString($value);
     }
 
     public function convertToDatabaseValue($value, AbstractPlatform $platform)

@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace App\Entities;
 
 use App\DTOs\CreateRequirementDTO;
-use App\Models\RequirementRepeatInterval;
-use App\Models\RequirementType;
+use App\Models\Requirement\RepeatInterval;
+use App\Models\Requirement\Type;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -30,7 +30,7 @@ class Requirement
     private string $description;
 
     #[ORM\Column(type: "requirement_type")]
-    private RequirementType $requirementType;
+    private Type $requirementType;
 
     #[ORM\Column(type: "datetime")]
     private DateTime $startDate;
@@ -39,7 +39,7 @@ class Requirement
     private ?DateTime $endBeforeDate;
 
     #[ORM\Column(type: "requirement_repeat_interval", nullable: true)]
-    private ?RequirementRepeatInterval $repeatInterval;
+    private ?RepeatInterval $repeatInterval;
 
     #[ORM\Column]
     private string $fulfillMethod;
@@ -64,12 +64,12 @@ class Requirement
     {
         $this->name = $requirementDTO->name;
         $this->description = $requirementDTO->description;
-        $this->requirementType = RequirementType::fromString($requirementDTO->requirementType);
+        $this->requirementType = Type::fromString($requirementDTO->requirementType);
         $this->startDate = $requirementDTO->startDate;
         $this->endBeforeDate = $requirementDTO->endBeforeDate;
 
         if ($requirementDTO->repeatInterval) {
-            $this->repeatInterval = RequirementRepeatInterval::fromString($requirementDTO->repeatInterval);
+            $this->repeatInterval = RepeatInterval::fromString($requirementDTO->repeatInterval);
         } else {
             $this->repeatInterval = null;
         }
@@ -96,7 +96,7 @@ class Requirement
         return $this->description;
     }
 
-    public function getRequirementType(): RequirementType
+    public function getRequirementType(): Type
     {
         return $this->requirementType;
     }
@@ -111,7 +111,7 @@ class Requirement
         return $this->endBeforeDate;
     }
 
-    public function getRepeatInterval(): ?RequirementRepeatInterval
+    public function getRepeatInterval(): ?RepeatInterval
     {
         return $this->repeatInterval;
     }

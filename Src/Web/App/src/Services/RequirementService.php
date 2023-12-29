@@ -10,8 +10,8 @@ use App\Entities\Requirement;
 use App\Entities\UserRequirement;
 use App\Interfaces\IFileStorageService;
 use App\Interfaces\IRequirementService;
-use App\Models\RequirementRepeatInterval;
-use App\Models\RequirementType;
+use App\Models\Requirement\RepeatInterval;
+use App\Models\Requirement\Type;
 use App\Repositories\RequirementRepository;
 use DateInterval;
 use DateTime;
@@ -86,7 +86,7 @@ class RequirementService implements IRequirementService
 
     private function createUserRequirements(Requirement $requirement): void
     {
-        if ($requirement->getRequirementType() === RequirementType::ONE_TIME) {
+        if ($requirement->getRequirementType() === Type::ONE_TIME) {
             $this->createOneTimeUserRequirements($requirement);
         } else {
             $this->createRecurringUserRequirements($requirement);
@@ -108,11 +108,11 @@ class RequirementService implements IRequirementService
 
         $dateIncrementBy = "";
 
-        if ($repeatInterval === RequirementRepeatInterval::DAILY) {
+        if ($repeatInterval === RepeatInterval::DAILY) {
             $dateIncrementBy = "P1D";
-        } else if ($repeatInterval === RequirementRepeatInterval::WEEKLY) {
+        } else if ($repeatInterval === RepeatInterval::WEEKLY) {
             $dateIncrementBy = "P1W";
-        } else if ($repeatInterval === RequirementRepeatInterval::MONTHLY) {
+        } else if ($repeatInterval === RepeatInterval::MONTHLY) {
             $dateIncrementBy = "P1M";
         }
 

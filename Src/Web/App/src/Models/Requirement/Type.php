@@ -1,20 +1,20 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Models;
+namespace App\Models\Requirement;
 
-enum RequirementType
+enum Type
 {
     case ONE_TIME;
     case RECURRING;
 
-    public static function fromString(string $type): RequirementType
+    public static function fromString(string $type): Type
     {
         switch ($type) {
             case "one-time":
-                return RequirementType::ONE_TIME;
+                return Type::ONE_TIME;
             case "recurring":
-                return RequirementType::RECURRING;
+                return Type::RECURRING;
             default:
                 throw new \InvalidArgumentException("Invalid requirement type: $type");
         }
@@ -23,8 +23,8 @@ enum RequirementType
     public function toString(): string
     {
         return match ($this) {
-            RequirementType::ONE_TIME => "one-time",
-            RequirementType::RECURRING => "recurring",
+            Type::ONE_TIME => "one-time",
+            Type::RECURRING => "recurring",
         };
     }
 }
