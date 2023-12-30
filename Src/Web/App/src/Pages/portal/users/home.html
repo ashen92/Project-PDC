@@ -1,0 +1,19 @@
+{% extends "shared/layout-left-nav.html" %}
+
+{% block title %}Users{% endblock %}
+
+{% block left_nav %}
+{% include "portal/left-nav.html" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="title">
+    <h2>Users</h2>
+</div>
+
+<section>
+    <a class="btn" href="/portal/users/create">New user</a>
+</section>
+
+{% endblock %}

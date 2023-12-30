@@ -11,13 +11,35 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route("/portal", name: "users_")]
 class PortalController extends PageControllerBase
 {
-	#[Route("", name: "home")]
+	#[Route("")]
 	public function home(): Response
 	{
-		return $this->render("portal/home.html");
+		return $this->render(
+			"portal/home.html",
+			["section" => "home"]
+		);
 	}
 
-	#[Route("/partners", name: "partners")]
+	#[Route("/users")]
+	public function users(): Response
+	{
+		return $this->render(
+			"portal/users/home.html",
+			["section" => "users"]
+		);
+	}
+
+	#[Route("/users/create", methods: ["GET"])]
+	public function createUser(): Response
+	{
+		return $this->render(
+			"portal/users/create.html",
+			["section" => "users"]
+		);
+	}
+
+
+	#[Route("/partners")]
 	public function partners(): Response
 	{
 		return $this->render("portal/companylist.html");
