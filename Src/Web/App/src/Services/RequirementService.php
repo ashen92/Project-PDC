@@ -11,11 +11,10 @@ use App\Entities\UserRequirement;
 use App\Interfaces\IFileStorageService;
 use App\Interfaces\IRequirementService;
 use App\Models\Requirement\FulFillMethod;
-use App\Models\Requirement\RepeatInterval;
 use App\Models\Requirement\Type;
 use App\Repositories\RequirementRepository;
 use DateInterval;
-use DateTime;
+use DateTimeImmutable;
 
 class RequirementService implements IRequirementService
 {
@@ -106,26 +105,19 @@ class RequirementService implements IRequirementService
     private function createRecurringUserRequirements(Requirement $requirement): void
     {
         $repeatInterval = $requirement->getRepeatInterval();
-
-        $dateIncrementBy = "";
-
-        if ($repeatInterval === RepeatInterval::DAILY) {
-            $dateIncrementBy = "P1D";
-        } else if ($repeatInterval === RepeatInterval::WEEKLY) {
-            $dateIncrementBy = "P1W";
-        } else if ($repeatInterval === RepeatInterval::MONTHLY) {
-            $dateIncrementBy = "P1M";
-        }
+        $repeatDuration = $requirement->getRepeatInterval()->toDuration();
 
         $iterationDate = $requirement->getStartDate();
+        $endDate = $iterationDate->add(new DateInterval(Requirement::MAXIMUM_REPEAT_DURATION));
 
         $urDTOs = [];
 
-        while ($iterationDate < $requirement->getEndBeforeDate()) {
+        while ($iterationDate < $endDate) {
             $urDTOs[] = new CreateUserRequirementDTO(
                 $iterationDate,
-                $iterationDate->add(new DateInterval($dateIncrementBy)),
+                $repeatInterval,
             );
+            $iterationDate = $iterationDate->add(new DateInterval($repeatDuration));
         }
 
         $internshipCycle = $requirement->getInternshipCycle();
@@ -161,7 +153,7 @@ class RequirementService implements IRequirementService
             $ur->setTextResponse($urCompletionDTO->textResponse);
         }
 
-        $ur->setCompletedAt(new DateTime("now"));
+        $ur->setCompletedAt(new DateTimeImmutable("now"));
         $ur->setStatus("completed");
         $this->requirementRepository->saveUserRequirement($ur);
         return true;

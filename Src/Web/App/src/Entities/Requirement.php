@@ -7,7 +7,7 @@ use App\DTOs\CreateRequirementDTO;
 use App\Models\Requirement\FulFillMethod;
 use App\Models\Requirement\RepeatInterval;
 use App\Models\Requirement\Type;
-use DateTime;
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -33,11 +33,11 @@ class Requirement
     #[ORM\Column(type: "requirement_type")]
     private Type $requirementType;
 
-    #[ORM\Column(type: "datetime")]
-    private DateTime $startDate;
+    #[ORM\Column(type: "datetime_immutable")]
+    private DateTimeImmutable $startDate;
 
-    #[ORM\Column(type: "datetime", nullable: true)]
-    private ?DateTime $endBeforeDate;
+    #[ORM\Column(type: "datetime_immutable", nullable: true)]
+    private ?DateTimeImmutable $endBeforeDate;
 
     #[ORM\Column(type: "requirement_repeat_interval", nullable: true)]
     private ?RepeatInterval $repeatInterval;
@@ -110,12 +110,12 @@ class Requirement
         return $this->requirementType;
     }
 
-    public function getStartDate(): DateTime
+    public function getStartDate(): DateTimeImmutable
     {
         return $this->startDate;
     }
 
-    public function getEndBeforeDate(): ?DateTime
+    public function getEndBeforeDate(): ?DateTimeImmutable
     {
         return $this->endBeforeDate;
     }

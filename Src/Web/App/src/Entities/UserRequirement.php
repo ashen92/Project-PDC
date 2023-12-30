@@ -3,7 +3,8 @@ declare(strict_types=1);
 
 namespace App\Entities;
 
-use DateTime;
+use DateTimeImmutable;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
@@ -23,14 +24,14 @@ class UserRequirement
     #[ORM\JoinColumn(name: "requirement_id", referencedColumnName: "id")]
     private Requirement $requirement;
 
-    #[ORM\Column(type: "datetime")]
-    private DateTime $startDate;
+    #[ORM\Column(type: "datetime_immutable")]
+    private DateTimeImmutable $startDate;
 
-    #[ORM\Column(type: "datetime")]
-    private DateTime $endDate;
+    #[ORM\Column(type: "datetime_immutable")]
+    private DateTimeImmutable $endDate;
 
-    #[ORM\Column(type: "datetime", nullable: true)]
-    private ?DateTime $completedAt;
+    #[ORM\Column(type: "datetime_immutable", nullable: true)]
+    private ?DateTimeImmutable $completedAt;
 
     #[ORM\Column]
     private string $status;
@@ -48,8 +49,8 @@ class UserRequirement
     {
         $this->user = $user;
         $this->requirement = $requirement;
-        $this->startDate = new DateTime("now");
-        $this->endDate = new DateTime("+2 month");
+        $this->startDate = new DateTimeImmutable("now");
+        $this->endDate = new DateTimeImmutable("+2 month");
         $this->completedAt = null;
         $this->status = "pending";
     }
@@ -69,17 +70,17 @@ class UserRequirement
         return $this->requirement;
     }
 
-    public function getStartDate(): DateTime
+    public function getStartDate(): DateTimeImmutable
     {
         return $this->startDate;
     }
 
-    public function getEndDate(): DateTime
+    public function getEndDate(): DateTimeImmutable
     {
         return $this->endDate;
     }
 
-    public function getCompletedAt(): ?DateTime
+    public function getCompletedAt(): ?DateTimeImmutable
     {
         return $this->completedAt;
     }
@@ -104,19 +105,19 @@ class UserRequirement
         return $this->textResponse;
     }
 
-    public function setStartDate(DateTime $startDate): void
+    public function setStartDate(DateTimeInterface $startDate): void
     {
-        $this->startDate = $startDate;
+        $this->startDate = DateTimeImmutable::createFromInterface($startDate);
     }
 
-    public function setEndDate(DateTime $endDate): void
+    public function setEndDate(DateTimeInterface $endDate): void
     {
-        $this->endDate = $endDate;
+        $this->endDate = DateTimeImmutable::createFromInterface($endDate);
     }
 
-    public function setCompletedAt(DateTime $completedAt): void
+    public function setCompletedAt(DateTimeInterface $completedAt): void
     {
-        $this->completedAt = $completedAt;
+        $this->completedAt = DateTimeImmutable::createFromInterface($completedAt);
     }
 
     public function setStatus(string $status): void

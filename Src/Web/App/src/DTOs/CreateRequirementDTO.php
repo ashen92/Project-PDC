@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\DTOs;
 
-use DateTime;
+use DateTimeImmutable;
 
 class CreateRequirementDTO
 {
@@ -11,8 +11,8 @@ class CreateRequirementDTO
         public string $name,
         public string $description,
         public string $requirementType,
-        public DateTime $startDate,
-        public ?DateTime $endBeforeDate,
+        public DateTimeImmutable $startDate,
+        public ?DateTimeImmutable $endBeforeDate,
         public ?string $repeatInterval,
         public string $fulfillMethod,
         public ?array $allowedFileTypes,

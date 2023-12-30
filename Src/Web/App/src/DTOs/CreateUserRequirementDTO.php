@@ -3,14 +3,18 @@ declare(strict_types=1);
 
 namespace App\DTOs;
 
-use DateTime;
+use App\Models\Requirement\RepeatInterval;
+use DateInterval;
+use DateTimeImmutable;
 
 class CreateUserRequirementDTO
 {
+    public readonly DateTimeImmutable $endDate;
     public function __construct(
-        public DateTime $startDate,
-        public DateTime $endDate,
-        public ?string $status = "pending",
+        public readonly DateTimeImmutable $startDate,
+        public readonly RepeatInterval $repeatInterval,
+        public readonly ?string $status = "pending",
     ) {
+        $this->endDate = $startDate->add(new DateInterval($repeatInterval->toDuration()));
     }
 }

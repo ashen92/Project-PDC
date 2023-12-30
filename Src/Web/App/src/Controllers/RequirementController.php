@@ -6,7 +6,6 @@ namespace App\Controllers;
 use App\Attributes\RequiredRole;
 use App\DTOs\CreateRequirementDTO;
 use App\DTOs\UserRequirementCompletionDTO;
-use App\Interfaces\IInternshipService;
 use App\Interfaces\IRequirementService;
 use App\Interfaces\IUserService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -101,8 +100,8 @@ class RequirementController extends PageControllerBase
             $request->get("name"),
             $request->get("description"),
             $request->get("type"),
-            new \DateTime($request->get("start-date")),
-            new \DateTime($request->get("end-before")),
+            new \DateTimeImmutable($request->get("start-date")),
+            new \DateTimeImmutable($request->get("end-before")),
             $request->get("repeat-interval"),
             $request->get("fulfill-method"),
             $fileTypes,
