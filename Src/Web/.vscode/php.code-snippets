@@ -27,7 +27,8 @@
 	},
 
 	"class": {
-		"prefix": "class",
+		"scope": "html",
+		"prefix": "php-class",
 		"body": [
 			"<?php",
 			"declare(strict_types=1);",
@@ -45,7 +46,8 @@
 	},
 
 	"enum": {
-		"prefix": "enum",
+		"scope": "html",
+		"prefix": "php-enum",
 		"body": [
 			"<?php",
 			"declare(strict_types=1);",
