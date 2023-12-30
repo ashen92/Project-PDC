@@ -38,11 +38,12 @@
             <p>{{ requirement.endBeforeDate.format("Y-m-d") }}</p>
             {% endif %}
 
+            {% set fulfillMethod = requirement.fulfillMethod.toString %}
             <p class="label">Fulfill Method</p>
             <p>:</p>
-            <p class="capitalize">{{ requirement.fulfillMethod }}</p>
+            <p class="capitalize">{{ fulfillMethod }}</p>
 
-            {% if requirement.fulfillMethod == "file" %}
+            {% if fulfillMethod == "file-upload" %}
 
             <p class="label">Allowed file types</p>
             <p>:</p>
