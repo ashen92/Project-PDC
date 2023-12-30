@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Entities;
 
 use App\DTOs\CreateRequirementDTO;
+use App\Models\Requirement\FulFillMethod;
 use App\Models\Requirement\RepeatInterval;
 use App\Models\Requirement\Type;
 use DateTime;
@@ -41,8 +42,8 @@ class Requirement
     #[ORM\Column(type: "requirement_repeat_interval", nullable: true)]
     private ?RepeatInterval $repeatInterval;
 
-    #[ORM\Column]
-    private string $fulfillMethod;
+    #[ORM\Column(type: "requirement_fulfill_method")]
+    private FulFillMethod $fulfillMethod;
 
     #[ORM\Column(type: "simple_array", nullable: true)]
     private ?array $allowedFileTypes;
@@ -75,10 +76,17 @@ class Requirement
             $this->endBeforeDate = null;
         }
 
-        $this->fulfillMethod = $dto->fulfillMethod;
-        $this->allowedFileTypes = $dto->allowedFileTypes;
-        $this->maxFileSize = $dto->maxFileSize;
-        $this->maxFileCount = $dto->maxFileCount;
+        $this->fulfillMethod = FulFillMethod::fromString($dto->fulfillMethod);
+
+        if ($this->fulfillMethod === FulFillMethod::FILE_UPLOAD) {
+            $this->allowedFileTypes = $dto->allowedFileTypes;
+            $this->maxFileSize = $dto->maxFileSize;
+            $this->maxFileCount = $dto->maxFileCount;
+        } else {
+            $this->allowedFileTypes = null;
+            $this->maxFileSize = null;
+            $this->maxFileCount = null;
+        }
         $this->userRequirements = new ArrayCollection();
     }
 
@@ -117,7 +125,7 @@ class Requirement
         return $this->repeatInterval;
     }
 
-    public function getFulfillMethod(): string
+    public function getFulfillMethod(): FulFillMethod
     {
         return $this->fulfillMethod;
     }

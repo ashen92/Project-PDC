@@ -528,7 +528,7 @@ $requirementData = [
         new DateTime("now"),
         new DateTime("+1 month"),
         null,
-        "file",
+        "file-upload",
         ["pdf"],
         5,
         3
@@ -540,7 +540,7 @@ $requirementData = [
         new DateTime("now"),
         null,
         "monthly",
-        "file",
+        "file-upload",
         ["pdf"],
         5,
         1
@@ -552,7 +552,7 @@ $requirementData = [
         new DateTime("now"),
         null,
         "daily",
-        "file",
+        "file-upload",
         ["pdf"],
         5,
         1
@@ -564,7 +564,7 @@ $requirementData = [
         new DateTime("now"),
         null,
         "weekly",
-        "file",
+        "file-upload",
         ["pdf"],
         5,
         1
@@ -576,7 +576,7 @@ $requirementData = [
         new DateTime("now"),
         new DateTime("+1 month"),
         null,
-        "text",
+        "text-input",
         null,
         null,
         null

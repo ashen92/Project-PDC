@@ -10,6 +10,7 @@ use App\Entities\Requirement;
 use App\Entities\UserRequirement;
 use App\Interfaces\IFileStorageService;
 use App\Interfaces\IRequirementService;
+use App\Models\Requirement\FulFillMethod;
 use App\Models\Requirement\RepeatInterval;
 use App\Models\Requirement\Type;
 use App\Repositories\RequirementRepository;
@@ -145,7 +146,7 @@ class RequirementService implements IRequirementService
             return false;
         }
 
-        if ($ur->getRequirement()->getFulfillMethod() === "file") {
+        if ($ur->getRequirement()->getFulfillMethod() === FulFillMethod::FILE_UPLOAD) {
             $response = $this->fileStorageService->upload($urCompletionDTO->files);
             $filePaths = [];
 
@@ -156,7 +157,7 @@ class RequirementService implements IRequirementService
             $ur->setFilePaths($filePaths);
         }
 
-        if ($ur->getRequirement()->getFulfillMethod() === "text") {
+        if ($ur->getRequirement()->getFulfillMethod() === FulFillMethod::TEXT_INPUT) {
             $ur->setTextResponse($urCompletionDTO->textResponse);
         }
 

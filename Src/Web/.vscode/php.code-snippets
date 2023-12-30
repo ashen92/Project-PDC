@@ -27,8 +27,7 @@
 	},
 
 	"class": {
-		"scope": "html",
-		"prefix": "php-class",
+		"prefix": "class",
 		"body": [
 			"<?php",
 			"declare(strict_types=1);",
@@ -41,6 +40,21 @@
 			"\t{",
 			"\t\t$0",
 			"\t}",
+			"}"
+		]
+	},
+
+	"enum": {
+		"prefix": "enum",
+		"body": [
+			"<?php",
+			"declare(strict_types=1);",
+			"",
+			"$1",
+			"",
+			"enum $2",
+			"{",
+			"\t$0",
 			"}"
 		]
 	}

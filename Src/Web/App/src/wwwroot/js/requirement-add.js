@@ -41,12 +41,10 @@ const fulfillMethodFileOptions = document.getElementById("fulfill-method-file-op
 fulfillMethodDiv.addEventListener("change", function (event) {
     if (event.target.name === "fulfill-method") {
         if (event.target.checked) {
-            if (event.target.value == "file") {
+            if (event.target.id == "fulfill-method-file") {
                 fulfillMethodFileOptions.classList.remove("hidden");
-                fulfillMethodFileOptions.classList.add("block");
             }
-            else {
-                fulfillMethodFileOptions.classList.remove("block");
+            else if (event.target.id == "fulfill-method-text") {
                 fulfillMethodFileOptions.classList.add("hidden");
             }
         }

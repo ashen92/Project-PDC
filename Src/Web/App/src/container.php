@@ -4,8 +4,18 @@ declare(strict_types=1);
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
-\Doctrine\DBAL\Types\Type::addType("requirement_type", "App\DoctrineTypes\Requirement\TypeType");
-\Doctrine\DBAL\Types\Type::addType("requirement_repeat_interval", "App\DoctrineTypes\Requirement\RepeatIntervalType");
+\Doctrine\DBAL\Types\Type::addType(
+    "requirement_type",
+    "App\DoctrineTypes\Requirement\TypeType"
+);
+\Doctrine\DBAL\Types\Type::addType(
+    "requirement_repeat_interval",
+    "App\DoctrineTypes\Requirement\RepeatIntervalType"
+);
+\Doctrine\DBAL\Types\Type::addType(
+    "requirement_fulfill_method",
+    "App\DoctrineTypes\Requirement\FulFillMethodType"
+);
 
 $cachedContainerFile = __DIR__ . "/../cache/container.php";
 
