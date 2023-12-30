@@ -7,18 +7,25 @@
 }
 
 %text-field-border {
-    border: none;
-    border-radius: $rounded-1 - 2;
-}
-
-%text-field-outline {
-    outline: 2px solid #a7a9ad;
+    border: 2px solid #a7a9ad;
+    border-radius: $rounded-1;
 
     &:active,
     &:focus,
     &:hover,
     &:focus-within {
-        outline: 2px solid #2f80ea;
+        border: 2px solid #2f80ea;
+    }
+}
+
+%text-field-outline {
+    outline: none;
+
+    &:active,
+    &:focus,
+    &:hover,
+    &:focus-within {
+        outline: none;
     }
 }
 
@@ -37,14 +44,21 @@ form {
         &.row,
         &-radio.row {
             display: flex;
-            column-gap: 2rem;
+            column-gap: 4%;
             align-items: flex-start;
             height: auto;
+            margin-bottom: 0.9rem;
+
+            .option {
+                margin-bottom: 0.7rem;
+            }
 
             >label,
             >.label {
-                flex-basis: 23rem;
+                flex-basis: 40%;
                 overflow-wrap: break-word;
+
+                padding-bottom: 0.6rem;
 
                 &+* {
                     flex: 1;
@@ -57,16 +71,11 @@ form {
         }
 
         &-group {
-            margin-bottom: 3rem;
+            margin-bottom: 2rem;
 
-            >h1,
-            h2,
-            h3,
-            h4,
-            h5,
-            h6 {
+            >label {
                 font-weight: 600;
-                margin-bottom: 1.75rem;
+                margin-bottom: 1.2rem;
             }
         }
 
@@ -90,6 +99,7 @@ form {
             .option {
                 display: flex;
                 margin-bottom: 0.9rem;
+                padding-left: 0.6rem;
 
                 label {
                     padding-left: 0.75rem;
@@ -179,7 +189,7 @@ input {
 
     &[type="radio"] {
         outline: none;
-        width: 20px;
+        width: 18px;
         cursor: pointer;
     }
 
