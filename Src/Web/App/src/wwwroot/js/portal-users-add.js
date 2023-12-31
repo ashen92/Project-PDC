@@ -6,7 +6,9 @@ var genericField = document.querySelector("#field-generic");
 function addRequired(field) {
     var inputs = field.querySelectorAll("input");
     inputs.forEach(function (input) {
-        input.required = true;
+        if (input.id != "send-email") {
+            input.required = true;
+        }
     });
 }
 
