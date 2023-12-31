@@ -3,7 +3,10 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
+use App\DTOs\CreateUserDTO;
+use App\Entities\Partner;
 use App\Entities\Role;
+use App\Entities\Student;
 use App\Entities\User;
 use App\Entities\UserGroup;
 
@@ -35,12 +38,40 @@ class UserRepository extends Repository
 
     public function findByStudentEmail(string $email): ?User
     {
-        return $this->entityManager->getRepository(User::class)->findOneBy(["studentEmail" => $email]);
+        return $this->entityManager->getRepository(Student::class)->findOneBy(["studentEmail" => $email]);
     }
 
     public function findByActivationToken(string $token): ?User
     {
         return $this->entityManager->getRepository(User::class)->findOneBy(["activationToken" => $token]);
+    }
+
+    public function createUser(CreateUserDTO $dto): null|User|Student|Partner
+    {
+        $user = null;
+        if ($dto->userType == "student") {
+            $user = new Student(
+                $dto->studentEmail,
+                $dto->fullName,
+                $dto->registrationNumber,
+                $dto->indexNumber,
+            );
+        } else if ($dto->userType == "partner") {
+            $user = new Partner(
+                $dto->email,
+                $dto->firstName,
+            );
+            // TODO: add partner specific fields
+        } else {
+            $user = new User(
+                $dto->email,
+                $dto->firstName,
+            );
+        }
+
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+        return $user;
     }
 
     public function save(User $user): void

@@ -4,17 +4,66 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\DTOs\CreateStudentUserDTO;
+use App\DTOs\CreateUserDTO;
 use App\Entities\User;
+use App\Exceptions\UserExistsException;
+use App\Interfaces\IEmailService;
 use App\Interfaces\IPasswordHasher;
 use App\Interfaces\IUserService;
+use App\Models\UserInviteEmail;
 use App\Repositories\UserRepository;
 
 class UserService implements IUserService
 {
     public function __construct(
         private UserRepository $userRepository,
-        private IPasswordHasher $passwordHasher
+        private IPasswordHasher $passwordHasher,
+        private IEmailService $emailService
     ) {
+    }
+
+    /**
+     * Summary of createUser
+     * @param \App\DTOs\CreateUserDTO $dto
+     * @throws \App\Exceptions\UserExistsException
+     * @return void
+     */
+    public function createUser(CreateUserDTO $dto): void
+    {
+        $user = null;
+        if ($dto->userType == "student") {
+            $user = $this->getUserByStudentEmail($dto->studentEmail);
+        } else {
+            $user = $this->getUserByEmail($dto->email);
+        }
+
+        if ($user === null) {
+            $user = $this->userRepository->createUser($dto);
+
+            if ($dto->userType != "student" || ($dto->userType == "student" && $dto->sendEmail !== null)) {
+                $mail = null;
+
+                if ($dto->userType == "student") {
+                    $mail = new UserInviteEmail(
+                        $user->getStudentEmail(),
+                        $user->getFullName(),
+                        $user->generateActivationToken()
+                    );
+                } else {
+                    $mail = new UserInviteEmail(
+                        $user->getEmail(),
+                        $user->getFirstName(),
+                        $user->generateActivationToken()
+                    );
+                }
+
+                $this->userRepository->save($user);
+
+                $this->emailService->sendEmail($mail);
+            }
+            return;
+        }
+        throw new UserExistsException();
     }
 
     public function createStudentUser(CreateStudentUserDTO $createStudentDTO)

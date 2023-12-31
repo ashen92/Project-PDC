@@ -52,8 +52,11 @@ class User
     #[ORM\ManyToMany(targetEntity: UserGroup::class, mappedBy: "users")]
     private Collection $groups;
 
-    public function __construct(?string $email, ?string $firstName, ?string $passwordHash)
-    {
+    public function __construct(
+        ?string $email = null,
+        ?string $firstName = null,
+        ?string $passwordHash = null
+    ) {
         $this->email = $email;
         $this->firstName = $firstName;
         $this->passwordHash = $passwordHash;

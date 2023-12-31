@@ -17,6 +17,9 @@ class Student extends User
     private string $fullName;
 
     #[ORM\Column]
+    private string $registrationNumber;
+
+    #[ORM\Column]
     private string $indexNumber;
 
     /**
@@ -32,6 +35,7 @@ class Student extends User
     public function __construct(
         string $studentEmail,
         string $fullName,
+        string $registrationNumber,
         string $indexNumber,
         ?string $email = null,
         ?string $firstName = null,
@@ -40,6 +44,7 @@ class Student extends User
         parent::__construct($email, $firstName, $passwordHash);
         $this->studentEmail = $studentEmail;
         $this->fullName = $fullName;
+        $this->registrationNumber = $registrationNumber;
         $this->indexNumber = $indexNumber;
     }
 
@@ -51,6 +56,11 @@ class Student extends User
     public function getFullName(): string
     {
         return $this->fullName;
+    }
+
+    public function getRegistrationNumber(): string
+    {
+        return $this->registrationNumber;
     }
 
     public function getIndexNumber(): string

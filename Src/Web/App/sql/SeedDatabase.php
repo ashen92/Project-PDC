@@ -22,6 +22,7 @@ $user2 = new User("coordinator@mail.com", "Coordinator", $passwordHash);
 $user3 = new Student(
     "student-email@mail.com",
     "Default Student User",
+    "1900is001",
     "19090111",
     "student@mail.com",
     "Student",
@@ -41,6 +42,7 @@ $studentUsers = [];
 $studentUsers[0] = new Student(
     "2021is084@stu.ucsc.cmb.ac.lk",
     "H.D.A.H. Sandaruwan",
+    "2000is001",
     "21020841",
 );
 $entityManager->persist($studentUsers[0]);
@@ -49,6 +51,7 @@ for ($i = 1; $i < 600; $i++) {
     $studentUsers[$i] = new Student(
         "2021is084+{$i}@stu.ucsc.cmb.ac.lk",
         "Student User {$i}",
+        "2000is001+{$i}",
         "21020841+{$i}",
     );
     $entityManager->persist($studentUsers[$i]);

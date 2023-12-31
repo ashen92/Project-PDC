@@ -18,8 +18,11 @@ class Partner extends User
     #[ORM\JoinColumn(name: "organization_id", referencedColumnName: "id")]
     private Organization $organization;
 
-    public function __construct($email, $firstName, $passwordHash)
-    {
+    public function __construct(
+        ?string $email = null,
+        ?string $firstName = null,
+        ?string $passwordHash = null
+    ) {
         parent::__construct($email, $firstName, $passwordHash);
         $this->internshipsCreated = new ArrayCollection();
     }

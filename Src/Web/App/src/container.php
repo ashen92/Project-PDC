@@ -123,7 +123,8 @@ $container->register(
 )
     ->setArguments([
         new Reference("repository.user"),
-        new Reference("password_hasher")
+        new Reference("password_hasher"),
+        new Reference("service.email"),
     ]);
 
 $container->register(
@@ -295,7 +296,10 @@ $container->register(
     "App\Controllers\PortalController",
     \App\Controllers\PortalController::class
 )
-    ->setArguments([new Reference("twig")])
+    ->setArguments([
+        new Reference("twig"),
+        new Reference("service.user"),
+    ])
     ->setPublic(true);
 
 $container->register(
