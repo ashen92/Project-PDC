@@ -30,8 +30,9 @@
     </form>
 
     {% if userRequirement.status == "pending" %}
+    {% set fulfillMethod = requirement.fulfillMethod.toString %}
     <div>
-        {% if requirement.fulfillMethod == "file" %}
+        {% if fulfillMethod == "file-upload" %}
         <form action="/internship-program/requirements/complete" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="user-requirement-id" value="{{ userRequirement.id }}" />
 
@@ -89,7 +90,7 @@
         </form>
         {% endif %}
 
-        {% if requirement.fulfillMethod == "text" %}
+        {% if fulfillMethod == "text-input" %}
         <form action="/internship-program/requirements/complete" method="POST">
             <input type="hidden" name="user-requirement-id" value="{{ userRequirement.id }}" />
             <div class="field">

@@ -1,9 +1,11 @@
 const fileInput = document.getElementById("files-to-upload");
 const filePreview = document.getElementById("files-to-upload-preview");
 
-fileInput.addEventListener("change", () => {
-    updateImageDisplay(fileInput, filePreview);
-});
+if (fileInput) {
+    fileInput.addEventListener("change", () => {
+        updateImageDisplay(fileInput, filePreview);
+    });
+}
 
 function updateImageDisplay(input, preview) {
     while (preview.firstChild) {
