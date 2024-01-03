@@ -166,9 +166,11 @@ if (undoApplyBtn) {
 const filterByCompany = document.getElementById("filter-by-company");
 const companyMultiSelectList = document.getElementById("company-multi-select-list");
 
-filterByCompany.addEventListener("click", () => {
-    companyMultiSelectList.classList.toggle("hidden");
-});
+if (filterByCompany) {
+    filterByCompany.addEventListener("click", () => {
+        companyMultiSelectList.classList.toggle("hidden");
+    });
+}
 
 const companyMultiSelectApplyBtn = document.getElementById("company-multi-select-list-apply-btn");
 const companyMultiSelectResetBtn = document.getElementById("company-multi-select-list-reset-btn");
@@ -176,32 +178,38 @@ const companyMultiSelectHideBtn = document.getElementById("company-multi-select-
 
 let companyCheckboxes = document.querySelectorAll("#company-multi-select-list input[type=checkbox]");
 
-companyMultiSelectResetBtn.addEventListener("click", () => {
-    companyCheckboxes.forEach(checkbox => {
-        checkbox.checked = false;
+if (companyMultiSelectApplyBtn) {
+    companyMultiSelectResetBtn.addEventListener("click", () => {
+        companyCheckboxes.forEach(checkbox => {
+            checkbox.checked = false;
+        });
     });
-});
+}
 
-companyMultiSelectHideBtn.addEventListener("click", () => {
-    companyMultiSelectList.classList.toggle("hidden");
-});
+if (companyMultiSelectHideBtn) {
+    companyMultiSelectHideBtn.addEventListener("click", () => {
+        companyMultiSelectList.classList.toggle("hidden");
+    });
+}
 
-companyMultiSelectApplyBtn.addEventListener("click", () => {
-    let companies = [];
-    companyCheckboxes.forEach(checkbox => {
-        if (checkbox.checked) {
-            companies.push(checkbox.getAttribute("id"));
+if (companyMultiSelectResetBtn) {
+    companyMultiSelectApplyBtn.addEventListener("click", () => {
+        let companies = [];
+        companyCheckboxes.forEach(checkbox => {
+            if (checkbox.checked) {
+                companies.push(checkbox.getAttribute("id"));
+            }
+        });
+
+        if (companies.length > 0) {
+            params.set("c", companies.join(","));
+        } else {
+            params.delete("c");
         }
+
+        window.location.href = `${window.location.pathname}?${params.toString()}`;
     });
-
-    if (companies.length > 0) {
-        params.set("c", companies.join(","));
-    } else {
-        params.delete("c");
-    }
-
-    window.location.href = `${window.location.pathname}?${params.toString()}`;
-});
+}
 
 // --------------------------------------------------------------------------------------------
 // This section handles the pagination of the job list

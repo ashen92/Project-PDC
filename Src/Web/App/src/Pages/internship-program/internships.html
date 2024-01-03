@@ -143,6 +143,7 @@
 
     {% endif %}
 
+    {% if "ROLE_INTERNSHIP_PARTNER" not in user_roles %}
     <div class="pop-up-multi-select-list hidden" id="company-multi-select-list">
         <h4>Companies</h4>
         <ul>
@@ -159,6 +160,8 @@
             <button type="button" class="btn btn-secondary" id="company-multi-select-list-hide-btn">Hide</button>
         </div>
     </div>
+    {% endif %}
+
 </div>
 <script src="/js/internships.js" type="text/javascript"></script>
 
