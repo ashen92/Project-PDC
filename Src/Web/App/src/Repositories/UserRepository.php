@@ -46,6 +46,11 @@ class UserRepository extends Repository
         return $this->entityManager->getRepository(User::class)->findOneBy(["activationToken" => $token]);
     }
 
+    public function findManagedUsers(int $userId): array
+    {
+        return $this->entityManager->getRepository(Partner::class)->findBy(["managedBy" => $userId]);
+    }
+
     public function createUser(CreateUserDTO $dto): null|User|Student|Partner
     {
         $user = null;

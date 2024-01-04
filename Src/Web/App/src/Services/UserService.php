@@ -118,4 +118,9 @@ class UserService implements IUserService
     {
         $this->userRepository->save($user);
     }
+
+    public function getManagedUsers(int $userId): array
+    {
+        return $this->userRepository->findManagedUsers($userId);
+    }
 }

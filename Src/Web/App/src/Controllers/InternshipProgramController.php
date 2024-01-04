@@ -45,6 +45,15 @@ class InternshipProgramController extends PageControllerBase
                 ]
             );
         }
+        if ($this->userService->hasRole($userId, "ROLE_INTERNSHIP_PARTNER")) {
+            return $this->render(
+                "internship-program/home-partner.html",
+                [
+                    "section" => "home",
+                    "users" => $this->userService->getManagedUsers($userId),
+                ]
+            );
+        }
         return $this->render(
             "internship-program/home.html",
             [

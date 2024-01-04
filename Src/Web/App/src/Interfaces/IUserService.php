@@ -16,5 +16,6 @@ interface IUserService
     public function getUserByEmail(string $email): ?User;
     public function getUserByStudentEmail(string $email): ?User;
     public function getUserByActivationToken(string $token): ?User;
+    public function getManagedUsers(int $userId): array;
     public function saveUser(User $user): void;
 }

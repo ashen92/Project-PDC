@@ -176,6 +176,17 @@ for ($i = 0; $i < 100; $i++) {
 }
 $entityManager->flush();
 
+// ----------------------------------------------------------------
+// Add managed partners -------------------------------------------
+
+for ($i = 0; $i < 50; $i++) {
+    $user4->addManage($partnerUsers[$i]);
+}
+
+$entityManager->persist($user4);
+$entityManager->flush();
+
+// ----------------------------------------------------------------
 // Add organizations ----------------------------------------------
 
 echo "Done.\nAdding organizations...";
