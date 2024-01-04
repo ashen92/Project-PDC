@@ -1,0 +1,71 @@
+{% extends "shared/layout-left-nav.html" %}
+
+{% block title %}Internship Program{% endblock %}
+
+{% block left_nav %}
+{% include "internship-program/left-nav.html" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="title">
+    <h2>
+        Internship Program
+    </h2>
+    <p>
+    </p>
+</div>
+
+<div class="info-card">
+    <a class="btn" role="button" href="/internship-program/internships/create">Post an internship</a>
+</div>
+
+<section>
+    <div class="title">
+        <h5>
+            User Accounts
+        </h5>
+        <p>
+            All the user accounts created by you. <br>
+            You can assign multiple applicants to a user. So, they can complete
+            requirements related to a specific applicant.
+        </p>
+        <br>
+    </div>
+
+    <div class="mb-10 text-right">
+        <a class="btn btn-icon" role="button" href="">
+            <i class="i i-plus-lg"></i>
+            <span>New User</span>
+        </a>
+    </div>
+
+    {% if users is empty %}
+    <p>No users found.</p>
+    {% else %}
+
+    <table class="table table-compact table-hover">
+        <colgroup>
+            <col class="w-1-5">
+            <col class="w-4-5">
+        </colgroup>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody class="table-rows-clickable">
+            {% for i in users %}
+            <tr data-href="?u={{ i.id }}">
+                <td>{{ i.firstName }}</td>
+                <td>{{ i.email }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% endif %}
+</section>
+
+{% endblock %}

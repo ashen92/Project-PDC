@@ -60,7 +60,12 @@
 
 .table-compact {
 
-    thead,
+    thead {
+        tr {
+            height: 2.5rem;
+        }
+    }
+
     tbody {
         tr {
             height: 2.25rem;
