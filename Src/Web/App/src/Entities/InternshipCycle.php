@@ -52,7 +52,6 @@ class InternshipCycle
     public function __construct()
     {
         $this->createdAt = new DateTime("now");
-        $this->groups = new ArrayCollection();
         $this->internships = new ArrayCollection();
         $this->requirements = new ArrayCollection();
     }
