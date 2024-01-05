@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Entities;
 
+use App\Models\Permission\Action;
+use App\Models\Permission\Resource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -16,8 +18,11 @@ class Permission
     #[ORM\Column(type: "integer")]
     private int $id;
 
-    #[ORM\Column]
-    private string $name;
+    #[ORM\Column(type: "permission_resource")]
+    private Resource $resource;
+
+    #[ORM\Column(type: "permission_action")]
+    private Action $action;
 
     /**
      * Many Permissions have Many Roles.
@@ -26,10 +31,11 @@ class Permission
     #[ORM\ManyToMany(targetEntity: Role::class, mappedBy: "permissions")]
     private Collection $roles;
 
-    public function __construct(string $name)
+    public function __construct(Resource $resource, Action $action)
     {
+        $this->resource = $resource;
+        $this->action = $action;
         $this->roles = new ArrayCollection();
-        $this->name = $name;
     }
 
     public function addToRole(Role $role): void

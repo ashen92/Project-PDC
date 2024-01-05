@@ -50,7 +50,7 @@ class Role
         }
     }
 
-    public function addPolicy(Permission $policy): void
+    public function addPermission(Permission $policy): void
     {
         if (!$this->permissions->contains($policy)) {
             $this->permissions[] = $policy;
