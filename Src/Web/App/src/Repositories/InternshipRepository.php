@@ -19,14 +19,34 @@ class InternshipRepository extends Repository
     }
 
     public function findAllBy(
-        array $criteria,
+        ?string $searchQuery,
+        ?int $ownerId,
         ?array $orderBy = null,
         ?int $limit = null,
         ?int $offset = null,
     ): array {
-        return $this->entityManager
-            ->getRepository(Internship::class)
-            ->findBy($criteria, $orderBy, $limit, $offset);
+        $qb = $this->entityManager->createQueryBuilder();
+        $qb->select('i')
+            ->from(Internship::class, 'i');
+
+        if ($searchQuery) {
+            $qb->where('i.title LIKE :searchQuery')
+                ->setParameter('searchQuery', '%' . $searchQuery . '%');
+        }
+        if ($ownerId) {
+            $qb->andWhere('i.owner = :ownerId')
+                ->setParameter('ownerId', $ownerId);
+        }
+        if ($orderBy) {
+            $qb->orderBy('i.' . $orderBy['column'], $orderBy['direction']);
+        }
+        if ($limit) {
+            $qb->setMaxResults($limit);
+        }
+        if ($offset) {
+            $qb->setFirstResult($offset);
+        }
+        return $qb->getQuery()->getResult();
     }
 
     /**
@@ -45,11 +65,20 @@ class InternshipRepository extends Repository
         return $query->getResult();
     }
 
-    public function count(array $criteria): int
+    public function count(?string $searchQuery, ?int $ownerId, ): int
     {
-        return $this->entityManager
-            ->getRepository(Internship::class)
-            ->count($criteria);
+        $qb = $this->entityManager->createQueryBuilder();
+        $qb->select('COUNT(i)')
+            ->from(Internship::class, 'i');
+        if ($searchQuery) {
+            $qb->where('i.title LIKE :searchQuery')
+                ->setParameter('searchQuery', '%' . $searchQuery . '%');
+        }
+        if ($ownerId) {
+            $qb->andWhere('i.owner = :ownerId')
+                ->setParameter('ownerId', $ownerId);
+        }
+        return $qb->getQuery()->getSingleScalarResult();
     }
 
     public function hasApplied(int $internshipId, int $userId): bool
