@@ -1,13 +1,15 @@
+import { $, $all } from "./core/dom";
+import { on } from "./core/events";
 
 const params = new URLSearchParams(window.location.search);
 
 // --------------------------------------------------------------------------------------------
 // This section handles the search bar
 
-const searchBtn = document.getElementById("search-btn");
-const searchQueryElement = document.getElementById("search-query");
+const searchBtn = $("#search-btn");
+const searchQueryElement = $("#search-query");
 
-searchBtn.addEventListener("click", () => {
+on(searchBtn, "click", function () {
     const searchQuery = searchQueryElement.value;
     if (searchQuery) {
         params.set("q", searchQuery);
@@ -17,7 +19,7 @@ searchBtn.addEventListener("click", () => {
     }
 });
 
-searchQueryElement.addEventListener("keyup", (event) => {
+on(searchQueryElement, "keyup", function (event) {
     if (event.key === "Enter") {
         searchBtn.click();
     }
@@ -32,17 +34,17 @@ if (query) {
 // --------------------------------------------------------------------------------------------
 // This section handles the job list
 
-const jobDetailsContent = document.getElementById("job-details-content");
-const jobDetailsSkeleton = document.getElementById("job-details-skeleton");
-const jobList = document.getElementById("job-list");
-const jobTitle = document.getElementById("job-title");
-const jobDescription = document.getElementById("job-description");
+const jobDetailsContent = $("#job-details-content");
+const jobDetailsSkeleton = $("#job-details-skeleton");
+const jobList = $("#job-list");
+const jobTitle = $("#job-title");
+const jobDescription = $("#job-description");
 
 let previouslySelectedItemCard = null;
 let isLoading = false;
 
-const applyBtn = document.getElementById("btn-apply");
-const undoApplyBtn = document.getElementById("btn-undo-apply");
+const applyBtn = $("#btn-apply");
+const undoApplyBtn = $("#btn-undo-apply");
 
 function fetchJobDetails(jobId) {
     fetch(`/api/internships/${jobId}`, { method: "GET" })
@@ -67,7 +69,7 @@ function fetchJobDetails(jobId) {
         .finally(() => { isLoading = false; });
 }
 
-jobList.addEventListener("click", (event) => {
+on(jobList, "click", function (event) {
     if (isLoading) { return; }
 
     const itemCard = event.target.closest(".job");
@@ -88,7 +90,7 @@ jobList.addEventListener("click", (event) => {
     }
 });
 
-document.addEventListener("DOMContentLoaded", () => {
+on(document, "DOMContentLoaded", function () {
     const itemCard = document.querySelector(".job");
     itemCard.classList.toggle("active");
     previouslySelectedItemCard = itemCard;
@@ -100,131 +102,113 @@ document.addEventListener("DOMContentLoaded", () => {
 // --------------------------------------------------------------------------------------------
 // This section handles the buttons in the details pane
 
-const applicantsJobBtn = document.getElementById("applicants-job-btn");
-const modifyJobBtn = document.getElementById("modify-job-btn");
-const removeJobBtn = document.getElementById("remove-job-btn");
+const applicantsJobBtn = $("#applicants-job-btn");
+const modifyJobBtn = $("#modify-job-btn");
+const removeJobBtn = $("#remove-job-btn");
 
-if (applicantsJobBtn) {
-    applicantsJobBtn.addEventListener("click", () => {
-        console.log(previouslySelectedItemCard.getAttribute("data-job-id"));
-        window.location.href = `${window.location.pathname}/${previouslySelectedItemCard.getAttribute("data-job-id")}/applicants`;
-    });
-}
+on(applicantsJobBtn, "click", function () {
+    console.log(previouslySelectedItemCard.getAttribute("data-job-id"));
+    window.location.href = `${window.location.pathname}/${previouslySelectedItemCard.getAttribute("data-job-id")}/applicants`;
+});
 
-if (modifyJobBtn) {
-    modifyJobBtn.addEventListener("click", () => {
-        window.location.href = `${window.location.pathname}/${previouslySelectedItemCard.getAttribute("data-job-id")}/modify`;
-    });
-}
+on(modifyJobBtn, "click", function () {
+    window.location.href = `${window.location.pathname}/${previouslySelectedItemCard.getAttribute("data-job-id")}/modify`;
+});
 
-if (removeJobBtn) {
-    removeJobBtn.addEventListener("click", () => {
-        fetch("/internship-program/internships/" + previouslySelectedItemCard.getAttribute("data-job-id"), { method: "DELETE" })
-            .then(() => {
-                window.location.href = `${window.location.pathname}`;
-            })
-            .catch(error => console.error("Error deleting job:", error));
-    });
-}
+on(removeJobBtn, "click", function () {
+    fetch("/internship-program/internships/" + previouslySelectedItemCard.getAttribute("data-job-id"), { method: "DELETE" })
+        .then(() => {
+            window.location.href = `${window.location.pathname}`;
+        })
+        .catch(error => console.error("Error deleting job:", error));
+});
 
 // --------------------------------------------------------------------------------------------
 // This section handles the applying for a internship
 
-if (applyBtn) {
-    applyBtn.addEventListener("click", () => {
-        fetch("/api/internships/" + previouslySelectedItemCard.getAttribute("data-job-id") + "/apply", { method: "PUT" })
-            .then(response => {
-                if (response.status === 204) {
-                    applyBtn.classList.add("hidden");
-                    undoApplyBtn.classList.remove("hidden");
-                } else {
-                    throw new Error("Error applying for job");
-                }
-            })
-            .catch(error => console.error("Error applying for job:", error));
-    });
-}
+on(applyBtn, "click", function () {
+    fetch("/api/internships/" + previouslySelectedItemCard.getAttribute("data-job-id") + "/apply", { method: "PUT" })
+        .then(response => {
+            if (response.status === 204) {
+                applyBtn.classList.add("hidden");
+                undoApplyBtn.classList.remove("hidden");
+            } else {
+                throw new Error("Error applying for job");
+            }
+        })
+        .catch(error => console.error("Error applying for job:", error));
+});
 
-if (undoApplyBtn) {
-    undoApplyBtn.addEventListener("click", () => {
-        fetch("/api/internships/" + previouslySelectedItemCard.getAttribute("data-job-id") + "/apply", { method: "DELETE" })
-            .then(response => {
-                if (response.status === 204) {
-                    applyBtn.classList.remove("hidden");
-                    undoApplyBtn.classList.add("hidden");
-                } else {
-                    throw new Error("Error undoing application for job");
-                }
-            })
-            .catch(error => console.error("Error undoing application for job:", error));
-    });
-}
+on(undoApplyBtn, "click", function () {
+    fetch("/api/internships/" + previouslySelectedItemCard.getAttribute("data-job-id") + "/apply", { method: "DELETE" })
+        .then(response => {
+            if (response.status === 204) {
+                applyBtn.classList.remove("hidden");
+                undoApplyBtn.classList.add("hidden");
+            } else {
+                throw new Error("Error undoing application for job");
+            }
+        })
+        .catch(error => console.error("Error undoing application for job:", error));
+});
 
 // --------------------------------------------------------------------------------------------
 // This section handles the filtering of the job list
 
-const filterByCompany = document.getElementById("filter-by-company");
-const companyMultiSelectList = document.getElementById("company-multi-select-list");
+const filterByCompany = $("#filter-by-company");
+const companyMultiSelectList = $("#company-multi-select-list");
 
-if (filterByCompany) {
-    filterByCompany.addEventListener("click", () => {
-        companyMultiSelectList.classList.toggle("hidden");
+on(filterByCompany, "click", function () {
+    companyMultiSelectList.classList.toggle("hidden");
+});
+
+const companyMultiSelectApplyBtn = $("#company-multi-select-list-apply-btn");
+const companyMultiSelectResetBtn = $("#company-multi-select-list-reset-btn");
+const companyMultiSelectHideBtn = $("#company-multi-select-list-hide-btn");
+
+let companyCheckboxes = $all("#company-multi-select-list input[type=checkbox]");
+
+on(companyMultiSelectResetBtn, "click", function () {
+    companyCheckboxes.forEach(checkbox => {
+        checkbox.checked = false;
     });
-}
+});
 
-const companyMultiSelectApplyBtn = document.getElementById("company-multi-select-list-apply-btn");
-const companyMultiSelectResetBtn = document.getElementById("company-multi-select-list-reset-btn");
-const companyMultiSelectHideBtn = document.getElementById("company-multi-select-list-hide-btn");
+on(companyMultiSelectHideBtn, "click", function () {
+    companyMultiSelectList.classList.toggle("hidden");
+});
 
-let companyCheckboxes = document.querySelectorAll("#company-multi-select-list input[type=checkbox]");
-
-if (companyMultiSelectApplyBtn) {
-    companyMultiSelectResetBtn.addEventListener("click", () => {
-        companyCheckboxes.forEach(checkbox => {
-            checkbox.checked = false;
-        });
-    });
-}
-
-if (companyMultiSelectHideBtn) {
-    companyMultiSelectHideBtn.addEventListener("click", () => {
-        companyMultiSelectList.classList.toggle("hidden");
-    });
-}
-
-if (companyMultiSelectResetBtn) {
-    companyMultiSelectApplyBtn.addEventListener("click", () => {
-        let companies = [];
-        companyCheckboxes.forEach(checkbox => {
-            if (checkbox.checked) {
-                companies.push(checkbox.getAttribute("id"));
-            }
-        });
-
-        if (companies.length > 0) {
-            params.set("c", companies.join(","));
-        } else {
-            params.delete("c");
+on(companyMultiSelectApplyBtn, "click", function () {
+    let companies = [];
+    companyCheckboxes.forEach(checkbox => {
+        if (checkbox.checked) {
+            companies.push(checkbox.getAttribute("id"));
         }
-
-        window.location.href = `${window.location.pathname}?${params.toString()}`;
     });
-}
+
+    if (companies.length > 0) {
+        params.set("c", companies.join(","));
+    } else {
+        params.delete("c");
+    }
+
+    window.location.href = `${window.location.pathname}?${params.toString()}`;
+});
 
 // --------------------------------------------------------------------------------------------
 // This section handles the pagination of the job list
 
-let btnNextPage = document.getElementById("btn-next-page");
-let btnPreviousPage = document.getElementById("btn-previous-page");
+let btnNextPage = $("#btn-next-page");
+let btnPreviousPage = $("#btn-previous-page");
 
 let currentPage = parseInt(params.get("p")) || 1;
 
-btnNextPage.addEventListener("click", () => {
+on(btnNextPage, "click", function () {
     params.set("p", currentPage + 1);
     window.location.href = `${window.location.pathname}?${params.toString()}`;
 });
 
-btnPreviousPage.addEventListener("click", () => {
+on(btnPreviousPage, "click", function () {
     params.set("p", currentPage - 1);
     window.location.href = `${window.location.pathname}?${params.toString()}`;
 });

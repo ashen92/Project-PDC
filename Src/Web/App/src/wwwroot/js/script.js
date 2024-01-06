@@ -1,8 +1,11 @@
-document.addEventListener("DOMContentLoaded", () => {
-    const rowContainers = document.getElementsByClassName("table-rows-clickable");
+import { $all } from "./core/dom.js";
+import { on } from "./core/events.js";
+
+on(document, "DOMContentLoaded", function () {
+    const rowContainers = $all(".table-rows-clickable");
 
     for (let i = 0; i < rowContainers.length; i++) {
-        rowContainers[i].addEventListener("click", (event) => {
+        on(rowContainers[i], "click", function (event) {
             const row = event.target.closest("tr");
             if (row) {
                 window.location.href = row.dataset.href;

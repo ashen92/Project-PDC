@@ -32,6 +32,24 @@ class PortalController extends PageControllerBase
 		);
 	}
 
+	#[Route("/home/link1")]
+	public function homeLink1(): Response
+	{
+		return $this->render("portal/home/link1.html");
+	}
+
+	#[Route("/home/link2")]
+	public function homeLink2(): Response
+	{
+		return $this->render("portal/home/link2.html");
+	}
+
+	#[Route("/home/link3")]
+	public function homeLink3(): Response
+	{
+		return $this->render("portal/home/link3.html");
+	}
+
 	#[Route("/users")]
 	public function users(): Response
 	{

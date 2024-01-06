@@ -1,7 +1,10 @@
-var userTypeRadios = document.querySelectorAll("#field-user-type input[type='radio']");
-var studentField = document.querySelector("#field-student");
-var partnerField = document.querySelector("#field-partner");
-var genericField = document.querySelector("#field-generic");
+import { $, $all } from "./core/dom";
+import { on } from "./core/events";
+
+var userTypeRadios = $all("#field-user-type input[type='radio']");
+var studentField = $("#field-student");
+var partnerField = $("#field-partner");
+var genericField = $("#field-generic");
 
 function addRequired(field) {
     var inputs = field.querySelectorAll("input");
@@ -20,7 +23,7 @@ function removeRequired(field) {
 }
 
 userTypeRadios.forEach(function (radio) {
-    radio.addEventListener("change", function () {
+    on(radio, "change", function () {
         var userType = this.value;
 
         // Show the appropriate field based on the selected user type

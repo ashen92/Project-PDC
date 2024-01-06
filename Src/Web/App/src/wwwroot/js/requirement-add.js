@@ -1,12 +1,15 @@
-const oneTimeEndDateElement = document.getElementById("field-one-time");
-const recurringRepeatElement = document.getElementById("field-recurring");
+import { $, $all } from "./core/dom.js";
+import { on } from "./core/events.js";
 
-const endBeforeDateElement = document.getElementById("end-before-one-time");
-const radioRepeatElements = document.querySelectorAll("input[name='repeat-interval']");
+const oneTimeEndDateElement = $("#field-one-time");
+const recurringRepeatElement = $("#field-recurring");
 
-const typeDiv = document.getElementById("type");
+const endBeforeDateElement = $("#end-before-one-time");
+const radioRepeatElements = $all("input[name='repeat-interval']");
 
-typeDiv.addEventListener("change", function (event) {
+const typeDiv = $("#type");
+
+on(typeDiv, "change", function (event) {
     if (event.target.type === "radio") {
         if (event.target.value == "one-time") {
             radioRepeatElements.forEach(element => {
@@ -35,10 +38,10 @@ typeDiv.addEventListener("change", function (event) {
     }
 });
 
-const fulfillMethodDiv = document.getElementById("fulfill-method");
-const fulfillMethodFileOptions = document.getElementById("fulfill-method-file-options");
+const fulfillMethodDiv = $("#fulfill-method");
+const fulfillMethodFileOptions = $("#fulfill-method-file-options");
 
-fulfillMethodDiv.addEventListener("change", function (event) {
+on(fulfillMethodDiv, "change", function (event) {
     if (event.target.name === "fulfill-method") {
         if (event.target.checked) {
             if (event.target.id == "fulfill-method-file") {

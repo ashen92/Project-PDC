@@ -1,8 +1,11 @@
-const navbarDropdown = document.querySelector(".navbar-dropdown");
-const navbarToggleShow = document.getElementById("navbar-toggle-show");
-const navbarToggleHide = document.getElementById("navbar-toggle-hide");
+import { $ } from "./core/dom";
+import { on } from "./core/events";
 
-document.querySelector(".navbar-toggler").addEventListener("click", () => {
+const navbarDropdown = $(".navbar-dropdown");
+const navbarToggleShow = $("#navbar-toggle-show");
+const navbarToggleHide = $("#navbar-toggle-hide");
+
+on($(".navbar-toggler"), "click", function () {
     navbarDropdown.classList.toggle("visible");
     navbarToggleShow.classList.toggle("hidden");
     navbarToggleHide.classList.toggle("hidden");

@@ -1,16 +1,19 @@
-const fileInput = document.getElementById("files-to-upload");
-const filePreview = document.getElementById("files-to-upload-preview");
+import { $ } from "./core/dom.js";
+import { on } from "./core/events.js";
 
-if (fileInput) {
-    fileInput.addEventListener("change", () => {
-        updateImageDisplay(fileInput, filePreview);
-    });
-}
+const fileInput = $("#files-to-upload");
+const filePreview = $("#files-to-upload-preview");
+
+on(fileInput, "change", function () {
+    updateImageDisplay(fileInput, filePreview);
+});
 
 function updateImageDisplay(input, preview) {
     while (preview.firstChild) {
         preview.removeChild(preview.firstChild);
     }
+
+    // TODO - Use createElement in dom.js
 
     const curFiles = input.files;
     if (curFiles.length === 0) {

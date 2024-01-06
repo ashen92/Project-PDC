@@ -1,6 +1,8 @@
+import { $ } from "./core/dom.js";
+import { on } from "./core/events.js";
 import Quill from "./quill.min.js";
 
-var container = document.getElementById("text-editor-container");
+var container = $("#text-editor-container");
 
 var toolbarOptions = [["bold", "italic"], [{ "list": "bullet" }, { "list": "ordered" }]];
 var quill = new Quill("#text-editor", {
@@ -16,9 +18,9 @@ if (container.dataset.content) {
     quill.clipboard.dangerouslyPasteHTML(container.dataset.content);
 }
 
-var textData = document.getElementById("text-data");
+var textData = $("#text-data");
 var form = textData.closest("form");
-form.addEventListener("submit", (e) => {
+on(form, "submit", function (e) {
     e.preventDefault();
     textData.value = quill.root.innerHTML;
     form.submit();
