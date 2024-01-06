@@ -4,8 +4,11 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\DTOs\CreateInternshipCycleDTO;
+use App\DTOs\CreateUserDTO;
 use App\Entities\InternshipCycle;
+use App\Interfaces\IEmailService;
 use App\Interfaces\IInternshipCycleService;
+use App\Models\UserInviteEmail;
 use App\Repositories\InternshipCycleRepository;
 use App\Repositories\UserRepository;
 use DateTime;
@@ -14,7 +17,8 @@ class InternshipCycleService implements IInternshipCycleService
 {
     public function __construct(
         private InternshipCycleRepository $internshipCycleRepository,
-        private UserRepository $userRepository
+        private UserRepository $userRepository,
+        private IEmailService $emailService
     ) {
     }
 
@@ -157,5 +161,29 @@ class InternshipCycleService implements IInternshipCycleService
 
         $this->internshipCycleRepository->save($internshipCycle);
         return true;
+    }
+
+    #[\Override] public function createUserFor(int $userId, CreateUserDTO $dto): void
+    {
+        $user = $this->userRepository->find($userId);
+        $newUser = $this->userRepository->createUser($dto);
+        $user->addToManage($newUser);
+        $this->userRepository->save($user);
+        $this->userRepository->save($newUser);
+
+        $userGroupName = "{$newUser->getId()}-managed-users";
+        $userGroup = $this->userRepository->findUserGroupByName($userGroupName);
+
+        if (!$userGroup) {
+            $userGroup = $this->userRepository->addUserGroup($userGroupName);
+            $this->userRepository->addRoleToUserGroup($userGroup->getId(), "ROLE_INTERNSHIP_MANAGED_PARTNER");
+        }
+
+        $this->userRepository->addToUserGroup($newUser->getId(), $userGroup->getId());
+
+        $this->emailService->sendEmail(
+            new UserInviteEmail($dto->email, $dto->firstName, $newUser->generateActivationToken())
+        );
+        $this->userRepository->save($newUser);
     }
 }

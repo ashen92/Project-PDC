@@ -5,6 +5,7 @@ namespace App\Controllers;
 
 use App\Attributes\RequiredRole;
 use App\DTOs\CreateInternshipCycleDTO;
+use App\DTOs\CreateUserDTO;
 use App\Interfaces\IInternshipCycleService;
 use App\Interfaces\IRequirementService;
 use App\Interfaces\IUserService;
@@ -61,6 +62,28 @@ class InternshipProgramController extends PageControllerBase
                 "internshipCycle" => $this->internshipCycleService->getLatestInternshipCycle()
             ]
         );
+    }
+
+    #[Route("/users/create", methods: ["GET"], name: "user_create")]
+    public function userCreate(Request $request): Response
+    {
+        return $this->render(
+            "internship-program/create_user.html"
+        );
+    }
+
+    #[Route("/users/create", methods: ["POST"])]
+    public function userCreatePost(Request $request): RedirectResponse
+    {
+        $dto = new CreateUserDTO(
+            $request->get("user-type"),
+            $request->get("email"),
+            $request->get("first-name"),
+        );
+
+        $this->internshipCycleService->createUserFor($request->getSession()->get("user_id"), $dto);
+
+        return $this->redirect("/internship-program");
     }
 
     #[Route("/cycle/create", methods: ["GET"])]

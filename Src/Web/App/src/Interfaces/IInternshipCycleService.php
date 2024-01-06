@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Interfaces;
 
 use App\DTOs\CreateInternshipCycleDTO;
+use App\DTOs\CreateUserDTO;
 use App\Entities\InternshipCycle;
 
 interface IInternshipCycleService
@@ -16,4 +17,5 @@ interface IInternshipCycleService
     public function createInternshipCycle(CreateInternshipCycleDTO $createInternshipCycleDTO): InternshipCycle;
     public function endInternshipCycle(?int $id = null): bool;
     public function getStudentUsers(?int $internshipCycleId = null): array;
+    public function createUserFor(int $userId, CreateUserDTO $dto): void;
 }

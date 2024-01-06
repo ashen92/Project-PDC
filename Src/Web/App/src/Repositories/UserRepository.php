@@ -5,14 +5,17 @@ namespace App\Repositories;
 
 use App\DTOs\CreateUserDTO;
 use App\Entities\Partner;
+use App\Entities\Permission;
 use App\Entities\Role;
 use App\Entities\Student;
 use App\Entities\User;
 use App\Entities\UserGroup;
+use App\Models\Permission\Action;
+use App\Models\Permission\Resource;
 
 class UserRepository extends Repository
 {
-    public function find(int $userId): ?User
+    public function find(int $userId): null|User|Student|Partner
     {
         return $this->entityManager->getRepository(User::class)->find($userId);
     }
@@ -90,6 +93,11 @@ class UserRepository extends Repository
         return $this->entityManager->getRepository(UserGroup::class)->find($groupId);
     }
 
+    public function findUserGroupByName(string $groupName): ?UserGroup
+    {
+        return $this->entityManager->getRepository(UserGroup::class)->findOneBy(["name" => $groupName]);
+    }
+
     public function findAllUserGroups(): array
     {
         return $this->entityManager->getRepository(UserGroup::class)->findAll();
@@ -98,6 +106,15 @@ class UserRepository extends Repository
     public function findRoleByName(string $roleName): ?Role
     {
         return $this->entityManager->getRepository(Role::class)->findOneBy(["name" => $roleName]);
+    }
+
+    public function addToUserGroup(int $userId, int $groupId): void
+    {
+        $user = $this->find($userId);
+        $userGroup = $this->findUserGroup($groupId);
+        $userGroup->addUser($user);
+        $this->entityManager->persist($userGroup);
+        $this->entityManager->flush();
     }
 
     public function addUserGroup(string $groupName): UserGroup
@@ -122,6 +139,16 @@ class UserRepository extends Repository
         $role = $this->entityManager->getRepository(Role::class)->findOneBy(["name" => $roleName]);
         $role->addGroup($userGroup);
         $this->entityManager->persist($userGroup);
+        $this->entityManager->flush();
+    }
+
+    public function addPermissionToRole(string $role, Resource $resource, Action $action): void
+    {
+        $role = $this->findRoleByName($role);
+        $permission = new Permission($resource, $action);
+        $role->addPermission($permission);
+        $this->entityManager->persist($permission);
+        $this->entityManager->persist($role);
         $this->entityManager->flush();
     }
 

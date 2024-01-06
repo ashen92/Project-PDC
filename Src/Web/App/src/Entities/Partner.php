@@ -54,7 +54,7 @@ class Partner extends User
         $this->internshipsCreated[] = $internship;
     }
 
-    public function addManage(Partner $partner): void
+    public function addToManage(Partner $partner): void
     {
         $this->manage[] = $partner;
         $partner->setManagedBy($this);

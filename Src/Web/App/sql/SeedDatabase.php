@@ -6,12 +6,15 @@ use App\Entities\Internship;
 use App\Entities\InternshipCycle;
 use App\Entities\Organization;
 use App\Entities\Partner;
+use App\Entities\Permission;
 use App\Entities\Requirement;
 use App\Entities\Role;
 use App\Entities\Student;
 use App\Entities\User;
 use App\Entities\UserGroup;
 use App\Entities\UserRequirement;
+use App\Models\Permission\Action;
+use App\Models\Permission\Resource;
 
 echo "Adding users... ";
 
@@ -179,8 +182,8 @@ $entityManager->flush();
 // ----------------------------------------------------------------
 // Add managed partners -------------------------------------------
 
-for ($i = 0; $i < 50; $i++) {
-    $user4->addManage($partnerUsers[$i]);
+for ($i = 0; $i < 15; $i++) {
+    $user4->addToManage($partnerUsers[$i]);
 }
 
 $entityManager->persist($user4);
@@ -360,6 +363,7 @@ $roleStudent = new Role("ROLE_STUDENT");
 $roleAdmin = new Role("ROLE_ADMIN");
 $roleInternshipPartner = new Role("ROLE_INTERNSHIP_PARTNER");
 $roleInternshipStudent = new Role("ROLE_INTERNSHIP_STUDENT");
+$roleInternshipManagedPartner = new Role("ROLE_INTERNSHIP_MANAGED_PARTNER");
 
 $roleCoordinator->addGroup($groupCoordinators);
 $rolePartner->addGroup($groupPartners);
@@ -375,6 +379,18 @@ $entityManager->persist($roleStudent);
 $entityManager->persist($roleAdmin);
 $entityManager->persist($roleInternshipPartner);
 $entityManager->persist($roleInternshipStudent);
+$entityManager->persist($roleInternshipManagedPartner);
+$entityManager->flush();
+
+echo "Done.\nAdding permissions...";
+
+$permissionViewInternship = new Permission(
+    Resource::INTERNSHIP,
+    Action::CREATE
+);
+$roleInternshipPartner->addPermission($permissionViewInternship);
+
+$entityManager->persist($permissionViewInternship);
 $entityManager->flush();
 
 echo "Done.\nAdding internships...";
