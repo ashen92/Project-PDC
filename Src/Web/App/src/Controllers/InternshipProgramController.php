@@ -18,6 +18,7 @@ use Twig\Environment;
 #[RequiredRole([
     "ROLE_ADMIN",
     "ROLE_INTERNSHIP_PARTNER",
+    "ROLE_INTERNSHIP_MANAGED_PARTNER",
     "ROLE_INTERNSHIP_STUDENT"
 ])]
 #[Route("/internship-program", name: "internship_program_")]

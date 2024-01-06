@@ -2,17 +2,19 @@
     Internship Program
 </a>
 
+{% if "ROLE_ADMIN" in user_roles %}
 <a class="nav-link {% if section == 'internships' %} active{% endif %}" href="/internship-program/internships">
-    {% if "ROLE_ADMIN" in user_roles %}
     Internships
-    {% endif %}
-    {% if "ROLE_INTERNSHIP_PARTNER" in user_roles %}
-    Your Internships
-    {% endif %}
-    {% if "ROLE_INTERNSHIP_STUDENT" in user_roles %}
-    Apply for Internships
-    {% endif %}
 </a>
+{% elseif "ROLE_INTERNSHIP_PARTNER" in user_roles %}
+<a class="nav-link {% if section == 'internships' %} active{% endif %}" href="/internship-program/internships">
+    Your Internships
+</a>
+{% elseif "ROLE_INTERNSHIP_STUDENT" in user_roles %}
+<a class="nav-link {% if section == 'internships' %} active{% endif %}" href="/internship-program/internships">
+    Apply for Internships
+</a>
+{% endif %}
 
 <a class="nav-link {% if section == 'requirements' %} active{% endif %}" href="/internship-program/requirements">
     Requirements
