@@ -22,9 +22,8 @@ class InternshipService implements IInternshipService
     }
 
     /**
-     * Summary of mapToInternshipListViewDTOs
-     * @param array $internships Array of Internship
-     * @return array Array of InternshipListViewDTO
+     * @param array<Internship> $internships
+     * @return array<InternshipListViewDTO>
      */
     private function mapToInternshipListViewDTOs(array $internships): array
     {
@@ -50,6 +49,9 @@ class InternshipService implements IInternshipService
         return $this->internshipRepository->find($id);
     }
 
+    /**
+     * @return array<InternshipListViewDTO>
+     */
     public function getInternshipsBy(
         ?int $iCycleId,
         ?int $ownerId,
@@ -93,12 +95,19 @@ class InternshipService implements IInternshipService
         return 0;
     }
 
+    /**
+     * @return array<\App\Entities\Student>
+     */
     public function getApplicants(int $internshipId): array
     {
         $internship = $this->internshipRepository->find($internshipId);
         return $internship->getApplicants();
     }
 
+    /**
+     * @param array<Internship> $internships
+     * @return array<\App\Entities\Organization>
+     */
     public function getOrganizationsFrom(array $internships): array
     {
         $ids = array_map(
