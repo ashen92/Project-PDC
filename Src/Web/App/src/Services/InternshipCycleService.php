@@ -8,7 +8,7 @@ use App\DTOs\CreateUserDTO;
 use App\Entities\InternshipCycle;
 use App\Interfaces\IEmailService;
 use App\Interfaces\IInternshipCycleService;
-use App\Models\UserInviteEmail;
+use App\Interfaces\IUserService;
 use App\Repositories\InternshipCycleRepository;
 use App\Repositories\UserRepository;
 use DateTime;
@@ -18,6 +18,7 @@ class InternshipCycleService implements IInternshipCycleService
     public function __construct(
         private InternshipCycleRepository $internshipCycleRepository,
         private UserRepository $userRepository,
+        private IUserService $userService,
         private IEmailService $emailService
     ) {
     }
@@ -163,15 +164,18 @@ class InternshipCycleService implements IInternshipCycleService
         return true;
     }
 
-    #[\Override] public function createUserFor(int $userId, CreateUserDTO $dto): void
+    #[\Override] public function createManagedUser(int $ownerId, CreateUserDTO $userDTO): void
     {
-        $user = $this->userRepository->find($userId);
-        $newUser = $this->userRepository->createUser($dto);
-        $user->addToManage($newUser);
-        $this->userRepository->save($user);
-        $this->userRepository->save($newUser);
+        $owner = $this->userRepository->find($ownerId);
 
-        $userGroupName = "{$newUser->getId()}-managed-users";
+        $user = $this->userService->createUser($userDTO);
+
+        $owner->addToManage($user);
+
+        $this->userRepository->save($owner);
+        $this->userRepository->save($user);
+
+        $userGroupName = "{$user->getId()}-managed-users";
         $userGroup = $this->userRepository->findUserGroupByName($userGroupName);
 
         if (!$userGroup) {
@@ -179,11 +183,6 @@ class InternshipCycleService implements IInternshipCycleService
             $this->userRepository->addRoleToUserGroup($userGroup->getId(), "ROLE_INTERNSHIP_MANAGED_PARTNER");
         }
 
-        $this->userRepository->addToUserGroup($newUser->getId(), $userGroup->getId());
-
-        $this->emailService->sendEmail(
-            new UserInviteEmail($dto->email, $dto->firstName, $newUser->generateActivationToken())
-        );
-        $this->userRepository->save($newUser);
+        $this->userRepository->addToUserGroup($user->getId(), $userGroup->getId());
     }
 }

@@ -6,6 +6,7 @@ namespace App\Interfaces;
 use App\DTOs\CreateInternshipCycleDTO;
 use App\DTOs\CreateUserDTO;
 use App\Entities\InternshipCycle;
+use App\Exceptions\UserExistsException;
 
 interface IInternshipCycleService
 {
@@ -17,5 +18,9 @@ interface IInternshipCycleService
     public function createInternshipCycle(CreateInternshipCycleDTO $createInternshipCycleDTO): InternshipCycle;
     public function endInternshipCycle(?int $id = null): bool;
     public function getStudentUsers(?int $internshipCycleId = null): array;
-    public function createUserFor(int $userId, CreateUserDTO $dto): void;
+
+    /**
+     * @throws UserExistsException If a user with the same email already exists
+     */
+    public function createManagedUser(int $ownerId, CreateUserDTO $userDTO): void;
 }

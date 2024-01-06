@@ -6,6 +6,7 @@ namespace App\Controllers;
 use App\Attributes\RequiredRole;
 use App\DTOs\CreateInternshipCycleDTO;
 use App\DTOs\CreateUserDTO;
+use App\Exceptions\UserExistsException;
 use App\Interfaces\IInternshipCycleService;
 use App\Interfaces\IRequirementService;
 use App\Interfaces\IUserService;
@@ -69,12 +70,13 @@ class InternshipProgramController extends PageControllerBase
     public function userCreate(Request $request): Response
     {
         return $this->render(
-            "internship-program/create_user.html"
+            "internship-program/create_user.html",
+            ["section" => "home"]
         );
     }
 
     #[Route("/users/create", methods: ["POST"])]
-    public function userCreatePost(Request $request): RedirectResponse
+    public function userCreatePost(Request $request): Response|RedirectResponse
     {
         $dto = new CreateUserDTO(
             $request->get("user-type"),
@@ -82,9 +84,19 @@ class InternshipProgramController extends PageControllerBase
             $request->get("first-name"),
         );
 
-        $this->internshipCycleService->createUserFor($request->getSession()->get("user_id"), $dto);
+        try {
+            $this->internshipCycleService->createManagedUser($request->getSession()->get("user_id"), $dto);
+        } catch (UserExistsException $e) {
 
-        return $this->redirect("/internship-program");
+            // TODO: Set error message
+
+            return $this->render(
+                "internship-program/create_user.html",
+                ["section" => "home"]
+            );
+        }
+
+        return $this->redirect("/internship-program/users/create");
     }
 
     #[Route("/cycle/create", methods: ["GET"])]

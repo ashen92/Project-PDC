@@ -153,6 +153,7 @@ $container->register(
     ->setArguments([
         new Reference("repository.internship_cycle"),
         new Reference("repository.user"),
+        new Reference("service.user"),
         new Reference("service.email"),
     ]);
 

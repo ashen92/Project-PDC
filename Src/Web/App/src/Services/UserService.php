@@ -22,28 +22,22 @@ class UserService implements IUserService
     ) {
     }
 
-    /**
-     * Summary of createUser
-     * @param \App\DTOs\CreateUserDTO $dto
-     * @throws \App\Exceptions\UserExistsException
-     * @return void
-     */
-    public function createUser(CreateUserDTO $dto): void
+    public function createUser(CreateUserDTO $userDTO): User
     {
         $user = null;
-        if ($dto->userType == "student") {
-            $user = $this->getUserByStudentEmail($dto->studentEmail);
+        if ($userDTO->userType == "student") {
+            $user = $this->getUserByStudentEmail($userDTO->studentEmail);
         } else {
-            $user = $this->getUserByEmail($dto->email);
+            $user = $this->getUserByEmail($userDTO->email);
         }
 
         if ($user === null) {
-            $user = $this->userRepository->createUser($dto);
+            $user = $this->userRepository->createUser($userDTO);
 
-            if ($dto->userType != "student" || ($dto->userType == "student" && $dto->sendEmail !== null)) {
+            if ($userDTO->userType != "student" || ($userDTO->userType == "student" && $userDTO->sendEmail !== null)) {
                 $mail = null;
 
-                if ($dto->userType == "student") {
+                if ($userDTO->userType == "student") {
                     $mail = new UserInviteEmail(
                         $user->getStudentEmail(),
                         $user->getFullName(),
@@ -61,7 +55,7 @@ class UserService implements IUserService
 
                 $this->emailService->sendEmail($mail);
             }
-            return;
+            return $user;
         }
         throw new UserExistsException();
     }
