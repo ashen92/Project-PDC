@@ -19,6 +19,9 @@ abstract class PageControllerBase
         return new RedirectResponse($url);
     }
 
+    /**
+     * @param array<mixed> $parameters
+     */
     protected function render(string $template, array $parameters = [], int $responseStatus = 200): Response
     {
         return new Response(

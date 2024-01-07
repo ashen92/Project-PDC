@@ -75,9 +75,6 @@ class UserService implements IUserService
         $this->userRepository->save($user);
     }
 
-    /**
-     * @return array An array of strings
-     */
     public function getUserRoles(int $userId): array
     {
         return $this->userRepository->findUserRoles($userId);

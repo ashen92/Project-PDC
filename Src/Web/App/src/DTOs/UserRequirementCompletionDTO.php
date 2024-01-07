@@ -5,6 +5,9 @@ namespace App\DTOs;
 
 class UserRequirementCompletionDTO
 {
+    /**
+     * @param array<\Symfony\Component\HttpFoundation\File\UploadedFile>|null $files
+     */
     public function __construct(
         public int $userRequirementId,
         public ?array $files,

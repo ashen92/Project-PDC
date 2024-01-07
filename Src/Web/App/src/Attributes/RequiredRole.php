@@ -8,6 +8,9 @@ use Attribute;
 #[Attribute]
 class RequiredRole
 {
+    /**
+     * @param string|array<string> $role
+     */
     public function __construct(public string|array $role)
     {
 

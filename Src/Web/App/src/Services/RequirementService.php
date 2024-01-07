@@ -140,13 +140,16 @@ class RequirementService implements IRequirementService
 
         if ($ur->getRequirement()->getFulfillMethod() === FulFillMethod::FILE_UPLOAD) {
             $response = $this->fileStorageService->upload($urCompletionDTO->files);
-            $filePaths = [];
 
-            foreach ($response["properties"] as $fileProperty) {
-                $filePaths[] = $fileProperty["filePath"];
+            if ($response) {
+                $filePaths = [];
+
+                foreach ($response["properties"] as $fileProperty) {
+                    $filePaths[] = $fileProperty["filePath"];
+                }
+
+                $ur->setFilePaths($filePaths);
             }
-
-            $ur->setFilePaths($filePaths);
         }
 
         if ($ur->getRequirement()->getFulfillMethod() === FulFillMethod::TEXT_INPUT) {
