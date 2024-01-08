@@ -10,6 +10,7 @@ use App\Interfaces\IEmailService;
 use App\Interfaces\IInternshipCycleService;
 use App\Interfaces\IUserService;
 use App\Repositories\InternshipCycleRepository;
+use App\Repositories\InternshipProgramRepository;
 use App\Repositories\UserRepository;
 use DateTime;
 
@@ -17,6 +18,7 @@ class InternshipCycleService implements IInternshipCycleService
 {
     public function __construct(
         private InternshipCycleRepository $internshipCycleRepository,
+        private InternshipProgramRepository $internshipProgramRepository,
         private UserRepository $userRepository,
         private IUserService $userService,
         private IEmailService $emailService
@@ -69,12 +71,12 @@ class InternshipCycleService implements IInternshipCycleService
 
     public function getLatestInternshipCycleId(): ?int
     {
-        return $this->getLatestInternshipCycle()?->getId();
+        return $this->getLatestCycle()?->getId();
     }
 
-    public function getLatestInternshipCycle(): ?InternshipCycle
+    public function getLatestCycle(): ?\App\Models\InternshipCycle
     {
-        return $this->internshipCycleRepository->findBy([], ["createdAt" => "DESC"], 1)[0] ?? null;
+        return $this->internshipProgramRepository->findLatestCycle();
     }
 
     public function getLatestActiveInternshipCycle(): ?InternshipCycle
@@ -132,35 +134,34 @@ class InternshipCycleService implements IInternshipCycleService
             return [];
         }
 
-        return $this->internshipCycleRepository->findStudentUsers($internshipCycleId);
+        return $this->internshipProgramRepository->findStudents($internshipCycleId);
     }
 
     public function endInternshipCycle(?int $id = null): bool
     {
-        $internshipCycle = null;
         if ($id === null) {
-            $internshipCycle = $this->getLatestInternshipCycle();
+            $cycle = $this->getLatestCycle();
         } else {
-            $internshipCycle = $this->internshipCycleRepository->find($id);
+            $cycle = $this->internshipProgramRepository->findCycle($id);
         }
 
-        if ($internshipCycle === null) {
+        if ($cycle === null) {
             return false;
         }
 
-        $internshipCycle->setEndedAt(new DateTime("now"));
+        $cycle->end();
 
         $this->userRepository->removeRoleFromUserGroup(
-            $internshipCycle->getPartnerGroup()->getId(),
+            $cycle->getPartnerGroupId(),
             "ROLE_INTERNSHIP_PARTNER"
         );
 
         $this->userRepository->removeRoleFromUserGroup(
-            $internshipCycle->getStudentGroup()->getId(),
+            $cycle->getStudentGroupId(),
             "ROLE_INTERNSHIP_STUDENT"
         );
 
-        $this->internshipCycleRepository->save($internshipCycle);
+        $this->internshipProgramRepository->updateCycle($cycle);
         return true;
     }
 

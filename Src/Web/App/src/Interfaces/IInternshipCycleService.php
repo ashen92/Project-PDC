@@ -21,7 +21,7 @@ interface IInternshipCycleService
     public function getEligiblePartnerGroupsForInternshipCycle(): array;
 
     public function getLatestInternshipCycleId(): ?int;
-    public function getLatestInternshipCycle(): ?InternshipCycle;
+    public function getLatestCycle(): ?\App\Models\InternshipCycle;
     public function getLatestActiveInternshipCycle(): ?InternshipCycle;
     public function createInternshipCycle(CreateInternshipCycleDTO $createInternshipCycleDTO): InternshipCycle;
     public function endInternshipCycle(?int $id = null): bool;

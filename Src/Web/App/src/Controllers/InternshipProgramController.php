@@ -44,7 +44,7 @@ class InternshipProgramController extends PageControllerBase
                 "internship-program/home-admin.html",
                 [
                     "section" => "home",
-                    "internshipCycle" => $this->internshipCycleService->getLatestInternshipCycle()
+                    "internshipCycle" => $this->internshipCycleService->getLatestCycle()
                 ]
             );
         }
@@ -61,7 +61,7 @@ class InternshipProgramController extends PageControllerBase
             "internship-program/home.html",
             [
                 "section" => "home",
-                "internshipCycle" => $this->internshipCycleService->getLatestInternshipCycle()
+                "internshipCycle" => $this->internshipCycleService->getLatestCycle()
             ]
         );
     }
@@ -129,7 +129,7 @@ class InternshipProgramController extends PageControllerBase
         // todo
 
         $this->internshipCycleService->createInternshipCycle($createInternshipCycleDTO);
-        return $this->redirect("/internship-program/cycle/details");
+        return $this->redirect("/internship-program");
     }
 
     #[Route("/cycle/end")]

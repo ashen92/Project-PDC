@@ -40,6 +40,23 @@ $container->register(
 )
     ->setPublic(true);
 
+// Database Connection --------------------------------------------------------
+
+$container->setParameter("pdo_mysql.host", "localhost");
+$container->setParameter("pdo_mysql.dbname", "pdc");
+$container->setParameter("pdo_mysql.user", "root");
+$container->setParameter("pdo_mysql.password", "root");
+
+$container->register(
+    "pdo_mysql_connection",
+    PDO::class
+)
+    ->setArguments([
+        "mysql:host=%pdo_mysql.host%;dbname=%pdo_mysql.dbname%",
+        "%pdo_mysql.user%",
+        "%pdo_mysql.password%"
+    ]);
+
 // Repositories ---------------------------------------------------------------
 
 $container->register(
@@ -65,6 +82,12 @@ $container->register(
     App\Repositories\RequirementRepository::class
 )
     ->setArguments([new Reference("doctrine.entity_manager")]);
+
+$container->register(
+    "repository.internship_program",
+    App\Repositories\InternshipProgramRepository::class
+)
+    ->setArguments([new Reference("pdo_mysql_connection"),]);
 
 // Services
 
@@ -152,6 +175,7 @@ $container->register(
 )
     ->setArguments([
         new Reference("repository.internship_cycle"),
+        new Reference("repository.internship_program"),
         new Reference("repository.user"),
         new Reference("service.user"),
         new Reference("service.email"),
