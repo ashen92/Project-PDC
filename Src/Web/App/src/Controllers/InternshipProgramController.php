@@ -173,7 +173,7 @@ class InternshipProgramController extends PageControllerBase
             return $this->render(
                 "internship-program/monitoring/submissions.html",
                 [
-                    "section" => "requirements",
+                    "section" => "monitoring",
                     "requirement" => $requirement,
                     "userRequirements" => $this->requirementService->getUserRequirements(
                         requirementId: $id,
