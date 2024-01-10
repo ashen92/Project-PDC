@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Entities;
 
+use App\Models\Requirement\Type;
 use DateTimeImmutable;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
@@ -23,6 +24,9 @@ class UserRequirement
     #[ORM\ManyToOne(targetEntity: Requirement::class, inversedBy: "userRequirements")]
     #[ORM\JoinColumn(name: "requirement_id", referencedColumnName: "id")]
     private Requirement $requirement;
+
+    #[ORM\Column(type: "requirement_type")]
+    private Type $requirementType;
 
     #[ORM\Column(type: "datetime_immutable")]
     private DateTimeImmutable $startDate;
@@ -49,6 +53,7 @@ class UserRequirement
     {
         $this->user = $user;
         $this->requirement = $requirement;
+        $this->requirementType = $requirement->getRequirementType();
         $this->startDate = new DateTimeImmutable("now");
         $this->endDate = new DateTimeImmutable("+2 month");
         $this->completedAt = null;
