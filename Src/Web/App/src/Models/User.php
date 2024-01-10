@@ -3,26 +3,29 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use DateTime;
-
 class User
 {
+    private const ACTIVATION_TOKEN_VALID_DURATION = "PT1H";
+
     public function __construct(
         private int $id,
-        private ?string $email = null,
-        private ?string $firstName = null,
-        private ?string $lastName = null,
-        private ?string $passwordHash = null,
-        private bool $isActive = false,
-        private ?string $activationToken = null,
-        private ?DateTime $activationTokenExpiresAt = null,
+        private ?string $email,
+        private ?string $firstName,
+        private ?string $lastName,
+        private ?string $passwordHash,
+        private bool $isActive,
+        private ?string $activationToken,
+        private ?\DateTimeImmutable $activationTokenExpiresAt,
     ) {
     }
 
     public function generateActivationToken(): string
     {
         $this->activationToken = bin2hex(random_bytes(32));
-        $this->activationTokenExpiresAt = new DateTime("+1 day");
+
+        $now = new \DateTimeImmutable("now");
+        $this->activationTokenExpiresAt = $now->add(new \DateInterval(self::ACTIVATION_TOKEN_VALID_DURATION));
+
         return $this->activationToken;
     }
 
@@ -67,7 +70,7 @@ class User
         return $this->activationToken;
     }
 
-    public function getActivationTokenExpiresAt(): ?DateTime
+    public function getActivationTokenExpiresAt(): ?\DateTimeImmutable
     {
         return $this->activationTokenExpiresAt;
     }

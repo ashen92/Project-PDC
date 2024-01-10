@@ -5,7 +5,7 @@ namespace App\Mappers;
 
 class StudentMapper implements \App\Interfaces\IMapper
 {
-    public static function map(array $data): \App\Models\Student
+    #[\Override] public static function map(array $data): \App\Models\Student
     {
         return new \App\Models\Student(
             $data["studentEmail"],
@@ -19,7 +19,7 @@ class StudentMapper implements \App\Interfaces\IMapper
             $data["passwordHash"],
             $data["isActive"] === 1,
             $data["activationToken"],
-            $data["activationTokenExpiresAt"],
+            $data["activationTokenExpiresAt"] === null ? null : new \DateTimeImmutable($data["activationTokenExpiresAt"]),
         );
     }
 }
