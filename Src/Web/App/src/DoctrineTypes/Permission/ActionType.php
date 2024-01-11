@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\DoctrineTypes\Permission;
 
-use App\Models\Permission\Action;
+use App\Security\Permission\Action;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 
 class ActionType extends \Doctrine\DBAL\Types\Type

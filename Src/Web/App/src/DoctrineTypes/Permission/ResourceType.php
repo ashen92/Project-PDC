@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\DoctrineTypes\Permission;
 
-use App\Models\Permission\Resource;
+use App\Security\Permission\Resource;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 
 class ResourceType extends \Doctrine\DBAL\Types\Type

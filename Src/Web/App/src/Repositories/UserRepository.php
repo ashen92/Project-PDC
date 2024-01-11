@@ -10,8 +10,8 @@ use App\Entities\Role;
 use App\Entities\Student;
 use App\Entities\User;
 use App\Entities\UserGroup;
-use App\Models\Permission\Action;
-use App\Models\Permission\Resource;
+use App\Security\Permission\Action;
+use App\Security\Permission\Resource;
 
 class UserRepository extends Repository
 {

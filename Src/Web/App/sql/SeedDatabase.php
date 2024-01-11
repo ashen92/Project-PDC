@@ -13,8 +13,8 @@ use App\Entities\Student;
 use App\Entities\User;
 use App\Entities\UserGroup;
 use App\Entities\UserRequirement;
-use App\Models\Permission\Action;
-use App\Models\Permission\Resource;
+use App\Security\Permission\Action;
+use App\Security\Permission\Resource;
 
 echo "Adding users... ";
 
