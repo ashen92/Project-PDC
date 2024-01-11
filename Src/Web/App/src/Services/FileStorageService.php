@@ -20,7 +20,7 @@ class FileStorageService implements IFileStorageService
     {
         $formData = [];
         foreach ($files as $file) {
-            $dataPart = DataPart::fromPath($file->getPathname(), md5($file->getClientOriginalName()), $file->getMimeType());
+            $dataPart = DataPart::fromPath($file->getPathname(), $file->getClientOriginalName(), $file->getMimeType());
             $formData[] = $dataPart;
         }
 
