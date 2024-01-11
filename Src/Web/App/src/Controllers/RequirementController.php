@@ -5,7 +5,7 @@ namespace App\Controllers;
 
 use App\Attributes\RequiredRole;
 use App\DTOs\CreateRequirementDTO;
-use App\DTOs\UserRequirementCompletionDTO;
+use App\DTOs\UserRequirementFulfillmentDTO;
 use App\Interfaces\IRequirementService;
 use App\Interfaces\IUserService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -69,13 +69,15 @@ class RequirementController extends PageControllerBase
                 );
             }
         } else {
-            $requirement = $this->requirementService->getUserRequirement($id);
-            if ($requirement) {
+            $ur = $this->requirementService->getUserRequirement($id);
+            if ($ur) {
+                $r = $this->requirementService->getRequirement($ur->getRequirement());
                 return $this->render(
                     "internship-program/requirements/user-requirement.html",
                     [
                         "section" => "requirements",
-                        "userRequirement" => $requirement
+                        "requirement" => $r,
+                        "userRequirement" => $ur
                     ]
                 );
             }
@@ -125,7 +127,7 @@ class RequirementController extends PageControllerBase
 
         $textResponse = $request->get("text-response", null);
 
-        $urCompletionDTO = new UserRequirementCompletionDTO(
+        $urCompletionDTO = new UserRequirementFulfillmentDTO(
             (int) $request->get("user-requirement-id"),
             $files,
             $textResponse,

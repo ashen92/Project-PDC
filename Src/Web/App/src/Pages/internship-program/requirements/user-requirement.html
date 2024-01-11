@@ -8,8 +8,6 @@
 
 {% block content %}
 
-{% set requirement = userRequirement.requirement %}
-
 <div class="title mb-0">
     <h4>{{ requirement.name }}</h4>
 </div>
@@ -111,7 +109,7 @@
     </div>
     {% endif %}
 
-    {% if userRequirement.status == "completed" %}
+    {% if userRequirement.status == "fulfilled" %}
 
     <div class="row mb-5">
         <p class="fw-medium">Completed on :</p>

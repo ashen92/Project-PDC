@@ -4,18 +4,16 @@ declare(strict_types=1);
 namespace App\Interfaces;
 
 use App\DTOs\CreateRequirementDTO;
-use App\DTOs\UserRequirementCompletionDTO;
-use App\Entities\Requirement;
-use App\Entities\UserRequirement;
+use App\DTOs\UserRequirementFulfillmentDTO;
 
 interface IRequirementService
 {
     /**
-     * @return array<string,string>
+     * @return array<\App\Models\Requirement>
      */
     public function getRequirements(): array;
 
-    public function getRequirement(int $id): ?Requirement;
+    public function getRequirement(int $id): ?\App\Models\Requirement;
     public function createRequirement(CreateRequirementDTO $requirementDTO): void;
 
     /**
@@ -28,6 +26,6 @@ interface IRequirementService
         ?string $status = null
     ): array;
 
-    public function getUserRequirement(int $id): ?UserRequirement;
-    public function completeUserRequirement(UserRequirementCompletionDTO $completeUserRequirementDTO): bool;
+    public function getUserRequirement(int $id): ?\App\Models\UserRequirement;
+    public function completeUserRequirement(UserRequirementFulfillmentDTO $dto): bool;
 }

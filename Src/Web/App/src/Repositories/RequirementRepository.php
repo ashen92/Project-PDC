@@ -9,48 +9,81 @@ use App\Entities\InternshipCycle;
 use App\Entities\Requirement;
 use App\Entities\User;
 use App\Entities\UserRequirement;
-use Doctrine\ORM\Query\ResultSetMappingBuilder;
+use App\Interfaces\Repository\IRepository;
+use App\Mappers\RequirementMapper;
+use App\Mappers\UserRequirementMapper;
 
-class RequirementRepository extends Repository
+class RequirementRepository extends Repository implements IRepository
 {
-    public function findRequirement(int $id): ?Requirement
-    {
-        $rsm = new ResultSetMappingBuilder($this->entityManager);
-        $rsm->addRootEntityFromClassMetadata('App\Entities\Requirement', 'i');
+    private const string DATE_TIME_FORMAT = "Y-m-d H:i:s";
 
-        $sql = "SELECT r.* FROM requirements r WHERE r.id = :id";
-        $query = $this->entityManager->createNativeQuery($sql, $rsm);
-        $query->setParameter("id", $id);
-        return $query->getOneOrNullResult();
+    public function __construct(
+        private readonly \PDO $pdo,
+        \Doctrine\ORM\EntityManager $entityManager
+    ) {
+        parent::__construct($entityManager);
     }
 
-    public function findAllRequirements(int $internshipCycleId): array
+    public function beginTransaction(): void
     {
-        $queryBuilder = $this->entityManager->createQueryBuilder();
-        $queryBuilder
-            ->select("r.id, r.name, r.description, r.requirementType, r.startDate, r.endBeforeDate, r.repeatInterval")
-            ->from("App\Entities\Requirement", "r")
-            ->innerJoin("r.internshipCycle", "ic")
-            ->where("ic.id = :internshipCycleId")
-            ->setParameter("internshipCycleId", $internshipCycleId);
-
-        $query = $queryBuilder->getQuery();
-        return $query->getArrayResult();
+        $this->pdo->beginTransaction();
     }
 
-    public function findUserRequirement(int $id): ?UserRequirement
+    public function commit(): void
     {
-        $rsm = new ResultSetMappingBuilder($this->entityManager);
-        $rsm->addRootEntityFromClassMetadata('App\Entities\UserRequirement', 'i');
+        $this->pdo->commit();
+    }
 
-        $sql = "SELECT ur.* 
-                FROM user_requirements ur 
-                INNER JOIN requirements r ON ur.requirement_id = r.id
-                INNER JOIN users u ON ur.user_id = u.id
-                WHERE ur.id = :id";
-        $query = $this->entityManager->createNativeQuery($sql, $rsm);
-        $query->setParameter("id", $id);
-        return $query->getOneOrNullResult();
+    public function rollBack(): void
+    {
+        $this->pdo->rollBack();
+    }
+
+    public function findRequirement(int $id): ?\App\Models\Requirement
+    {
+        $sql = "SELECT * FROM requirements WHERE id = :id";
+        $statement = $this->pdo->prepare($sql);
+        $statement->execute([
+            "id" => $id
+        ]);
+        $result = $statement->fetch(\PDO::FETCH_ASSOC);
+        if ($result === false) {
+            return null;
+        }
+
+        return RequirementMapper::map($result);
+    }
+
+    public function findAllRequirements(int $cycleId): array
+    {
+        $sql = "SELECT * FROM requirements WHERE internship_cycle_id = :cycleId";
+        $statement = $this->pdo->prepare($sql);
+        $statement->execute([
+            "cycleId" => $cycleId
+        ]);
+        $results = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        if ($results === false) {
+            return [];
+        }
+
+        return array_map(function ($result) {
+            return RequirementMapper::map($result);
+        }, $results);
+    }
+
+    public function findUserRequirement(int $id): ?\App\Models\UserRequirement
+    {
+        $sql = "SELECT * FROM user_requirements WHERE id = :id";
+        $statement = $this->pdo->prepare($sql);
+        $statement->execute([
+            "id" => $id
+        ]);
+        $result = $statement->fetch(\PDO::FETCH_ASSOC);
+        if ($result === false) {
+            return null;
+        }
+
+        return UserRequirementMapper::map($result);
     }
 
     public function findAllUserRequirements(array $criteria): array
@@ -97,9 +130,29 @@ class RequirementRepository extends Repository
         return $userRequirement;
     }
 
-    public function saveUserRequirement(UserRequirement $ur): void
+    public function updateUserRequirement(\App\Models\UserRequirement $ur): void
     {
-        $this->entityManager->persist($ur);
-        $this->entityManager->flush();
+        $sql = "UPDATE user_requirements SET
+            startDate = :startDate,
+            endDate = :endDate,
+            status = :status,
+            completedAt = :completedAt,
+            textResponse = :textResponse,
+            filePaths = :filePaths
+            WHERE id = :id";
+        $statement = $this->pdo->prepare($sql);
+        $statement->execute([
+            "startDate" => $ur->getStartDate()->format(self::DATE_TIME_FORMAT),
+            "endDate" => $ur->getEndDate()->format(self::DATE_TIME_FORMAT),
+            "status" => $ur->getStatus(),
+            "completedAt" => $ur->getCompletedAt() !== null
+                ? $ur->getCompletedAt()->format(self::DATE_TIME_FORMAT)
+                : null,
+            "textResponse" => $ur->getTextResponse(),
+            "filePaths" => $ur->getFilePaths() !== null
+                ? json_encode($ur->getFilePaths())
+                : null,
+            "id" => $ur->getId(),
+        ]);
     }
 }

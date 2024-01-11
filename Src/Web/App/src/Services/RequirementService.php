@@ -5,16 +5,14 @@ namespace App\Services;
 
 use App\DTOs\CreateRequirementDTO;
 use App\DTOs\CreateUserRequirementDTO;
-use App\DTOs\UserRequirementCompletionDTO;
+use App\DTOs\UserRequirementFulfillmentDTO;
 use App\Entities\Requirement;
-use App\Entities\UserRequirement;
 use App\Interfaces\IFileStorageService;
 use App\Interfaces\IRequirementService;
 use App\Models\Requirement\FulFillMethod;
 use App\Models\Requirement\Type;
 use App\Repositories\RequirementRepository;
 use DateInterval;
-use DateTimeImmutable;
 
 class RequirementService implements IRequirementService
 {
@@ -26,12 +24,12 @@ class RequirementService implements IRequirementService
 
     }
 
-    public function getRequirement(int $id): ?Requirement
+    #[\Override] public function getRequirement(int $id): ?\App\Models\Requirement
     {
         return $this->requirementRepository->findRequirement($id);
     }
 
-    public function getRequirements(?int $internshipCycleId = null): array
+    #[\Override] public function getRequirements(?int $internshipCycleId = null): array
     {
         if ($internshipCycleId === null)
             $internshipCycleId = $this->internshipCycleService->getLatestInternshipCycleId();
@@ -42,12 +40,12 @@ class RequirementService implements IRequirementService
         return $this->requirementRepository->findAllRequirements($internshipCycleId);
     }
 
-    public function getUserRequirement(int $id): ?UserRequirement
+    #[\Override] public function getUserRequirement(int $id): ?\App\Models\UserRequirement
     {
         return $this->requirementRepository->findUserRequirement($id);
     }
 
-    public function getUserRequirements(
+    #[\Override] public function getUserRequirements(
         ?int $internshipCycleId = null,
         ?int $requirementId = null,
         ?int $userId = null,
@@ -76,7 +74,7 @@ class RequirementService implements IRequirementService
         return $this->requirementRepository->findAllUserRequirements($criteria);
     }
 
-    public function createRequirement(CreateRequirementDTO $requirementDTO): void
+    #[\Override] public function createRequirement(CreateRequirementDTO $requirementDTO): void
     {
         $internshipCycleId = $this->internshipCycleService->getLatestInternshipCycleId();
         $requirement = $this->requirementRepository
@@ -130,9 +128,9 @@ class RequirementService implements IRequirementService
         }
     }
 
-    public function completeUserRequirement(UserRequirementCompletionDTO $urCompletionDTO): bool
+    #[\Override] public function completeUserRequirement(UserRequirementFulfillmentDTO $dto): bool
     {
-        $ur = $this->getUserRequirement($urCompletionDTO->userRequirementId);
+        $ur = $this->requirementRepository->findUserRequirement($dto->userRequirementId);
 
         if (!$ur) {
             return false;
@@ -140,23 +138,20 @@ class RequirementService implements IRequirementService
             // TODO: Handle user requirement not found
         }
 
-        if ($ur->getRequirement()->getFulfillMethod() === FulFillMethod::FILE_UPLOAD) {
-            $files = $this->fileStorageService->upload($urCompletionDTO->files);
+        if ($ur->getFulfillMethod() === FulFillMethod::FILE_UPLOAD) {
+            $files = $this->fileStorageService->upload($dto->files);
 
             if ($files) {
-                $ur->setFilePaths($files);
+                $ur->fulfill(filePaths: $files);
             }
 
             // TODO: Handle file upload failure
         }
 
-        if ($ur->getRequirement()->getFulfillMethod() === FulFillMethod::TEXT_INPUT) {
-            $ur->setTextResponse($urCompletionDTO->textResponse);
+        if ($ur->getFulfillMethod() === FulFillMethod::TEXT_INPUT) {
+            $ur->fulfill(textResponse: $dto->textResponse);
         }
-
-        $ur->setCompletedAt(new DateTimeImmutable("now"));
-        $ur->setStatus("completed");
-        $this->requirementRepository->saveUserRequirement($ur);
+        $this->requirementRepository->updateUserRequirement($ur);
         return true;
     }
 }

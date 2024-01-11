@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Entities;
 
-use App\Models\Requirement\Type;
+use App\Models\Requirement\FulFillMethod;
 use DateTimeImmutable;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
@@ -25,8 +25,8 @@ class UserRequirement
     #[ORM\JoinColumn(name: "requirement_id", referencedColumnName: "id")]
     private Requirement $requirement;
 
-    #[ORM\Column(type: "requirement_type")]
-    private Type $requirementType;
+    #[ORM\Column(type: "requirement_fulfill_method")]
+    private FulFillMethod $fulfillMethod;
 
     #[ORM\Column(type: "datetime_immutable")]
     private DateTimeImmutable $startDate;
@@ -50,7 +50,7 @@ class UserRequirement
     {
         $this->user = $user;
         $this->requirement = $requirement;
-        $this->requirementType = $requirement->getRequirementType();
+        $this->fulfillMethod = $requirement->getFulfillMethod();
         $this->startDate = new DateTimeImmutable("now");
         $this->endDate = new DateTimeImmutable("+2 month");
         $this->completedAt = null;

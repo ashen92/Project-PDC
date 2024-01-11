@@ -81,7 +81,10 @@ $container->register(
     "repository.requirement",
     App\Repositories\RequirementRepository::class
 )
-    ->setArguments([new Reference("doctrine.entity_manager")]);
+    ->setArguments([
+        new Reference("pdo_mysql_connection"),
+        new Reference("doctrine.entity_manager"),
+    ]);
 
 $container->register(
     "repository.internship_program",

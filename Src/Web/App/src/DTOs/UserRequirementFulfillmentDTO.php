@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\DTOs;
 
-class UserRequirementCompletionDTO
+class UserRequirementFulfillmentDTO
 {
     /**
      * @param array<\Symfony\Component\HttpFoundation\File\UploadedFile>|null $files
