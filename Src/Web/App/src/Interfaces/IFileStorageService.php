@@ -21,9 +21,9 @@ interface IFileStorageService
     public function upload(array $files): ?array;
 
     /**
-     * @return array<string, string>|bool Returns file as 'content' and 
+     * @return array<string, string>|null Returns file as 'content' and 
      * its mime type as 'mimeType' in an associative array
-     * or 'false' if file not found or on failure
+     * or null if file not found or on failure
      */
-    public function get(string $filePath): array|bool;
+    public function get(string $filePath): ?array;
 }

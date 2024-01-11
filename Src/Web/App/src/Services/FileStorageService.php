@@ -16,7 +16,7 @@ class FileStorageService implements IFileStorageService
     ) {
     }
 
-    public function upload(array $files): ?array
+    #[\Override] public function upload(array $files): ?array
     {
         $formData = [];
         foreach ($files as $file) {
@@ -49,10 +49,10 @@ class FileStorageService implements IFileStorageService
         }
     }
 
-    public function get(string $filePath): array|bool
+    #[\Override] public function get(string $filePath): ?array
     {
         // Temporary solution
-        return false;
+        return null;
 
         try {
             $response = $this->httpClient->request(
@@ -67,11 +67,11 @@ class FileStorageService implements IFileStorageService
                 $return["mimeType"] = $response->getHeaders()["content-type"][0];
                 return $return;
             } else {
-                return false;
+                return null;
             }
 
         } catch (\Throwable $th) {
-            return false;
+            return null;
         }
     }
 }

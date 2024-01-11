@@ -7,7 +7,7 @@ use App\Interfaces\IMapper;
 
 class UserRequirementMapper implements IMapper
 {
-    public static function map(array $data): \App\Models\UserRequirement
+    #[\Override] public static function map(array $data): \App\Models\UserRequirement
     {
         return new \App\Models\UserRequirement(
             $data["id"],

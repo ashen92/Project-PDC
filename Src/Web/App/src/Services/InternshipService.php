@@ -34,7 +34,7 @@ class InternshipService implements IInternshipService
             $internshipView = new InternshipListViewDTO($internship, $company->getName());
 
             $logo = $this->fileStorageService->get($company->getLogoFilePath());
-            if ($logo !== false) {
+            if ($logo) {
                 $internshipView->organizationLogo = "data:{$logo['mimeType']};base64," . base64_encode($logo["content"]);
             }
 

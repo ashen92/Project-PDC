@@ -8,7 +8,7 @@ use App\Models\Requirement;
 
 class RequirementMapper implements IMapper
 {
-    public static function map(array $data): Requirement
+    #[\Override] public static function map(array $data): Requirement
     {
         return new Requirement(
             $data["id"],
