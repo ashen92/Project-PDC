@@ -29,6 +29,14 @@ class InternshipCycleListener implements EventSubscriberInterface
             $controller != "App\Controllers\RequirementController"
         )
             return;
+
+        $session = $event->getRequest()->getSession();
+
+        if ($session->has("active_internship_cycle_id") && $session->has("latest_internship_cycle_id"))
+            return;
+
+        $session->set("active_internship_cycle_id", $this->internshipCycleService->getLatestActiveInternshipCycle()?->getId());
+        $session->set("latest_internship_cycle_id", $this->internshipCycleService->getLatestCycle()?->getId());
     }
 
     public static function getSubscribedEvents(): array
