@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
-use App\Interfaces\Mapper\IMapper;
 use App\Interfaces\Repository\IRepository;
 use App\Mappers\InternshipCycleMapper;
 use App\Mappers\StudentMapper;
@@ -81,11 +80,9 @@ class InternshipProgramRepository implements IRepository
             return [];
         }
 
-        $mappedResult = [];
-        foreach ($result as $row) {
-            $mappedResult[] = StudentMapper::map($row);
-        }
-        return $mappedResult;
+        return array_map(function ($row) {
+            return StudentMapper::map($row);
+        }, $result);
     }
 
     public function updateCycle(InternshipCycle $cycle): void
