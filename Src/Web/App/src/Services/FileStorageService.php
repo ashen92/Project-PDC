@@ -16,7 +16,7 @@ class FileStorageService implements IFileStorageService
     ) {
     }
 
-    public function upload(array $files): array|bool
+    public function upload(array $files): ?array
     {
         $formData = [];
         foreach ($files as $file) {
@@ -39,13 +39,13 @@ class FileStorageService implements IFileStorageService
             );
 
             if ($response->getStatusCode() === 200) {
-                return json_decode($response->getContent(), true);
+                return $response->toArray()["files"];
             } else {
-                return false;
+                return null;
             }
 
         } catch (\Throwable $th) {
-            return false;
+            return null;
         }
     }
 

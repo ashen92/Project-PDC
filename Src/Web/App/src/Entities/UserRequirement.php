@@ -40,9 +40,6 @@ class UserRequirement
     #[ORM\Column]
     private string $status;
 
-    #[ORM\Column(nullable: true)]
-    private ?string $originalFileName;
-
     #[ORM\Column(type: "simple_array", nullable: true)]
     private ?array $filePaths;
 
@@ -95,11 +92,6 @@ class UserRequirement
         return $this->status;
     }
 
-    public function getOriginalFileName(): ?string
-    {
-        return $this->originalFileName;
-    }
-
     public function getFilePaths(): ?array
     {
         return $this->filePaths;
@@ -130,11 +122,6 @@ class UserRequirement
         $this->status = $status;
     }
 
-    /**
-     * Summary of setFilePaths
-     * @param array $filePaths Array of strings
-     * @return void
-     */
     public function setFilePaths(array $filePaths): void
     {
         $this->filePaths = $filePaths;

@@ -48,8 +48,8 @@ export async function uploadFileToAzure(files) {
         );
 
         fileProperties.push({
-            originalFilename: file.originalFilename,
-            filePath: containerName + "-uuid-" + blobName
+            name: file.originalFilename,
+            path: containerName + "-uuid-" + blobName
         });
     }
 

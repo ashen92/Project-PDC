@@ -7,9 +7,18 @@ interface IFileStorageService
 {
     /**
      * @param array<\Symfony\Component\HttpFoundation\File\UploadedFile> $files Array of files
-     * @return array<mixed>|bool JSON response as associative array
+     * @return array<array<string, string>>|null Foreach file uploaded returns its name and path in an associative array.
+     * Example:
+     * [
+     *     [
+     *         "name" => "example.jpg",
+     *         "path" => "path/to/example.jpg"
+     *     ],
+     *     ...
+     * ]
+     * Returns null if the upload fails.
      */
-    public function upload(array $files): array|bool;
+    public function upload(array $files): ?array;
 
     /**
      * @return array<string, string>|bool Returns file as 'content' and 

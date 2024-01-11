@@ -19,8 +19,7 @@ const server = http.createServer(async (req, res) => {
             res.end(
                 JSON.stringify(
                     {
-                        message: "Successfully uploaded files",
-                        properties: fileProperties
+                        files: fileProperties
                     })
             );
         } catch (error) {
