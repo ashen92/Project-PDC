@@ -85,13 +85,13 @@ class InternshipController extends PageControllerBase
 
         return $this->render(
             "internship-program/internships.html",
-            array_merge(
-                ["section" => "internships"],
-                ["internships" => $internships],
-                ["organizations" => $organizations],
-                ["page" => $pageNumber],
-                ["pages" => $pages],
-            )
+            [
+                "section" => "internships",
+                "internships" => $internships,
+                "organizations" => $organizations,
+                "page" => $pageNumber,
+                "pages" => $pages,
+            ]
         );
     }
 
@@ -105,20 +105,26 @@ class InternshipController extends PageControllerBase
     #[Route("/{id}/applicants")]
     public function internshipApplicants(int $id): Response
     {
-        return $this->render("internship-program/internship/applicants.html", [
-            "section" => "internships",
-            "internship" => $this->internshipService->getInternshipById($id),
-            "applicants" => $this->internshipService->getApplicants($id)
-        ]);
+        return $this->render(
+            "internship-program/internship/applicants.html",
+            [
+                "section" => "internships",
+                "internship" => $this->internshipService->getInternshipById($id),
+                "applicants" => $this->internshipService->getApplicants($id)
+            ]
+        );
     }
 
     #[Route("/{id}/modify", methods: ["GET"])]
     public function editGET(int $id): Response
     {
-        return $this->render("internship-program/internship/modify.html", [
-            "section" => "internships",
-            "internship" => $this->internshipService->getInternshipById($id)
-        ]);
+        return $this->render(
+            "internship-program/internship/modify.html",
+            [
+                "section" => "internships",
+                "internship" => $this->internshipService->getInternshipById($id)
+            ]
+        );
     }
 
     #[Route("/{id}/modify", methods: ["POST"])]
