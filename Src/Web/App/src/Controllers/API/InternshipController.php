@@ -5,6 +5,7 @@ namespace App\Controllers\API;
 
 use App\Interfaces\IInternshipService;
 use App\Interfaces\IUserService;
+use App\Security\Role;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -29,7 +30,7 @@ class InternshipController
             ];
 
             $userId = $request->getSession()->get("user_id");
-            if ($this->userService->hasRole($userId, "ROLE_STUDENT")) {
+            if ($this->userService->hasRole($userId, Role::InternshipProgram_Student)) {
                 $data["hasApplied"] = $this->internshipService->hasAppliedToInternship($id, $userId);
             }
 

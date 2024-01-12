@@ -12,6 +12,7 @@ use App\Interfaces\IPasswordHasher;
 use App\Interfaces\IUserService;
 use App\Models\UserInviteEmail;
 use App\Repositories\UserRepository;
+use App\Security\Role;
 
 class UserService implements IUserService
 {
@@ -80,12 +81,12 @@ class UserService implements IUserService
         return $this->userRepository->findUserRoles($userId);
     }
 
-    public function hasRole(int $userId, string $role): bool
+    public function hasRole(int $userId, Role $role): bool
     {
         if ($role == "")
             return true;
         $roles = $this->userRepository->findUserRoles($userId);
-        if (in_array($role, $roles))
+        if (in_array($role->value, $roles))
             return true;
         return false;
     }

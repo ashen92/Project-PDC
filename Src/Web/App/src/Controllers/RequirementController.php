@@ -8,6 +8,7 @@ use App\DTOs\CreateRequirementDTO;
 use App\DTOs\UserRequirementFulfillmentDTO;
 use App\Interfaces\IRequirementService;
 use App\Interfaces\IUserService;
+use App\Security\Role;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,10 +16,10 @@ use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
 
 #[RequiredRole([
-    "ROLE_ADMIN",
-    "ROLE_INTERNSHIP_PARTNER",
-    "ROLE_INTERNSHIP_MANAGED_PARTNER",
-    "ROLE_INTERNSHIP_STUDENT"
+    Role::InternshipProgram_Admin,
+    Role::InternshipProgram_Partner_Admin,
+    Role::InternshipProgram_Partner,
+    Role::InternshipProgram_Student,
 ])]
 #[Route("/internship-program/requirements")]
 class RequirementController extends PageControllerBase
@@ -35,7 +36,7 @@ class RequirementController extends PageControllerBase
     public function requirements(Request $request): Response
     {
         $userId = $request->getSession()->get("user_id");
-        if ($this->userService->hasRole($userId, "ROLE_ADMIN")) {
+        if ($this->userService->hasRole($userId, Role::InternshipProgram_Admin)) {
             return $this->render(
                 "internship-program/requirements/home-admin.html",
                 [
@@ -57,7 +58,7 @@ class RequirementController extends PageControllerBase
     #[Route("/{id}", methods: ["GET"], requirements: ['id' => '\d+'])]
     public function requirement(Request $request, int $id): Response|RedirectResponse
     {
-        if ($this->userService->hasRole($request->getSession()->get("user_id"), "ROLE_ADMIN")) {
+        if ($this->userService->hasRole($request->getSession()->get("user_id"), Role::InternshipProgram_Admin)) {
             $requirement = $this->requirementService->getRequirement($id);
             if ($requirement) {
                 return $this->render(

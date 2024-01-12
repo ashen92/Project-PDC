@@ -361,6 +361,7 @@ $roleCoordinator = new Role("ROLE_COORDINATOR");
 $rolePartner = new Role("ROLE_PARTNER");
 $roleStudent = new Role("ROLE_STUDENT");
 $roleAdmin = new Role("ROLE_ADMIN");
+$roleInternshipAdmin = new Role("ROLE_INTERNSHIP_ADMIN");
 $roleInternshipPartner = new Role("ROLE_INTERNSHIP_PARTNER");
 $roleInternshipStudent = new Role("ROLE_INTERNSHIP_STUDENT");
 $roleInternshipManagedPartner = new Role("ROLE_INTERNSHIP_MANAGED_PARTNER");
@@ -370,6 +371,7 @@ $rolePartner->addGroup($groupPartners);
 $roleStudent->addGroup($groupStudents);
 $roleAdmin->addGroup($groupCoordinators);
 
+$roleInternshipAdmin->addGroup($groupCoordinators);
 $roleInternshipPartner->addGroup($groupInternshipCyclePartners);
 $roleInternshipStudent->addGroup($groupInternshipCycleStudents);
 
@@ -377,6 +379,7 @@ $entityManager->persist($roleCoordinator);
 $entityManager->persist($rolePartner);
 $entityManager->persist($roleStudent);
 $entityManager->persist($roleAdmin);
+$entityManager->persist($roleInternshipAdmin);
 $entityManager->persist($roleInternshipPartner);
 $entityManager->persist($roleInternshipStudent);
 $entityManager->persist($roleInternshipManagedPartner);

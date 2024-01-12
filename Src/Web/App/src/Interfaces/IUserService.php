@@ -9,6 +9,7 @@ use App\Entities\Partner;
 use App\Entities\Student;
 use App\Entities\User;
 use App\Exceptions\UserExistsException;
+use App\Security\Role;
 
 interface IUserService
 {
@@ -24,7 +25,7 @@ interface IUserService
      */
     public function getUserRoles(int $userId): array;
 
-    public function hasRole(int $userId, string $role): bool;
+    public function hasRole(int $userId, Role $role): bool;
     public function getUserByEmail(string $email): ?User;
     public function getUserByStudentEmail(string $email): ?User;
     public function getUserByActivationToken(string $token): ?User;

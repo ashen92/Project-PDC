@@ -7,6 +7,7 @@ use App\Attributes\RequiredRole;
 use App\DTOs\InternshipDTO;
 use App\Interfaces\IInternshipService;
 use App\Interfaces\IUserService;
+use App\Security\Role;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,9 +15,9 @@ use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
 
 #[RequiredRole([
-    "ROLE_ADMIN",
-    "ROLE_INTERNSHIP_PARTNER",
-    "ROLE_INTERNSHIP_STUDENT"
+    Role::InternshipProgram_Admin,
+    Role::InternshipProgram_Partner,
+    Role::InternshipProgram_Student,
 ])]
 #[Route("/internship-program/internships")]
 class InternshipController extends PageControllerBase
@@ -47,7 +48,7 @@ class InternshipController extends PageControllerBase
         $internships = [];
         $numberOfResults = 0;
 
-        if ($this->userService->hasRole($userId, "ROLE_PARTNER")) {
+        if ($this->userService->hasRole($userId, Role::InternshipProgram_Partner_Admin)) {
             $internships = $this->internshipService
                 ->getInternshipsBy(
                     $latestInternshipCycleId,

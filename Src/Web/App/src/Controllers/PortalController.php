@@ -7,12 +7,13 @@ use App\Attributes\RequiredRole;
 use App\DTOs\CreateUserDTO;
 use App\Exceptions\UserExistsException;
 use App\Interfaces\IUserService;
+use App\Security\Role;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[RequiredRole("ROLE_ADMIN")]
+#[RequiredRole(Role::Admin)]
 #[Route("/portal", name: "users_")]
 class PortalController extends PageControllerBase
 {
