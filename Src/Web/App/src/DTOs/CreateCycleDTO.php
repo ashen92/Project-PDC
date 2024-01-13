@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\DTOs;
 
-class CreateInternshipCycleDTO
+class CreateCycleDTO
 {
     public function __construct(
         public string $collectionStartDate,

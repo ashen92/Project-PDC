@@ -83,6 +83,19 @@ class InternshipProgramRepository implements IRepository
         }, $result);
     }
 
+    public function createCycle(): InternshipCycle
+    {
+        $statement = $this->pdo->prepare("
+            INSERT INTO internship_cycles
+            (createdAt)
+            VALUES
+            (NOW())
+        ");
+        $statement->execute();
+        $id = $this->pdo->lastInsertId();
+        return $this->findCycle((int) $id);
+    }
+
     public function updateCycle(InternshipCycle $cycle): void
     {
         $statement = $this->pdo->prepare("

@@ -13,8 +13,8 @@ class InternshipCycle
         private ?\DateTimeImmutable $collectionEndDate,
         private ?\DateTimeImmutable $applicationStartDate,
         private ?\DateTimeImmutable $applicationEndDate,
-        private int $studentGroupId,
-        private int $partnerGroupId,
+        private ?int $partnerGroupId,
+        private ?int $studentGroupId,
     ) {
     }
 
@@ -58,14 +58,14 @@ class InternshipCycle
         return $this->applicationEndDate;
     }
 
-    public function getStudentGroupId(): int
-    {
-        return $this->studentGroupId;
-    }
-
-    public function getPartnerGroupId(): int
+    public function getPartnerGroupId(): ?int
     {
         return $this->partnerGroupId;
+    }
+
+    public function getStudentGroupId(): ?int
+    {
+        return $this->studentGroupId;
     }
 
     public function setCollectionStartDate(\DateTimeImmutable $collectionStartDate): void
@@ -86,5 +86,15 @@ class InternshipCycle
     public function setApplicationEndDate(\DateTimeImmutable $applicationEndDate): void
     {
         $this->applicationEndDate = $applicationEndDate;
+    }
+
+    public function setPartnerGroupId(int $partnerGroupId): void
+    {
+        $this->partnerGroupId = $partnerGroupId;
+    }
+
+    public function setStudentGroupId(int $studentGroupId): void
+    {
+        $this->studentGroupId = $studentGroupId;
     }
 }

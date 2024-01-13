@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use App\DTOs\CreateInternshipCycleDTO;
+use App\DTOs\CreateCycleDTO;
 use App\DTOs\CreateUserDTO;
 use App\Entities\InternshipCycle;
 use App\Interfaces\IEmailService;
@@ -12,7 +12,6 @@ use App\Interfaces\IUserService;
 use App\Repositories\InternshipCycleRepository;
 use App\Repositories\InternshipProgramRepository;
 use App\Repositories\UserRepository;
-use DateTime;
 
 class InternshipCycleService implements IInternshipCycleService
 {
@@ -84,44 +83,51 @@ class InternshipCycleService implements IInternshipCycleService
         return $this->internshipCycleRepository->findBy(["endedAt" => null], ["createdAt" => "DESC"], 1)[0] ?? null;
     }
 
-    public function createInternshipCycle(CreateInternshipCycleDTO $createInternshipCycleDTO): InternshipCycle
+    public function createCycle(CreateCycleDTO $dto): \App\Models\InternshipCycle
     {
-        $internshipCycle = new InternshipCycle();
-        $this->internshipCycleRepository->save($internshipCycle);
+        $this->internshipProgramRepository->beginTransaction();
+        try {
+            $cycle = $this->internshipProgramRepository->createCycle();
 
-        $partnerGroup = $this->userRepository
-            ->addUserGroup("InternshipCycle-{$internshipCycle->getId()}-Partners");
-        $studentGroup = $this->userRepository
-            ->addUserGroup("InternshipCycle-{$internshipCycle->getId()}-Students");
+            $partnerGroup = $this->userRepository
+                ->addUserGroup("InternshipCycle-{$cycle->getId()}-Partners");
+            $studentGroup = $this->userRepository
+                ->addUserGroup("InternshipCycle-{$cycle->getId()}-Students");
 
-        $this->userRepository
-            ->addRoleToUserGroup($partnerGroup->getId(), "ROLE_INTERNSHIP_PARTNER");
-        $this->userRepository
-            ->addRoleToUserGroup($studentGroup->getId(), "ROLE_INTERNSHIP_STUDENT");
+            $this->userRepository
+                ->addRoleToUserGroup($partnerGroup->getId(), "ROLE_INTERNSHIP_PARTNER");
+            $this->userRepository
+                ->addRoleToUserGroup($studentGroup->getId(), "ROLE_INTERNSHIP_STUDENT");
 
-        $this->userRepository
-            ->addUsersToUserGroup($partnerGroup->getId(), $createInternshipCycleDTO->partnerGroup);
-        $this->userRepository
-            ->addUsersToUserGroup($studentGroup->getId(), $createInternshipCycleDTO->studentGroup);
+            $this->userRepository
+                ->addUsersToUserGroup($partnerGroup->getId(), $dto->partnerGroup);
+            $this->userRepository
+                ->addUsersToUserGroup($studentGroup->getId(), $dto->studentGroup);
 
-        $internshipCycle->setCollectionStartDate(
-            new DateTime($createInternshipCycleDTO->collectionStartDate)
-        );
-        $internshipCycle->setCollectionEndDate(
-            new DateTime($createInternshipCycleDTO->collectionEndDate)
-        );
-        $internshipCycle->setApplicationStartDate(
-            new DateTime($createInternshipCycleDTO->applicationStartDate)
-        );
-        $internshipCycle->setApplicationEndDate(
-            new DateTime($createInternshipCycleDTO->applicationEndDate)
-        );
-        $internshipCycle->setPartnerGroup($partnerGroup);
-        $internshipCycle->setStudentGroup($studentGroup);
+            $cycle->setCollectionStartDate(
+                new \DateTimeImmutable($dto->collectionStartDate)
+            );
+            $cycle->setCollectionEndDate(
+                new \DateTimeImmutable($dto->collectionEndDate)
+            );
+            $cycle->setApplicationStartDate(
+                new \DateTimeImmutable($dto->applicationStartDate)
+            );
+            $cycle->setApplicationEndDate(
+                new \DateTimeImmutable($dto->applicationEndDate)
+            );
+            $cycle->setPartnerGroupId($partnerGroup->getId());
+            $cycle->setStudentGroupId($studentGroup->getId());
 
-        $this->internshipCycleRepository->save($internshipCycle);
+            $this->internshipProgramRepository->updateCycle($cycle);
 
-        return $internshipCycle;
+            $this->internshipProgramRepository->commit();
+            return $cycle;
+
+        } catch (\Throwable $th) {
+            $this->internshipProgramRepository->rollBack();
+            throw $th;
+        }
     }
 
     public function getStudentUsers(?int $internshipCycleId = null): array
