@@ -86,7 +86,7 @@ class AuthenticationController extends PageControllerBase
                 // token is expired. Show error message
 
                 $user->resetActivationToken();
-                $this->userService->saveUser($user);
+                $this->userService->updateUser($user);
             }
         }
         return $this->redirect("/login");

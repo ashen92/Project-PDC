@@ -63,7 +63,10 @@ $container->register(
     "repository.user",
     App\Repositories\UserRepository::class
 )
-    ->setArguments([new Reference("doctrine.entity_manager")]);
+    ->setArguments([
+        new Reference("pdo_mysql_connection"),
+        new Reference("doctrine.entity_manager")
+    ]);
 
 $container->register(
     "repository.internship_cycle",

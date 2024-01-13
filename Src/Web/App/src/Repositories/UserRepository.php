@@ -10,33 +10,64 @@ use App\Entities\Role;
 use App\Entities\Student;
 use App\Entities\User;
 use App\Entities\UserGroup;
+use App\Interfaces\Repository\IRepository;
 use App\Security\Permission\Action;
 use App\Security\Permission\Resource;
 
-class UserRepository extends Repository
+class UserRepository extends Repository implements IRepository
 {
+    public function __construct(
+        private readonly \PDO $pdo,
+        \Doctrine\ORM\EntityManager $entityManager
+    ) {
+        parent::__construct($entityManager);
+    }
+
+    public function beginTransaction(): void
+    {
+        $this->pdo->beginTransaction();
+    }
+
+    public function commit(): void
+    {
+        $this->pdo->commit();
+    }
+
+    public function rollback(): void
+    {
+        $this->pdo->rollBack();
+    }
+
     public function find(int $userId): null|User|Student|Partner
     {
         return $this->entityManager->getRepository(User::class)->find($userId);
     }
 
+    /**
+     * @return array<string>
+     */
     public function findUserRoles(int $userId): array
     {
-        $queryBuilder = $this->entityManager->createQueryBuilder();
-        $queryBuilder
-            ->select("r.name")
-            ->from(User::class, "u")
-            ->innerJoin("u.groups", "g")
-            ->innerJoin("g.roles", "r")
-            ->where("u.id = :userId")
-            ->setParameter("userId", $userId);
-
-        return $queryBuilder->getQuery()->getSingleColumnResult();
+        $sql = "SELECT r.name FROM users u
+                JOIN user_group_membership ugm ON u.id = ugm.user_id
+                JOIN user_group_roles ugr ON ugm.usergroup_id = ugr.usergroup_id
+                JOIN roles r ON ugr.role_id = r.id
+                WHERE u.id = :userId";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(["userId" => $userId]);
+        return $stmt->fetchAll(\PDO::FETCH_COLUMN);
     }
 
-    public function findByEmail(string $email): ?User
+    public function findByEmail(string $email): ?\App\Models\User
     {
-        return $this->entityManager->getRepository(User::class)->findOneBy(["email" => $email]);
+        $sql = "SELECT * FROM users WHERE email = :email";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(["email" => $email]);
+        $data = $stmt->fetch(\PDO::FETCH_ASSOC);
+        if ($data === false) {
+            return null;
+        }
+        return \App\Mappers\UserMapper::map($data);
     }
 
     public function findByStudentEmail(string $email): ?User
@@ -44,9 +75,16 @@ class UserRepository extends Repository
         return $this->entityManager->getRepository(Student::class)->findOneBy(["studentEmail" => $email]);
     }
 
-    public function findByActivationToken(string $token): ?User
+    public function findByActivationToken(string $token): ?\App\Models\User
     {
-        return $this->entityManager->getRepository(User::class)->findOneBy(["activationToken" => $token]);
+        $sql = "SELECT * FROM users WHERE activationToken = :token";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(["token" => $token]);
+        $data = $stmt->fetch(\PDO::FETCH_ASSOC);
+        if ($data === false) {
+            return null;
+        }
+        return \App\Mappers\UserMapper::map($data);
     }
 
     public function findManagedUsers(int $userId): array
@@ -56,7 +94,6 @@ class UserRepository extends Repository
 
     public function createUser(CreateUserDTO $dto): null|User|Student|Partner
     {
-        $user = null;
         if ($dto->userType == "student") {
             $user = new Student(
                 $dto->studentEmail,
@@ -86,6 +123,32 @@ class UserRepository extends Repository
     {
         $this->entityManager->persist($user);
         $this->entityManager->flush();
+    }
+
+    public function updateUser(\App\Models\User $user): void
+    {
+        $sql = "UPDATE users SET
+                email = :email,
+                firstName = :firstName,
+                lastName = :lastName,
+                passwordHash = :passwordHash,
+                isActive = :isActive,
+                activationToken = :activationToken,
+                activationTokenExpiresAt = :activationTokenExpiresAt
+                WHERE id = :id";
+        $statement = $this->pdo->prepare($sql);
+        $statement->execute([
+            "id" => $user->getId(),
+            "email" => $user->getEmail(),
+            "firstName" => $user->getFirstName(),
+            "lastName" => $user->getLastName(),
+            "passwordHash" => $user->getPasswordHash(),
+            "isActive" => $user->isActive() ? 1 : 0,
+            "activationToken" => $user->getActivationToken(),
+            "activationTokenExpiresAt" => $user
+                ->getActivationTokenExpiresAt()
+                    ?->format(self::DATE_TIME_FORMAT),
+        ]);
     }
 
     public function findUserGroup(int $groupId): ?UserGroup

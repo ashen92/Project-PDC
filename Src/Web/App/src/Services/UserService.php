@@ -25,7 +25,6 @@ class UserService implements IUserService
 
     public function createUser(CreateUserDTO $userDTO): User
     {
-        $user = null;
         if ($userDTO->userType == "student") {
             $user = $this->getUserByStudentEmail($userDTO->studentEmail);
         } else {
@@ -36,7 +35,6 @@ class UserService implements IUserService
             $user = $this->userRepository->createUser($userDTO);
 
             if ($userDTO->userType != "student" || ($userDTO->userType == "student" && $userDTO->sendEmail !== null)) {
-                $mail = null;
 
                 if ($userDTO->userType == "student") {
                     $mail = new UserInviteEmail(
@@ -61,7 +59,7 @@ class UserService implements IUserService
         throw new UserExistsException();
     }
 
-    public function createStudentUser(CreateStudentUserDTO $createStudentDTO)
+    public function createStudentUser(CreateStudentUserDTO $createStudentDTO): void
     {
         $user = $this->userRepository->find($createStudentDTO->id);
 
@@ -91,7 +89,7 @@ class UserService implements IUserService
         return false;
     }
 
-    public function getUserByEmail(string $email): ?User
+    #[\Override] public function getUserByEmail(string $email): ?\App\Models\User
     {
         return $this->userRepository->findByEmail($email);
     }
@@ -101,7 +99,7 @@ class UserService implements IUserService
         return $this->userRepository->findByStudentEmail($email);
     }
 
-    public function getUserByActivationToken(string $token): ?User
+    #[\Override] public function getUserByActivationToken(string $token): ?\App\Models\User
     {
         return $this->userRepository->findByActivationToken($token);
     }
@@ -114,5 +112,10 @@ class UserService implements IUserService
     public function getManagedUsers(int $userId): array
     {
         return $this->userRepository->findManagedUsers($userId);
+    }
+
+    #[\Override] public function updateUser(\App\Models\User $user): void
+    {
+        $this->userRepository->updateUser($user);
     }
 }

@@ -10,8 +10,6 @@ use App\Models\InternshipCycle;
 
 class InternshipProgramRepository implements IRepository
 {
-    private const string DATE_TIME_FORMAT = "Y-m-d H:i:s";
-
     public function __construct(
         private readonly \PDO $pdo,
     ) {

@@ -15,8 +15,6 @@ use App\Mappers\UserRequirementMapper;
 
 class RequirementRepository extends Repository implements IRepository
 {
-    private const string DATE_TIME_FORMAT = "Y-m-d H:i:s";
-
     public function __construct(
         private readonly \PDO $pdo,
         \Doctrine\ORM\EntityManager $entityManager
