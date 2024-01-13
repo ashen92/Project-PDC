@@ -26,9 +26,9 @@ class UserService implements IUserService
     public function createUser(CreateUserDTO $userDTO): User
     {
         if ($userDTO->userType == "student") {
-            $user = $this->getUserByStudentEmail($userDTO->studentEmail);
+            $user = $this->userRepository->findByStudentEmail($userDTO->studentEmail);
         } else {
-            $user = $this->getUserByEmail($userDTO->email);
+            $user = $this->userRepository->findByEmail($userDTO->email);
         }
 
         if ($user === null) {

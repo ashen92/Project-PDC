@@ -173,19 +173,23 @@ class UserRepository extends Repository implements IRepository
 
     public function addToUserGroup(int $userId, int $groupId): void
     {
-        $user = $this->find($userId);
-        $userGroup = $this->findUserGroup($groupId);
-        $userGroup->addUser($user);
-        $this->entityManager->persist($userGroup);
-        $this->entityManager->flush();
+        $sql = "INSERT INTO user_group_membership (user_id, usergroup_id) VALUES (:userId, :groupId)";
+        $statement = $this->pdo->prepare($sql);
+        $statement->execute([
+            "userId" => $userId,
+            "groupId" => $groupId,
+        ]);
     }
 
-    public function addUserGroup(string $groupName): UserGroup
+    public function createUserGroup(string $groupName): \App\Models\UserGroup
     {
-        $userGroup = new UserGroup($groupName);
-        $this->entityManager->persist($userGroup);
-        $this->entityManager->flush();
-        return $userGroup;
+        $sql = "INSERT INTO user_groups (name) VALUES (:name)";
+        $statement = $this->pdo->prepare($sql);
+        $statement->execute(["name" => $groupName]);
+        return new \App\Models\UserGroup(
+            (int) $this->pdo->lastInsertId(),
+            $groupName,
+        );
     }
 
     public function addUsersToUserGroup(int $groupId, int $fromUserGroupId): void

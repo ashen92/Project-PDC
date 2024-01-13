@@ -90,9 +90,9 @@ class InternshipCycleService implements IInternshipCycleService
             $cycle = $this->internshipProgramRepository->createCycle();
 
             $partnerGroup = $this->userRepository
-                ->addUserGroup("InternshipCycle-{$cycle->getId()}-Partners");
+                ->createUserGroup("InternshipCycle-{$cycle->getId()}-Partners");
             $studentGroup = $this->userRepository
-                ->addUserGroup("InternshipCycle-{$cycle->getId()}-Students");
+                ->createUserGroup("InternshipCycle-{$cycle->getId()}-Students");
 
             $this->userRepository
                 ->addRoleToUserGroup($partnerGroup->getId(), "ROLE_INTERNSHIP_PARTNER");
@@ -186,7 +186,7 @@ class InternshipCycleService implements IInternshipCycleService
         $userGroup = $this->userRepository->findUserGroupByName($userGroupName);
 
         if (!$userGroup) {
-            $userGroup = $this->userRepository->addUserGroup($userGroupName);
+            $userGroup = $this->userRepository->createUserGroup($userGroupName);
             $this->userRepository->addRoleToUserGroup($userGroup->getId(), "ROLE_INTERNSHIP_MANAGED_PARTNER");
         }
 
