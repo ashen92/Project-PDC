@@ -143,9 +143,7 @@ class RequirementRepository extends Repository implements IRepository
             "startDate" => $ur->getStartDate()->format(self::DATE_TIME_FORMAT),
             "endDate" => $ur->getEndDate()->format(self::DATE_TIME_FORMAT),
             "status" => $ur->getStatus(),
-            "completedAt" => $ur->getCompletedAt() !== null
-                ? $ur->getCompletedAt()->format(self::DATE_TIME_FORMAT)
-                : null,
+            "completedAt" => $ur->getCompletedAt()?->format(self::DATE_TIME_FORMAT),
             "textResponse" => $ur->getTextResponse(),
             "filePaths" => $ur->getFilePaths() !== null
                 ? json_encode($ur->getFilePaths())
