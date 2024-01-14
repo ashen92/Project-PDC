@@ -45,7 +45,7 @@ class InternshipController
         // TODO: Validate
 
         $this->internshipService
-            ->applyToInternship($id, (int) $request->getSession()->get("user_id"));
+            ->apply($id, (int) $request->getSession()->get("user_id"));
         return new Response(null, 204);
     }
 
@@ -55,7 +55,7 @@ class InternshipController
         // TODO: Validate
 
         $this->internshipService
-            ->undoApplyToInternship($id, (int) $request->getSession()->get("user_id"));
+            ->undoApply($id, (int) $request->getSession()->get("user_id"));
         return new Response(null, 204);
     }
 }

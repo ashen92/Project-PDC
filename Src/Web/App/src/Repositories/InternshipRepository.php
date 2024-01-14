@@ -117,19 +117,37 @@ class InternshipRepository extends Repository
         return $qb->getQuery()->getSingleScalarResult();
     }
 
-    public function hasApplied(int $internshipId, int $userId): bool
+    public function apply(int $internshipId, int $studentUserId): bool
     {
-        $query = $this->entityManager->createQuery(
-            'SELECT COUNT(i)
-            FROM App\Entities\Internship i
-            WHERE i = :internshipId
-            AND :userId MEMBER OF i.applicants'
-        )->setParameters([
-                    'internshipId' => $internshipId,
-                    'userId' => $userId
-                ]);
+        $sql = 'INSERT INTO internship_applicants (internship_id, student_id)
+                VALUES (:internshipId, :studentUserId)';
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute([
+            'internshipId' => $internshipId,
+            'studentUserId' => $studentUserId,
+        ]);
+    }
 
-        return $query->getSingleScalarResult() > 0;
+    public function undoApply(int $internshipId, int $studentUserId): bool
+    {
+        $sql = 'DELETE FROM internship_applicants WHERE internship_id = :internshipId AND student_id = :studentUserId';
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute([
+            'internshipId' => $internshipId,
+            'studentUserId' => $studentUserId,
+        ]);
+    }
+
+    public function hasApplied(int $internshipId, int $studentUserId): bool
+    {
+        $sql = 'SELECT COUNT(*) FROM internship_applicants WHERE internship_id = :internshipId AND student_id = :studentUserId';
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([
+            'internshipId' => $internshipId,
+            'studentUserId' => $studentUserId,
+        ]);
+        $result = $stmt->fetch(PDO::FETCH_COLUMN);
+        return $result > 0;
     }
 
     public function delete(int $id): void

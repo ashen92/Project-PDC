@@ -9,15 +9,14 @@ use App\Interfaces\IFileStorageService;
 use App\Interfaces\IInternshipCycleService;
 use App\Interfaces\IInternshipService;
 use App\Repositories\InternshipRepository;
-use App\Repositories\UserRepository;
+use Override;
 
 class InternshipService implements IInternshipService
 {
     public function __construct(
-        private InternshipRepository $internshipRepository,
-        private UserRepository $userRepository,
-        private IInternshipCycleService $internshipCycleService,
-        private IFileStorageService $fileStorageService
+        private readonly InternshipRepository $internshipRepository,
+        private readonly IInternshipCycleService $internshipCycleService,
+        private readonly IFileStorageService $fileStorageService
     ) {
     }
 
@@ -92,7 +91,7 @@ class InternshipService implements IInternshipService
         $this->internshipRepository->delete($id);
     }
 
-    #[\Override] public function createInternship(
+    #[Override] public function createInternship(
         string $title,
         string $description,
         int $ownerId,
@@ -113,7 +112,7 @@ class InternshipService implements IInternshipService
         );
     }
 
-    #[\Override] public function updateInternship(
+    #[Override] public function updateInternship(
         int $id,
         ?string $title = null,
         ?string $description = null,
@@ -124,24 +123,27 @@ class InternshipService implements IInternshipService
         return $this->internshipRepository->updateInternship($id, $title, $description);
     }
 
-    public function applyToInternship(int $internshipId, int $userId): void
+    #[Override] public function apply(int $internshipId, int $userId): bool
     {
-        $internship = $this->internshipRepository->find($internshipId);
-        $user = $this->userRepository->find($userId);
-        $internship->addApplicant($user);
-        $this->internshipRepository->save($internship);
+        // TODO: Check if internship exists
+        // TODO: Check if user exists and is a student
+
+        return $this->internshipRepository->apply($internshipId, $userId);
     }
 
-    public function undoApplyToInternship(int $internshipId, int $userId): void
+    #[Override] public function undoApply(int $internshipId, int $userId): bool
     {
-        $internship = $this->internshipRepository->find($internshipId);
-        $user = $this->userRepository->find($userId);
-        $internship->removeApplicant($user);
-        $this->internshipRepository->save($internship);
+        // TODO: Check if internship exists
+        // TODO: Check if user exists and is a student
+
+        return $this->internshipRepository->undoApply($internshipId, $userId);
     }
 
-    public function hasAppliedToInternship(int $internshipId, int $userId): bool
+    #[Override] public function hasAppliedToInternship(int $internshipId, int $userId): bool
     {
+        // TODO: Check if internship exists
+        // TODO: Check if user exists and is a student
+
         return $this->internshipRepository->hasApplied($internshipId, $userId);
     }
 }

@@ -3,14 +3,17 @@ declare(strict_types=1);
 
 namespace App\Interfaces;
 
+use App\DTOs\InternshipListViewDTO;
 use App\Entities\Internship;
+use App\Entities\Organization;
+use App\Entities\Student;
 
 interface IInternshipService
 {
     public function getInternshipById(int $id, ?int $internshipCycleId = null): ?Internship;
 
     /**
-     * @return array<\App\DTOs\InternshipListViewDTO>
+     * @return array<InternshipListViewDTO>
      */
     public function getInternshipsBy(
         ?int $iCycleId,
@@ -23,13 +26,13 @@ interface IInternshipService
     public function getNumberOfInternships(?int $iCycleId, ?int $ownerId, ?string $searchQuery): int;
 
     /**
-     * @return array<\App\Entities\Student>
+     * @return array<Student>
      */
     public function getApplicants(int $internshipId): array;
 
     /**
      * @param array<Internship> $internships
-     * @return array<\App\Entities\Organization>
+     * @return array<Organization>
      */
     public function getOrganizationsFrom(array $internships): array;
 
@@ -47,7 +50,7 @@ interface IInternshipService
         ?string $description = null,
         ?bool $isPublished = null
     ): bool;
-    public function applyToInternship(int $internshipId, int $userId): void;
-    public function undoApplyToInternship(int $internshipId, int $userId): void;
+    public function apply(int $internshipId, int $userId): bool;
+    public function undoApply(int $internshipId, int $userId): bool;
     public function hasAppliedToInternship(int $internshipId, int $userId): bool;
 }
