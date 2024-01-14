@@ -102,6 +102,23 @@ class InternshipRepository implements IRepository
         return array_map(fn(array $result) => InternshipSearchResultMapper::map($result), $results);
     }
 
+    public function searchInternshipsGetOrganizations(int $cycleId, ?string $searchQuery): array
+    {
+        $sql = 'SELECT DISTINCT o.*
+                FROM internships i
+                JOIN organizations o ON i.organization_id = o.id
+                WHERE i.isPublished = 1 AND i.internship_cycle_id = :cycleId';
+        $params = ['cycleId' => $cycleId];
+        if ($searchQuery) {
+            $sql .= ' AND i.title LIKE :searchQuery';
+            $params['searchQuery'] = '%' . $searchQuery . '%';
+        }
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($params);
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return array_map(fn(array $result) => OrganizationMapper::map($result), $results);
+    }
+
     /**
      * @param array<int> $ids
      * @return array<Organization>

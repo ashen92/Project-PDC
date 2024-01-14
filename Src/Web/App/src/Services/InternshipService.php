@@ -64,6 +64,16 @@ class InternshipService implements IInternshipService
         return $this->setOrgLogos($result);
     }
 
+    #[Override] public function searchInternshipsGetOrganizations(int $cycleId, ?string $searchQuery): array
+    {
+        // TODO: Check if internship cycle exists
+
+        return $this->internshipRepository->searchInternshipsGetOrganizations(
+            $cycleId,
+            $searchQuery,
+        );
+    }
+
     public function getInternshipCount(int $cycleId, ?string $searchQuery, ?int $ownerUserId): int
     {
 
@@ -75,11 +85,6 @@ class InternshipService implements IInternshipService
     #[Override] public function getApplications(int $internshipId): array
     {
         return $this->internshipRepository->findAllApplications($internshipId);
-    }
-
-    #[Override] public function getOrganizations(array $ids): array
-    {
-        return $this->internshipRepository->findOrganizations($ids);
     }
 
     public function deleteInternship(int $id): bool

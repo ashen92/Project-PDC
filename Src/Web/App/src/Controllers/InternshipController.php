@@ -44,6 +44,8 @@ class InternshipController extends PageControllerBase
 
         // TODO: Validate query params
 
+        $orgs = null;
+
         if ($this->userService->hasRole($userId, Role::InternshipProgram_Partner_Admin)) {
             $internships = $this->internshipService
                 ->searchInternships(
@@ -53,6 +55,7 @@ class InternshipController extends PageControllerBase
                     self::MAX_INTERNSHIP_RESULTS_PER_PAGE,
                     (int) (($pageNumber - 1) * self::MAX_INTERNSHIP_RESULTS_PER_PAGE)
                 );
+
             $numberOfResults = $this->internshipService->getInternshipCount(
                 $latestCycleId,
                 $searchQuery,
@@ -68,6 +71,11 @@ class InternshipController extends PageControllerBase
                     (int) (($pageNumber - 1) * self::MAX_INTERNSHIP_RESULTS_PER_PAGE)
                 );
 
+            $orgs = $this->internshipService->searchInternshipsGetOrganizations(
+                $latestCycleId,
+                $searchQuery,
+            );
+
             $numberOfResults = $this->internshipService->getInternshipCount(
                 $latestCycleId,
                 $searchQuery,
@@ -76,10 +84,6 @@ class InternshipController extends PageControllerBase
         }
 
         $pages = (int) ceil($numberOfResults / self::MAX_INTERNSHIP_RESULTS_PER_PAGE);
-
-        $orgs = $this->internshipService->getOrganizations(
-            array_map(fn($i) => $i->internship->getOrganizationId(), $internships)
-        );
 
         return $this->render(
             "internship-program/internships.html",
