@@ -80,7 +80,6 @@ $container->register(
 )
     ->setArguments([
         new Reference("pdo_mysql_connection"),
-        new Reference("doctrine.entity_manager")
     ]);
 
 $container->register(

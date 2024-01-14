@@ -3,24 +3,22 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
-use App\Entities\Internship;
+use App\Interfaces\Repository\IRepository;
 use App\Mappers\InternshipMapper;
 use App\Mappers\InternshipSearchResultMapper;
 use App\Mappers\OrganizationMapper;
 use App\Mappers\StudentMapper;
+use App\Models\Internship;
 use App\Models\InternshipSearchResult;
 use App\Models\Organization;
 use App\Models\Student;
-use Doctrine\ORM\EntityManager;
 use PDO;
 
-class InternshipRepository extends Repository
+class InternshipRepository implements IRepository
 {
     public function __construct(
         private readonly PDO $pdo,
-        EntityManager $entityManager
     ) {
-        parent::__construct($entityManager);
     }
 
     public function beginTransaction(): void
@@ -38,7 +36,7 @@ class InternshipRepository extends Repository
         $this->pdo->rollBack();
     }
 
-    public function findInternship(int $id): ?\App\Models\Internship
+    public function findInternship(int $id): ?Internship
     {
         $stmt = $this->pdo->prepare('SELECT * FROM internships WHERE id = :id');
         $stmt->execute(['id' => $id]);
@@ -104,37 +102,6 @@ class InternshipRepository extends Repository
         return array_map(fn(array $result) => InternshipSearchResultMapper::map($result), $results);
     }
 
-    public function findAllBy(
-        ?string $searchQuery,
-        ?int $ownerId,
-        ?array $orderBy = null,
-        ?int $limit = null,
-        ?int $offset = null,
-    ): array {
-        $qb = $this->entityManager->createQueryBuilder();
-        $qb->select('i')
-            ->from(Internship::class, 'i');
-
-        if ($searchQuery) {
-            $qb->where('i.title LIKE :searchQuery')
-                ->setParameter('searchQuery', '%' . $searchQuery . '%');
-        }
-        if ($ownerId) {
-            $qb->andWhere('i.owner = :ownerId')
-                ->setParameter('ownerId', $ownerId);
-        }
-        if ($orderBy) {
-            $qb->orderBy('i.' . $orderBy['column'], $orderBy['direction']);
-        }
-        if ($limit) {
-            $qb->setMaxResults($limit);
-        }
-        if ($offset) {
-            $qb->setFirstResult($offset);
-        }
-        return $qb->getQuery()->getResult();
-    }
-
     /**
      * @param array<int> $ids
      * @return array<Organization>
@@ -198,14 +165,11 @@ class InternshipRepository extends Repository
         return $result > 0;
     }
 
-    public function delete(int $id): void
+    public function delete(int $id): bool
     {
-        $query = $this->entityManager->createQuery(
-            'DELETE FROM App\Entities\Internship i
-            WHERE i.id = :id'
-        )->setParameter('id', $id);
-
-        $query->execute();
+        $sql = 'DELETE FROM internships WHERE id = :id';
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute(['id' => $id]);
     }
 
     public function createInternship(
@@ -215,7 +179,7 @@ class InternshipRepository extends Repository
         int $organizationId,
         int $internshipCycleId,
         bool $isPublished,
-    ): \App\Models\Internship {
+    ): Internship {
         $sql = 'INSERT INTO internships (title, description, owner_user_id, organization_id, internship_cycle_id, createdAt, isPublished)
                 VALUES (:title, :description, :ownerId, :organizationId, :internshipCycleId, NOW(), :isPublished)';
         $stmt = $this->pdo->prepare($sql);

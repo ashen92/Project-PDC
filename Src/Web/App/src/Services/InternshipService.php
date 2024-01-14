@@ -82,9 +82,9 @@ class InternshipService implements IInternshipService
         return $this->internshipRepository->findOrganizations($ids);
     }
 
-    public function deleteInternshipById(int $id): void
+    public function deleteInternship(int $id): bool
     {
-        $this->internshipRepository->delete($id);
+        return $this->internshipRepository->delete($id);
     }
 
     #[Override] public function createInternship(

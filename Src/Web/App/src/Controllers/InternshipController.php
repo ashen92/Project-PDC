@@ -21,7 +21,7 @@ use Twig\Environment;
 #[Route("/internship-program/internships")]
 class InternshipController extends PageControllerBase
 {
-    const int MAX_INTERNSHIP_RESULTS_PER_PAGE = 5;
+    const int MAX_INTERNSHIP_RESULTS_PER_PAGE = 25;
 
     public function __construct(
         Environment $twig,
@@ -96,7 +96,7 @@ class InternshipController extends PageControllerBase
     #[Route("/{id}", requirements: ['id' => '\d+'], methods: ["DELETE"])]
     public function delete(Request $request, int $id): Response
     {
-        $this->internshipService->deleteInternshipById($id);
+        $this->internshipService->deleteInternship($id);
         return new Response(null, 204);
     }
 

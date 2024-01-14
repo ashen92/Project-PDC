@@ -36,7 +36,7 @@ interface IInternshipService
      */
     public function getOrganizations(array $ids): array;
 
-    public function deleteInternshipById(int $id): void;
+    public function deleteInternship(int $id): bool;
     public function createInternship(
         string $title,
         string $description,
