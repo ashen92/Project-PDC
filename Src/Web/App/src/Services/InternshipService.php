@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use App\DTOs\InternshipDTO;
 use App\DTOs\InternshipListViewDTO;
 use App\Entities\Internship;
 use App\Interfaces\IFileStorageService;
+use App\Interfaces\IInternshipCycleService;
 use App\Interfaces\IInternshipService;
 use App\Repositories\InternshipRepository;
 use App\Repositories\UserRepository;
@@ -16,7 +16,7 @@ class InternshipService implements IInternshipService
     public function __construct(
         private InternshipRepository $internshipRepository,
         private UserRepository $userRepository,
-        private InternshipCycleService $internshipCycleService,
+        private IInternshipCycleService $internshipCycleService,
         private IFileStorageService $fileStorageService
     ) {
     }
@@ -92,20 +92,36 @@ class InternshipService implements IInternshipService
         $this->internshipRepository->delete($id);
     }
 
-    public function addInternship(InternshipDTO $dto): void
-    {
-        $user = $this->userRepository->find($dto->ownerId);
-        $internshipCycle = $this->internshipCycleService->getLatestActiveInternshipCycle();
-        $internship = new Internship($dto->title, $dto->description, $user, $internshipCycle);
-        $this->internshipRepository->save($internship);
+    #[\Override] public function createInternship(
+        string $title,
+        string $description,
+        int $ownerId,
+        int $organizationId,
+        bool $isPublished,
+    ): void {
+        // TODO: Check if organization exists
+        // TODO: Check if owner exists
+        // TODO: Check if active internship cycle exists
+
+        $this->internshipRepository->createInternship(
+            $title,
+            $description,
+            $ownerId,
+            $organizationId,
+            $this->internshipCycleService->getLatestActiveInternshipCycle()->getId(),
+            $isPublished
+        );
     }
 
-    public function updateInternship(int $id, string $title, string $description): void
-    {
-        $internship = $this->internshipRepository->find($id);
-        $internship->setTitle($title);
-        $internship->setDescription($description);
-        $this->internshipRepository->save($internship);
+    #[\Override] public function updateInternship(
+        int $id,
+        ?string $title = null,
+        ?string $description = null,
+        ?bool $isPublished = null
+    ): bool {
+        // TODO: Check if internship exists
+
+        return $this->internshipRepository->updateInternship($id, $title, $description);
     }
 
     public function applyToInternship(int $internshipId, int $userId): void

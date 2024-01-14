@@ -22,7 +22,7 @@ class Internship
     private string $description;
 
     #[ORM\ManyToOne(targetEntity: Partner::class, inversedBy: "internshipsCreated")]
-    #[ORM\JoinColumn(name: "user_id", referencedColumnName: "id")]
+    #[ORM\JoinColumn(name: "owner_user_id", referencedColumnName: "id")]
     private Partner $owner;
 
     #[ORM\ManyToOne(targetEntity: Organization::class)]
@@ -41,6 +41,12 @@ class Internship
     #[ORM\JoinColumn(name: "internship_cycle_id", referencedColumnName: "id")]
     private InternshipCycle $internshipCycle;
 
+    #[ORM\Column(type: "datetime_immutable")]
+    private \DateTimeImmutable $createdAt;
+
+    #[ORM\Column(type: "boolean")]
+    private bool $isPublished;
+
     public function __construct(string $title, string $description, Partner $owner, InternshipCycle $internshipCycle)
     {
         $this->title = $title;
@@ -49,6 +55,8 @@ class Internship
         $this->organization = $owner->getOrganization();
         $owner->addToInternshipsCreated($this);
         $this->internshipCycle = $internshipCycle;
+        $this->createdAt = new \DateTimeImmutable();
+        $this->isPublished = true;
     }
 
     public function getId(): int

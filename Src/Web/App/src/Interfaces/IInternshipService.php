@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Interfaces;
 
-use App\DTOs\InternshipDTO;
 use App\Entities\Internship;
 
 interface IInternshipService
@@ -35,8 +34,19 @@ interface IInternshipService
     public function getOrganizationsFrom(array $internships): array;
 
     public function deleteInternshipById(int $id): void;
-    public function addInternship(InternshipDTO $internshipDTO): void;
-    public function updateInternship(int $id, string $title, string $description): void;
+    public function createInternship(
+        string $title,
+        string $description,
+        int $ownerId,
+        int $organizationId,
+        bool $isPublished,
+    ): void;
+    public function updateInternship(
+        int $id,
+        ?string $title = null,
+        ?string $description = null,
+        ?bool $isPublished = null
+    ): bool;
     public function applyToInternship(int $internshipId, int $userId): void;
     public function undoApplyToInternship(int $internshipId, int $userId): void;
     public function hasAppliedToInternship(int $internshipId, int $userId): bool;

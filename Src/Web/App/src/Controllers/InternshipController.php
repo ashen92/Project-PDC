@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Attributes\RequiredRole;
-use App\DTOs\InternshipDTO;
 use App\Interfaces\IInternshipService;
 use App\Interfaces\IUserService;
 use App\Security\Role;
@@ -117,7 +116,7 @@ class InternshipController extends PageControllerBase
     }
 
     #[Route("/{id}/modify", methods: ["GET"])]
-    public function editGET(int $id): Response
+    public function updateGET(int $id): Response
     {
         return $this->render(
             "internship-program/internship/modify.html",
@@ -129,33 +128,56 @@ class InternshipController extends PageControllerBase
     }
 
     #[Route("/{id}/modify", methods: ["POST"])]
-    public function editPOST(Request $request): RedirectResponse
+    public function updatePOST(Request $request): Response|RedirectResponse
     {
-        $this->internshipService->updateInternship(
-            (int) $request->get("id"),
-            $request->get("title"),
-            $request->get("description")
+        $id = (int) $request->get("id");
+        $title = $request->get("title");
+        $description = $request->get("description");
+        $isPublished = (bool) $request->get("is_published");
+
+        // TODO: Validate data
+
+        if ($this->internshipService->updateInternship($id, $title, $description, $isPublished)) {
+            return $this->redirect("/internship-program/internships");
+        }
+
+        // TODO: Set errors
+
+        return $this->render(
+            "internship-program/internship/modify.html",
+            [
+                "section" => "internships",
+                "internship" => $this->internshipService->getInternshipById($id)
+            ]
         );
-        return $this->redirect("/internship-program/internships");
     }
 
     #[Route("/create", methods: ["GET"])]
-    public function addGET(): Response
+    public function createGET(): Response
     {
         return $this->render("internship-program/internship/create.html", ["section" => "internships"]);
     }
 
     #[Route("/create", methods: ["POST"])]
-    public function addPOST(Request $request): RedirectResponse
+    public function createPOST(Request $request): RedirectResponse
     {
-        $internshipDTO = new InternshipDTO(
-            $request->get("title"),
-            $request->get("description"),
-            (int) $request->getSession()->get("user_id"),
-        );
-        // TODO: Validate DTO
+        $title = $request->get("title");
+        $description = $request->get("description");
+        $ownerId = (int) $request->getSession()->get("user_id");
+        $organizationId = (int) $request->get("organization_id");
+        $isPublished = (bool) $request->get("is_published");
 
-        $this->internshipService->addInternship($internshipDTO);
+        // TODO: Validate data
+
+        $this->internshipService->createInternship(
+            $title,
+            $description,
+            $ownerId,
+            // $organizationId,
+            // $isPublished,
+            1,
+            true,
+        );
         return $this->redirect("/internship-program/internships");
     }
 }

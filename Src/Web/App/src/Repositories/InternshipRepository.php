@@ -4,9 +4,34 @@ declare(strict_types=1);
 namespace App\Repositories;
 
 use App\Entities\Internship;
+use App\Mappers\InternshipMapper;
+use Doctrine\ORM\EntityManager;
+use PDO;
 
 class InternshipRepository extends Repository
 {
+    public function __construct(
+        private readonly PDO $pdo,
+        EntityManager $entityManager
+    ) {
+        parent::__construct($entityManager);
+    }
+
+    public function beginTransaction(): void
+    {
+        $this->pdo->beginTransaction();
+    }
+
+    public function commit(): void
+    {
+        $this->pdo->commit();
+    }
+
+    public function rollback(): void
+    {
+        $this->pdo->rollBack();
+    }
+
     public function find(int $id): ?Internship
     {
         $query = $this->entityManager->createQuery(
@@ -16,6 +41,17 @@ class InternshipRepository extends Repository
         )->setParameter('id', $id);
 
         return $query->getOneOrNullResult();
+    }
+
+    public function findInternship(int $id): ?\App\Models\Internship
+    {
+        $stmt = $this->pdo->prepare('SELECT * FROM internships WHERE id = :id');
+        $stmt->execute(['id' => $id]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($result === false) {
+            return null;
+        }
+        return InternshipMapper::map($result);
     }
 
     public function findAllBy(
@@ -110,5 +146,64 @@ class InternshipRepository extends Repository
     {
         $this->entityManager->persist($internship);
         $this->entityManager->flush();
+    }
+
+    public function createInternship(
+        string $title,
+        string $description,
+        int $ownerId,
+        int $organizationId,
+        int $internshipCycleId,
+        bool $isPublished,
+    ): \App\Models\Internship {
+        $sql = 'INSERT INTO internships (title, description, owner_user_id, organization_id, internship_cycle_id, createdAt, isPublished)
+                VALUES (:title, :description, :ownerId, :organizationId, :internshipCycleId, NOW(), :isPublished)';
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([
+            'title' => $title,
+            'description' => $description,
+            'ownerId' => $ownerId,
+            'organizationId' => $organizationId,
+            'internshipCycleId' => $internshipCycleId,
+            'isPublished' => $isPublished,
+        ]);
+        $internshipId = (int) $this->pdo->lastInsertId();
+        return $this->findInternship($internshipId);
+    }
+
+    public function updateInternship(
+        int $id,
+        ?string $title = null,
+        ?string $description = null,
+        ?bool $isPublished = null
+    ): bool {
+        if ($title === null && $description === null && $isPublished === null) {
+            return true;
+        }
+
+        $sql = 'UPDATE internships SET ';
+        $params = [];
+        if ($title !== null) {
+            $sql .= 'title = :title';
+            $params['title'] = $title;
+        }
+        if ($description !== null) {
+            if (count($params) > 0) {
+                $sql .= ', ';
+            }
+            $sql .= 'description = :description';
+            $params['description'] = $description;
+        }
+        if ($isPublished !== null) {
+            if (count($params) > 0) {
+                $sql .= ', ';
+            }
+            $sql .= 'isPublished = :isPublished';
+            $params['isPublished'] = $isPublished;
+        }
+        $sql .= ' WHERE id = :id';
+        $params['id'] = $id;
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute($params);
     }
 }
