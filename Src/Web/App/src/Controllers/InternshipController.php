@@ -21,12 +21,12 @@ use Twig\Environment;
 #[Route("/internship-program/internships")]
 class InternshipController extends PageControllerBase
 {
-    const int MAX_INTERNSHIP_RESULTS_PER_PAGE = 20;
+    const int MAX_INTERNSHIP_RESULTS_PER_PAGE = 5;
 
     public function __construct(
         Environment $twig,
-        private IInternshipService $internshipService,
-        private IUserService $userService,
+        private readonly IInternshipService $internshipService,
+        private readonly IUserService $userService,
     ) {
         parent::__construct($twig);
     }
@@ -35,7 +35,7 @@ class InternshipController extends PageControllerBase
     public function internships(Request $request): Response
     {
         $userId = $request->getSession()->get("user_id");
-        $latestInternshipCycleId = $request->getSession()->get("latest_internship_cycle_id");
+        $latestCycleId = $request->getSession()->get("latest_internship_cycle_id");
 
         $queryParams = $request->query->all();
 
@@ -44,58 +44,56 @@ class InternshipController extends PageControllerBase
 
         // TODO: Validate query params
 
-        $internships = [];
-        $numberOfResults = 0;
-
         if ($this->userService->hasRole($userId, Role::InternshipProgram_Partner_Admin)) {
             $internships = $this->internshipService
-                ->getInternshipsBy(
-                    $latestInternshipCycleId,
-                    $userId,
+                ->searchInternships(
+                    $latestCycleId,
                     $searchQuery,
+                    $userId,
                     self::MAX_INTERNSHIP_RESULTS_PER_PAGE,
                     (int) (($pageNumber - 1) * self::MAX_INTERNSHIP_RESULTS_PER_PAGE)
                 );
-            $numberOfResults = $this->internshipService->getNumberOfInternships(
-                $latestInternshipCycleId,
-                $userId,
-                $searchQuery
+            $numberOfResults = $this->internshipService->getInternshipCount(
+                $latestCycleId,
+                $searchQuery,
+                $userId
             );
         } else {
             $internships = $this->internshipService
-                ->getInternshipsBy(
-                    $latestInternshipCycleId,
-                    null,
+                ->searchInternships(
+                    $latestCycleId,
                     $searchQuery,
+                    null,
                     self::MAX_INTERNSHIP_RESULTS_PER_PAGE,
                     (int) (($pageNumber - 1) * self::MAX_INTERNSHIP_RESULTS_PER_PAGE)
                 );
 
-            $numberOfResults = $this->internshipService->getNumberOfInternships(
-                $latestInternshipCycleId,
-                null,
-                $searchQuery
+            $numberOfResults = $this->internshipService->getInternshipCount(
+                $latestCycleId,
+                $searchQuery,
+                null
             );
         }
 
         $pages = (int) ceil($numberOfResults / self::MAX_INTERNSHIP_RESULTS_PER_PAGE);
 
-        $i = array_map(fn($internship) => $internship->internship, $internships);
-        $organizations = $this->internshipService->getOrganizationsFrom($i);
+        $orgs = $this->internshipService->getOrganizations(
+            array_map(fn($i) => $i->internship->getOrganizationId(), $internships)
+        );
 
         return $this->render(
             "internship-program/internships.html",
             [
                 "section" => "internships",
                 "internships" => $internships,
-                "organizations" => $organizations,
+                "organizations" => $orgs,
                 "page" => $pageNumber,
                 "pages" => $pages,
             ]
         );
     }
 
-    #[Route("/{id}", methods: ["DELETE"], requirements: ['id' => '\d+'])]
+    #[Route("/{id}", requirements: ['id' => '\d+'], methods: ["DELETE"])]
     public function delete(Request $request, int $id): Response
     {
         $this->internshipService->deleteInternshipById($id);

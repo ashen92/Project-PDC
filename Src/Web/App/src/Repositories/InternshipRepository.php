@@ -5,7 +5,11 @@ namespace App\Repositories;
 
 use App\Entities\Internship;
 use App\Mappers\InternshipMapper;
+use App\Mappers\InternshipSearchResultMapper;
+use App\Mappers\OrganizationMapper;
 use App\Mappers\StudentMapper;
+use App\Models\InternshipSearchResult;
+use App\Models\Organization;
 use App\Models\Student;
 use Doctrine\ORM\EntityManager;
 use PDO;
@@ -61,6 +65,45 @@ class InternshipRepository extends Repository
         return array_map(fn(array $result) => StudentMapper::map($result), $results);
     }
 
+    /**
+     * @return array<InternshipSearchResult>
+     */
+    public function searchInternships(
+        ?int $cycleId,
+        ?int $ownerUserId,
+        ?string $searchQuery,
+        ?int $numberOfResults,
+        ?int $offsetBy,
+    ): array {
+        $sql = 'SELECT i.*, o.name AS orgName, o.logoFilePath AS orgLogoFilePath
+                FROM internships i
+                JOIN organizations o ON i.organization_id = o.id
+                WHERE i.isPublished = 1';
+        $params = [];
+        if ($cycleId) {
+            $sql .= ' AND i.internship_cycle_id = :cycleId';
+            $params['cycleId'] = $cycleId;
+        }
+        if ($ownerUserId) {
+            $sql .= ' AND i.owner_user_id = :ownerUserId';
+            $params['ownerUserId'] = $ownerUserId;
+        }
+        if ($searchQuery) {
+            $sql .= ' AND i.title LIKE :searchQuery';
+            $params['searchQuery'] = '%' . $searchQuery . '%';
+        }
+        if ($numberOfResults) {
+            $sql .= ' ORDER BY i.createdAt DESC LIMIT ' . $numberOfResults;
+        }
+        if ($offsetBy) {
+            $sql .= ' OFFSET ' . $offsetBy;
+        }
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($params);
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return array_map(fn(array $result) => InternshipSearchResultMapper::map($result), $results);
+    }
+
     public function findAllBy(
         ?string $searchQuery,
         ?int $ownerId,
@@ -93,50 +136,29 @@ class InternshipRepository extends Repository
     }
 
     /**
-     * Summary of findOrganizations
-     * @param array $ids Array of int (Organization IDs)
-     * @return array Array of Organization
+     * @param array<int> $ids
+     * @return array<Organization>
      */
     public function findOrganizations(array $ids): array
     {
-        $query = $this->entityManager->createQuery(
-            'SELECT o
-            FROM App\Entities\Organization o
-            WHERE o.id IN (:ids)'
-        )->setParameter('ids', $ids);
-
-        return $query->getResult();
+        $sql = 'SELECT * FROM organizations WHERE id IN (' . implode(',', $ids) . ')';
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return array_map(fn(array $result) => OrganizationMapper::map($result), $results);
     }
 
-    public function count(?string $searchQuery, ?int $ownerId, ): int
+    public function count(int $cycleId, ?string $searchQuery, ?int $ownerUserId): int
     {
-        // $qb = $this->entityManager->createQueryBuilder();
-        // $qb->select('COUNT(i)')
-        //     ->from(Internship::class, 'i');
-        // if ($searchQuery) {
-        //     $qb->where('i.title LIKE :searchQuery')
-        //         ->setParameter('searchQuery', '%' . $searchQuery . '%');
-        // }
-        // if ($ownerId) {
-        //     $qb->andWhere('i.owner = :ownerId')
-        //         ->setParameter('ownerId', $ownerId);
-        // }
-        // return $qb->getQuery()->getSingleScalarResult();
-
-        $sql = 'SELECT COUNT(*) FROM internships';
-        $params = [];
+        $sql = 'SELECT COUNT(*) FROM internships WHERE internship_cycle_id = :cycleId';
+        $params = ['cycleId' => $cycleId];
         if ($searchQuery) {
-            $sql .= ' WHERE title LIKE :searchQuery';
+            $sql .= ' AND title LIKE :searchQuery';
             $params['searchQuery'] = '%' . $searchQuery . '%';
         }
-        if ($ownerId) {
-            if (count($params) > 0) {
-                $sql .= ' AND ';
-            } else {
-                $sql .= ' WHERE ';
-            }
-            $sql .= 'owner_user_id = :ownerId';
-            $params['ownerId'] = $ownerId;
+        if ($ownerUserId) {
+            $sql .= ' AND owner_user_id = :ownerId';
+            $params['ownerId'] = $ownerUserId;
         }
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute($params);

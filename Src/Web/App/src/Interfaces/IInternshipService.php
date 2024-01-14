@@ -3,27 +3,27 @@ declare(strict_types=1);
 
 namespace App\Interfaces;
 
-use App\DTOs\InternshipListViewDTO;
-use App\Entities\Internship;
 use App\Entities\Organization;
+use App\Models\Internship;
+use App\Models\InternshipSearchResult;
 use App\Models\Student;
 
 interface IInternshipService
 {
-    public function getInternship(int $id, ?int $internshipCycleId = null): ?\App\Models\Internship;
+    public function getInternship(int $id, ?int $cycleId = null): ?Internship;
 
     /**
-     * @return array<InternshipListViewDTO>
+     * @return array<InternshipSearchResult>
      */
-    public function getInternshipsBy(
-        ?int $iCycleId,
-        ?int $ownerId,
+    public function searchInternships(
+        int $cycleId,
         ?string $searchQuery,
+        ?int $ownerUserId,
         ?int $numberOfResults,
         ?int $offsetBy,
     ): array;
 
-    public function getNumberOfInternships(?int $iCycleId, ?int $ownerId, ?string $searchQuery): int;
+    public function getInternshipCount(int $cycleId, ?string $searchQuery, ?int $ownerUserId): int;
 
     /**
      * @return array<Student>
@@ -31,10 +31,10 @@ interface IInternshipService
     public function getApplications(int $internshipId): array;
 
     /**
-     * @param array<Internship> $internships
+     * @param array<int> $ids
      * @return array<Organization>
      */
-    public function getOrganizationsFrom(array $internships): array;
+    public function getOrganizations(array $ids): array;
 
     public function deleteInternshipById(int $id): void;
     public function createInternship(

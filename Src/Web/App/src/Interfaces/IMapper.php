@@ -6,7 +6,7 @@ namespace App\Interfaces;
 interface IMapper
 {
     /**
-     * @param array<string, mixed> $data
+     * @param array<string, mixed> $row
      */
-    public static function map(array $data): mixed;
+    public static function map(array $row): mixed;
 }

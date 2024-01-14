@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use App\DTOs\InternshipListViewDTO;
-use App\Entities\Internship;
 use App\Interfaces\IFileStorageService;
 use App\Interfaces\IInternshipCycleService;
 use App\Interfaces\IInternshipService;
+use App\Models\Internship;
+use App\Models\InternshipSearchResult;
 use App\Repositories\InternshipRepository;
 use Override;
 
@@ -20,55 +20,56 @@ class InternshipService implements IInternshipService
     ) {
     }
 
-    /**
-     * @param array<Internship> $internships
-     * @return array<InternshipListViewDTO>
-     */
-    private function mapToInternshipListViewDTOs(array $internships): array
-    {
-        $result = [];
-
-        foreach ($internships as $internship) {
-            $company = $internship->getOrganization();
-            $internshipView = new InternshipListViewDTO($internship, $company->getName());
-
-            $logo = $this->fileStorageService->get($company->getLogoFilePath());
-            if ($logo) {
-                $internshipView->organizationLogo = "data:{$logo['mimeType']};base64," . base64_encode($logo["content"]);
-            }
-
-            $result[] = $internshipView;
-        }
-
-        return $result;
-    }
-
-    #[Override] public function getInternship(int $id, ?int $internshipCycleId = null): ?\App\Models\Internship
+    #[Override] public function getInternship(int $id, ?int $cycleId = null): ?Internship
     {
         return $this->internshipRepository->findInternship($id);
     }
 
-    public function getInternshipsBy(
-        ?int $iCycleId,
-        ?int $ownerId,
+    /**
+     * @param array<InternshipSearchResult> $internshipSearchResults
+     * @return array<InternshipSearchResult>
+     */
+    private function setOrgLogos(array $internshipSearchResults): array
+    {
+        foreach ($internshipSearchResults as $result) {
+            $orgLogo = $this->fileStorageService->get($result->organizationLogoFilePath);
+            if ($orgLogo) {
+                $result->setOrganizationLogo(
+                    "data:{$orgLogo['mimeType']};base64," . base64_encode($orgLogo["content"])
+                );
+            }
+        }
+        return $internshipSearchResults;
+    }
+
+    #[Override] public function searchInternships(
+        int $cycleId,
         ?string $searchQuery,
+        ?int $ownerUserId,
         ?int $numberOfResults,
         ?int $offsetBy,
     ): array {
-        if ($iCycleId) {
-            $internships = $this->internshipRepository
-                ->findAllBy($searchQuery, $ownerId, null, $numberOfResults, $offsetBy);
-            return $this->mapToInternshipListViewDTOs($internships);
-        }
-        return [];
+
+        // TODO: Check if internship cycle exists
+        // TODO: Check if user exists
+
+        $result = $this->internshipRepository->searchInternships(
+            $cycleId,
+            $ownerUserId,
+            $searchQuery,
+            $numberOfResults,
+            $offsetBy,
+        );
+
+        return $this->setOrgLogos($result);
     }
 
-    public function getNumberOfInternships(?int $iCycleId, ?int $ownerId, ?string $searchQuery): int
+    public function getInternshipCount(int $cycleId, ?string $searchQuery, ?int $ownerUserId): int
     {
-        if ($iCycleId) {
-            return $this->internshipRepository->count($searchQuery, $ownerId);
-        }
-        return 0;
+
+        // TODO: Check if internship cycle exists
+
+        return $this->internshipRepository->count($cycleId, $searchQuery, $ownerUserId);
     }
 
     #[Override] public function getApplications(int $internshipId): array
@@ -76,12 +77,8 @@ class InternshipService implements IInternshipService
         return $this->internshipRepository->findAllApplications($internshipId);
     }
 
-    public function getOrganizationsFrom(array $internships): array
+    #[Override] public function getOrganizations(array $ids): array
     {
-        $ids = array_map(
-            fn(Internship $internship) => $internship->getOrganization()->getId(),
-            $internships
-        );
         return $this->internshipRepository->findOrganizations($ids);
     }
 
