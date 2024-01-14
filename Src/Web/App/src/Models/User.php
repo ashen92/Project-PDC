@@ -5,7 +5,7 @@ namespace App\Models;
 
 class User
 {
-    private const ACTIVATION_TOKEN_VALID_DURATION = "PT1H";
+    private const string ACTIVATION_TOKEN_VALID_DURATION = "PT1H";
 
     public function __construct(
         private int $id,
