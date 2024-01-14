@@ -43,6 +43,18 @@ class UserRepository extends Repository implements IRepository
         return $this->entityManager->getRepository(User::class)->find($userId);
     }
 
+    public function findUser(int $userId): ?\App\Models\User
+    {
+        $sql = "SELECT * FROM users WHERE id = :userId";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(["userId" => $userId]);
+        $data = $stmt->fetch(\PDO::FETCH_ASSOC);
+        if ($data === false) {
+            return null;
+        }
+        return \App\Mappers\UserMapper::map($data);
+    }
+
     /**
      * @return array<string>
      */
@@ -85,6 +97,18 @@ class UserRepository extends Repository implements IRepository
             return null;
         }
         return \App\Mappers\UserMapper::map($data);
+    }
+
+    public function findStudentByStudentEmail(string $email): ?\App\Models\Student
+    {
+        $sql = "SELECT u.*, s.* FROM students s INNER JOIN users u on s.id = u.id WHERE studentEmail = :email";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(["email" => $email]);
+        $data = $stmt->fetch(\PDO::FETCH_ASSOC);
+        if ($data === false) {
+            return null;
+        }
+        return \App\Mappers\StudentMapper::map($data);
     }
 
     public function findManagedUsers(int $userId): array
@@ -192,21 +216,26 @@ class UserRepository extends Repository implements IRepository
         );
     }
 
-    public function addUsersToUserGroup(int $groupId, int $fromUserGroupId): void
+    public function addUsersToUserGroup(int $groupId, int $fromUserGroupId): bool
     {
-        $userGroup = $this->findUserGroup($groupId);
-        $userGroup->addUsersFrom($this->findUserGroup($fromUserGroupId));
-        $this->entityManager->persist($userGroup);
-        $this->entityManager->flush();
+        $sql = "INSERT INTO user_group_membership (user_id, usergroup_id)
+                SELECT user_id, :groupId FROM user_group_membership WHERE usergroup_id = :fromUserGroupId";
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute([
+            "groupId" => $groupId,
+            "fromUserGroupId" => $fromUserGroupId,
+        ]);
     }
 
-    public function addRoleToUserGroup(int $groupId, string $roleName): void
+    public function addRoleToUserGroup(int $groupId, \App\Security\Role $role): bool
     {
-        $userGroup = $this->findUserGroup($groupId);
-        $role = $this->entityManager->getRepository(Role::class)->findOneBy(["name" => $roleName]);
-        $role->addGroup($userGroup);
-        $this->entityManager->persist($userGroup);
-        $this->entityManager->flush();
+        $sql = "INSERT INTO user_group_roles (usergroup_id, role_id)
+                SELECT :groupId, id FROM roles WHERE name = :name";
+        $statement = $this->pdo->prepare($sql);
+        return $statement->execute([
+            "groupId" => $groupId,
+            "name" => $role->value,
+        ]);
     }
 
     public function addPermissionToRole(string $role, Resource $resource, Action $action): void

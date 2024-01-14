@@ -22,7 +22,7 @@ interface IInternshipCycleService
 
     public function getLatestInternshipCycleId(): ?int;
     public function getLatestCycle(): ?\App\Models\InternshipCycle;
-    public function getLatestActiveInternshipCycle(): ?InternshipCycle;
+    public function getLatestActiveCycle(): ?\App\Models\InternshipCycle;
     public function createCycle(CreateCycleDTO $dto): \App\Models\InternshipCycle;
     public function endInternshipCycle(?int $id = null): bool;
 

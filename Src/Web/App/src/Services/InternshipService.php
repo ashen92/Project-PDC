@@ -108,7 +108,7 @@ class InternshipService implements IInternshipService
             $description,
             $ownerId,
             $organizationId,
-            $this->internshipCycleService->getLatestActiveInternshipCycle()->getId(),
+            $this->internshipCycleService->getLatestActiveCycle()->getId(),
             $isPublished
         );
     }

@@ -126,10 +126,12 @@ class InternshipProgramController extends PageControllerBase
             (int) $request->get("partner-group"),
             (int) $request->get("student-group")
         );
-        // validate DTO
-        // todo
+        // TODO: validate DTO
 
+        // TODO: handle exceptions
         $this->internshipCycleService->createCycle($createInternshipCycleDTO);
+        $request->getSession()->remove("latest_internship_cycle_id");
+
         return $this->redirect("/internship-program");
     }
 

@@ -61,17 +61,16 @@ class UserService implements IUserService
 
     public function createStudentUser(CreateStudentUserDTO $createStudentDTO): void
     {
-        $user = $this->userRepository->find($createStudentDTO->id);
+        $user = $this->userRepository->findUser($createStudentDTO->id);
 
         $user->setFirstName($createStudentDTO->firstName);
         $user->setLastName($createStudentDTO->lastName);
         $user->setEmail($createStudentDTO->email);
         $user->setPasswordHash($this->passwordHasher->hashPassword($createStudentDTO->password));
         $user->setIsActive(true);
-        $user->setActivationToken(null);
-        $user->setActivationTokenExpiresAt(null);
+        $user->resetActivationToken();
 
-        $this->userRepository->save($user);
+        $this->userRepository->updateUser($user);
     }
 
     public function getUserRoles(int $userId): array

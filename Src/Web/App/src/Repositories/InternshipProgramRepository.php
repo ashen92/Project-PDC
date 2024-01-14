@@ -59,6 +59,19 @@ class InternshipProgramRepository implements IRepository
         return InternshipCycleMapper::map($result);
     }
 
+    public function findLatestActiveCycle(): ?InternshipCycle
+    {
+        $statement = $this->pdo->prepare(
+            "SELECT * FROM internship_cycles WHERE endedAt IS NULL ORDER BY createdAt DESC LIMIT 1"
+        );
+        $statement->execute();
+        $result = $statement->fetch(\PDO::FETCH_ASSOC);
+        if ($result === false) {
+            return null;
+        }
+        return InternshipCycleMapper::map($result);
+    }
+
     public function findStudents(int $cycleId): array
     {
         $statement = $this->pdo->prepare("

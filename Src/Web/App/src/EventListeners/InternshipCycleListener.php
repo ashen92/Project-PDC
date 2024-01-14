@@ -35,7 +35,7 @@ class InternshipCycleListener implements EventSubscriberInterface
         if ($session->has("active_internship_cycle_id") && $session->has("latest_internship_cycle_id"))
             return;
 
-        $session->set("active_internship_cycle_id", $this->internshipCycleService->getLatestActiveInternshipCycle()?->getId());
+        $session->set("active_internship_cycle_id", $this->internshipCycleService->getLatestActiveCycle()?->getId());
         $session->set("latest_internship_cycle_id", $this->internshipCycleService->getLatestCycle()?->getId());
     }
 

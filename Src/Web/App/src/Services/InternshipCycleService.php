@@ -9,14 +9,13 @@ use App\Entities\InternshipCycle;
 use App\Interfaces\IEmailService;
 use App\Interfaces\IInternshipCycleService;
 use App\Interfaces\IUserService;
-use App\Repositories\InternshipCycleRepository;
 use App\Repositories\InternshipProgramRepository;
 use App\Repositories\UserRepository;
+use App\Security\Role;
 
 class InternshipCycleService implements IInternshipCycleService
 {
     public function __construct(
-        private InternshipCycleRepository $internshipCycleRepository,
         private InternshipProgramRepository $internshipProgramRepository,
         private UserRepository $userRepository,
         private IUserService $userService,
@@ -78,9 +77,9 @@ class InternshipCycleService implements IInternshipCycleService
         return $this->internshipProgramRepository->findLatestCycle();
     }
 
-    public function getLatestActiveInternshipCycle(): ?InternshipCycle
+    public function getLatestActiveCycle(): ?\App\Models\InternshipCycle
     {
-        return $this->internshipCycleRepository->findBy(["endedAt" => null], ["createdAt" => "DESC"], 1)[0] ?? null;
+        return $this->internshipProgramRepository->findLatestActiveCycle();
     }
 
     public function createCycle(CreateCycleDTO $dto): \App\Models\InternshipCycle
@@ -95,9 +94,9 @@ class InternshipCycleService implements IInternshipCycleService
                 ->createUserGroup("InternshipCycle-{$cycle->getId()}-Students");
 
             $this->userRepository
-                ->addRoleToUserGroup($partnerGroup->getId(), "ROLE_INTERNSHIP_PARTNER");
+                ->addRoleToUserGroup($partnerGroup->getId(), Role::InternshipProgram_Partner_Admin);
             $this->userRepository
-                ->addRoleToUserGroup($studentGroup->getId(), "ROLE_INTERNSHIP_STUDENT");
+                ->addRoleToUserGroup($studentGroup->getId(), Role::InternshipProgram_Student);
 
             $this->userRepository
                 ->addUsersToUserGroup($partnerGroup->getId(), $dto->partnerGroup);
@@ -187,7 +186,7 @@ class InternshipCycleService implements IInternshipCycleService
 
         if (!$userGroup) {
             $userGroup = $this->userRepository->createUserGroup($userGroupName);
-            $this->userRepository->addRoleToUserGroup($userGroup->getId(), "ROLE_INTERNSHIP_MANAGED_PARTNER");
+            $this->userRepository->addRoleToUserGroup($userGroup->getId(), Role::InternshipProgram_Partner);
         }
 
         $this->userRepository->addToUserGroup($user->getId(), $userGroup->getId());
