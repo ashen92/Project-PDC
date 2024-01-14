@@ -43,9 +43,9 @@ class InternshipService implements IInternshipService
         return $result;
     }
 
-    public function getInternshipById(int $id, ?int $internshipCycleId = null): ?Internship
+    #[Override] public function getInternship(int $id, ?int $internshipCycleId = null): ?\App\Models\Internship
     {
-        return $this->internshipRepository->find($id);
+        return $this->internshipRepository->findInternship($id);
     }
 
     public function getInternshipsBy(
@@ -71,10 +71,9 @@ class InternshipService implements IInternshipService
         return 0;
     }
 
-    public function getApplicants(int $internshipId): array
+    #[Override] public function getApplications(int $internshipId): array
     {
-        $internship = $this->internshipRepository->find($internshipId);
-        return $internship->getApplicants();
+        return $this->internshipRepository->findAllApplications($internshipId);
     }
 
     public function getOrganizationsFrom(array $internships): array

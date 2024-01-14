@@ -5,6 +5,8 @@ namespace App\Repositories;
 
 use App\Entities\Internship;
 use App\Mappers\InternshipMapper;
+use App\Mappers\StudentMapper;
+use App\Models\Student;
 use Doctrine\ORM\EntityManager;
 use PDO;
 
@@ -32,17 +34,6 @@ class InternshipRepository extends Repository
         $this->pdo->rollBack();
     }
 
-    public function find(int $id): ?Internship
-    {
-        $query = $this->entityManager->createQuery(
-            'SELECT i
-            FROM App\Entities\Internship i
-            WHERE i.id = :id'
-        )->setParameter('id', $id);
-
-        return $query->getOneOrNullResult();
-    }
-
     public function findInternship(int $id): ?\App\Models\Internship
     {
         $stmt = $this->pdo->prepare('SELECT * FROM internships WHERE id = :id');
@@ -52,6 +43,22 @@ class InternshipRepository extends Repository
             return null;
         }
         return InternshipMapper::map($result);
+    }
+
+    /**
+     * @return array<Student>
+     */
+    public function findAllApplications(int $internshipId): array
+    {
+        $sql = 'SELECT u.*, s.*
+                FROM users u
+                JOIN students s ON u.id = s.id
+                JOIN internship_applicants ia ON u.id = ia.student_id
+                WHERE ia.internship_id = :internshipId';
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['internshipId' => $internshipId]);
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return array_map(fn(array $result) => StudentMapper::map($result), $results);
     }
 
     public function findAllBy(
@@ -103,18 +110,37 @@ class InternshipRepository extends Repository
 
     public function count(?string $searchQuery, ?int $ownerId, ): int
     {
-        $qb = $this->entityManager->createQueryBuilder();
-        $qb->select('COUNT(i)')
-            ->from(Internship::class, 'i');
+        // $qb = $this->entityManager->createQueryBuilder();
+        // $qb->select('COUNT(i)')
+        //     ->from(Internship::class, 'i');
+        // if ($searchQuery) {
+        //     $qb->where('i.title LIKE :searchQuery')
+        //         ->setParameter('searchQuery', '%' . $searchQuery . '%');
+        // }
+        // if ($ownerId) {
+        //     $qb->andWhere('i.owner = :ownerId')
+        //         ->setParameter('ownerId', $ownerId);
+        // }
+        // return $qb->getQuery()->getSingleScalarResult();
+
+        $sql = 'SELECT COUNT(*) FROM internships';
+        $params = [];
         if ($searchQuery) {
-            $qb->where('i.title LIKE :searchQuery')
-                ->setParameter('searchQuery', '%' . $searchQuery . '%');
+            $sql .= ' WHERE title LIKE :searchQuery';
+            $params['searchQuery'] = '%' . $searchQuery . '%';
         }
         if ($ownerId) {
-            $qb->andWhere('i.owner = :ownerId')
-                ->setParameter('ownerId', $ownerId);
+            if (count($params) > 0) {
+                $sql .= ' AND ';
+            } else {
+                $sql .= ' WHERE ';
+            }
+            $sql .= 'owner_user_id = :ownerId';
+            $params['ownerId'] = $ownerId;
         }
-        return $qb->getQuery()->getSingleScalarResult();
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($params);
+        return (int) $stmt->fetch(PDO::FETCH_COLUMN);
     }
 
     public function apply(int $internshipId, int $studentUserId): bool
@@ -158,12 +184,6 @@ class InternshipRepository extends Repository
         )->setParameter('id', $id);
 
         $query->execute();
-    }
-
-    public function save(Internship $internship): void
-    {
-        $this->entityManager->persist($internship);
-        $this->entityManager->flush();
     }
 
     public function createInternship(

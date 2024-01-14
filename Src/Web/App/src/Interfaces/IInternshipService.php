@@ -6,11 +6,11 @@ namespace App\Interfaces;
 use App\DTOs\InternshipListViewDTO;
 use App\Entities\Internship;
 use App\Entities\Organization;
-use App\Entities\Student;
+use App\Models\Student;
 
 interface IInternshipService
 {
-    public function getInternshipById(int $id, ?int $internshipCycleId = null): ?Internship;
+    public function getInternship(int $id, ?int $internshipCycleId = null): ?\App\Models\Internship;
 
     /**
      * @return array<InternshipListViewDTO>
@@ -28,7 +28,7 @@ interface IInternshipService
     /**
      * @return array<Student>
      */
-    public function getApplicants(int $internshipId): array;
+    public function getApplications(int $internshipId): array;
 
     /**
      * @param array<Internship> $internships

@@ -22,7 +22,7 @@ class InternshipController
     #[Route("/{id}", methods: ["GET"], requirements: ['id' => '\d+'])]
     public function internship(Request $request, int $id): Response
     {
-        $internship = $this->internshipService->getInternshipById($id);
+        $internship = $this->internshipService->getInternship($id);
         if ($internship) {
             $data = [
                 "title" => $internship->getTitle(),

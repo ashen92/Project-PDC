@@ -109,8 +109,8 @@ class InternshipController extends PageControllerBase
             "internship-program/internship/applicants.html",
             [
                 "section" => "internships",
-                "internship" => $this->internshipService->getInternshipById($id),
-                "applicants" => $this->internshipService->getApplicants($id)
+                "internship" => $this->internshipService->getInternship($id),
+                "applicants" => $this->internshipService->getApplications($id)
             ]
         );
     }
@@ -122,7 +122,7 @@ class InternshipController extends PageControllerBase
             "internship-program/internship/modify.html",
             [
                 "section" => "internships",
-                "internship" => $this->internshipService->getInternshipById($id)
+                "internship" => $this->internshipService->getInternship($id)
             ]
         );
     }
@@ -147,7 +147,7 @@ class InternshipController extends PageControllerBase
             "internship-program/internship/modify.html",
             [
                 "section" => "internships",
-                "internship" => $this->internshipService->getInternshipById($id)
+                "internship" => $this->internshipService->getInternship($id)
             ]
         );
     }
