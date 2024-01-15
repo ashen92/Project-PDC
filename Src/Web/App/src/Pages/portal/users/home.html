@@ -13,11 +13,38 @@
     <p>All users</p>
 </div>
 
+<div class="command-bar">
+    <a class="btn btn-regular btn-icon" href="/portal/users/create">
+        <i class="i i-plus-lg"></i>
+        New user
+    </a>
+    <span class="spacer"></span>
+    <a class="btn btn-regular btn-icon" href="">
+        <i class="i i-people"></i>
+        <span>Add to group</span>
+    </a>
+    <span class="spacer"></span>
+    <a class="btn btn-regular btn-icon" href="">
+        <i class="i i-check-circle"></i>
+        <span>Enable</span>
+    </a>
+    <a class="btn btn-regular btn-icon" href="">
+        <i class="i i-x-circle"></i>
+        Disable
+    </a>
+    <a class="btn btn-regular btn-icon" href="">
+        <i class="i i-arrow-repeat"></i>
+        <span>Reset password</span>
+    </a>
+    <span class="spacer"></span>
+    <a class="btn btn-regular btn-icon" href="">
+        <i class="i i-trash"></i>
+        <span>Delete</span>
+    </a>
+</div>
 <section>
-    <a class="btn" href="/portal/users/create">New user</a>
-</section>
-<section>
-    <table class="table table-hover table-compact">
+    <p class="fs-small mb-10">{{ users|length }} users found.</p>
+    <table class="table border-0 table-hover table-compact">
         <colgroup>
             <col class="w-2-12">
             <col class="w-3-12">
