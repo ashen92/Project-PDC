@@ -117,4 +117,9 @@ class UserService implements IUserService
     {
         $this->userRepository->updateUser($user);
     }
+
+    #[\Override] public function searchUsers(?int $numberOfResults, ?int $offsetBy,): array
+    {
+        return $this->userRepository->searchUsers($numberOfResults, $offsetBy);
+    }
 }

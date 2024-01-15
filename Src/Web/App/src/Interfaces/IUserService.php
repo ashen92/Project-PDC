@@ -37,4 +37,9 @@ interface IUserService
 
     public function saveUser(User $user): void;
     public function updateUser(\App\Models\User $user): void;
+
+    public function searchUsers(
+        ?int $numberOfResults,
+        ?int $offsetBy,
+    ): array;
 }

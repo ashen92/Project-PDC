@@ -256,4 +256,30 @@ class UserRepository extends Repository implements IRepository
         $this->entityManager->persist($userGroup);
         $this->entityManager->flush();
     }
+
+    public function searchUsers(?int $numberOfResults, ?int $offsetBy): array
+    {
+        $sql = "SELECT u.id AS user_id, u.*, s.*, p.* FROM users u
+            LEFT JOIN students s ON u.id = s.id 
+            LEFT JOIN partners p ON u.id = p.id";
+        if ($numberOfResults !== null) {
+            $sql .= " LIMIT :numberOfResults";
+        }
+        if ($offsetBy !== null) {
+            $sql .= " OFFSET :offsetBy";
+        }
+        $stmt = $this->pdo->prepare($sql);
+        if ($numberOfResults !== null) {
+            $stmt->bindValue("numberOfResults", $numberOfResults, \PDO::PARAM_INT);
+        }
+        if ($offsetBy !== null) {
+            $stmt->bindValue("offsetBy", $offsetBy, \PDO::PARAM_INT);
+        }
+        $stmt->execute();
+        $data = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        if ($data === false) {
+            return [];
+        }
+        return array_map(fn($user) => \App\Mappers\UserStudentPartnerMapper::map($user), $data);
+    }
 }

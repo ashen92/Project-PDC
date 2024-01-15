@@ -10,10 +10,48 @@
 
 <div class="title">
     <h2>Users</h2>
+    <p>All users</p>
 </div>
 
 <section>
     <a class="btn" href="/portal/users/create">New user</a>
+</section>
+<section>
+    <table class="table table-hover table-compact">
+        <colgroup>
+            <col class="w-2-12">
+            <col class="w-3-12">
+            <col class="w-2-12">
+            <col class="w-2-12">
+            <col class="w-5-12">
+        </colgroup>
+        <thead>
+            <tr>
+                <th>Display name</th>
+                <th>Email</th>
+                <th>User type</th>
+                <th>Is active</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody class="table-rows-clickable">
+            {% for i in users %}
+            <tr data-href="users&u={{ i.id }}">
+                <td class="capitalize">{{ i.firstName ?? i.fullName }}</td>
+                <td>{{ i.email ?? i.studentEmail }}</td>
+                <td class="capitalize">{{ i.type }}</td>
+                <td>
+                    {% if i.isActive %}
+                    Yes
+                    {% else %}
+                    No
+                    {% endif %}
+                </td>
+                <td></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </section>
 
 {% endblock %}

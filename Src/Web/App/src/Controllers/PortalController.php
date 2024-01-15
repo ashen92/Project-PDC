@@ -56,7 +56,10 @@ class PortalController extends PageControllerBase
 	{
 		return $this->render(
 			"portal/users/home.html",
-			["section" => "users"]
+			[
+				"section" => "users",
+				"users" => $this->userService->searchUsers(null, null),
+			]
 		);
 	}
 
