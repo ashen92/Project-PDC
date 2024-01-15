@@ -25,7 +25,7 @@
     </a>
     <a class="btn btn-regular btn-icon" href="">
         <i class="i i-person-bounding-box"></i>
-        <span>Add role</span>
+        <span>Assign roles</span>
     </a>
     <span class="spacer"></span>
     <a class="btn btn-regular btn-icon" href="">
@@ -35,14 +35,16 @@
 </div>
 <section>
     <p class="fs-small mb-10">{{ groups|length }} groups found.</p>
-    <table class="table border-0 table-hover table-compact">
+    <table class="table border-0 table-hover table-compact rows-selectable">
         <colgroup>
+            <col class="w-10">
             <col class="w-4-12">
             <col class="w-5-12">
             <col class="w-3-12">
         </colgroup>
         <thead>
             <tr>
+                <th><input type="checkbox" id="all"></th>
                 <th>Group name</th>
                 <th>Assigned roles</th>
                 <th></th>
@@ -50,7 +52,8 @@
         </thead>
         <tbody class="table-rows-clickable">
             {% for i in groups %}
-            <tr data-href="users&u={{ i.id }}">
+            <tr data-href="groups?g={{ i.id }}">
+                <td><input type="checkbox" id="{{ i.id }}"></td>
                 <td>{{ i.name }}</td>
                 <td>{{ i.role }}</td>
                 <td></td>

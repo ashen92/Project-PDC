@@ -6,8 +6,10 @@ on(document, "DOMContentLoaded", function () {
 
     for (let i = 0; i < rowContainers.length; i++) {
         on(rowContainers[i], "click", function (event) {
-            const row = event.target.closest("tr");
-            if (row) {
+            const target = event.target;
+            const row = target.closest("tr");
+
+            if (row && !target.matches("input[type='checkbox']") && !target.closest("td").querySelector("input[type='checkbox']")) {
                 window.location.href = row.dataset.href;
             }
         });

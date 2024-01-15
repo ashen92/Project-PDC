@@ -44,8 +44,9 @@
 </div>
 <section>
     <p class="fs-small mb-10">{{ users|length }} users found.</p>
-    <table class="table border-0 table-hover table-compact">
+    <table class="table border-0 table-hover table-compact rows-selectable">
         <colgroup>
+            <col class="w-10">
             <col class="w-2-12">
             <col class="w-3-12">
             <col class="w-2-12">
@@ -54,6 +55,7 @@
         </colgroup>
         <thead>
             <tr>
+                <th><input type="checkbox" id="all"></th>
                 <th>Display name</th>
                 <th>Email</th>
                 <th>User type</th>
@@ -63,7 +65,8 @@
         </thead>
         <tbody class="table-rows-clickable">
             {% for i in users %}
-            <tr data-href="users&u={{ i.id }}">
+            <tr data-href="users?u={{ i.id }}">
+                <td><input type="checkbox" id="{{ i.id }}"></td>
                 <td class="capitalize">{{ i.firstName ?? i.fullName }}</td>
                 <td>{{ i.email ?? i.studentEmail }}</td>
                 <td class="capitalize">{{ i.type }}</td>
