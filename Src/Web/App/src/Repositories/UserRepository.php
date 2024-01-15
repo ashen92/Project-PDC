@@ -282,4 +282,28 @@ class UserRepository extends Repository implements IRepository
         }
         return array_map(fn($user) => \App\Mappers\UserStudentPartnerMapper::map($user), $data);
     }
+
+    public function searchGroups(?int $numberOfResults, ?int $offsetBy)
+    {
+        $sql = "SELECT * FROM user_groups";
+        if ($numberOfResults !== null) {
+            $sql .= " LIMIT :numberOfResults";
+        }
+        if ($offsetBy !== null) {
+            $sql .= " OFFSET :offsetBy";
+        }
+        $stmt = $this->pdo->prepare($sql);
+        if ($numberOfResults !== null) {
+            $stmt->bindValue("numberOfResults", $numberOfResults, \PDO::PARAM_INT);
+        }
+        if ($offsetBy !== null) {
+            $stmt->bindValue("offsetBy", $offsetBy, \PDO::PARAM_INT);
+        }
+        $stmt->execute();
+        $data = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        if ($data === false) {
+            return [];
+        }
+        return array_map(fn($group) => \App\Mappers\UserGroupMapper::map($group), $data);
+    }
 }

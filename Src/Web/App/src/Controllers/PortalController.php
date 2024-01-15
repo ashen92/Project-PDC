@@ -104,6 +104,18 @@ class PortalController extends PageControllerBase
 		return $this->redirect("/portal/users/create");
 	}
 
+	#[Route("/groups", methods: ["GET"])]
+	public function groups(): Response
+	{
+		return $this->render(
+			"portal/groups/home.html",
+			[
+				"section" => "groups",
+				"groups" => $this->userService->searchGroups(null, null),
+			]
+		);
+	}
+
 	#[Route("/partners")]
 	public function partners(): Response
 	{

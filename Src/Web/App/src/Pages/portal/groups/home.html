@@ -1,0 +1,63 @@
+{% extends "shared/layout-left-nav.html" %}
+
+{% block title %}Groups{% endblock %}
+
+{% block left_nav %}
+{% include "portal/left-nav.html" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="title">
+    <h2>Groups</h2>
+    <p>All groups</p>
+</div>
+
+<div class="command-bar">
+    <a class="btn btn-regular btn-icon" href="/portal/groups/create">
+        <i class="i i-plus-lg"></i>
+        New group
+    </a>
+    <span class="spacer"></span>
+    <a class="btn btn-regular btn-icon" href="">
+        <i class="i i-people"></i>
+        <span>Add users</span>
+    </a>
+    <a class="btn btn-regular btn-icon" href="">
+        <i class="i i-person-bounding-box"></i>
+        <span>Add role</span>
+    </a>
+    <span class="spacer"></span>
+    <a class="btn btn-regular btn-icon" href="">
+        <i class="i i-trash"></i>
+        <span>Delete</span>
+    </a>
+</div>
+<section>
+    <p class="fs-small mb-10">{{ groups|length }} groups found.</p>
+    <table class="table border-0 table-hover table-compact">
+        <colgroup>
+            <col class="w-4-12">
+            <col class="w-5-12">
+            <col class="w-3-12">
+        </colgroup>
+        <thead>
+            <tr>
+                <th>Group name</th>
+                <th>Assigned roles</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody class="table-rows-clickable">
+            {% for i in groups %}
+            <tr data-href="users&u={{ i.id }}">
+                <td>{{ i.name }}</td>
+                <td>{{ i.role }}</td>
+                <td></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+
+{% endblock %}

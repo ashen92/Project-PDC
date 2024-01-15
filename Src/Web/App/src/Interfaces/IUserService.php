@@ -42,4 +42,9 @@ interface IUserService
         ?int $numberOfResults,
         ?int $offsetBy,
     ): array;
+
+    public function searchGroups(
+        ?int $numberOfResults,
+        ?int $offsetBy,
+    ): array;
 }

@@ -118,8 +118,13 @@ class UserService implements IUserService
         $this->userRepository->updateUser($user);
     }
 
-    #[\Override] public function searchUsers(?int $numberOfResults, ?int $offsetBy,): array
+    #[\Override] public function searchUsers(?int $numberOfResults, ?int $offsetBy): array
     {
         return $this->userRepository->searchUsers($numberOfResults, $offsetBy);
+    }
+
+    #[\Override] public function searchGroups(?int $numberOfResults, ?int $offsetBy): array
+    {
+        return $this->userRepository->searchGroups($numberOfResults, $offsetBy);
     }
 }
