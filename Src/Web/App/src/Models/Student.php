@@ -18,6 +18,7 @@ class Student extends User
         bool $isActive,
         ?string $activationToken,
         ?\DateTimeImmutable $activationTokenExpiresAt,
+        string $type,
     ) {
         parent::__construct(
             $id,
@@ -28,6 +29,7 @@ class Student extends User
             $isActive,
             $activationToken,
             $activationTokenExpiresAt,
+            $type,
         );
     }
 

@@ -5,6 +5,9 @@ namespace App\Mappers;
 
 class InternshipMapper implements \App\Interfaces\IMapper
 {
+    /**
+     * @throws \Exception
+     */
     #[\Override] public static function map(array $row): \App\Models\Internship
     {
         return new \App\Models\Internship(

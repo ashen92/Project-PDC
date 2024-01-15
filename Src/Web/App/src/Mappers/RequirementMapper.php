@@ -8,21 +8,24 @@ use App\Models\Requirement;
 
 class RequirementMapper implements IMapper
 {
-    #[\Override] public static function map(array $data): Requirement
+    /**
+     * @throws \Exception
+     */
+    #[\Override] public static function map(array $row): Requirement
     {
         return new Requirement(
-            $data["id"],
-            $data["name"],
-            $data["description"],
-            Requirement\Type::fromString($data["requirementType"]),
-            new \DateTimeImmutable($data["startDate"]),
-            $data["endBeforeDate"] === null ? null : new \DateTimeImmutable($data["endBeforeDate"]),
-            $data["repeatInterval"] === null ? null : Requirement\RepeatInterval::fromString($data["repeatInterval"]),
-            Requirement\FulFillMethod::fromString($data["fulfillMethod"]),
-            $data["allowedFileTypes"] === null ? null : explode(",", $data["allowedFileTypes"]),
-            $data["maxFileSize"],
-            $data["maxFileCount"],
-            $data["internship_cycle_id"]
+            $row["id"],
+            $row["name"],
+            $row["description"],
+            Requirement\Type::fromString($row["requirementType"]),
+            new \DateTimeImmutable($row["startDate"]),
+            $row["endBeforeDate"] === null ? null : new \DateTimeImmutable($row["endBeforeDate"]),
+            $row["repeatInterval"] === null ? null : Requirement\RepeatInterval::fromString($row["repeatInterval"]),
+            Requirement\FulFillMethod::fromString($row["fulfillMethod"]),
+            $row["allowedFileTypes"] === null ? null : explode(",", $row["allowedFileTypes"]),
+            $row["maxFileSize"],
+            $row["maxFileCount"],
+            $row["internship_cycle_id"]
         );
     }
 }

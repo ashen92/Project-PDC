@@ -16,6 +16,7 @@ class User
         private bool $isActive,
         private ?string $activationToken,
         private ?\DateTimeImmutable $activationTokenExpiresAt,
+        private string $type,
     ) {
     }
 
@@ -73,6 +74,11 @@ class User
     public function getActivationTokenExpiresAt(): ?\DateTimeImmutable
     {
         return $this->activationTokenExpiresAt;
+    }
+
+    public function getType(): string
+    {
+        return $this->type;
     }
 
     public function setEmail(string $email): void

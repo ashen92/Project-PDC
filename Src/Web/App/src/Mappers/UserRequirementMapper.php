@@ -7,19 +7,22 @@ use App\Interfaces\IMapper;
 
 class UserRequirementMapper implements IMapper
 {
-    #[\Override] public static function map(array $data): \App\Models\UserRequirement
+    /**
+     * @throws \Exception
+     */
+    #[\Override] public static function map(array $row): \App\Models\UserRequirement
     {
         return new \App\Models\UserRequirement(
-            $data["id"],
-            $data["user_id"],
-            $data["requirement_id"],
-            \App\Models\Requirement\FulFillMethod::fromString($data["fulfillMethod"]),
-            new \DateTimeImmutable($data["startDate"]),
-            new \DateTimeImmutable($data["endDate"]),
-            $data["completedAt"] === null ? null : new \DateTimeImmutable($data["completedAt"]),
-            $data["status"],
-            $data["filePaths"] === null ? null : json_decode($data["filePaths"]),
-            $data["textResponse"],
+            $row["id"],
+            $row["user_id"],
+            $row["requirement_id"],
+            \App\Models\Requirement\FulFillMethod::fromString($row["fulfillMethod"]),
+            new \DateTimeImmutable($row["startDate"]),
+            new \DateTimeImmutable($row["endDate"]),
+            $row["completedAt"] === null ? null : new \DateTimeImmutable($row["completedAt"]),
+            $row["status"],
+            $row["filePaths"] === null ? null : json_decode($row["filePaths"]),
+            $row["textResponse"],
         );
     }
 }
