@@ -17,7 +17,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Requirement
 {
     // A requirement can be repeated up to 6 months after the start date.
-    const string MAXIMUM_REPEAT_DURATION = "P6M";
+    public const MAXIMUM_REPEAT_DURATION = "P6M";
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
