@@ -7,11 +7,12 @@ use App\Interfaces\Repository\IRepository;
 use App\Mappers\InternshipCycleMapper;
 use App\Mappers\StudentMapper;
 use App\Models\InternshipCycle;
+use PDO;
 
 class InternshipProgramRepository implements IRepository
 {
     public function __construct(
-        private readonly \PDO $pdo,
+        private readonly PDO $pdo,
     ) {
 
     }
@@ -39,7 +40,7 @@ class InternshipProgramRepository implements IRepository
         $statement->execute([
             ":id" => $id,
         ]);
-        $result = $statement->fetch(\PDO::FETCH_ASSOC);
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
         if ($result === false) {
             return null;
         }
@@ -52,7 +53,7 @@ class InternshipProgramRepository implements IRepository
             "SELECT * FROM internship_cycles ORDER BY createdAt DESC LIMIT 1"
         );
         $statement->execute();
-        $result = $statement->fetch(\PDO::FETCH_ASSOC);
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
         if ($result === false) {
             return null;
         }
@@ -65,7 +66,7 @@ class InternshipProgramRepository implements IRepository
             "SELECT * FROM internship_cycles WHERE endedAt IS NULL ORDER BY createdAt DESC LIMIT 1"
         );
         $statement->execute();
-        $result = $statement->fetch(\PDO::FETCH_ASSOC);
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
         if ($result === false) {
             return null;
         }
@@ -86,7 +87,7 @@ class InternshipProgramRepository implements IRepository
         $statement->execute([
             ":internship_cycle_id" => $cycleId,
         ]);
-        $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
         if ($result === false) {
             return [];
         }

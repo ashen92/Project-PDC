@@ -77,7 +77,7 @@ class UserRepository implements IRepository
         return $stmt->fetchAll(PDO::FETCH_COLUMN);
     }
 
-    public function findByEmail(string $email): ?\App\Models\User
+    public function findByEmail(string $email): ?User
     {
         $sql = "SELECT * FROM users WHERE email = :email";
         $stmt = $this->pdo->prepare($sql);
@@ -89,7 +89,7 @@ class UserRepository implements IRepository
         return UserMapper::map($data);
     }
 
-    public function findByActivationToken(string $token): ?\App\Models\User
+    public function findByActivationToken(string $token): ?User
     {
         $sql = "SELECT * FROM users WHERE activationToken = :token";
         $stmt = $this->pdo->prepare($sql);
@@ -101,7 +101,7 @@ class UserRepository implements IRepository
         return UserMapper::map($data);
     }
 
-    public function findStudentByStudentEmail(string $email): ?\App\Models\Student
+    public function findStudentByStudentEmail(string $email): ?Student
     {
         $sql = "SELECT u.*, s.* FROM students s INNER JOIN users u on s.id = u.id WHERE studentEmail = :email";
         $stmt = $this->pdo->prepare($sql);
@@ -154,7 +154,7 @@ class UserRepository implements IRepository
                     VALUES (:isActive, :type)";
             $stmt = $this->pdo->prepare($sql);
             $stmt->bindValue("isActive", 0, PDO::PARAM_INT);
-            $stmt->bindValue("type", User\Type::STUDENT->value, PDO::PARAM_STR);
+            $stmt->bindValue("type", User\Type::STUDENT->value);
             $stmt->execute();
 
             $userId = (int) $this->pdo->lastInsertId();
@@ -163,10 +163,10 @@ class UserRepository implements IRepository
                     VALUES (:id, :studentEmail, :fullName, :registrationNumber, :indexNumber)";
             $stmt = $this->pdo->prepare($sql);
             $stmt->bindValue("id", $userId, PDO::PARAM_INT);
-            $stmt->bindValue("studentEmail", $dto->studentEmail, PDO::PARAM_STR);
-            $stmt->bindValue("fullName", $dto->fullName, PDO::PARAM_STR);
-            $stmt->bindValue("registrationNumber", $dto->registrationNumber, PDO::PARAM_STR);
-            $stmt->bindValue("indexNumber", $dto->indexNumber, PDO::PARAM_STR);
+            $stmt->bindValue("studentEmail", $dto->studentEmail);
+            $stmt->bindValue("fullName", $dto->fullName);
+            $stmt->bindValue("registrationNumber", $dto->registrationNumber);
+            $stmt->bindValue("indexNumber", $dto->indexNumber);
             $stmt->execute();
 
             return $userId;
@@ -177,10 +177,10 @@ class UserRepository implements IRepository
             $sql = "INSERT INTO users (email, firstName,  isActive, type)
                     VALUES (:email, :firstName, :isActive, :type)";
             $stmt = $this->pdo->prepare($sql);
-            $stmt->bindValue("email", $dto->email, PDO::PARAM_STR);
-            $stmt->bindValue("firstName", $dto->firstName, PDO::PARAM_STR);
+            $stmt->bindValue("email", $dto->email);
+            $stmt->bindValue("firstName", $dto->firstName);
             $stmt->bindValue("isActive", 0, PDO::PARAM_INT);
-            $stmt->bindValue("type", User\Type::PARTNER->value, PDO::PARAM_STR);
+            $stmt->bindValue("type", User\Type::PARTNER->value);
             $stmt->execute();
 
             $userId = (int) $this->pdo->lastInsertId();
@@ -198,10 +198,10 @@ class UserRepository implements IRepository
         $sql = "INSERT INTO users (email, firstName, isActive, type)
                 VALUES (:email, :firstName, :isActive, :type)";
         $stmt = $this->pdo->prepare($sql);
-        $stmt->bindValue("email", $dto->email, PDO::PARAM_STR);
-        $stmt->bindValue("firstName", $dto->firstName, PDO::PARAM_STR);
+        $stmt->bindValue("email", $dto->email);
+        $stmt->bindValue("firstName", $dto->firstName);
         $stmt->bindValue("isActive", 0, PDO::PARAM_INT);
-        $stmt->bindValue("type", User\Type::USER->value, PDO::PARAM_STR);
+        $stmt->bindValue("type", User\Type::USER->value);
         $stmt->execute();
 
         return (int) $this->pdo->lastInsertId();
@@ -310,7 +310,7 @@ class UserRepository implements IRepository
                 AND role_id = (SELECT id FROM roles WHERE name = :roleName)";
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindValue("groupId", $groupId, PDO::PARAM_INT);
-        $stmt->bindValue("roleName", $role->value, PDO::PARAM_STR);
+        $stmt->bindValue("roleName", $role->value);
         return $stmt->execute();
     }
 
@@ -340,7 +340,7 @@ class UserRepository implements IRepository
         return array_map(fn($user) => UserStudentPartnerMapper::map($user), $data);
     }
 
-    public function searchGroups(?int $numberOfResults, ?int $offsetBy)
+    public function searchGroups(?int $numberOfResults, ?int $offsetBy): array
     {
         $sql = "SELECT * FROM user_groups";
         if ($numberOfResults !== null) {
