@@ -61,6 +61,11 @@ class User
         $this->firstName = $firstName;
         $this->passwordHash = $passwordHash;
         $this->groups = new ArrayCollection();
+
+        if ($email !== null && $firstName !== null && $passwordHash !== null) {
+            $this->isActive = true;
+            $this->isEnabled = true;
+        }
     }
 
     public function generateActivationToken(): string

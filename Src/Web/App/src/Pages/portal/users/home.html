@@ -19,28 +19,28 @@
         New user
     </a>
     <span class="spacer"></span>
-    <a class="btn btn-regular btn-icon" href="">
+    <button class="btn btn-regular btn-icon" disabled>
         <i class="i i-people"></i>
         <span>Add to group</span>
-    </a>
+    </button>
     <span class="spacer"></span>
-    <a class="btn btn-regular btn-icon" href="">
+    <button class="btn btn-regular btn-icon" disabled data-action="enable">
         <i class="i i-check-circle"></i>
         <span>Enable</span>
-    </a>
-    <a class="btn btn-regular btn-icon" href="">
+    </button>
+    <button class="btn btn-regular btn-icon" disabled data-action="disable">
         <i class="i i-x-circle"></i>
         Disable
-    </a>
-    <a class="btn btn-regular btn-icon" href="">
+    </button>
+    <button class="btn btn-regular btn-icon" disabled data-action="reset">
         <i class="i i-arrow-repeat"></i>
         <span>Reset password</span>
-    </a>
+    </button>
     <span class="spacer"></span>
-    <a class="btn btn-regular btn-icon" href="">
+    <button class="btn btn-regular btn-icon" disabled>
         <i class="i i-trash"></i>
         <span>Delete</span>
-    </a>
+    </button>
 </div>
 <section>
     <p class="fs-small mb-10">{{ users|length }} users found.</p>
@@ -83,5 +83,6 @@
         </tbody>
     </table>
 </section>
+<script src="/js/portal/users.js" type="text/javascript"></script>
 
 {% endblock %}

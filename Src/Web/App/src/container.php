@@ -257,6 +257,23 @@ $container->register(
     ])
     ->setPublic(true);
 
+$container->register(
+    "user_management_handler",
+    \App\Services\UserManagementHandler::class
+)
+    ->setArguments([
+        new Reference("pdo_mysql_connection"),
+    ]);
+
+$container->register(
+    "App\Controllers\UserManagementController",
+    \App\Controllers\UserManagementController::class
+)
+    ->setArguments([
+        new Reference("user_management_handler"),
+    ])
+    ->setPublic(true);
+
 // Controllers
 
 $container->register(
