@@ -64,7 +64,6 @@ class User
 
         if ($email !== null && $firstName !== null && $passwordHash !== null) {
             $this->isActive = true;
-            $this->isEnabled = true;
         }
     }
 
