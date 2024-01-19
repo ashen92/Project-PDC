@@ -26,38 +26,38 @@ class UserService implements IUserService
 
     public function createUser(CreateUserDTO $userDTO): User
     {
-        if ($userDTO->userType == "student") {
-            $user = $this->userRepository->findStudentByStudentEmail($userDTO->studentEmail);
-        } else {
-            $user = $this->userRepository->findByEmail($userDTO->email);
+        if (
+            $this->userRepository->doesUserExist(
+                $userDTO->email ?? $userDTO->studentEmail,
+                $userDTO->email ? false : true
+            )
+        ) {
+            throw new UserExistsException();
         }
 
-        if ($user === null) {
-            $user = $this->userRepository->createUser($userDTO);
+        $user = $this->userRepository->createUser($userDTO);
 
-            if ($userDTO->userType != "student" || ($userDTO->userType == "student" && $userDTO->sendEmail !== null)) {
+        if ($userDTO->userType != "student" || ($userDTO->userType == "student" && $userDTO->sendEmail !== null)) {
 
-                if ($userDTO->userType == "student") {
-                    $mail = new UserInviteEmail(
-                        $user->getStudentEmail(),
-                        $user->getFullName(),
-                        $user->generateActivationToken()
-                    );
-                } else {
-                    $mail = new UserInviteEmail(
-                        $user->getEmail(),
-                        $user->getFirstName(),
-                        $user->generateActivationToken()
-                    );
-                }
-
-                $this->userRepository->save($user);
-
-                $this->emailService->sendEmail($mail);
+            if ($userDTO->userType == "student") {
+                $mail = new UserInviteEmail(
+                    $user->getStudentEmail(),
+                    $user->getFullName(),
+                    $user->generateActivationToken()
+                );
+            } else {
+                $mail = new UserInviteEmail(
+                    $user->getEmail(),
+                    $user->getFirstName(),
+                    $user->generateActivationToken()
+                );
             }
-            return $user;
+
+            $this->userRepository->save($user);
+
+            $this->emailService->sendEmail($mail);
         }
-        throw new UserExistsException();
+        return $user;
     }
 
     public function createStudentUser(CreateStudentUserDTO $createStudentDTO): void
@@ -129,5 +129,10 @@ class UserService implements IUserService
     #[\Override] public function searchGroups(?int $numberOfResults, ?int $offsetBy): array
     {
         return $this->userRepository->searchGroups($numberOfResults, $offsetBy);
+    }
+
+    #[\Override] public function managePartner(int $managedBy, int $partnerId): bool
+    {
+        return $this->userRepository->managePartner($managedBy, $partnerId);
     }
 }

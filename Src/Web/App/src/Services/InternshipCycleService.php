@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Constants;
 use App\DTOs\CreateCycleDTO;
 use App\DTOs\CreateUserDTO;
-use App\Entities\InternshipCycle;
 use App\Interfaces\IEmailService;
 use App\Interfaces\IInternshipCycleService;
 use App\Interfaces\IUserService;
@@ -170,25 +170,20 @@ class InternshipCycleService implements IInternshipCycleService
         return true;
     }
 
-    #[\Override] public function createManagedUser(int $ownerId, CreateUserDTO $userDTO): void
+    #[\Override] public function createManagedUser(int $managedBy, CreateUserDTO $userDTO): void
     {
-        $owner = $this->userRepository->find($ownerId);
-
         $user = $this->userService->createUser($userDTO);
 
-        $owner->addToManage($user);
+        $this->userService->managePartner($managedBy, $user->getId());
 
-        $this->userRepository->save($owner);
-        $this->userRepository->save($user);
+        $groupName = Constants::AUTO_GENERATED_USER_GROUP_PREFIX->value . "Users-Managed-By-$managedBy";
+        $group = $this->userRepository->findUserGroupByName($groupName);
 
-        $userGroupName = "{$user->getId()}-managed-users";
-        $userGroup = $this->userRepository->findUserGroupByName($userGroupName);
-
-        if (!$userGroup) {
-            $userGroup = $this->userRepository->createUserGroup($userGroupName);
-            $this->userRepository->addRoleToUserGroup($userGroup->getId(), Role::InternshipProgram_Partner);
+        if (!$group) {
+            $group = $this->userRepository->createUserGroup($groupName);
+            $this->userRepository->addRoleToUserGroup($group->getId(), Role::InternshipProgram_Partner);
         }
 
-        $this->userRepository->addToUserGroup($user->getId(), $userGroup->getId());
+        $this->userRepository->addToUserGroup($user->getId(), $group->getId());
     }
 }

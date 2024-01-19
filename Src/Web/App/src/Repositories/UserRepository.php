@@ -35,11 +35,6 @@ class UserRepository extends Repository implements IRepository
         $this->pdo->rollBack();
     }
 
-    public function find(int $userId): null|User|Student|Partner
-    {
-        return $this->entityManager->getRepository(User::class)->find($userId);
-    }
-
     public function findUser(int $userId): ?\App\Models\User
     {
         $sql = "SELECT * FROM users WHERE id = :userId";
@@ -105,7 +100,30 @@ class UserRepository extends Repository implements IRepository
 
     public function findManagedUsers(int $userId): array
     {
-        return $this->entityManager->getRepository(Partner::class)->findBy(["managedBy" => $userId]);
+        $sql = "SELECT u.*, p.* FROM users u
+                JOIN partners p ON u.id = p.id
+                WHERE p.managedBy_id = :userId";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(["userId" => $userId]);
+        $data = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        if ($data === false) {
+            return [];
+        }
+        return array_map(fn($user) => \App\Mappers\PartnerMapper::map($user), $data);
+    }
+
+    public function doesUserExist(string $email, bool $isStudentEmail = false): bool
+    {
+        if ($isStudentEmail) {
+            $sql = "SELECT COUNT(*) FROM students WHERE studentEmail = :email";
+        } else {
+            $sql = "SELECT COUNT(*) FROM users WHERE email = :email";
+        }
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(["email" => $email]);
+        $data = $stmt->fetch(\PDO::FETCH_COLUMN);
+        return $data > 0;
     }
 
     public function createUser(CreateUserDTO $dto): null|User|Student|Partner
@@ -167,14 +185,16 @@ class UserRepository extends Repository implements IRepository
         ]);
     }
 
-    public function findUserGroup(int $groupId): ?UserGroup
+    public function findUserGroupByName(string $name): ?\App\Models\UserGroup
     {
-        return $this->entityManager->getRepository(UserGroup::class)->find($groupId);
-    }
-
-    public function findUserGroupByName(string $groupName): ?UserGroup
-    {
-        return $this->entityManager->getRepository(UserGroup::class)->findOneBy(["name" => $groupName]);
+        $sql = "SELECT * FROM user_groups WHERE name = :name";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(["name" => $name]);
+        $data = $stmt->fetch(\PDO::FETCH_ASSOC);
+        if ($data === false) {
+            return null;
+        }
+        return \App\Mappers\UserGroupMapper::map($data);
     }
 
     /**
@@ -190,11 +210,6 @@ class UserRepository extends Repository implements IRepository
             return [];
         }
         return array_map(fn($group) => \App\Mappers\UserGroupMapper::map($group), $data);
-    }
-
-    public function findRoleByName(string $roleName): ?Role
-    {
-        return $this->entityManager->getRepository(Role::class)->findOneBy(["name" => $roleName]);
     }
 
     public function addToUserGroup(int $userId, int $groupId): void
@@ -299,5 +314,16 @@ class UserRepository extends Repository implements IRepository
             return [];
         }
         return array_map(fn($group) => \App\Mappers\UserGroupMapper::map($group), $data);
+    }
+
+    public function managePartner(int $managedBy, int $partnerId): bool
+    {
+        $sql = "UPDATE partners SET managedBy_id = :managedBy WHERE id = :partnerId";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([
+            "managedBy" => $managedBy,
+            "partnerId" => $partnerId,
+        ]);
+        return $stmt->rowCount() > 0;
     }
 }

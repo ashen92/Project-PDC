@@ -48,4 +48,6 @@ interface IUserService
         ?int $numberOfResults,
         ?int $offsetBy,
     ): array;
+
+    public function managePartner(int $managedBy, int $partnerId): bool;
 }
