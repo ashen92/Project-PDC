@@ -26,10 +26,41 @@ class AuthenticationController extends PageControllerBase
         parent::__construct($twig);
     }
 
-    #[Route("/login", name: "signin", methods: ["GET"])]
-    public function signin(): Response
+    #[Route("/login", methods: ["GET"])]
+    public function loginGET(Request $request): Response
     {
-        return $this->render("authentication/signin.html");
+        return $this->render(
+            "authentication/signin.html",
+            [
+                "redirect" => $request->query->get("redirect", "/")
+            ]
+        );
+    }
+
+    #[Route("/login", methods: ["POST"])]
+    public function loginPOST(Request $request): RedirectResponse
+    {
+        $email = $request->get("email", "");
+        $password = $request->get("password", "");
+
+        // TODO: Validate email and password
+
+        $user = $this->authn->login($email, $password);
+
+        if ($user) {
+            $session = $request->getSession();
+
+            $session->set("is_authenticated", true);
+            $session->set("user_id", $user->getId());
+            $session->set("user_email", $user->getEmail());
+            $session->set("user_first_name", $user->getFirstName() ?? "Not set");
+
+            return new RedirectResponse($request->query->get("redirect", "/"));
+        }
+
+        $request->getSession()->getFlashBag()->add("signin_error", "Invalid Email or Password");
+
+        return new RedirectResponse("/");
     }
 
     #[Route("/signup", methods: ["GET"])]
@@ -128,41 +159,13 @@ class AuthenticationController extends PageControllerBase
         return $this->redirect("/login");
     }
 
-    #[Route("/register", name: "register")]
+    #[Route("/register")]
     public function register(): Response
     {
         return $this->render("authentication/register.html");
     }
 
-    #[Route("/login", name: "login", methods: ["POST"])]
-    public function login(Request $request): RedirectResponse
-    {
-        $req = $request->request;
-        $email = $req->get("email", "");
-        $password = $req->get("password", "");
-
-        // validate form data
-        // todo
-
-        $user = $this->authn->login($email, $password);
-
-        if ($user) {
-            $session = $request->getSession();
-
-            $session->set("is_authenticated", true);
-            $session->set("user_id", $user->getId());
-            $session->set("user_email", $user->getEmail());
-            $session->set("user_first_name", $user->getFirstName() ?? "Not set");
-
-            return new RedirectResponse("/home");
-        }
-
-        $request->getSession()->getFlashBag()->add("signin_error", "Invalid Email or Password");
-
-        return new RedirectResponse("/");
-    }
-
-    #[Route("/logout", name: "logout")]
+    #[Route("/logout")]
     public function logout(Request $request): RedirectResponse
     {
         $request->getSession()->invalidate();

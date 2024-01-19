@@ -53,7 +53,7 @@ class AuthorizationListener implements EventSubscriberInterface
                     return;
                 }
             }
-            $response = new RedirectResponse("/login");
+            $response = new RedirectResponse("/login?redirect=$currentRoute");
             $event->setResponse($response);
             return;
         }
