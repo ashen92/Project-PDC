@@ -65,7 +65,7 @@ class AuthenticationController extends PageControllerBase
         return $this->render("authentication/signup.html");
     }
 
-    #[Route("/signup/activate", methods: ["GET"])]
+    #[Route("/signup/continue", methods: ["GET"])]
     public function signupActivateGET(Request $request): Response
     {
         // Handle errors
@@ -92,7 +92,7 @@ class AuthenticationController extends PageControllerBase
         return $this->redirect("/login");
     }
 
-    #[Route("/signup/activate", methods: ["POST"])]
+    #[Route("/signup/continue", methods: ["POST"])]
     public function signupActivatePOST(Request $request): Response
     {
         // Handle errors

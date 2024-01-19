@@ -31,7 +31,7 @@ class AuthorizationListener implements EventSubscriberInterface
         $specialRoutes = [
             "/login" => ["GET", "POST"],
             "/signup" => ["GET", "POST"],
-            "/signup/activate" => ["GET", "POST"],
+            "/signup/continue" => ["GET", "POST"],
             "/register" => ["GET"],
         ];
 
