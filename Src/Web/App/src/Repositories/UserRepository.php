@@ -4,20 +4,23 @@ declare(strict_types=1);
 namespace App\Repositories;
 
 use App\DTOs\CreateUserDTO;
-use App\Entities\Partner;
-use App\Entities\Role;
-use App\Entities\Student;
-use App\Entities\User;
-use App\Entities\UserGroup;
 use App\Interfaces\Repository\IRepository;
+use App\Mappers\PartnerMapper;
+use App\Mappers\StudentMapper;
+use App\Mappers\UserGroupMapper;
+use App\Mappers\UserMapper;
+use App\Mappers\UserStudentPartnerMapper;
+use App\Models\Student;
+use App\Models\User;
+use App\Models\UserGroup;
+use App\Security\Role;
+use PDO;
 
-class UserRepository extends Repository implements IRepository
+class UserRepository implements IRepository
 {
     public function __construct(
-        private readonly \PDO $pdo,
-        \Doctrine\ORM\EntityManager $entityManager
+        private readonly PDO $pdo,
     ) {
-        parent::__construct($entityManager);
     }
 
     public function beginTransaction(): void
@@ -35,16 +38,28 @@ class UserRepository extends Repository implements IRepository
         $this->pdo->rollBack();
     }
 
-    public function findUser(int $userId): ?\App\Models\User
+    public function findUser(int $userId): ?User
     {
         $sql = "SELECT * FROM users WHERE id = :userId";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(["userId" => $userId]);
-        $data = $stmt->fetch(\PDO::FETCH_ASSOC);
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
         if ($data === false) {
             return null;
         }
-        return \App\Mappers\UserMapper::map($data);
+        return UserMapper::map($data);
+    }
+
+    public function findStudent(int $userId): ?Student
+    {
+        $sql = "SELECT u.*, s.* FROM students s INNER JOIN users u on s.id = u.id WHERE u.id = :userId";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(["userId" => $userId]);
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($data === false) {
+            return null;
+        }
+        return StudentMapper::map($data);
     }
 
     /**
@@ -59,7 +74,7 @@ class UserRepository extends Repository implements IRepository
                 WHERE u.id = :userId";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(["userId" => $userId]);
-        return $stmt->fetchAll(\PDO::FETCH_COLUMN);
+        return $stmt->fetchAll(PDO::FETCH_COLUMN);
     }
 
     public function findByEmail(string $email): ?\App\Models\User
@@ -67,11 +82,11 @@ class UserRepository extends Repository implements IRepository
         $sql = "SELECT * FROM users WHERE email = :email";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(["email" => $email]);
-        $data = $stmt->fetch(\PDO::FETCH_ASSOC);
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
         if ($data === false) {
             return null;
         }
-        return \App\Mappers\UserMapper::map($data);
+        return UserMapper::map($data);
     }
 
     public function findByActivationToken(string $token): ?\App\Models\User
@@ -79,11 +94,11 @@ class UserRepository extends Repository implements IRepository
         $sql = "SELECT * FROM users WHERE activationToken = :token";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(["token" => $token]);
-        $data = $stmt->fetch(\PDO::FETCH_ASSOC);
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
         if ($data === false) {
             return null;
         }
-        return \App\Mappers\UserMapper::map($data);
+        return UserMapper::map($data);
     }
 
     public function findStudentByStudentEmail(string $email): ?\App\Models\Student
@@ -91,11 +106,11 @@ class UserRepository extends Repository implements IRepository
         $sql = "SELECT u.*, s.* FROM students s INNER JOIN users u on s.id = u.id WHERE studentEmail = :email";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(["email" => $email]);
-        $data = $stmt->fetch(\PDO::FETCH_ASSOC);
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
         if ($data === false) {
             return null;
         }
-        return \App\Mappers\StudentMapper::map($data);
+        return StudentMapper::map($data);
     }
 
     public function findManagedUsers(int $userId): array
@@ -105,11 +120,11 @@ class UserRepository extends Repository implements IRepository
                 WHERE p.managedBy_id = :userId";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(["userId" => $userId]);
-        $data = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
         if ($data === false) {
             return [];
         }
-        return array_map(fn($user) => \App\Mappers\PartnerMapper::map($user), $data);
+        return array_map(fn($user) => PartnerMapper::map($user), $data);
     }
 
     public function doesUserExist(string $email, bool $isStudentEmail = false): bool
@@ -122,44 +137,77 @@ class UserRepository extends Repository implements IRepository
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(["email" => $email]);
-        $data = $stmt->fetch(\PDO::FETCH_COLUMN);
+        $data = $stmt->fetch(PDO::FETCH_COLUMN);
         return $data > 0;
     }
 
-    public function createUser(CreateUserDTO $dto): null|User|Student|Partner
+    /**
+     * @return int The ID of the created user
+     */
+    public function createUser(CreateUserDTO $dto): int
     {
-        if ($dto->userType == "student") {
-            $user = new Student(
-                $dto->studentEmail,
-                $dto->fullName,
-                $dto->registrationNumber,
-                $dto->indexNumber,
-            );
-        } else if ($dto->userType == "partner") {
-            $user = new Partner(
-                $dto->email,
-                $dto->firstName,
-            );
-            // TODO: add partner specific fields
-        } else {
-            $user = new User(
-                $dto->email,
-                $dto->firstName,
-            );
+        // TODO: Implement throwing exceptions when user creation fails
+
+        if ($dto->userType === User\Type::STUDENT->value) {
+
+            $sql = "INSERT INTO users (isActive, type)
+                    VALUES (:isActive, :type)";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindValue("isActive", 0, PDO::PARAM_INT);
+            $stmt->bindValue("type", User\Type::STUDENT->value, PDO::PARAM_STR);
+            $stmt->execute();
+
+            $userId = (int) $this->pdo->lastInsertId();
+
+            $sql = "INSERT INTO students (id, studentEmail, fullName, registrationNumber, indexNumber)
+                    VALUES (:id, :studentEmail, :fullName, :registrationNumber, :indexNumber)";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindValue("id", $userId, PDO::PARAM_INT);
+            $stmt->bindValue("studentEmail", $dto->studentEmail, PDO::PARAM_STR);
+            $stmt->bindValue("fullName", $dto->fullName, PDO::PARAM_STR);
+            $stmt->bindValue("registrationNumber", $dto->registrationNumber, PDO::PARAM_STR);
+            $stmt->bindValue("indexNumber", $dto->indexNumber, PDO::PARAM_STR);
+            $stmt->execute();
+
+            return $userId;
         }
 
-        $this->entityManager->persist($user);
-        $this->entityManager->flush();
-        return $user;
+        if ($dto->userType === User\Type::PARTNER->value) {
+
+            $sql = "INSERT INTO users (email, firstName,  isActive, type)
+                    VALUES (:email, :firstName, :isActive, :type)";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindValue("email", $dto->email, PDO::PARAM_STR);
+            $stmt->bindValue("firstName", $dto->firstName, PDO::PARAM_STR);
+            $stmt->bindValue("isActive", 0, PDO::PARAM_INT);
+            $stmt->bindValue("type", User\Type::PARTNER->value, PDO::PARAM_STR);
+            $stmt->execute();
+
+            $userId = (int) $this->pdo->lastInsertId();
+
+            $sql = "INSERT INTO partners (id, organization_id)
+                    VALUES (:id, :organizationId)";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindValue("id", $userId, PDO::PARAM_INT);
+            $stmt->bindValue("organizationId", $dto->organizationId, PDO::PARAM_INT);
+            $stmt->execute();
+
+            return $userId;
+        }
+
+        $sql = "INSERT INTO users (email, firstName, isActive, type)
+                VALUES (:email, :firstName, :isActive, :type)";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindValue("email", $dto->email, PDO::PARAM_STR);
+        $stmt->bindValue("firstName", $dto->firstName, PDO::PARAM_STR);
+        $stmt->bindValue("isActive", 0, PDO::PARAM_INT);
+        $stmt->bindValue("type", User\Type::USER->value, PDO::PARAM_STR);
+        $stmt->execute();
+
+        return (int) $this->pdo->lastInsertId();
     }
 
-    public function save(User $user): void
-    {
-        $this->entityManager->persist($user);
-        $this->entityManager->flush();
-    }
-
-    public function updateUser(\App\Models\User $user): void
+    public function updateUser(User $user): void
     {
         $sql = "UPDATE users SET
                 email = :email,
@@ -185,31 +233,31 @@ class UserRepository extends Repository implements IRepository
         ]);
     }
 
-    public function findUserGroupByName(string $name): ?\App\Models\UserGroup
+    public function findUserGroupByName(string $name): ?UserGroup
     {
         $sql = "SELECT * FROM user_groups WHERE name = :name";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(["name" => $name]);
-        $data = $stmt->fetch(\PDO::FETCH_ASSOC);
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
         if ($data === false) {
             return null;
         }
-        return \App\Mappers\UserGroupMapper::map($data);
+        return UserGroupMapper::map($data);
     }
 
     /**
-     * @return array<\App\Models\UserGroup>
+     * @return array<UserGroup>
      */
     public function findAllUserGroups(): array
     {
         $sql = "SELECT * FROM user_groups";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
-        $data = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
         if ($data === false) {
             return [];
         }
-        return array_map(fn($group) => \App\Mappers\UserGroupMapper::map($group), $data);
+        return array_map(fn($group) => UserGroupMapper::map($group), $data);
     }
 
     public function addToUserGroup(int $userId, int $groupId): void
@@ -222,12 +270,12 @@ class UserRepository extends Repository implements IRepository
         ]);
     }
 
-    public function createUserGroup(string $groupName): \App\Models\UserGroup
+    public function createUserGroup(string $groupName): UserGroup
     {
         $sql = "INSERT INTO user_groups (name) VALUES (:name)";
         $statement = $this->pdo->prepare($sql);
         $statement->execute(["name" => $groupName]);
-        return new \App\Models\UserGroup(
+        return new UserGroup(
             (int) $this->pdo->lastInsertId(),
             $groupName,
         );
@@ -244,7 +292,7 @@ class UserRepository extends Repository implements IRepository
         ]);
     }
 
-    public function addRoleToUserGroup(int $groupId, \App\Security\Role $role): bool
+    public function addRoleToUserGroup(int $groupId, Role $role): bool
     {
         $sql = "INSERT INTO user_group_roles (usergroup_id, role_id)
                 SELECT :groupId, id FROM roles WHERE name = :name";
@@ -255,14 +303,14 @@ class UserRepository extends Repository implements IRepository
         ]);
     }
 
-    public function removeRoleFromUserGroup(int $groupId, \App\Security\Role $role): bool
+    public function removeRoleFromUserGroup(int $groupId, Role $role): bool
     {
         $sql = "DELETE FROM user_group_roles
                 WHERE usergroup_id = :groupId
                 AND role_id = (SELECT id FROM roles WHERE name = :roleName)";
         $stmt = $this->pdo->prepare($sql);
-        $stmt->bindValue("groupId", $groupId, \PDO::PARAM_INT);
-        $stmt->bindValue("roleName", $role->value, \PDO::PARAM_STR);
+        $stmt->bindValue("groupId", $groupId, PDO::PARAM_INT);
+        $stmt->bindValue("roleName", $role->value, PDO::PARAM_STR);
         return $stmt->execute();
     }
 
@@ -279,17 +327,17 @@ class UserRepository extends Repository implements IRepository
         }
         $stmt = $this->pdo->prepare($sql);
         if ($numberOfResults !== null) {
-            $stmt->bindValue("numberOfResults", $numberOfResults, \PDO::PARAM_INT);
+            $stmt->bindValue("numberOfResults", $numberOfResults, PDO::PARAM_INT);
         }
         if ($offsetBy !== null) {
-            $stmt->bindValue("offsetBy", $offsetBy, \PDO::PARAM_INT);
+            $stmt->bindValue("offsetBy", $offsetBy, PDO::PARAM_INT);
         }
         $stmt->execute();
-        $data = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
         if ($data === false) {
             return [];
         }
-        return array_map(fn($user) => \App\Mappers\UserStudentPartnerMapper::map($user), $data);
+        return array_map(fn($user) => UserStudentPartnerMapper::map($user), $data);
     }
 
     public function searchGroups(?int $numberOfResults, ?int $offsetBy)
@@ -303,17 +351,17 @@ class UserRepository extends Repository implements IRepository
         }
         $stmt = $this->pdo->prepare($sql);
         if ($numberOfResults !== null) {
-            $stmt->bindValue("numberOfResults", $numberOfResults, \PDO::PARAM_INT);
+            $stmt->bindValue("numberOfResults", $numberOfResults, PDO::PARAM_INT);
         }
         if ($offsetBy !== null) {
-            $stmt->bindValue("offsetBy", $offsetBy, \PDO::PARAM_INT);
+            $stmt->bindValue("offsetBy", $offsetBy, PDO::PARAM_INT);
         }
         $stmt->execute();
-        $data = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
         if ($data === false) {
             return [];
         }
-        return array_map(fn($group) => \App\Mappers\UserGroupMapper::map($group), $data);
+        return array_map(fn($group) => UserGroupMapper::map($group), $data);
     }
 
     public function managePartner(int $managedBy, int $partnerId): bool

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use App\Constants;
+use App\Constant\Constants;
 use App\DTOs\CreateCycleDTO;
 use App\DTOs\CreateUserDTO;
 use App\Interfaces\IEmailService;
@@ -172,9 +172,9 @@ class InternshipCycleService implements IInternshipCycleService
 
     #[\Override] public function createManagedUser(int $managedBy, CreateUserDTO $userDTO): void
     {
-        $user = $this->userService->createUser($userDTO);
+        $userId = $this->userService->createUser($userDTO);
 
-        $this->userService->managePartner($managedBy, $user->getId());
+        $this->userService->managePartner($managedBy, $userId);
 
         $groupName = Constants::AUTO_GENERATED_USER_GROUP_PREFIX->value . "Users-Managed-By-$managedBy";
         $group = $this->userRepository->findUserGroupByName($groupName);
@@ -184,6 +184,6 @@ class InternshipCycleService implements IInternshipCycleService
             $this->userRepository->addRoleToUserGroup($group->getId(), Role::InternshipProgram_Partner);
         }
 
-        $this->userRepository->addToUserGroup($user->getId(), $group->getId());
+        $this->userRepository->addToUserGroup($userId, $group->getId());
     }
 }

@@ -5,7 +5,6 @@ namespace App\Services;
 
 use App\DTOs\CreateStudentUserDTO;
 use App\DTOs\CreateUserDTO;
-use App\Entities\User;
 use App\Exceptions\UserExistsException;
 use App\Interfaces\IEmailService;
 use App\Interfaces\IPasswordHasher;
@@ -24,28 +23,30 @@ class UserService implements IUserService
     ) {
     }
 
-    public function createUser(CreateUserDTO $userDTO): User
+    #[\Override] public function createUser(CreateUserDTO $userDTO): int
     {
         if (
             $this->userRepository->doesUserExist(
                 $userDTO->email ?? $userDTO->studentEmail,
-                $userDTO->email ? false : true
+                !$userDTO->email
             )
         ) {
             throw new UserExistsException();
         }
 
-        $user = $this->userRepository->createUser($userDTO);
+        $userId = $this->userRepository->createUser($userDTO);
 
         if ($userDTO->userType != "student" || ($userDTO->userType == "student" && $userDTO->sendEmail !== null)) {
 
             if ($userDTO->userType == "student") {
+                $user = $this->userRepository->findStudent($userId);
                 $mail = new UserInviteEmail(
                     $user->getStudentEmail(),
                     $user->getFullName(),
                     $user->generateActivationToken()
                 );
             } else {
+                $user = $this->userRepository->findUser($userId);
                 $mail = new UserInviteEmail(
                     $user->getEmail(),
                     $user->getFirstName(),
@@ -53,14 +54,14 @@ class UserService implements IUserService
                 );
             }
 
-            $this->userRepository->save($user);
+            $this->userRepository->updateUser($user);
 
             $this->emailService->sendEmail($mail);
         }
-        return $user;
+        return $userId;
     }
 
-    public function createStudentUser(CreateStudentUserDTO $createStudentDTO): void
+    #[\Override] public function createStudentUser(CreateStudentUserDTO $createStudentDTO): void
     {
         $user = $this->userRepository->findUser($createStudentDTO->id);
 
@@ -74,12 +75,12 @@ class UserService implements IUserService
         $this->userRepository->updateUser($user);
     }
 
-    public function getUserRoles(int $userId): array
+    #[\Override] public function getUserRoles(int $userId): array
     {
         return $this->userRepository->findUserRoles($userId);
     }
 
-    public function hasRole(int $userId, Role $role): bool
+    #[\Override] public function hasRole(int $userId, Role $role): bool
     {
         if ($role == "")
             return true;
@@ -111,7 +112,7 @@ class UserService implements IUserService
         return $token;
     }
 
-    public function getManagedUsers(int $userId): array
+    #[\Override] public function getManagedUsers(int $userId): array
     {
         return $this->userRepository->findManagedUsers($userId);
     }
