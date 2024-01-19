@@ -96,11 +96,11 @@ class AuthenticationController extends PageControllerBase
     #[Route("/signup/continue", methods: ["GET"])]
     public function signupActivateGET(Request $request): Response
     {
-        // Handle errors
-        // todo
+        // TODO: Handle errors
+
         $token = $request->query->get("token", null);
-        // Validate token
-        // todo
+        // TODO: Validate token
+
         if ($token) {
             $user = $this->userService->getUserByActivationToken($token);
             if ($user) {
@@ -123,11 +123,11 @@ class AuthenticationController extends PageControllerBase
     #[Route("/signup/continue", methods: ["POST"])]
     public function signupActivatePOST(Request $request): Response
     {
-        // Handle errors
-        // todo
+        // TODO: Handle errors
+
         $token = $request->get("token", null);
-        // Validate token
-        // todo
+        // TODO: Validate token
+
         if ($token) {
             $user = $this->userService->getUserByActivationToken($token);
             if ($user) {

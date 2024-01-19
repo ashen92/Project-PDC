@@ -158,12 +158,12 @@ class InternshipCycleService implements IInternshipCycleService
 
         $this->userRepository->removeRoleFromUserGroup(
             $cycle->getPartnerGroupId(),
-            "ROLE_INTERNSHIP_PARTNER"
+            Role::InternshipProgram_Partner_Admin
         );
 
         $this->userRepository->removeRoleFromUserGroup(
             $cycle->getStudentGroupId(),
-            "ROLE_INTERNSHIP_STUDENT"
+            Role::InternshipProgram_Student
         );
 
         $this->internshipProgramRepository->updateCycle($cycle);

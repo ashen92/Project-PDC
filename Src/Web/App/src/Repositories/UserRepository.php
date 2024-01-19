@@ -5,14 +5,11 @@ namespace App\Repositories;
 
 use App\DTOs\CreateUserDTO;
 use App\Entities\Partner;
-use App\Entities\Permission;
 use App\Entities\Role;
 use App\Entities\Student;
 use App\Entities\User;
 use App\Entities\UserGroup;
 use App\Interfaces\Repository\IRepository;
-use App\Security\Permission\Action;
-use App\Security\Permission\Resource;
 
 class UserRepository extends Repository implements IRepository
 {
@@ -243,23 +240,15 @@ class UserRepository extends Repository implements IRepository
         ]);
     }
 
-    public function addPermissionToRole(string $role, Resource $resource, Action $action): void
+    public function removeRoleFromUserGroup(int $groupId, \App\Security\Role $role): bool
     {
-        $role = $this->findRoleByName($role);
-        $permission = new Permission($resource, $action);
-        $role->addPermission($permission);
-        $this->entityManager->persist($permission);
-        $this->entityManager->persist($role);
-        $this->entityManager->flush();
-    }
-
-    public function removeRoleFromUserGroup(int $groupId, string $roleName): void
-    {
-        $userGroup = $this->findUserGroup($groupId);
-        $role = $this->entityManager->getRepository(Role::class)->findOneBy(["name" => $roleName]);
-        $role->removeGroup($userGroup);
-        $this->entityManager->persist($userGroup);
-        $this->entityManager->flush();
+        $sql = "DELETE FROM user_group_roles
+                WHERE usergroup_id = :groupId
+                AND role_id = (SELECT id FROM roles WHERE name = :roleName)";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindValue("groupId", $groupId, \PDO::PARAM_INT);
+        $stmt->bindValue("roleName", $role->value, \PDO::PARAM_STR);
+        return $stmt->execute();
     }
 
     public function searchUsers(?int $numberOfResults, ?int $offsetBy): array
