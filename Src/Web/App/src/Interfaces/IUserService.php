@@ -27,7 +27,7 @@ interface IUserService
 
     public function hasRole(int $userId, Role $role): bool;
     public function getUserByEmail(string $email): ?\App\Models\User;
-    public function getUserByStudentEmail(string $email): ?User;
+    public function getStudentByStudentEmail(string $email): ?\App\Models\Student;
     public function getUserByActivationToken(string $token): ?\App\Models\User;
 
     /**
@@ -35,7 +35,8 @@ interface IUserService
      */
     public function getManagedUsers(int $userId): array;
 
-    public function saveUser(User $user): void;
+    public function generateActivationToken(\App\Models\User $user): string;
+
     public function updateUser(\App\Models\User $user): void;
 
     public function searchUsers(

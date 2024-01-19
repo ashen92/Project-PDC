@@ -70,22 +70,19 @@ class AuthenticationController extends PageControllerBase
     }
 
     #[Route("/signup", methods: ["POST"])]
-    public function signupPOST(Request $request): Response
+    public function signupPOST(Request $request): Response|RedirectResponse
     {
-        // Handle errors
-        // todo
-        $email = $request->request->get("student-email", null);
-        // Validate email
-        // todo
+        // TODO: Handle errors
+
+        $email = $request->get("student-email", null);
+        // TODO: Validate email
+
         if ($email) {
             $email = "{$email}@stu.ucsc.cmb.ac.lk";
-            $user = $this->userService->getUserByStudentEmail($email);
+            $user = $this->userService->getStudentByStudentEmail($email);
             if ($user) {
                 if (!$user->isActive()) {
-
-                    $token = $user->generateActivationToken();
-                    $this->userService->saveUser($user);
-
+                    $token = $this->userService->generateActivationToken($user);
                     $email = new SignupEmail($email, $user->getFullName(), $token);
                     $this->emailService->sendEmail($email);
 

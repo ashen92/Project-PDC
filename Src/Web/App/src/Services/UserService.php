@@ -10,6 +10,7 @@ use App\Exceptions\UserExistsException;
 use App\Interfaces\IEmailService;
 use App\Interfaces\IPasswordHasher;
 use App\Interfaces\IUserService;
+use App\Models\Student;
 use App\Models\UserInviteEmail;
 use App\Repositories\UserRepository;
 use App\Security\Role;
@@ -26,7 +27,7 @@ class UserService implements IUserService
     public function createUser(CreateUserDTO $userDTO): User
     {
         if ($userDTO->userType == "student") {
-            $user = $this->userRepository->findByStudentEmail($userDTO->studentEmail);
+            $user = $this->userRepository->findStudentByStudentEmail($userDTO->studentEmail);
         } else {
             $user = $this->userRepository->findByEmail($userDTO->email);
         }
@@ -93,9 +94,9 @@ class UserService implements IUserService
         return $this->userRepository->findByEmail($email);
     }
 
-    public function getUserByStudentEmail(string $email): ?User
+    #[\Override] public function getStudentByStudentEmail(string $email): ?Student
     {
-        return $this->userRepository->findByStudentEmail($email);
+        return $this->userRepository->findStudentByStudentEmail($email);
     }
 
     #[\Override] public function getUserByActivationToken(string $token): ?\App\Models\User
@@ -103,9 +104,11 @@ class UserService implements IUserService
         return $this->userRepository->findByActivationToken($token);
     }
 
-    public function saveUser(User $user): void
+    #[\Override] public function generateActivationToken(\App\Models\User $user): string
     {
-        $this->userRepository->save($user);
+        $token = $user->generateActivationToken();
+        $this->userRepository->updateUser($user);
+        return $token;
     }
 
     public function getManagedUsers(int $userId): array

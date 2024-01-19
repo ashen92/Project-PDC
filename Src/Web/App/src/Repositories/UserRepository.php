@@ -82,11 +82,6 @@ class UserRepository extends Repository implements IRepository
         return \App\Mappers\UserMapper::map($data);
     }
 
-    public function findByStudentEmail(string $email): ?User
-    {
-        return $this->entityManager->getRepository(Student::class)->findOneBy(["studentEmail" => $email]);
-    }
-
     public function findByActivationToken(string $token): ?\App\Models\User
     {
         $sql = "SELECT * FROM users WHERE activationToken = :token";
@@ -185,9 +180,19 @@ class UserRepository extends Repository implements IRepository
         return $this->entityManager->getRepository(UserGroup::class)->findOneBy(["name" => $groupName]);
     }
 
+    /**
+     * @return array<\App\Models\UserGroup>
+     */
     public function findAllUserGroups(): array
     {
-        return $this->entityManager->getRepository(UserGroup::class)->findAll();
+        $sql = "SELECT * FROM user_groups";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+        $data = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        if ($data === false) {
+            return [];
+        }
+        return array_map(fn($group) => \App\Mappers\UserGroupMapper::map($group), $data);
     }
 
     public function findRoleByName(string $roleName): ?Role
