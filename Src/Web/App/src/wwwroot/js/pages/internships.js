@@ -1,5 +1,5 @@
-import { $, $all } from "./core/dom";
-import { on } from "./core/events";
+import { $, $all } from "../core/dom";
+import { on } from "../core/events";
 
 const params = new URLSearchParams(window.location.search);
 

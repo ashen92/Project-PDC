@@ -1,5 +1,5 @@
-import { $, $all } from "./core/dom";
-import { on } from "./core/events";
+import { $, $all } from "../core/dom";
+import { on } from "../core/events";
 
 var userTypeRadios = $all("#field-user-type input[type='radio']");
 var studentField = $("#field-student");

@@ -1,5 +1,5 @@
-import { topNavigation } from "./components/top-navigation";
-import { $ } from "./core/dom";
+import { topNavigation } from "../components/top-navigation";
+import { $ } from "../core/dom";
 
 let topNav = $(".top-navigation");
 let content = $(".page");

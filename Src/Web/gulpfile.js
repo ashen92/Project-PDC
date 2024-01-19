@@ -10,7 +10,7 @@ const rename = require("gulp-rename");
 
 gulp.task("build-js", function (done) {
     esbuild.build({
-        entryPoints: ["./App/src/wwwroot/js/*.js"],
+        entryPoints: ["./App/src/wwwroot/js/pages/**/*.js"],
         bundle: true,
         minify: false,
         sourcemap: true,

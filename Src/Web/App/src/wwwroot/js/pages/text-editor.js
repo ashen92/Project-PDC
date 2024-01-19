@@ -1,5 +1,5 @@
-import { $ } from "./core/dom.js";
-import { on } from "./core/events.js";
+import { $ } from "../core/dom.js";
+import { on } from "../core/events.js";
 import Quill from "./quill.min.js";
 
 var container = $("#text-editor-container");

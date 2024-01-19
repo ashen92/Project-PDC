@@ -1,5 +1,5 @@
-import { $, $all } from "./core/dom.js";
-import { on } from "./core/events.js";
+import { $, $all } from "../core/dom.js";
+import { on } from "../core/events.js";
 
 const oneTimeEndDateElement = $("#field-one-time");
 const recurringRepeatElement = $("#field-recurring");

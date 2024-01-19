@@ -1,5 +1,5 @@
-import { $ } from "./core/dom.js";
-import { on } from "./core/events.js";
+import { $ } from "../core/dom.js";
+import { on } from "../core/events.js";
 
 const fileInput = $("#files-to-upload");
 const filePreview = $("#files-to-upload-preview");
