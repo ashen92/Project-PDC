@@ -10,6 +10,7 @@ use App\Exceptions\UserExistsException;
 use App\Interfaces\IInternshipCycleService;
 use App\Interfaces\IRequirementService;
 use App\Interfaces\IUserService;
+use App\Models\InternshipCycle;
 use App\Security\Identity;
 use App\Security\Role;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -37,7 +38,7 @@ class InternshipProgramController extends PageControllerBase
     }
 
     #[Route(["", "/", "/home"], name: "home")]
-    public function home(Request $request, Identity $identity): Response
+    public function home(Request $request, Identity $identity, ?InternshipCycle $cycle): Response
     {
         $userId = $request->getSession()->get("user_id");
 
@@ -46,7 +47,7 @@ class InternshipProgramController extends PageControllerBase
                 "internship-program/home-admin.html",
                 [
                     "section" => "home",
-                    "internshipCycle" => $this->internshipCycleService->getLatestCycle()
+                    "internshipCycle" => $cycle
                 ]
             );
         }
@@ -63,7 +64,7 @@ class InternshipProgramController extends PageControllerBase
             "internship-program/home.html",
             [
                 "section" => "home",
-                "internshipCycle" => $this->internshipCycleService->getLatestCycle()
+                "internshipCycle" => $cycle
             ]
         );
     }
@@ -131,7 +132,6 @@ class InternshipProgramController extends PageControllerBase
 
         // TODO: handle exceptions
         $this->internshipCycleService->createCycle($createInternshipCycleDTO);
-        $request->getSession()->remove("latest_internship_cycle_id");
 
         return $this->redirect("/internship-program");
     }

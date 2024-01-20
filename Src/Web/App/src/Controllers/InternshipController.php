@@ -6,6 +6,7 @@ namespace App\Controllers;
 use App\Attributes\RequiredRole;
 use App\Interfaces\IInternshipService;
 use App\Interfaces\IUserService;
+use App\Models\InternshipCycle;
 use App\Security\Identity;
 use App\Security\Role;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -33,9 +34,11 @@ class InternshipController extends PageControllerBase
     }
 
     #[Route(["", "/"])]
-    public function internships(Request $request, Identity $identity): Response
+    public function internships(Request $request, Identity $identity, ?InternshipCycle $cycle): Response
     {
-        $latestCycleId = $request->getSession()->get("latest_internship_cycle_id");
+        if ($cycle === null) {
+            return $this->render("internship-program/internships.html", ["section" => "internships"]);
+        }
 
         $queryParams = $request->query->all();
 
@@ -44,13 +47,14 @@ class InternshipController extends PageControllerBase
 
         // TODO: Validate query params
 
+        $cycleId = $cycle->getId();
         $orgs = null;
 
         if ($identity->hasRole(Role::InternshipProgram_Partner_Admin)) {
             $userId = $request->getSession()->get("user_id");
             $internships = $this->internshipService
                 ->searchInternships(
-                    $latestCycleId,
+                    $cycleId,
                     $searchQuery,
                     $userId,
                     self::MAX_INTERNSHIP_RESULTS_PER_PAGE,
@@ -58,14 +62,14 @@ class InternshipController extends PageControllerBase
                 );
 
             $numberOfResults = $this->internshipService->getInternshipCount(
-                $latestCycleId,
+                $cycleId,
                 $searchQuery,
                 $userId
             );
         } else {
             $internships = $this->internshipService
                 ->searchInternships(
-                    $latestCycleId,
+                    $cycleId,
                     $searchQuery,
                     null,
                     self::MAX_INTERNSHIP_RESULTS_PER_PAGE,
@@ -73,12 +77,12 @@ class InternshipController extends PageControllerBase
                 );
 
             $orgs = $this->internshipService->searchInternshipsGetOrganizations(
-                $latestCycleId,
+                $cycleId,
                 $searchQuery,
             );
 
             $numberOfResults = $this->internshipService->getInternshipCount(
-                $latestCycleId,
+                $cycleId,
                 $searchQuery,
                 null
             );

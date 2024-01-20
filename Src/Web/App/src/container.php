@@ -42,7 +42,6 @@ $container->register(
 )
     ->setPublic(true);
 
-
 $container->register(
     'security.identity_provider',
     IdentityProvider::class
@@ -55,6 +54,13 @@ $container->register(
     IdentityResolver::class
 )
     ->setArguments([new Reference('security.identity_provider')])
+    ->setPublic(true);
+
+$container->register(
+    'internship_cycle_resolver',
+    App\ValueResolver\InternshipCycleResolver::class
+)
+    ->setArguments([new Reference('repository.internship_program')])
     ->setPublic(true);
 
 // Database Connection --------------------------------------------------------
