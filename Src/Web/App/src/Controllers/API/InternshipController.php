@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Controllers\API;
 
 use App\Interfaces\IInternshipService;
-use App\Interfaces\IUserService;
+use App\Security\Identity;
 use App\Security\Role;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,12 +15,11 @@ class InternshipController
 {
     public function __construct(
         private IInternshipService $internshipService,
-        private IUserService $userService,
     ) {
     }
 
     #[Route("/{id}", methods: ["GET"], requirements: ['id' => '\d+'])]
-    public function internship(Request $request, int $id): Response
+    public function internship(Request $request, Identity $identity, int $id): Response
     {
         $internship = $this->internshipService->getInternship($id);
         if ($internship) {
@@ -29,8 +28,8 @@ class InternshipController
                 "description" => $internship->getDescription(),
             ];
 
-            $userId = $request->getSession()->get("user_id");
-            if ($this->userService->hasRole($userId, Role::InternshipProgram_Student)) {
+            if ($identity->hasRole(Role::InternshipProgram_Student)) {
+                $userId = $request->getSession()->get("user_id");
                 $data["hasApplied"] = $this->internshipService->hasAppliedToInternship($id, $userId);
             }
 

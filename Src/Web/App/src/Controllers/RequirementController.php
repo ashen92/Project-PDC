@@ -8,6 +8,7 @@ use App\DTOs\CreateRequirementDTO;
 use App\DTOs\UserRequirementFulfillmentDTO;
 use App\Interfaces\IRequirementService;
 use App\Interfaces\IUserService;
+use App\Security\Identity;
 use App\Security\Role;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,10 +34,9 @@ class RequirementController extends PageControllerBase
     }
 
     #[Route(["", "/"], methods: ["GET"])]
-    public function requirements(Request $request): Response
+    public function requirements(Request $request, Identity $identity): Response
     {
-        $userId = $request->getSession()->get("user_id");
-        if ($this->userService->hasRole($userId, Role::InternshipProgram_Admin)) {
+        if ($identity->hasRole(Role::InternshipProgram_Admin)) {
             return $this->render(
                 "internship-program/requirements/home-admin.html",
                 [
@@ -46,6 +46,7 @@ class RequirementController extends PageControllerBase
             );
         }
 
+        $userId = $request->getSession()->get("user_id");
         return $this->render(
             "internship-program/requirements/home.html",
             [
@@ -56,9 +57,9 @@ class RequirementController extends PageControllerBase
     }
 
     #[Route("/{id}", methods: ["GET"], requirements: ['id' => '\d+'])]
-    public function requirement(Request $request, int $id): Response|RedirectResponse
+    public function requirement(Request $request, Identity $identity, int $id): Response|RedirectResponse
     {
-        if ($this->userService->hasRole($request->getSession()->get("user_id"), Role::InternshipProgram_Admin)) {
+        if ($identity->hasRole(Role::InternshipProgram_Admin)) {
             $requirement = $this->requirementService->getRequirement($id);
             if ($requirement) {
                 return $this->render(

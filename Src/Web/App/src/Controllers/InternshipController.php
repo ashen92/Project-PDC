@@ -6,6 +6,7 @@ namespace App\Controllers;
 use App\Attributes\RequiredRole;
 use App\Interfaces\IInternshipService;
 use App\Interfaces\IUserService;
+use App\Security\Identity;
 use App\Security\Role;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,9 +33,8 @@ class InternshipController extends PageControllerBase
     }
 
     #[Route(["", "/"])]
-    public function internships(Request $request): Response
+    public function internships(Request $request, Identity $identity): Response
     {
-        $userId = $request->getSession()->get("user_id");
         $latestCycleId = $request->getSession()->get("latest_internship_cycle_id");
 
         $queryParams = $request->query->all();
@@ -46,7 +46,8 @@ class InternshipController extends PageControllerBase
 
         $orgs = null;
 
-        if ($this->userService->hasRole($userId, Role::InternshipProgram_Partner_Admin)) {
+        if ($identity->hasRole(Role::InternshipProgram_Partner_Admin)) {
+            $userId = $request->getSession()->get("user_id");
             $internships = $this->internshipService
                 ->searchInternships(
                     $latestCycleId,

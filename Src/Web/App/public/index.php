@@ -4,6 +4,11 @@ declare(strict_types=1);
 require_once __DIR__ . "/../../vendor/autoload.php";
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver;
+use Symfony\Component\HttpKernel\Controller\ArgumentResolver\RequestAttributeValueResolver;
+use Symfony\Component\HttpKernel\Controller\ArgumentResolver\RequestValueResolver;
+use Symfony\Component\HttpKernel\Controller\ArgumentResolver\SessionValueResolver;
+use Symfony\Component\HttpKernel\Controller\ArgumentResolver\VariadicValueResolver;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -31,7 +36,17 @@ $dispatcher->addSubscriber($container->get("listener.authorization"));
 $dispatcher->addSubscriber($container->get("listener.internship_cycle"));
 
 $controllerResolver = new ContainerControllerResolver($container);
-$argumentResolver = new ArgumentResolver();
+$argumentResolver = new ArgumentResolver(
+    null,
+    [
+        new RequestAttributeValueResolver(),
+        new RequestValueResolver(),
+        new SessionValueResolver(),
+        new DefaultValueResolver(),
+        new VariadicValueResolver(),
+        $container->get('security.identity_resolver')
+    ]
+);
 
 $kernel = new HttpKernel($dispatcher, $controllerResolver, $requestStack, $argumentResolver);
 

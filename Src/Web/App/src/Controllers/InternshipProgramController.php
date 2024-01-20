@@ -10,6 +10,7 @@ use App\Exceptions\UserExistsException;
 use App\Interfaces\IInternshipCycleService;
 use App\Interfaces\IRequirementService;
 use App\Interfaces\IUserService;
+use App\Security\Identity;
 use App\Security\Role;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,11 +37,11 @@ class InternshipProgramController extends PageControllerBase
     }
 
     #[Route(["", "/", "/home"], name: "home")]
-    public function home(Request $request): Response
+    public function home(Request $request, Identity $identity): Response
     {
         $userId = $request->getSession()->get("user_id");
 
-        if ($this->userService->hasRole($userId, Role::InternshipProgram_Admin)) {
+        if ($identity->hasRole(Role::InternshipProgram_Admin)) {
             return $this->render(
                 "internship-program/home-admin.html",
                 [
@@ -49,7 +50,7 @@ class InternshipProgramController extends PageControllerBase
                 ]
             );
         }
-        if ($this->userService->hasRole($userId, Role::InternshipProgram_Partner_Admin)) {
+        if ($identity->hasRole(Role::InternshipProgram_Partner_Admin)) {
             return $this->render(
                 "internship-program/home-partner.html",
                 [
