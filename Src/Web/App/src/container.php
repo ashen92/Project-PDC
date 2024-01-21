@@ -83,6 +83,14 @@ $container->register(
 // Repositories ---------------------------------------------------------------
 
 $container->register(
+    "repository.authorization",
+    App\Security\AuthorizationRepository::class
+)
+    ->setArguments([
+        new Reference("pdo_mysql_connection"),
+    ]);
+
+$container->register(
     "repository.user",
     App\Repositories\UserRepository::class
 )
@@ -173,6 +181,14 @@ $container->register(
     ]);
 
 $container->register(
+    "service.authorization",
+    App\Security\AuthorizationService::class
+)
+    ->setArguments([
+        new Reference("repository.authorization"),
+    ]);
+
+$container->register(
     "service.user",
     App\Services\UserService::class
 )
@@ -250,7 +266,7 @@ $container->register(
 )
     ->setArguments([
         new Reference("twig"),
-        new Reference("service.user"),
+        new Reference("service.authorization"),
         new Reference("App\Controllers\ErrorController"),
     ])
     ->setPublic(true);

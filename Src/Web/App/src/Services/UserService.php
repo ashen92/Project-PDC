@@ -13,7 +13,6 @@ use App\Models\Student;
 use App\Models\User;
 use App\Models\UserInviteEmail;
 use App\Repositories\UserRepository;
-use App\Security\Role;
 
 readonly class UserService
 {
@@ -78,24 +77,6 @@ readonly class UserService
         $user->resetActivationToken();
 
         $this->userRepository->updateUser($user);
-    }
-
-    /**
-     * @return array<string>
-     */
-    public function getUserRoles(int $userId): array
-    {
-        return $this->userRepository->findUserRoles($userId);
-    }
-
-    public function hasRole(int $userId, Role $role): bool
-    {
-        if ($role == "")
-            return true;
-        $roles = $this->userRepository->findUserRoles($userId);
-        if (in_array($role->value, $roles))
-            return true;
-        return false;
     }
 
     public function getUserByEmail(string $email): ?User

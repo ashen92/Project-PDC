@@ -5,7 +5,7 @@ namespace App\EventListeners;
 
 use App\Attributes\RequiredRole;
 use App\Controllers\ErrorController;
-use App\Services\UserService;
+use App\Security\AuthorizationService;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
@@ -17,7 +17,7 @@ class AuthorizationListener implements EventSubscriberInterface
 {
     public function __construct(
         private Environment $twig,
-        private UserService $userService,
+        private AuthorizationService $authzService,
         private ErrorController $errorController,
     ) {
     }
@@ -37,7 +37,7 @@ class AuthorizationListener implements EventSubscriberInterface
 
         if ($event->getRequest()->getSession()->has("is_authenticated")) {
             $userId = (int) $event->getRequest()->getSession()->get("user_id");
-            $roles = $this->userService->getUserRoles($userId);
+            $roles = $this->authzService->getUserRolesAsStrings($userId);
             $this->twig->addGlobal("user_roles", $roles);
             // logic for permissions
 
@@ -74,12 +74,12 @@ class AuthorizationListener implements EventSubscriberInterface
 
             if (is_array($controllerRequiredRole)) {
                 foreach ($controllerRequiredRole as $role) {
-                    if ($this->userService->hasRole($userId, $role)) {
+                    if ($this->authzService->hasRole($userId, $role)) {
                         $hasControllerAccess = true;
                     }
                 }
             } else {
-                if ($this->userService->hasRole($userId, $controllerRequiredRole)) {
+                if ($this->authzService->hasRole($userId, $controllerRequiredRole)) {
                     $hasControllerAccess = true;
                 }
             }
@@ -99,12 +99,12 @@ class AuthorizationListener implements EventSubscriberInterface
 
         if (is_array($requiredRole)) {
             foreach ($requiredRole as $role) {
-                if ($this->userService->hasRole($userId, $role)) {
+                if ($this->authzService->hasRole($userId, $role)) {
                     return;
                 }
             }
         } else {
-            if ($this->userService->hasRole($userId, $requiredRole)) {
+            if ($this->authzService->hasRole($userId, $requiredRole)) {
                 return;
             }
         }
