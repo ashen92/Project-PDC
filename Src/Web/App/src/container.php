@@ -286,7 +286,6 @@ $container->register(
     App\EventListeners\InternshipProgramListener::class
 )
     ->setArguments([
-        new Reference("service.user"),
         new Reference("repository.internship_program"),
     ])
     ->setPublic(true);

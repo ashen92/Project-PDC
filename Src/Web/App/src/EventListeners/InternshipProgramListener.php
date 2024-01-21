@@ -3,17 +3,18 @@ declare(strict_types=1);
 
 namespace App\EventListeners;
 
+use App\Attributes\RequiredPolicy;
+use App\Constant\InternshipProgramState;
 use App\Repositories\InternshipProgramRepository;
-use App\Services\UserService;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 class InternshipProgramListener implements EventSubscriberInterface
 {
     public function __construct(
-        private UserService $userService,
-        private InternshipProgramRepository $internshipProgramRepository,
+        private readonly InternshipProgramRepository $internshipProgramRepository,
     ) {
 
     }
@@ -27,6 +28,29 @@ class InternshipProgramListener implements EventSubscriberInterface
             $controller != "App\Controllers\RequirementController"
         )
             return;
+
+        $reflector = $event->getControllerReflector();
+        $attributes = $reflector->getAttributes(RequiredPolicy::class);
+
+        if (empty($attributes))
+            return;
+
+        $state = $attributes[0]->newInstance()->policy;
+        if (!$state instanceof InternshipProgramState)
+            return;
+
+        $activeCycle = $this->internshipProgramRepository->findLatestActiveCycle();
+
+        switch ($state) {
+            case InternshipProgramState::Ended:
+                if ($activeCycle)
+                    throw new AccessDeniedHttpException();
+                break;
+            case InternshipProgramState::Active:
+                if (!$activeCycle)
+                    throw new AccessDeniedHttpException();
+                break;
+        }
     }
 
     public static function getSubscribedEvents(): array

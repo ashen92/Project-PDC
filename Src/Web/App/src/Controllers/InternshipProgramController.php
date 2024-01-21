@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+use App\Attributes\RequiredPolicy;
 use App\Attributes\RequiredRole;
+use App\Constant\InternshipProgramState;
 use App\DTOs\CreateCycleDTO;
 use App\DTOs\CreateUserDTO;
 use App\Exceptions\UserExistsException;
@@ -102,6 +104,8 @@ class InternshipProgramController extends PageControllerBase
         return $this->redirect("/internship-program/users/create");
     }
 
+    #[RequiredRole(Role::InternshipProgram_Admin)]
+    #[RequiredPolicy(InternshipProgramState::Ended)]
     #[Route("/cycle/create", methods: ["GET"])]
     public function cycleCreateGET(): Response
     {
@@ -117,6 +121,8 @@ class InternshipProgramController extends PageControllerBase
         );
     }
 
+    #[RequiredRole(Role::InternshipProgram_Admin)]
+    #[RequiredPolicy(InternshipProgramState::Ended)]
     #[Route("/cycle/create", methods: ["POST"])]
     public function cycleCreatePOST(Request $request): RedirectResponse
     {
@@ -136,6 +142,8 @@ class InternshipProgramController extends PageControllerBase
         return $this->redirect("/internship-program");
     }
 
+    #[RequiredRole(Role::InternshipProgram_Admin)]
+    #[RequiredPolicy(InternshipProgramState::Active)]
     #[Route("/cycle/end")]
     public function cycleEnd(): RedirectResponse
     {
@@ -143,6 +151,7 @@ class InternshipProgramController extends PageControllerBase
         return $this->redirect("/internship-program");
     }
 
+    #[RequiredRole(Role::InternshipProgram_Admin)]
     #[Route("/monitoring", methods: ["GET"])]
     public function monitoring(): Response
     {
@@ -155,6 +164,7 @@ class InternshipProgramController extends PageControllerBase
         );
     }
 
+    #[RequiredRole(Role::InternshipProgram_Admin)]
     #[Route("/monitoring/students", methods: ["GET"])]
     public function monitoringStudentUsers(): Response
     {
@@ -167,6 +177,7 @@ class InternshipProgramController extends PageControllerBase
         );
     }
 
+    #[RequiredRole(Role::InternshipProgram_Admin)]
     #[Route("/monitoring/submissions", methods: ["GET"])]
     public function requirementSubmissions(Request $request): Response|RedirectResponse
     {
