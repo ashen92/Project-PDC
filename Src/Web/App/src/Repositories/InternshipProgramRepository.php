@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
-use App\Interfaces\Repository\IRepository;
+use App\Interfaces\IRepository;
 use App\Mappers\InternshipCycleMapper;
 use App\Mappers\StudentMapper;
 use App\Models\InternshipCycle;

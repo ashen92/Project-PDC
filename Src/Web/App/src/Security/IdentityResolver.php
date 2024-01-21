@@ -9,7 +9,7 @@ use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 
 class IdentityResolver implements ValueResolverInterface
 {
-    private $identityProvider;
+    private IdentityProvider $identityProvider;
 
     public function __construct(IdentityProvider $identityProvider)
     {

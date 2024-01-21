@@ -9,15 +9,17 @@ use App\Entities\InternshipCycle;
 use App\Entities\Requirement;
 use App\Entities\User;
 use App\Entities\UserRequirement;
-use App\Interfaces\Repository\IRepository;
+use App\Interfaces\IRepository;
 use App\Mappers\RequirementMapper;
 use App\Mappers\UserRequirementMapper;
+use Doctrine\ORM\EntityManager;
+use PDO;
 
 class RequirementRepository extends Repository implements IRepository
 {
     public function __construct(
-        private readonly \PDO $pdo,
-        \Doctrine\ORM\EntityManager $entityManager
+        private readonly PDO $pdo,
+        EntityManager $entityManager
     ) {
         parent::__construct($entityManager);
     }
@@ -44,7 +46,7 @@ class RequirementRepository extends Repository implements IRepository
         $statement->execute([
             "id" => $id
         ]);
-        $result = $statement->fetch(\PDO::FETCH_ASSOC);
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
         if ($result === false) {
             return null;
         }
@@ -59,7 +61,7 @@ class RequirementRepository extends Repository implements IRepository
         $statement->execute([
             "cycleId" => $cycleId
         ]);
-        $results = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
         if ($results === false) {
             return [];
         }
@@ -76,7 +78,7 @@ class RequirementRepository extends Repository implements IRepository
         $statement->execute([
             "id" => $id
         ]);
-        $result = $statement->fetch(\PDO::FETCH_ASSOC);
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
         if ($result === false) {
             return null;
         }

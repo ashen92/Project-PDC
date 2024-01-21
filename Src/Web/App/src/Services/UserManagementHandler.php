@@ -5,8 +5,9 @@ namespace App\Services;
 
 use PDO;
 use stdClass;
+use Throwable;
 
-class UserManagementHandler
+readonly class UserManagementHandler
 {
     public function __construct(
         private PDO $pdo,
@@ -49,7 +50,7 @@ class UserManagementHandler
 
             $this->pdo->commit();
             return true;
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             $this->pdo->rollBack();
             return false;
         }

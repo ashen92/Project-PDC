@@ -5,7 +5,7 @@ namespace App\Security;
 
 use PDO;
 
-class IdentityProvider
+readonly class IdentityProvider
 {
     public function __construct(
         private PDO $pdo,

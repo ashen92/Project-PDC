@@ -15,7 +15,7 @@ use App\Models\UserInviteEmail;
 use App\Repositories\UserRepository;
 use App\Security\Role;
 
-class UserService
+readonly class UserService
 {
     public function __construct(
         private UserRepository $userRepository,

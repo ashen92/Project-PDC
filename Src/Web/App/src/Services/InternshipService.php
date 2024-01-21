@@ -10,16 +10,16 @@ use App\Models\Organization;
 use App\Models\Student;
 use App\Repositories\InternshipRepository;
 
-class InternshipService
+readonly class InternshipService
 {
     public function __construct(
-        private readonly InternshipRepository $internshipRepository,
-        private readonly InternshipCycleService $internshipCycleService,
-        private readonly IFileStorageService $fileStorageService
+        private InternshipRepository $internshipRepository,
+        private InternshipCycleService $internshipCycleService,
+        private IFileStorageService $fileStorageService
     ) {
     }
 
-    public function getInternship(int $id, ?int $cycleId = null): ?Internship
+    public function getInternship(int $id): ?Internship
     {
         return $this->internshipRepository->findInternship($id);
     }

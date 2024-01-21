@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Security;
 
-class Identity
+readonly class Identity
 {
     /**
      * @param array<Role> $roles

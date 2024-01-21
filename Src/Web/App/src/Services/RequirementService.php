@@ -14,7 +14,7 @@ use App\Models\Requirement\Type;
 use App\Repositories\RequirementRepository;
 use DateInterval;
 
-class RequirementService
+readonly class RequirementService
 {
     public function __construct(
         private RequirementRepository $requirementRepository,

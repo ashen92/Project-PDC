@@ -10,11 +10,14 @@ use App\Entities\Student;
 use App\Entities\UserGroup;
 use App\Exceptions\UserExistsException;
 use App\Interfaces\IEmailService;
+use App\Models\InternshipCycle;
 use App\Repositories\InternshipProgramRepository;
 use App\Repositories\UserRepository;
 use App\Security\Role;
+use DateTimeImmutable;
+use Throwable;
 
-class InternshipCycleService
+readonly class InternshipCycleService
 {
     public function __construct(
         private InternshipProgramRepository $internshipProgramRepository,
@@ -79,17 +82,17 @@ class InternshipCycleService
         return $this->getLatestCycle()?->getId();
     }
 
-    public function getLatestCycle(): ?\App\Models\InternshipCycle
+    public function getLatestCycle(): ?InternshipCycle
     {
         return $this->internshipProgramRepository->findLatestCycle();
     }
 
-    public function getLatestActiveCycle(): ?\App\Models\InternshipCycle
+    public function getLatestActiveCycle(): ?InternshipCycle
     {
         return $this->internshipProgramRepository->findLatestActiveCycle();
     }
 
-    public function createCycle(CreateCycleDTO $dto): \App\Models\InternshipCycle
+    public function createCycle(CreateCycleDTO $dto): InternshipCycle
     {
         $this->internshipProgramRepository->beginTransaction();
         try {
@@ -111,16 +114,16 @@ class InternshipCycleService
                 ->addUsersToUserGroup($studentGroup->getId(), $dto->studentGroup);
 
             $cycle->setCollectionStartDate(
-                new \DateTimeImmutable($dto->collectionStartDate)
+                new DateTimeImmutable($dto->collectionStartDate)
             );
             $cycle->setCollectionEndDate(
-                new \DateTimeImmutable($dto->collectionEndDate)
+                new DateTimeImmutable($dto->collectionEndDate)
             );
             $cycle->setApplicationStartDate(
-                new \DateTimeImmutable($dto->applicationStartDate)
+                new DateTimeImmutable($dto->applicationStartDate)
             );
             $cycle->setApplicationEndDate(
-                new \DateTimeImmutable($dto->applicationEndDate)
+                new DateTimeImmutable($dto->applicationEndDate)
             );
             $cycle->setPartnerGroupId($partnerGroup->getId());
             $cycle->setStudentGroupId($studentGroup->getId());
@@ -130,7 +133,7 @@ class InternshipCycleService
             $this->internshipProgramRepository->commit();
             return $cycle;
 
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             $this->internshipProgramRepository->rollBack();
             throw $th;
         }

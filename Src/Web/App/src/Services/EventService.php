@@ -6,7 +6,7 @@ namespace App\Services;
 use App\Entities\Event;
 use Doctrine\ORM\EntityManagerInterface;
 
-class EventService
+readonly class EventService
 {
     public function __construct(
         private EntityManagerInterface $entityManager

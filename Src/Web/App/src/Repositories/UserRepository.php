@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Repositories;
 
 use App\DTOs\CreateUserDTO;
-use App\Interfaces\Repository\IRepository;
+use App\Interfaces\IRepository;
 use App\Mappers\PartnerMapper;
 use App\Mappers\StudentMapper;
 use App\Mappers\UserGroupMapper;
