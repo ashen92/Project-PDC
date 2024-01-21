@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace App\Controllers\API;
 
-use App\Interfaces\IInternshipService;
 use App\Security\Identity;
 use App\Security\Role;
+use App\Services\InternshipService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class InternshipController
 {
     public function __construct(
-        private IInternshipService $internshipService,
+        private InternshipService $internshipService,
     ) {
     }
 

@@ -8,13 +8,14 @@ use App\DTOs\CreateUserDTO;
 use App\Exceptions\UserExistsException;
 use App\Interfaces\IEmailService;
 use App\Interfaces\IPasswordHasher;
-use App\Interfaces\IUserService;
+use App\Models\Partner;
 use App\Models\Student;
+use App\Models\User;
 use App\Models\UserInviteEmail;
 use App\Repositories\UserRepository;
 use App\Security\Role;
 
-class UserService implements IUserService
+class UserService
 {
     public function __construct(
         private UserRepository $userRepository,
@@ -23,7 +24,11 @@ class UserService implements IUserService
     ) {
     }
 
-    #[\Override] public function createUser(CreateUserDTO $userDTO): int
+    /**
+     * @return int The ID of the created user
+     * @throws UserExistsException If a user with the same email already exists
+     */
+    public function createUser(CreateUserDTO $userDTO): int
     {
         if (
             $this->userRepository->doesUserExist(
@@ -61,7 +66,7 @@ class UserService implements IUserService
         return $userId;
     }
 
-    #[\Override] public function createStudentUser(CreateStudentUserDTO $createStudentDTO): void
+    public function createStudentUser(CreateStudentUserDTO $createStudentDTO): void
     {
         $user = $this->userRepository->findUser($createStudentDTO->id);
 
@@ -75,12 +80,15 @@ class UserService implements IUserService
         $this->userRepository->updateUser($user);
     }
 
-    #[\Override] public function getUserRoles(int $userId): array
+    /**
+     * @return array<string>
+     */
+    public function getUserRoles(int $userId): array
     {
         return $this->userRepository->findUserRoles($userId);
     }
 
-    #[\Override] public function hasRole(int $userId, Role $role): bool
+    public function hasRole(int $userId, Role $role): bool
     {
         if ($role == "")
             return true;
@@ -90,49 +98,52 @@ class UserService implements IUserService
         return false;
     }
 
-    #[\Override] public function getUserByEmail(string $email): ?\App\Models\User
+    public function getUserByEmail(string $email): ?User
     {
         return $this->userRepository->findByEmail($email);
     }
 
-    #[\Override] public function getStudentByStudentEmail(string $email): ?Student
+    public function getStudentByStudentEmail(string $email): ?Student
     {
         return $this->userRepository->findStudentByStudentEmail($email);
     }
 
-    #[\Override] public function getUserByActivationToken(string $token): ?\App\Models\User
+    public function getUserByActivationToken(string $token): ?User
     {
         return $this->userRepository->findByActivationToken($token);
     }
 
-    #[\Override] public function generateActivationToken(\App\Models\User $user): string
+    public function generateActivationToken(User $user): string
     {
         $token = $user->generateActivationToken();
         $this->userRepository->updateUser($user);
         return $token;
     }
 
-    #[\Override] public function getManagedUsers(int $userId): array
+    /**
+     * @return array<Partner>
+     */
+    public function getManagedUsers(int $userId): array
     {
         return $this->userRepository->findManagedUsers($userId);
     }
 
-    #[\Override] public function updateUser(\App\Models\User $user): void
+    public function updateUser(User $user): void
     {
         $this->userRepository->updateUser($user);
     }
 
-    #[\Override] public function searchUsers(?int $numberOfResults, ?int $offsetBy): array
+    public function searchUsers(?int $numberOfResults, ?int $offsetBy): array
     {
         return $this->userRepository->searchUsers($numberOfResults, $offsetBy);
     }
 
-    #[\Override] public function searchGroups(?int $numberOfResults, ?int $offsetBy): array
+    public function searchGroups(?int $numberOfResults, ?int $offsetBy): array
     {
         return $this->userRepository->searchGroups($numberOfResults, $offsetBy);
     }
 
-    #[\Override] public function managePartner(int $managedBy, int $partnerId): bool
+    public function managePartner(int $managedBy, int $partnerId): bool
     {
         return $this->userRepository->managePartner($managedBy, $partnerId);
     }

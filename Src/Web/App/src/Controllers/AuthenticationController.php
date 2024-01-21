@@ -4,10 +4,10 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\DTOs\CreateStudentUserDTO;
-use App\Interfaces\IAuthenticationService;
 use App\Interfaces\IEmailService;
-use App\Interfaces\IUserService;
 use App\Models\SignupEmail;
+use App\Services\AuthenticationService;
+use App\Services\UserService;
 use DateTime;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,8 +19,8 @@ class AuthenticationController extends PageControllerBase
 {
     public function __construct(
         Environment $twig,
-        private IAuthenticationService $authn,
-        private IUserService $userService,
+        private AuthenticationService $authn,
+        private UserService $userService,
         private IEmailService $emailService
     ) {
         parent::__construct($twig);

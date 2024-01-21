@@ -6,23 +6,27 @@ namespace App\Services;
 use App\Constant\Constants;
 use App\DTOs\CreateCycleDTO;
 use App\DTOs\CreateUserDTO;
+use App\Entities\Student;
+use App\Entities\UserGroup;
+use App\Exceptions\UserExistsException;
 use App\Interfaces\IEmailService;
-use App\Interfaces\IInternshipCycleService;
-use App\Interfaces\IUserService;
 use App\Repositories\InternshipProgramRepository;
 use App\Repositories\UserRepository;
 use App\Security\Role;
 
-class InternshipCycleService implements IInternshipCycleService
+class InternshipCycleService
 {
     public function __construct(
         private InternshipProgramRepository $internshipProgramRepository,
         private UserRepository $userRepository,
-        private IUserService $userService,
+        private UserService $userService,
         private IEmailService $emailService
     ) {
     }
 
+    /**
+     * @return array<UserGroup>
+     */
     public function getEligibleStudentGroupsForInternshipCycle(): array
     {
         $groups = $this->userRepository->findAllUserGroups();
@@ -45,6 +49,9 @@ class InternshipCycleService implements IInternshipCycleService
         return $eligibleGroups;
     }
 
+    /**
+     * @return array<UserGroup>
+     */
     public function getEligiblePartnerGroupsForInternshipCycle(): array
     {
         $groups = $this->userRepository->findAllUserGroups();
@@ -129,6 +136,9 @@ class InternshipCycleService implements IInternshipCycleService
         }
     }
 
+    /**
+     * @return array<Student>
+     */
     public function getStudentUsers(?int $internshipCycleId = null): array
     {
         if ($internshipCycleId === null) {
@@ -170,7 +180,10 @@ class InternshipCycleService implements IInternshipCycleService
         return true;
     }
 
-    #[\Override] public function createManagedUser(int $managedBy, CreateUserDTO $userDTO): void
+    /**
+     * @throws UserExistsException If a user with the same email already exists
+     */
+    public function createManagedUser(int $managedBy, CreateUserDTO $userDTO): void
     {
         $userId = $this->userService->createUser($userDTO);
 

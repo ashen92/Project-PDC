@@ -6,8 +6,8 @@ namespace App\Controllers;
 use App\Attributes\RequiredRole;
 use App\DTOs\CreateUserDTO;
 use App\Exceptions\UserExistsException;
-use App\Interfaces\IUserService;
 use App\Security\Role;
+use App\Services\UserService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,7 +19,7 @@ class PortalController extends PageControllerBase
 {
 	public function __construct(
 		\Twig\Environment $twig,
-		private IUserService $userService
+		private UserService $userService
 	) {
 		parent::__construct($twig);
 	}

@@ -7,14 +7,14 @@ use App\DTOs\CreateRequirementDTO;
 use App\DTOs\CreateUserRequirementDTO;
 use App\DTOs\UserRequirementFulfillmentDTO;
 use App\Entities\Requirement;
+use App\Entities\UserRequirement;
 use App\Interfaces\IFileStorageService;
-use App\Interfaces\IRequirementService;
 use App\Models\Requirement\FulFillMethod;
 use App\Models\Requirement\Type;
 use App\Repositories\RequirementRepository;
 use DateInterval;
 
-class RequirementService implements IRequirementService
+class RequirementService
 {
     public function __construct(
         private RequirementRepository $requirementRepository,
@@ -24,12 +24,15 @@ class RequirementService implements IRequirementService
 
     }
 
-    #[\Override] public function getRequirement(int $id): ?\App\Models\Requirement
+    public function getRequirement(int $id): ?\App\Models\Requirement
     {
         return $this->requirementRepository->findRequirement($id);
     }
 
-    #[\Override] public function getRequirements(?int $internshipCycleId = null): array
+    /**
+     * @return array<\App\Models\Requirement>
+     */
+    public function getRequirements(?int $internshipCycleId = null): array
     {
         if ($internshipCycleId === null)
             $internshipCycleId = $this->internshipCycleService->getLatestInternshipCycleId();
@@ -40,12 +43,15 @@ class RequirementService implements IRequirementService
         return $this->requirementRepository->findAllRequirements($internshipCycleId);
     }
 
-    #[\Override] public function getUserRequirement(int $id): ?\App\Models\UserRequirement
+    public function getUserRequirement(int $id): ?\App\Models\UserRequirement
     {
         return $this->requirementRepository->findUserRequirement($id);
     }
 
-    #[\Override] public function getUserRequirements(
+    /**
+     * @return array<UserRequirement>
+     */
+    public function getUserRequirements(
         ?int $internshipCycleId = null,
         ?int $requirementId = null,
         ?int $userId = null,
@@ -74,7 +80,7 @@ class RequirementService implements IRequirementService
         return $this->requirementRepository->findAllUserRequirements($criteria);
     }
 
-    #[\Override] public function createRequirement(CreateRequirementDTO $requirementDTO): void
+    public function createRequirement(CreateRequirementDTO $requirementDTO): void
     {
         $internshipCycleId = $this->internshipCycleService->getLatestInternshipCycleId();
         $requirement = $this->requirementRepository
@@ -128,7 +134,7 @@ class RequirementService implements IRequirementService
         }
     }
 
-    #[\Override] public function completeUserRequirement(UserRequirementFulfillmentDTO $dto): bool
+    public function completeUserRequirement(UserRequirementFulfillmentDTO $dto): bool
     {
         $ur = $this->requirementRepository->findUserRequirement($dto->userRequirementId);
 

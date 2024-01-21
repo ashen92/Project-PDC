@@ -4,11 +4,11 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Attributes\RequiredRole;
-use App\Interfaces\IInternshipService;
-use App\Interfaces\IUserService;
 use App\Models\InternshipCycle;
 use App\Security\Identity;
 use App\Security\Role;
+use App\Services\InternshipService;
+use App\Services\UserService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,8 +27,8 @@ class InternshipController extends PageControllerBase
 
     public function __construct(
         Environment $twig,
-        private readonly IInternshipService $internshipService,
-        private readonly IUserService $userService,
+        private readonly InternshipService $internshipService,
+        private readonly UserService $userService,
     ) {
         parent::__construct($twig);
     }

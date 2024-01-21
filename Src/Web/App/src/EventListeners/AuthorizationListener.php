@@ -5,7 +5,7 @@ namespace App\EventListeners;
 
 use App\Attributes\RequiredRole;
 use App\Controllers\ErrorController;
-use App\Interfaces\IUserService;
+use App\Services\UserService;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
@@ -17,7 +17,7 @@ class AuthorizationListener implements EventSubscriberInterface
 {
     public function __construct(
         private Environment $twig,
-        private IUserService $userService,
+        private UserService $userService,
         private ErrorController $errorController,
     ) {
     }

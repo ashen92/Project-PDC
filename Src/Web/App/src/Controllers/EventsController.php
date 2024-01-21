@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Entities\Event;
-use App\Interfaces\IEventService;
+use App\Services\EventService;
 use DateTime;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,7 +16,7 @@ class EventsController extends PageControllerBase
 {
     public function __construct(
         Environment $twig,
-        private IEventService $eventService
+        private EventService $eventService
     ) {
         parent::__construct($twig);
     }

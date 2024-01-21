@@ -6,10 +6,10 @@ namespace App\Controllers;
 use App\Attributes\RequiredRole;
 use App\DTOs\CreateRequirementDTO;
 use App\DTOs\UserRequirementFulfillmentDTO;
-use App\Interfaces\IRequirementService;
-use App\Interfaces\IUserService;
 use App\Security\Identity;
 use App\Security\Role;
+use App\Services\RequirementService;
+use App\Services\UserService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,8 +27,8 @@ class RequirementController extends PageControllerBase
 {
     public function __construct(
         Environment $twig,
-        private IUserService $userService,
-        private IRequirementService $requirementService
+        private UserService $userService,
+        private RequirementService $requirementService
     ) {
         parent::__construct($twig);
     }

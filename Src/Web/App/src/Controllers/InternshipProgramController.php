@@ -7,12 +7,12 @@ use App\Attributes\RequiredRole;
 use App\DTOs\CreateCycleDTO;
 use App\DTOs\CreateUserDTO;
 use App\Exceptions\UserExistsException;
-use App\Interfaces\IInternshipCycleService;
-use App\Interfaces\IRequirementService;
-use App\Interfaces\IUserService;
 use App\Models\InternshipCycle;
 use App\Security\Identity;
 use App\Security\Role;
+use App\Services\InternshipCycleService;
+use App\Services\RequirementService;
+use App\Services\UserService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,9 +30,9 @@ class InternshipProgramController extends PageControllerBase
 {
     public function __construct(
         Environment $twig,
-        private IUserService $userService,
-        private IInternshipCycleService $internshipCycleService,
-        private IRequirementService $requirementService,
+        private UserService $userService,
+        private InternshipCycleService $internshipCycleService,
+        private RequirementService $requirementService,
     ) {
         parent::__construct($twig);
     }

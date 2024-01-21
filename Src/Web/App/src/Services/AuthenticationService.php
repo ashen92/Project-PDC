@@ -3,14 +3,12 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use App\Interfaces\IAuthenticationService;
 use App\Interfaces\IPasswordHasher;
-use App\Interfaces\IUserService;
 
-class AuthenticationService implements IAuthenticationService
+class AuthenticationService
 {
     public function __construct(
-        private IUserService $userService,
+        private UserService $userService,
         private IPasswordHasher $passwordHasher
     ) {
     }
