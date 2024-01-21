@@ -32,7 +32,7 @@ class RequirementController extends PageControllerBase
         parent::__construct($twig);
     }
 
-    #[Route(["", "/"], methods: ["GET"])]
+    #[Route([""], methods: ["GET"])]
     public function requirements(Request $request, Identity $identity): Response
     {
         if ($identity->hasRole(Role::InternshipProgram_Admin)) {

@@ -31,7 +31,7 @@ class InternshipController extends PageControllerBase
         parent::__construct($twig);
     }
 
-    #[Route(["", "/"])]
+    #[Route([""])]
     public function internships(Request $request, Identity $identity, ?InternshipCycle $cycle): Response
     {
         if ($cycle === null) {

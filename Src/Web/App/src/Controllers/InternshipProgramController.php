@@ -29,15 +29,15 @@ use Twig\Environment;
 class InternshipProgramController extends PageControllerBase
 {
     public function __construct(
-        Environment                             $twig,
-        private readonly UserService            $userService,
+        Environment $twig,
+        private readonly UserService $userService,
         private readonly InternshipCycleService $internshipCycleService,
-        private readonly RequirementService     $requirementService,
+        private readonly RequirementService $requirementService,
     ) {
         parent::__construct($twig);
     }
 
-    #[Route(["", "/", "/home"], name: "home")]
+    #[Route([""], name: "home")]
     public function home(Request $request, Identity $identity, ?InternshipCycle $cycle): Response
     {
         $userId = $request->getSession()->get("user_id");

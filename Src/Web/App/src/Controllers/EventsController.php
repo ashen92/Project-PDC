@@ -21,7 +21,7 @@ class EventsController extends PageControllerBase
         parent::__construct($twig);
     }
 
-    #[Route(["", "/"], name: "home")]
+    #[Route([""], name: "home")]
     public function home(): Response
     {
         return $this->render("events/home.html", [

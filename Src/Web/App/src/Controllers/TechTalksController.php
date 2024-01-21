@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route("/techtalks", name: "techtalks_")]
 class TechTalksController extends PageControllerBase
 {
-    #[Route(["", "/"], name: "home")]
+    #[Route([""], name: "home")]
     public function home(): Response
     {
         return $this->render("techtalks/home.html");
