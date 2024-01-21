@@ -4,12 +4,12 @@ declare(strict_types=1);
 namespace App\EventListeners;
 
 use App\Attributes\RequiredRole;
-use App\Controllers\ErrorController;
 use App\Security\AuthorizationService;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Twig\Environment;
 
@@ -18,7 +18,6 @@ class AuthorizationListener implements EventSubscriberInterface
     public function __construct(
         private Environment $twig,
         private AuthorizationService $authzService,
-        private ErrorController $errorController,
     ) {
     }
 
@@ -85,8 +84,7 @@ class AuthorizationListener implements EventSubscriberInterface
             }
 
             if (!$hasControllerAccess) {
-                $event->setController(fn() => $this->errorController->notFound());
-                return;
+                throw new AccessDeniedHttpException();
             }
         }
 
@@ -109,8 +107,7 @@ class AuthorizationListener implements EventSubscriberInterface
             }
         }
 
-        $event->setController(fn() => $this->errorController->notFound());
-        $event->stopPropagation();
+        throw new AccessDeniedHttpException();
     }
 
     public static function getSubscribedEvents()

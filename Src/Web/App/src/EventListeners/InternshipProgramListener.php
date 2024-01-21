@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\EventListeners;
 
-use App\Controllers\ErrorController;
 use App\Repositories\InternshipProgramRepository;
 use App\Services\UserService;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -15,7 +14,6 @@ class InternshipProgramListener implements EventSubscriberInterface
     public function __construct(
         private UserService $userService,
         private InternshipProgramRepository $internshipProgramRepository,
-        private ErrorController $errorController,
     ) {
 
     }

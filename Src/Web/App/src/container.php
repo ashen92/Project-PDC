@@ -278,7 +278,6 @@ $container->register(
     ->setArguments([
         new Reference("twig"),
         new Reference("service.authorization"),
-        new Reference("App\Controllers\ErrorController"),
     ])
     ->setPublic(true);
 
@@ -289,7 +288,6 @@ $container->register(
     ->setArguments([
         new Reference("service.user"),
         new Reference("repository.internship_program"),
-        new Reference("App\Controllers\ErrorController"),
     ])
     ->setPublic(true);
 
