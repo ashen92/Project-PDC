@@ -260,6 +260,17 @@ $container->register(
 )
     ->setFactory([Symfony\Component\HttpClient\HttpClient::class, "create"]);
 
+// Event Listeners
+
+$container->register(
+    "listener.exception",
+    Symfony\Component\HttpKernel\EventListener\ErrorListener::class
+)
+    ->setArguments([
+        'App\Controllers\ErrorController::exception',
+    ])
+    ->setPublic(true);
+
 $container->register(
     "listener.authorization",
     App\EventListeners\AuthorizationListener::class
