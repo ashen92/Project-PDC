@@ -19,9 +19,9 @@ class AuthenticationController extends PageControllerBase
 {
     public function __construct(
         Environment $twig,
-        private AuthenticationService $authn,
-        private UserService $userService,
-        private IEmailService $emailService
+        private readonly AuthenticationService $authn,
+        private readonly UserService $userService,
+        private readonly IEmailService $emailService
     ) {
         parent::__construct($twig);
     }
@@ -74,7 +74,7 @@ class AuthenticationController extends PageControllerBase
     {
         // TODO: Handle errors
 
-        $email = $request->get("student-email", null);
+        $email = $request->get("student-email");
         // TODO: Validate email
 
         if ($email) {
@@ -98,7 +98,7 @@ class AuthenticationController extends PageControllerBase
     {
         // TODO: Handle errors
 
-        $token = $request->query->get("token", null);
+        $token = $request->query->get("token");
         // TODO: Validate token
 
         if ($token) {
@@ -125,7 +125,7 @@ class AuthenticationController extends PageControllerBase
     {
         // TODO: Handle errors
 
-        $token = $request->get("token", null);
+        $token = $request->get("token");
         // TODO: Validate token
 
         if ($token) {
@@ -135,11 +135,11 @@ class AuthenticationController extends PageControllerBase
 
                     $createStudentDTO = new CreateStudentUserDTO(
                         $user->getId(),
-                        $request->get("first-name", null),
-                        $request->get("last-name", null),
-                        $request->get("email", null),
-                        $request->get("password", null),
-                        $request->get("confirm-password", null),
+                        $request->get("first-name"),
+                        $request->get("last-name"),
+                        $request->get("email"),
+                        $request->get("password"),
+                        $request->get("confirm-password"),
                     );
 
                     // Validate createStudentDTO

@@ -16,7 +16,7 @@ class EventsController extends PageControllerBase
 {
     public function __construct(
         Environment $twig,
-        private EventService $eventService
+        private readonly EventService $eventService
     ) {
         parent::__construct($twig);
     }
@@ -31,7 +31,7 @@ class EventsController extends PageControllerBase
     }
 
     #[Route("/create", name: "create_get", methods: ["GET"])]
-    public function create(Request $request): Response
+    public function create(): Response
     {
         return $this->render(
             "events/create.html",

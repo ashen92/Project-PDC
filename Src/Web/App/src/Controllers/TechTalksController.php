@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -17,7 +16,7 @@ class TechTalksController extends PageControllerBase
     }
 
     #[Route("/create", name: "create", methods: ["GET"])]
-    public function create(Request $request): Response
+    public function create(): Response
     {
         return $this->render("techtalks/create.html");
     }

@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class UserManagementController
 {
     public function __construct(
-        private UserManagementHandler $userMgmtHandler,
+        private readonly UserManagementHandler $userMgmtHandler,
     ) {
     }
 

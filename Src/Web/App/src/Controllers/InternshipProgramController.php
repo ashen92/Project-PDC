@@ -29,10 +29,10 @@ use Twig\Environment;
 class InternshipProgramController extends PageControllerBase
 {
     public function __construct(
-        Environment $twig,
-        private UserService $userService,
-        private InternshipCycleService $internshipCycleService,
-        private RequirementService $requirementService,
+        Environment                             $twig,
+        private readonly UserService            $userService,
+        private readonly InternshipCycleService $internshipCycleService,
+        private readonly RequirementService     $requirementService,
     ) {
         parent::__construct($twig);
     }
@@ -69,8 +69,8 @@ class InternshipProgramController extends PageControllerBase
         );
     }
 
-    #[Route("/users/create", methods: ["GET"], name: "user_create")]
-    public function userCreate(Request $request): Response
+    #[Route("/users/create", name: "user_create", methods: ["GET"])]
+    public function userCreate(): Response
     {
         return $this->render(
             "internship-program/create_user.html",
@@ -89,7 +89,7 @@ class InternshipProgramController extends PageControllerBase
 
         try {
             $this->internshipCycleService->createManagedUser($request->getSession()->get("user_id"), $dto);
-        } catch (UserExistsException $e) {
+        } catch (UserExistsException) {
 
             // TODO: Set error message
 
@@ -103,7 +103,7 @@ class InternshipProgramController extends PageControllerBase
     }
 
     #[Route("/cycle/create", methods: ["GET"])]
-    public function cycleCreateGET(Request $request): Response
+    public function cycleCreateGET(): Response
     {
         return $this->render(
             "internship-program/cycle/create.html",
@@ -137,14 +137,14 @@ class InternshipProgramController extends PageControllerBase
     }
 
     #[Route("/cycle/end")]
-    public function cycleEnd(Request $request): RedirectResponse
+    public function cycleEnd(): RedirectResponse
     {
         $this->internshipCycleService->endInternshipCycle();
         return $this->redirect("/internship-program");
     }
 
     #[Route("/monitoring", methods: ["GET"])]
-    public function monitoring(Request $request): Response
+    public function monitoring(): Response
     {
         return $this->render(
             "internship-program/monitoring/home.html",
@@ -156,7 +156,7 @@ class InternshipProgramController extends PageControllerBase
     }
 
     #[Route("/monitoring/students", methods: ["GET"])]
-    public function monitoringStudentUsers(Request $request): Response
+    public function monitoringStudentUsers(): Response
     {
         return $this->render(
             "internship-program/monitoring/student-users.html",

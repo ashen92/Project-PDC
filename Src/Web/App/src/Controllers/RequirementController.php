@@ -9,7 +9,7 @@ use App\DTOs\UserRequirementFulfillmentDTO;
 use App\Security\Identity;
 use App\Security\Role;
 use App\Services\RequirementService;
-use App\Services\UserService;
+use DateTimeImmutable;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,8 +27,7 @@ class RequirementController extends PageControllerBase
 {
     public function __construct(
         Environment $twig,
-        private UserService $userService,
-        private RequirementService $requirementService
+        private readonly RequirementService $requirementService
     ) {
         parent::__construct($twig);
     }
@@ -56,8 +55,8 @@ class RequirementController extends PageControllerBase
         );
     }
 
-    #[Route("/{id}", methods: ["GET"], requirements: ['id' => '\d+'])]
-    public function requirement(Request $request, Identity $identity, int $id): Response|RedirectResponse
+    #[Route("/{id}", requirements: ['id' => '\d+'], methods: ["GET"])]
+    public function requirement(Identity $identity, int $id): Response|RedirectResponse
     {
         if ($identity->hasRole(Role::InternshipProgram_Admin)) {
             $requirement = $this->requirementService->getRequirement($id);
@@ -88,7 +87,7 @@ class RequirementController extends PageControllerBase
     }
 
     #[Route("/create", methods: ["GET"])]
-    public function requirementAddGET(Request $request): Response
+    public function requirementAddGET(): Response
     {
         return $this->render("internship-program/requirements/create.html", ["section" => "requirements"]);
     }
@@ -105,8 +104,8 @@ class RequirementController extends PageControllerBase
             $request->get("name"),
             $request->get("description"),
             $request->get("type"),
-            new \DateTimeImmutable($request->get("start-date")),
-            new \DateTimeImmutable($request->get("end-before")),
+            new DateTimeImmutable($request->get("start-date")),
+            new DateTimeImmutable($request->get("end-before")),
             $request->get("repeat-interval"),
             $request->get("fulfill-method"),
             $fileTypes,
@@ -122,12 +121,12 @@ class RequirementController extends PageControllerBase
     #[Route("/complete", methods: ["POST"])]
     public function complete(Request $request): Response|RedirectResponse
     {
-        $files = $request->files->get("files-to-upload", null);
+        $files = $request->files->get("files-to-upload");
         if ($files && !is_array($files)) {
             $files = [$files];
         }
 
-        $textResponse = $request->get("text-response", null);
+        $textResponse = $request->get("text-response");
 
         $urCompletionDTO = new UserRequirementFulfillmentDTO(
             (int) $request->get("user-requirement-id"),
@@ -140,6 +139,6 @@ class RequirementController extends PageControllerBase
         // todo
         // Handle errors
 
-        return $this->redirect("/internship-program/requirements/{$urCompletionDTO->userRequirementId}");
+        return $this->redirect("/internship-program/requirements/$urCompletionDTO->userRequirementId");
     }
 }

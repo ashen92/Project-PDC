@@ -46,7 +46,6 @@ class AuthorizationListener implements EventSubscriberInterface
                 $event->setResponse($response);
                 return;
             }
-            return;
         } else {
             if (array_key_exists($currentRoute, $specialRoutes)) {
                 if (in_array($currentMethod, $specialRoutes[$currentRoute])) {
@@ -55,7 +54,6 @@ class AuthorizationListener implements EventSubscriberInterface
             }
             $response = new RedirectResponse("/login?redirect=$currentRoute");
             $event->setResponse($response);
-            return;
         }
     }
 

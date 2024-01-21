@@ -23,7 +23,6 @@ readonly class InternshipCycleService
         private InternshipProgramRepository $internshipProgramRepository,
         private UserRepository $userRepository,
         private UserService $userService,
-        private IEmailService $emailService
     ) {
     }
 

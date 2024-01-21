@@ -8,7 +8,6 @@ use App\Models\InternshipCycle;
 use App\Security\Identity;
 use App\Security\Role;
 use App\Services\InternshipService;
-use App\Services\UserService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,7 +27,6 @@ class InternshipController extends PageControllerBase
     public function __construct(
         Environment $twig,
         private readonly InternshipService $internshipService,
-        private readonly UserService $userService,
     ) {
         parent::__construct($twig);
     }
@@ -103,7 +101,7 @@ class InternshipController extends PageControllerBase
     }
 
     #[Route("/{id}", requirements: ['id' => '\d+'], methods: ["DELETE"])]
-    public function delete(Request $request, int $id): Response
+    public function delete(int $id): Response
     {
         $this->internshipService->deleteInternship($id);
         return new Response(null, 204);

@@ -200,7 +200,6 @@ $container->register(
         new Reference("repository.internship_program"),
         new Reference("repository.user"),
         new Reference("service.user"),
-        new Reference("service.email"),
     ]);
 
 $container->register(
@@ -359,7 +358,6 @@ $container->register(
 )
     ->setArguments([
         new Reference("twig"),
-        new Reference("service.user"),
         new Reference("service.requirement")
     ])
     ->setPublic(true);
