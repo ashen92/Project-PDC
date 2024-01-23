@@ -154,6 +154,8 @@ $container->register(
         new Reference("doctrine.config")
     ]);
 
+// Twig -----------------------------------------------------------------------
+
 $container->register(
     "twig.loader",
     Twig\Loader\FilesystemLoader::class
@@ -161,10 +163,32 @@ $container->register(
     ->setArguments([__DIR__ . "/Pages"]);
 
 $container->register(
+    'twig.runtime_loader.security',
+    App\TwigExtension\SecurityRuntimeLoader::class
+)
+    ->setArguments([new Reference('twig.runtime_extension.security')]);
+
+$container->register(
+    'twig.runtime_extension.security',
+    App\TwigExtension\SecurityRuntimeExtension::class
+)
+    ->setArguments([new Reference('service.authorization')]);
+
+$container->register(
+    'twig.extension.security',
+    App\TwigExtension\SecurityExtension::class
+);
+
+$container->register(
     "twig",
     Twig\Environment::class
 )
-    ->setArguments([new Reference("twig.loader")])->setPublic(true);
+    ->setArguments([new Reference("twig.loader")])
+    ->addMethodCall("addRuntimeLoader", [new Reference('twig.runtime_loader.security')])
+    ->addMethodCall("addExtension", [new Reference('twig.extension.security')])
+    ->setPublic(true);
+
+// Services -------------------------------------------------------------------
 
 $container->register(
     "password_hasher",

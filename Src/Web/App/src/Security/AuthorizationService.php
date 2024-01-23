@@ -24,4 +24,10 @@ readonly class AuthorizationService
         $roles = $this->authzRepo->findUserRoles($userId);
         return array_map(fn($role) => $role?->value, $roles);
     }
+
+    public function hasPermission(string $permission): bool
+    {
+        echo "Checking permission: $permission\n";
+        return false;
+    }
 }
