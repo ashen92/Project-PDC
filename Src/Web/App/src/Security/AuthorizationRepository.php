@@ -33,8 +33,7 @@ readonly class AuthorizationRepository implements IRepository
     {
         $sql = "SELECT COUNT(*) FROM users u
                 INNER JOIN user_group_membership ugm ON u.id = ugm.user_id
-                INNER JOIN user_groups ug ON ugm.usergroup_id = ug.id
-                INNER JOIN user_group_roles ugr ON ug.id = ugr.usergroup_id
+                INNER JOIN user_group_roles ugr ON ugm.usergroup_id = ugr.usergroup_id
                 INNER JOIN roles r ON ugr.role_id = r.id
                 WHERE u.id = :userId AND r.name = :roleName";
 

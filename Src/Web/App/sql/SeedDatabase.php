@@ -367,31 +367,36 @@ $entityManager->flush();
 echo "Done.\nAdding roles...";
 
 $roleCoordinator = new Role("ROLE_COORDINATOR");
-$rolePartner = new Role("ROLE_PARTNER");
-$roleStudent = new Role("ROLE_STUDENT");
-$roleAdmin = new Role("ROLE_ADMIN");
-$roleInternshipAdmin = new Role("ROLE_INTERNSHIP_ADMIN");
-$roleInternshipPartner = new Role("ROLE_INTERNSHIP_PARTNER");
-$roleInternshipStudent = new Role("ROLE_INTERNSHIP_STUDENT");
-$roleInternshipManagedPartner = new Role("ROLE_INTERNSHIP_MANAGED_PARTNER");
-
 $roleCoordinator->addGroup($groupCoordinators);
-$rolePartner->addGroup($groupPartners);
-$roleStudent->addGroup($groupStudents);
-$roleAdmin->addGroup($groupCoordinators);
-
-$roleInternshipAdmin->addGroup($groupCoordinators);
-$roleInternshipPartner->addGroup($groupInternshipCyclePartners);
-$roleInternshipStudent->addGroup($groupInternshipCycleStudents);
-
 $entityManager->persist($roleCoordinator);
+
+$rolePartner = new Role("ROLE_PARTNER");
+$rolePartner->addGroup($groupPartners);
 $entityManager->persist($rolePartner);
+
+$roleStudent = new Role("ROLE_STUDENT");
+$roleStudent->addGroup($groupStudents);
 $entityManager->persist($roleStudent);
+
+$roleAdmin = new Role("ROLE_ADMIN");
+$roleAdmin->addGroup($groupCoordinators);
 $entityManager->persist($roleAdmin);
+
+$roleInternshipAdmin = new Role("ROLE_INTERNSHIP_ADMIN");
+$roleInternshipAdmin->addGroup($groupCoordinators);
 $entityManager->persist($roleInternshipAdmin);
+
+$roleInternshipPartner = new Role("ROLE_INTERNSHIP_PARTNER");
+$roleInternshipPartner->addGroup($groupInternshipCyclePartners);
 $entityManager->persist($roleInternshipPartner);
+
+$roleInternshipStudent = new Role("ROLE_INTERNSHIP_STUDENT");
+$roleInternshipStudent->addGroup($groupInternshipCycleStudents);
 $entityManager->persist($roleInternshipStudent);
+
+$roleInternshipManagedPartner = new Role("ROLE_INTERNSHIP_MANAGED_PARTNER");
 $entityManager->persist($roleInternshipManagedPartner);
+
 $entityManager->flush();
 
 #endregion
@@ -411,6 +416,8 @@ $entityManager->persist($pCInternship);
 $entityManager->flush();
 
 #endregion
+
+#region Internships
 
 echo "Done.\nAdding internships...";
 
@@ -508,6 +515,10 @@ for ($x = 1; $x < count($internData); $x++) {
 $entityManager->persist($internshipCycle);
 $entityManager->flush();
 
+#endregion
+
+#region Events
+
 echo "Done.\nAdding events...";
 
 $eventData = [
@@ -566,6 +577,10 @@ foreach ($eventData as $eventData) {
     $entityManager->persist($event);
 }
 $entityManager->flush();
+
+#endregion
+
+#region Requirements
 
 echo "Done.\nAdding requirements...";
 
@@ -649,3 +664,5 @@ $userRequirement2 = new UserRequirement($user3, $requirements[4]);
 $entityManager->persist($userRequirement1);
 $entityManager->persist($userRequirement2);
 $entityManager->flush();
+
+#endregion
