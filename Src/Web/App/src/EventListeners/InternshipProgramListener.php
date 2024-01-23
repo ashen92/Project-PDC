@@ -41,15 +41,14 @@ class InternshipProgramListener implements EventSubscriberInterface
 
         $activeCycle = $this->internshipProgramRepository->findLatestActiveCycle();
 
-        switch ($state) {
-            case InternshipProgramState::Ended:
-                if ($activeCycle)
-                    throw new AccessDeniedHttpException();
-                break;
-            case InternshipProgramState::Active:
-                if (!$activeCycle)
-                    throw new AccessDeniedHttpException();
-                break;
+        if ($state === InternshipProgramState::Ended) {
+            if ($activeCycle)
+                throw new AccessDeniedHttpException();
+        }
+
+        if ($state === InternshipProgramState::Active) {
+            if (!$activeCycle)
+                throw new AccessDeniedHttpException();
         }
     }
 
