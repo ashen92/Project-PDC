@@ -18,14 +18,6 @@ use Symfony\Component\DependencyInjection\Reference;
     "requirement_fulfill_method",
     "App\DoctrineTypes\Requirement\FulFillMethodType"
 );
-\Doctrine\DBAL\Types\Type::addType(
-    "permission_action",
-    "App\DoctrineTypes\Permission\ActionType"
-);
-\Doctrine\DBAL\Types\Type::addType(
-    "permission_resource",
-    "App\DoctrineTypes\Permission\ResourceType"
-);
 
 $cachedContainerFile = __DIR__ . "/../cache/container.php";
 

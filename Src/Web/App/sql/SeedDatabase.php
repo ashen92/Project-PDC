@@ -7,14 +7,16 @@ use App\Entities\InternshipCycle;
 use App\Entities\Organization;
 use App\Entities\Partner;
 use App\Entities\Permission;
+use App\Entities\Permission\Action;
+use App\Entities\Permission\Resource;
 use App\Entities\Requirement;
 use App\Entities\Role;
 use App\Entities\Student;
 use App\Entities\User;
 use App\Entities\UserGroup;
 use App\Entities\UserRequirement;
-use App\Security\Permission\Action;
-use App\Security\Permission\Resource;
+
+#region Users
 
 echo "Adding users... ";
 
@@ -189,8 +191,9 @@ for ($i = 0; $i < 15; $i++) {
 $entityManager->persist($user4);
 $entityManager->flush();
 
-// ----------------------------------------------------------------
-// Add organizations ----------------------------------------------
+#endregion
+
+#region Organizations
 
 echo "Done.\nAdding organizations...";
 
@@ -307,7 +310,9 @@ $partnerUsers[7]->setOrganization($organizations[8]);
 $entityManager->persist($user4);
 $entityManager->flush();
 
-// ----------------------------------------------------------------
+#endregion
+
+#region Groups
 
 echo "Done.\nAdding groups...";
 
@@ -355,6 +360,10 @@ $entityManager->persist($groupFirstYearStudents);
 $entityManager->persist($groupThirdYearStudents);
 $entityManager->flush();
 
+#endregion
+
+#region Roles
+
 echo "Done.\nAdding roles...";
 
 $roleCoordinator = new Role("ROLE_COORDINATOR");
@@ -385,16 +394,23 @@ $entityManager->persist($roleInternshipStudent);
 $entityManager->persist($roleInternshipManagedPartner);
 $entityManager->flush();
 
+#endregion
+
+#region Permissions
+
 echo "Done.\nAdding permissions...";
 
-$permissionViewInternship = new Permission(
-    Resource::INTERNSHIP,
-    Action::CREATE
-);
-$roleInternshipPartner->addPermission($permissionViewInternship);
+$rInternship = new Resource('internship');
+$aCreate = new Action('create');
 
-$entityManager->persist($permissionViewInternship);
+$pCInternship = new Permission($rInternship, $aCreate);
+
+$entityManager->persist($rInternship);
+$entityManager->persist($aCreate);
+$entityManager->persist($pCInternship);
 $entityManager->flush();
+
+#endregion
 
 echo "Done.\nAdding internships...";
 

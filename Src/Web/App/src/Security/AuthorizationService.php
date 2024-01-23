@@ -25,9 +25,8 @@ readonly class AuthorizationService
         return array_map(fn($role) => $role?->value, $roles);
     }
 
-    public function hasPermission(string $permission): bool
+    public function hasPermission(string $resource, string $action): bool
     {
-        echo "Checking permission: $permission\n";
         return false;
     }
 }
