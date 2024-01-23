@@ -6,7 +6,7 @@ namespace App\TwigExtension;
 class SecurityRuntimeLoader implements \Twig\RuntimeLoader\RuntimeLoaderInterface
 {
     public function __construct(
-        private SecurityRuntimeExtension $securityRuntimeExtension
+        private readonly SecurityRuntimeExtension $securityRuntimeExtension
     ) {
     }
 
