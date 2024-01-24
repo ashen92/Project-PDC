@@ -202,6 +202,7 @@ $container->register(
 )
     ->setArguments([
         new Reference("repository.authorization"),
+        new Reference("session"),
     ]);
 
 $container->register(

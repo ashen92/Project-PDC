@@ -407,12 +407,23 @@ echo "Done.\nAdding permissions...";
 
 $rInternship = new Resource('internship');
 $aCreate = new Action('create');
+$aDelete = new Action('delete');
 
 $pCInternship = new Permission($rInternship, $aCreate);
+$pDInternship = new Permission($rInternship, $aDelete);
 
 $entityManager->persist($rInternship);
 $entityManager->persist($aCreate);
+$entityManager->persist($aDelete);
 $entityManager->persist($pCInternship);
+$entityManager->persist($pDInternship);
+$entityManager->flush();
+
+$roleInternshipPartner->addPermission($pCInternship);
+$roleInternshipAdmin->addPermission($pCInternship);
+
+$roleInternshipPartner->addPermission($pDInternship);
+
 $entityManager->flush();
 
 #endregion

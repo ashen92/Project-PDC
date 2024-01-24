@@ -12,8 +12,8 @@ class SecurityRuntimeExtension extends \Twig\Extension\AbstractExtension
     ) {
     }
 
-    public function hasPermission(string $permission): bool
+    public function hasPermission(string $resource, string $action): bool
     {
-        return $this->authorizationService->hasPermission($permission);
+        return $this->authorizationService->hasPermission($resource, $action);
     }
 }

@@ -3,10 +3,13 @@ declare(strict_types=1);
 
 namespace App\Security;
 
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+
 readonly class AuthorizationService
 {
     public function __construct(
         private AuthorizationRepository $authzRepo,
+        private SessionInterface $session,
     ) {
 
     }
@@ -27,6 +30,7 @@ readonly class AuthorizationService
 
     public function hasPermission(string $resource, string $action): bool
     {
-        return false;
+        $userId = (int) $this->session->get('user_id');
+        return $this->authzRepo->hasPermission($userId, $resource, $action);
     }
 }
