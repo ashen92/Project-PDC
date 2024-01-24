@@ -21,14 +21,14 @@
             <button id="search-btn" class="btn" type="button">Search</button>
         </div>
 
-        {% if ("ROLE_ADMIN" in user_roles) or ("ROLE_STUDENT" in user_roles) %}
+        {% if has_role(InternshipProgram_Admin) or has_role(InternshipProgram_Student) %}
         <div class="item" id="filter-by-company">
             Company
             <i class="i i-chevron-down"></i>
         </div>
         {% endif %}
 
-        {# {% if ("ROLE_ADMIN" in user_roles) or ("ROLE_PARTNER" in user_roles) %}
+        {# {% if has_role(InternshipProgram_Admin) or has_role(InternshipProgram_Partner) %}
         <div class="item">
             Status
             <i class="i i-chevron-down"></i>
@@ -149,7 +149,7 @@
 
     {% endif %}
 
-    {% if "ROLE_INTERNSHIP_PARTNER" not in user_roles %}
+    {% if not has_role(InternshipProgram_Partner) %}
     <div class="pop-up-multi-select-list hidden" id="company-multi-select-list">
         <h4>Companies</h4>
         <ul>
