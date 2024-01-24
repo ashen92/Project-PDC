@@ -38,11 +38,11 @@
 
     {% if internships|length == 0 %}
 
-    <div class="grid h-1/3 items-end text-center">
-        <h5 class="fw-semibold">Nothing found</h5>
-        {% if "ROLE_INTERNSHIP_STUDENT" in user_roles %}
-        <div class="description">Modify the search term or adjust the filters and try again.</div>
-        {% endif %}
+    <div class="grid h-1/2 items-center text-center">
+        <div>
+            <h5 class="fw-semibold">Nothing found</h5>
+            <div class="description">Modify the search term or adjust the filters and try again.</div>
+        </div>
     </div>
 
     {% else %}
@@ -122,13 +122,19 @@
             <div class="content hidden" id="job-details-content">
                 <h3 class="title" id="job-title"></h3>
                 <div class="actions">
-                    {% if ("ROLE_PARTNER" in user_roles) or ("ROLE_ADMIN" in user_roles) %}
+                    {% if has_permission('application', 'read') %}
                     <button type="button" class="btn" id="applicants-job-btn">Applicants</button>
+                    {% endif %}
+
+                    {% if has_permission('internship', 'update') %}
                     <button type="button" class="btn" id="modify-job-btn">Modify</button>
+                    {% endif %}
+
+                    {% if has_permission('internship', 'delete') %}
                     <button type="button" class="btn" id="remove-job-btn">Remove</button>
                     {% endif %}
 
-                    {% if "ROLE_STUDENT" in user_roles %}
+                    {% if has_permission('internship', 'apply') %}
                     <button type="button" class="btn" id="btn-apply">Apply</button>
                     <button type="button" class="btn hidden" id="btn-undo-apply">Cancel Application</button>
                     {% endif %}

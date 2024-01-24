@@ -406,23 +406,45 @@ $entityManager->flush();
 echo "Done.\nAdding permissions...";
 
 $rInternship = new Resource('internship');
+$entityManager->persist($rInternship);
+$rApplication = new Resource('application');
+$entityManager->persist($rApplication);
+
+$aView = new Action('read');
 $aCreate = new Action('create');
+$aUpdate = new Action('update');
 $aDelete = new Action('delete');
+$aApply = new Action('apply');
+$entityManager->persist($aView);
+$entityManager->persist($aCreate);
+$entityManager->persist($aUpdate);
+$entityManager->persist($aDelete);
+$entityManager->persist($aApply);
 
 $pCInternship = new Permission($rInternship, $aCreate);
-$pDInternship = new Permission($rInternship, $aDelete);
-
-$entityManager->persist($rInternship);
-$entityManager->persist($aCreate);
-$entityManager->persist($aDelete);
 $entityManager->persist($pCInternship);
+$pUInternship = new Permission($rInternship, $aUpdate);
+$entityManager->persist($pUInternship);
+$pDInternship = new Permission($rInternship, $aDelete);
 $entityManager->persist($pDInternship);
+$pAInternship = new Permission($rInternship, $aApply);
+$entityManager->persist($pAInternship);
+$pVApplication = new Permission($rApplication, $aView);
+$entityManager->persist($pVApplication);
+
 $entityManager->flush();
 
 $roleInternshipPartner->addPermission($pCInternship);
-$roleInternshipAdmin->addPermission($pCInternship);
-
+$roleInternshipPartner->addPermission($pUInternship);
 $roleInternshipPartner->addPermission($pDInternship);
+$roleInternshipPartner->addPermission($pVApplication);
+
+$roleInternshipAdmin->addPermission($pCInternship);
+$roleInternshipAdmin->addPermission($pUInternship);
+$roleInternshipAdmin->addPermission($pDInternship);
+$roleInternshipAdmin->addPermission($pVApplication);
+
+$roleInternshipStudent->addPermission($pAInternship);
 
 $entityManager->flush();
 
