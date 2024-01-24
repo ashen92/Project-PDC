@@ -14,7 +14,7 @@ readonly class InternshipService
 {
     public function __construct(
         private InternshipRepository $internshipRepository,
-        private InternshipCycleService $internshipCycleService,
+        private InternshipProgramService $internshipCycleService,
         private IFileStorageService $fileStorageService
     ) {
     }

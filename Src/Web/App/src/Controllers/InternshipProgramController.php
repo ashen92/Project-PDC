@@ -12,7 +12,7 @@ use App\Exceptions\UserExistsException;
 use App\Models\InternshipCycle;
 use App\Security\Identity;
 use App\Security\Role;
-use App\Services\InternshipCycleService;
+use App\Services\InternshipProgramService;
 use App\Services\RequirementService;
 use App\Services\UserService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -33,7 +33,7 @@ class InternshipProgramController extends PageControllerBase
     public function __construct(
         Environment $twig,
         private readonly UserService $userService,
-        private readonly InternshipCycleService $internshipCycleService,
+        private readonly InternshipProgramService $internshipCycleService,
         private readonly RequirementService $requirementService,
     ) {
         parent::__construct($twig);

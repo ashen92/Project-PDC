@@ -17,7 +17,7 @@ use App\Security\Role;
 use DateTimeImmutable;
 use Throwable;
 
-readonly class InternshipCycleService
+readonly class InternshipProgramService
 {
     public function __construct(
         private InternshipProgramRepository $internshipProgramRepository,

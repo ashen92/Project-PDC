@@ -222,13 +222,13 @@ $container->register(
 )
     ->setArguments([
         new Reference("repository.internship"),
-        new Reference("service.internship_cycle"),
+        new Reference("service.internship_program"),
         new Reference("service.file_storage")
     ]);
 
 $container->register(
-    "service.internship_cycle",
-    App\Services\InternshipCycleService::class
+    "service.internship_program",
+    App\Services\InternshipProgramService::class
 )
     ->setArguments([
         new Reference("repository.internship_program"),
@@ -242,7 +242,7 @@ $container->register(
 )
     ->setArguments([
         new Reference("repository.requirement"),
-        new Reference("service.internship_cycle"),
+        new Reference("service.internship_program"),
         new Reference("service.file_storage")
     ]);
 
@@ -378,7 +378,7 @@ $container->register(
     ->setArguments([
         new Reference("twig"),
         new Reference("service.user"),
-        new Reference("service.internship_cycle"),
+        new Reference("service.internship_program"),
         new Reference("service.requirement"),
     ])
     ->setPublic(true);

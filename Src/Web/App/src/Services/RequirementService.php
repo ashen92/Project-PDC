@@ -18,7 +18,7 @@ readonly class RequirementService
 {
     public function __construct(
         private RequirementRepository $requirementRepository,
-        private InternshipCycleService $internshipCycleService,
+        private InternshipProgramService $internshipCycleService,
         private IFileStorageService $fileStorageService
     ) {
 
