@@ -366,37 +366,37 @@ $entityManager->flush();
 
 echo "Done.\nAdding roles...";
 
-$roleCoordinator = new Role("ROLE_COORDINATOR");
+$roleCoordinator = new Role('coordinator');
 $entityManager->persist($roleCoordinator);
 $roleCoordinator->addGroup($groupCoordinators);
 
-$rolePartner = new Role("ROLE_PARTNER");
+$rolePartner = new Role('partner');
 $entityManager->persist($rolePartner);
 $rolePartner->addGroup($groupPartners);
 
-$roleStudent = new Role("ROLE_STUDENT");
+$roleStudent = new Role('student');
 $entityManager->persist($roleStudent);
 $roleStudent->addGroup($groupStudents);
 
-$roleAdmin = new Role("ROLE_ADMIN");
+$roleAdmin = new Role('admin');
 $entityManager->persist($roleAdmin);
 $roleAdmin->addGroup($groupCoordinators);
 
-$roleInternshipAdmin = new Role("ROLE_INTERNSHIP_ADMIN");
-$entityManager->persist($roleInternshipAdmin);
-$roleInternshipAdmin->addGroup($groupCoordinators);
+$roleIntProgAdmin = new Role('internship_program_admin');
+$entityManager->persist($roleIntProgAdmin);
+$roleIntProgAdmin->addGroup($groupCoordinators);
 
-$roleInternshipPartner = new Role("ROLE_INTERNSHIP_PARTNER");
-$entityManager->persist($roleInternshipPartner);
-$roleInternshipPartner->addGroup($groupInternshipCyclePartners);
+$roleIntProgPartnerAdmin = new Role('internship_program_partner_admin');
+$entityManager->persist($roleIntProgPartnerAdmin);
+$roleIntProgPartnerAdmin->addGroup($groupInternshipCyclePartners);
 
-$roleInternshipStudent = new Role("ROLE_INTERNSHIP_STUDENT");
-$entityManager->persist($roleInternshipStudent);
-$roleInternshipStudent->addGroup($groupInternshipCycleStudents);
+$roleIntProgStudent = new Role('internship_program_student');
+$entityManager->persist($roleIntProgStudent);
+$roleIntProgStudent->addGroup($groupInternshipCycleStudents);
 
-$roleInternshipManagedPartner = new Role("ROLE_INTERNSHIP_MANAGED_PARTNER");
-$entityManager->persist($roleInternshipManagedPartner);
-$roleInternshipManagedPartner->addGroup($groupInternshipCyclePartners);
+$roleIntProgPartner = new Role('internship_program_partner');
+$entityManager->persist($roleIntProgPartner);
+$roleIntProgPartner->addGroup($groupInternshipCyclePartners);
 
 $entityManager->flush();
 
@@ -439,20 +439,20 @@ $entityManager->persist($pRInternshipProgram);
 
 $entityManager->flush();
 
-$roleInternshipPartner->addPermission($pCInternship);
-$roleInternshipPartner->addPermission($pUInternship);
-$roleInternshipPartner->addPermission($pDInternship);
-$roleInternshipPartner->addPermission($pRApplication);
-$roleInternshipPartner->addPermission($pRInternshipProgram);
+$roleIntProgPartnerAdmin->addPermission($pCInternship);
+$roleIntProgPartnerAdmin->addPermission($pUInternship);
+$roleIntProgPartnerAdmin->addPermission($pDInternship);
+$roleIntProgPartnerAdmin->addPermission($pRApplication);
+$roleIntProgPartnerAdmin->addPermission($pRInternshipProgram);
 
-$roleInternshipAdmin->addPermission($pCInternship);
-$roleInternshipAdmin->addPermission($pUInternship);
-$roleInternshipAdmin->addPermission($pDInternship);
-$roleInternshipAdmin->addPermission($pRApplication);
-$roleInternshipAdmin->addPermission($pRInternshipProgram);
+$roleIntProgAdmin->addPermission($pCInternship);
+$roleIntProgAdmin->addPermission($pUInternship);
+$roleIntProgAdmin->addPermission($pDInternship);
+$roleIntProgAdmin->addPermission($pRApplication);
+$roleIntProgAdmin->addPermission($pRInternshipProgram);
 
-$roleInternshipStudent->addPermission($pAInternship);
-$roleInternshipStudent->addPermission($pRInternshipProgram);
+$roleIntProgStudent->addPermission($pAInternship);
+$roleIntProgStudent->addPermission($pRInternshipProgram);
 
 $entityManager->flush();
 

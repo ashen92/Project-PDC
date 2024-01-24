@@ -5,10 +5,10 @@ namespace App\Security;
 
 enum Role: string
 {
-    case InternshipProgram_Admin = "ROLE_INTERNSHIP_ADMIN";
-    case InternshipProgram_Partner_Admin = "ROLE_INTERNSHIP_PARTNER";
-    case InternshipProgram_Partner = "ROLE_INTERNSHIP_MANAGED_PARTNER";
-    case InternshipProgram_Student = "ROLE_INTERNSHIP_STUDENT";
+    case InternshipProgram_Admin = 'internship_program_admin';
+    case InternshipProgram_Partner_Admin = 'internship_program_partner_admin';
+    case InternshipProgram_Partner = 'internship_program_partner';
+    case InternshipProgram_Student = 'internship_program_student';
 
-    case Admin = "ROLE_ADMIN";
+    case Admin = 'admin';
 }

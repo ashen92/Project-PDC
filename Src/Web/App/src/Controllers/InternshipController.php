@@ -48,7 +48,7 @@ class InternshipController extends PageControllerBase
         $cycleId = $cycle->getId();
         $orgs = null;
 
-        if ($identity->hasRole(Role::InternshipProgram_Partner_Admin)) {
+        if ($identity->hasRole(Role::InternshipProgram_Partner)) {
             $userId = $request->getSession()->get("user_id");
             $internships = $this->internshipService
                 ->searchInternships(
