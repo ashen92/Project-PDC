@@ -35,11 +35,6 @@ class AuthorizationListener implements EventSubscriberInterface
         ];
 
         if ($event->getRequest()->getSession()->has("is_authenticated")) {
-            $userId = (int) $event->getRequest()->getSession()->get("user_id");
-            $roles = $this->authzService->getUserRolesAsStrings($userId);
-            $this->twig->addGlobal("user_roles", $roles);
-            // logic for permissions
-
             if (array_key_exists($currentRoute, $specialRoutes)) {
                 $response = new RedirectResponse("/home");
                 $event->setResponse($response);
@@ -58,8 +53,6 @@ class AuthorizationListener implements EventSubscriberInterface
 
     public function onKernelController(ControllerEvent $event): void
     {
-        $userId = (int) $event->getRequest()->getSession()->get("user_id");
-
         $reflector = $event->getControllerReflector();
 
         $controllerReflection = $reflector->getDeclaringClass();

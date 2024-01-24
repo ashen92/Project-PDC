@@ -20,15 +20,6 @@ readonly class AuthorizationService
         return $this->authzRepo->hasRole($userId, $role);
     }
 
-    /**
-     * @return array<string>
-     */
-    public function getUserRolesAsStrings(int $userId): array
-    {
-        $roles = $this->authzRepo->findUserRoles($userId);
-        return array_map(fn($role) => $role?->value, $roles);
-    }
-
     public function hasPermission(string $resource, string $action): bool
     {
         $userId = (int) $this->session->get('user_id');
