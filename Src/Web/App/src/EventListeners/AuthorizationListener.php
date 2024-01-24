@@ -73,12 +73,12 @@ class AuthorizationListener implements EventSubscriberInterface
 
             if (is_array($controllerRequiredRole)) {
                 foreach ($controllerRequiredRole as $role) {
-                    if ($this->authzService->hasRole($userId, $role)) {
+                    if ($this->authzService->hasRole($role)) {
                         $hasControllerAccess = true;
                     }
                 }
             } else {
-                if ($this->authzService->hasRole($userId, $controllerRequiredRole)) {
+                if ($this->authzService->hasRole($controllerRequiredRole)) {
                     $hasControllerAccess = true;
                 }
             }
@@ -97,12 +97,12 @@ class AuthorizationListener implements EventSubscriberInterface
 
         if (is_array($requiredRole)) {
             foreach ($requiredRole as $role) {
-                if ($this->authzService->hasRole($userId, $role)) {
+                if ($this->authzService->hasRole($role)) {
                     return;
                 }
             }
         } else {
-            if ($this->authzService->hasRole($userId, $requiredRole)) {
+            if ($this->authzService->hasRole($requiredRole)) {
                 return;
             }
         }

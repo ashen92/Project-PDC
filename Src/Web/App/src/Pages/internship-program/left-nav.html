@@ -2,15 +2,15 @@
     Internship Program
 </a>
 
-{% if "ROLE_ADMIN" in user_roles %}
+{% if has_role(InternshipProgram_Admin) %}
 <a class="nav-link {% if section == 'internships' %} active{% endif %}" href="/internship-program/internships">
     Internships
 </a>
-{% elseif "ROLE_INTERNSHIP_PARTNER" in user_roles %}
+{% elseif has_role(InternshipProgram_Partner) and has_permission('internship', 'create') %}
 <a class="nav-link {% if section == 'internships' %} active{% endif %}" href="/internship-program/internships">
     Your Internships
 </a>
-{% elseif "ROLE_INTERNSHIP_STUDENT" in user_roles %}
+{% elseif has_role(InternshipProgram_Student) %}
 <a class="nav-link {% if section == 'internships' %} active{% endif %}" href="/internship-program/internships">
     Apply for Internships
 </a>
@@ -20,7 +20,7 @@
     Requirements
 </a>
 
-{% if "ROLE_ADMIN" in user_roles %}
+{% if has_role(InternshipProgram_Admin) %}
 <a class="nav-link {% if section == 'monitoring' %} active{% endif %}" href="/internship-program/monitoring">
     Monitoring
 </a>

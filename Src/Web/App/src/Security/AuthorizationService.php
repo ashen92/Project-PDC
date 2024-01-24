@@ -14,8 +14,9 @@ readonly class AuthorizationService
 
     }
 
-    public function hasRole(int $userId, Role $role): bool
+    public function hasRole(Role $role): bool
     {
+        $userId = (int) $this->session->get('user_id');
         return $this->authzRepo->hasRole($userId, $role);
     }
 
