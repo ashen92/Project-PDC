@@ -86,21 +86,22 @@ readonly class InternshipProgramService
         return $this->internshipProgramRepository->findLatestCycle();
     }
 
-    public function getLatestActiveCycle(): ?InternshipCycle
-    {
-        return $this->internshipProgramRepository->findLatestActiveCycle();
-    }
-
-    public function createCycle(CreateCycleDTO $dto): InternshipCycle
+    public function createCycle(CreateCycleDTO $dto): bool
     {
         $this->internshipProgramRepository->beginTransaction();
         try {
-            $cycle = $this->internshipProgramRepository->createCycle();
+            $cycleId = $this->internshipProgramRepository->createCycle();
 
             $partnerGroup = $this->userRepository
-                ->createUserGroup("InternshipCycle-{$cycle->getId()}-Partners");
+                ->createUserGroup(
+                    Constants::AUTO_GENERATED_USER_GROUP_PREFIX->value .
+                    "InternshipCycle-{$cycleId}-Partners"
+                );
             $studentGroup = $this->userRepository
-                ->createUserGroup("InternshipCycle-{$cycle->getId()}-Students");
+                ->createUserGroup(
+                    Constants::AUTO_GENERATED_USER_GROUP_PREFIX->value .
+                    "InternshipCycle-{$cycleId}-Students"
+                );
 
             $this->userRepository
                 ->addRoleToUserGroup($partnerGroup->getId(), Role::InternshipProgram_Partner_Admin);
@@ -112,25 +113,18 @@ readonly class InternshipProgramService
             $this->userRepository
                 ->addUsersToUserGroup($studentGroup->getId(), $dto->studentGroup);
 
-            $cycle->setCollectionStartDate(
-                new DateTimeImmutable($dto->collectionStartDate)
+            $this->internshipProgramRepository->updateCycle(
+                $cycleId,
+                new DateTimeImmutable($dto->collectionStartDate),
+                new DateTimeImmutable($dto->collectionEndDate),
+                new DateTimeImmutable($dto->applicationStartDate),
+                new DateTimeImmutable($dto->applicationEndDate),
+                [$partnerGroup->getId()],
+                $studentGroup->getId(),
             );
-            $cycle->setCollectionEndDate(
-                new DateTimeImmutable($dto->collectionEndDate)
-            );
-            $cycle->setApplicationStartDate(
-                new DateTimeImmutable($dto->applicationStartDate)
-            );
-            $cycle->setApplicationEndDate(
-                new DateTimeImmutable($dto->applicationEndDate)
-            );
-            $cycle->setPartnerGroupId($partnerGroup->getId());
-            $cycle->setStudentGroupId($studentGroup->getId());
-
-            $this->internshipProgramRepository->updateCycle($cycle);
 
             $this->internshipProgramRepository->commit();
-            return $cycle;
+            return true;
 
         } catch (Throwable $th) {
             $this->internshipProgramRepository->rollBack();
@@ -154,32 +148,35 @@ readonly class InternshipProgramService
         return $this->internshipProgramRepository->findStudents($internshipCycleId);
     }
 
-    public function endInternshipCycle(?int $id = null): bool
+    /**
+     * @throws Throwable
+     */
+    public function endInternshipCycle(): bool
     {
-        if ($id === null) {
-            $cycle = $this->getLatestCycle();
-        } else {
-            $cycle = $this->internshipProgramRepository->findCycle($id);
+        $this->internshipProgramRepository->beginTransaction();
+        try {
+            $cycle = $this->internshipProgramRepository->findLatestActiveCycle();
+            $this->internshipProgramRepository->endCycle();
+
+            $this->internshipProgramRepository->removeRolesFromUserGroups(
+                [
+                    Role::InternshipProgram_Partner_Admin,
+                    Role::InternshipProgram_Partner
+                ],
+                $cycle->getPartnerGroupIds(),
+            );
+
+            $this->internshipProgramRepository->removeRolesFromUserGroups(
+                [Role::InternshipProgram_Student],
+                [$cycle->getStudentGroupId()],
+            );
+
+            $this->internshipProgramRepository->commit();
+            return true;
+        } catch (Throwable $th) {
+            $this->internshipProgramRepository->rollBack();
+            throw $th;
         }
-
-        if ($cycle === null) {
-            return false;
-        }
-
-        $cycle->end();
-
-        $this->userRepository->removeRoleFromUserGroup(
-            $cycle->getPartnerGroupId(),
-            Role::InternshipProgram_Partner_Admin
-        );
-
-        $this->userRepository->removeRoleFromUserGroup(
-            $cycle->getStudentGroupId(),
-            Role::InternshipProgram_Student
-        );
-
-        $this->internshipProgramRepository->updateCycle($cycle);
-        return true;
     }
 
     /**

@@ -18,8 +18,8 @@ class InternshipCycleMapper implements \App\Interfaces\IMapper
             $row["collectionEndDate"] === null ? null : new \DateTimeImmutable($row["collectionEndDate"]),
             $row["applicationStartDate"] === null ? null : new \DateTimeImmutable($row["applicationStartDate"]),
             $row["applicationEndDate"] === null ? null : new \DateTimeImmutable($row["applicationEndDate"]),
+            explode(',', $row["partner_group_ids"]),
             $row["student_group_id"],
-            $row["partner_group_id"],
         );
     }
 }

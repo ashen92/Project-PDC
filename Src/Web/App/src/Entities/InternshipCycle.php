@@ -39,9 +39,14 @@ class InternshipCycle
     #[ORM\JoinColumn(name: "student_group_id", referencedColumnName: "id")]
     private UserGroup $studentGroup;
 
-    #[ORM\OneToOne(targetEntity: UserGroup::class)]
-    #[ORM\JoinColumn(name: "partner_group_id", referencedColumnName: "id")]
-    private UserGroup $partnerGroup;
+    /**
+     * @var Collection<int, UserGroup>
+     */
+    #[ORM\JoinTable(name: 'internship_cycle_partner_groups')]
+    #[ORM\JoinColumn(name: 'internship_cycle_id', referencedColumnName: 'id')]
+    #[ORM\InverseJoinColumn(name: 'usergroup_id', referencedColumnName: 'id', unique: true)]
+    #[ORM\ManyToMany(targetEntity: 'UserGroup')]
+    private Collection $partnerGroups;
 
     #[ORM\OneToMany(targetEntity: Internship::class, mappedBy: 'internshipCycle')]
     private Collection $internships;
@@ -52,6 +57,7 @@ class InternshipCycle
     public function __construct()
     {
         $this->createdAt = new DateTime("now");
+        $this->partnerGroups = new ArrayCollection();
         $this->internships = new ArrayCollection();
         $this->requirements = new ArrayCollection();
     }
@@ -91,19 +97,9 @@ class InternshipCycle
         return $this->applicationEndDate;
     }
 
-    public function getPartnerGroup(): UserGroup
-    {
-        return $this->partnerGroup;
-    }
-
     public function getStudentGroup(): UserGroup
     {
         return $this->studentGroup;
-    }
-
-    public function getPartnerUserGroupName(): string
-    {
-        return $this->partnerGroup->getName();
     }
 
     public function getStudentUserGroupName(): string
@@ -136,9 +132,9 @@ class InternshipCycle
         $this->applicationEndDate = $applicationEndDate;
     }
 
-    public function setPartnerGroup(UserGroup $partnerGroup): void
+    public function addPartnerGroup(UserGroup $partnerGroup): void
     {
-        $this->partnerGroup = $partnerGroup;
+        $this->partnerGroups[] = $partnerGroup;
     }
 
     public function setStudentGroup(UserGroup $studentGroup): void

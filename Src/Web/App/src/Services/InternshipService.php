@@ -101,6 +101,7 @@ readonly class InternshipService
     }
 
     public function createInternship(
+        int $cycleId,
         string $title,
         string $description,
         int $ownerId,
@@ -116,7 +117,7 @@ readonly class InternshipService
             $description,
             $ownerId,
             $organizationId,
-            $this->internshipCycleService->getLatestActiveCycle()->getId(),
+            $cycleId,
             $isPublished
         );
     }

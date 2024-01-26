@@ -13,7 +13,7 @@ class InternshipCycle
         private ?\DateTimeImmutable $collectionEndDate,
         private ?\DateTimeImmutable $applicationStartDate,
         private ?\DateTimeImmutable $applicationEndDate,
-        private ?int $partnerGroupId,
+        private array $partnerGroupIds,
         private ?int $studentGroupId,
     ) {
     }
@@ -58,9 +58,9 @@ class InternshipCycle
         return $this->applicationEndDate;
     }
 
-    public function getPartnerGroupId(): ?int
+    public function getPartnerGroupIds(): array
     {
-        return $this->partnerGroupId;
+        return $this->partnerGroupIds;
     }
 
     public function getStudentGroupId(): ?int
@@ -68,33 +68,33 @@ class InternshipCycle
         return $this->studentGroupId;
     }
 
-    public function setCollectionStartDate(\DateTimeImmutable $collectionStartDate): void
+    public function setCollectionStartDate(\DateTimeImmutable $date): void
     {
-        $this->collectionStartDate = $collectionStartDate;
+        $this->collectionStartDate = $date;
     }
 
-    public function setCollectionEndDate(\DateTimeImmutable $collectionEndDate): void
+    public function setCollectionEndDate(\DateTimeImmutable $date): void
     {
-        $this->collectionEndDate = $collectionEndDate;
+        $this->collectionEndDate = $date;
     }
 
-    public function setApplicationStartDate(\DateTimeImmutable $applicationStartDate): void
+    public function setApplicationStartDate(\DateTimeImmutable $date): void
     {
-        $this->applicationStartDate = $applicationStartDate;
+        $this->applicationStartDate = $date;
     }
 
-    public function setApplicationEndDate(\DateTimeImmutable $applicationEndDate): void
+    public function setApplicationEndDate(\DateTimeImmutable $date): void
     {
-        $this->applicationEndDate = $applicationEndDate;
+        $this->applicationEndDate = $date;
     }
 
-    public function setPartnerGroupId(int $partnerGroupId): void
+    public function addPartnerGroupId(int $id): void
     {
-        $this->partnerGroupId = $partnerGroupId;
+        $this->partnerGroupIds[] = $id;
     }
 
-    public function setStudentGroupId(int $studentGroupId): void
+    public function setStudentGroupId(int $id): void
     {
-        $this->studentGroupId = $studentGroupId;
+        $this->studentGroupId = $id;
     }
 }

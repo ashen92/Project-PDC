@@ -344,14 +344,16 @@ $groupPartners->addUser($user4);
 $groupCoordinators->addUser($user1);
 $groupCoordinators->addUser($user2);
 
-$groupInternshipCycleStudents = new UserGroup("InternshipCycle-Students");
-$groupInternshipCycleStudents->addUser($user3);
+$groupCycleStudents = new UserGroup("InternshipCycle-Students");
+$entityManager->persist($groupCycleStudents);
+$groupCycleStudents->addUser($user3);
 
-$groupInternshipCyclePartners = new UserGroup("InternshipCycle-Partners");
-$groupInternshipCyclePartners->addUser($user4);
+$groupCyclePartnerAdmins = new UserGroup("InternshipCycle-Partner-Admins");
+$entityManager->persist($groupCyclePartnerAdmins);
+$groupCyclePartnerAdmins->addUser($user4);
 
-$entityManager->persist($groupInternshipCycleStudents);
-$entityManager->persist($groupInternshipCyclePartners);
+$groupCyclePartners = new UserGroup("InternshipCycle-Partners");
+$entityManager->persist($groupCyclePartners);
 
 $entityManager->persist($groupCoordinators);
 $entityManager->persist($groupPartners);
@@ -388,15 +390,15 @@ $roleIntProgAdmin->addGroup($groupCoordinators);
 
 $roleIntProgPartnerAdmin = new Role('internship_program_partner_admin');
 $entityManager->persist($roleIntProgPartnerAdmin);
-$roleIntProgPartnerAdmin->addGroup($groupInternshipCyclePartners);
+$roleIntProgPartnerAdmin->addGroup($groupCyclePartnerAdmins);
 
 $roleIntProgStudent = new Role('internship_program_student');
 $entityManager->persist($roleIntProgStudent);
-$roleIntProgStudent->addGroup($groupInternshipCycleStudents);
+$roleIntProgStudent->addGroup($groupCycleStudents);
 
 $roleIntProgPartner = new Role('internship_program_partner');
 $entityManager->persist($roleIntProgPartner);
-$roleIntProgPartner->addGroup($groupInternshipCyclePartners);
+$roleIntProgPartner->addGroup($groupCyclePartnerAdmins);
 
 $entityManager->flush();
 
@@ -536,8 +538,9 @@ $internData = [
 ];
 
 $internshipCycle = new InternshipCycle();
-$internshipCycle->setPartnerGroup($groupInternshipCyclePartners);
-$internshipCycle->setStudentGroup($groupInternshipCycleStudents);
+$internshipCycle->addPartnerGroup($groupCyclePartnerAdmins);
+$internshipCycle->addPartnerGroup($groupCyclePartners);
+$internshipCycle->setStudentGroup($groupCycleStudents);
 
 $internships = [];
 

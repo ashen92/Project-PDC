@@ -164,7 +164,7 @@ class InternshipController extends PageControllerBase
     }
 
     #[Route("/create", methods: ["POST"])]
-    public function createPOST(Request $request): RedirectResponse
+    public function createPOST(Request $request, InternshipCycle $cycle): RedirectResponse
     {
         $title = $request->get("title");
         $description = $request->get("description");
@@ -175,6 +175,7 @@ class InternshipController extends PageControllerBase
         // TODO: Validate data
 
         $this->internshipService->createInternship(
+            $cycle->getId(),
             $title,
             $description,
             $ownerId,
