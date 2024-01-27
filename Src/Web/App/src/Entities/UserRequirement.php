@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Entities;
 
 use App\Models\Requirement\FulFillMethod;
+use App\Models\UserRequirement\Status;
 use DateTimeImmutable;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
@@ -37,8 +38,8 @@ class UserRequirement
     #[ORM\Column(type: "datetime_immutable", nullable: true)]
     private ?DateTimeImmutable $completedAt;
 
-    #[ORM\Column]
-    private string $status;
+    #[ORM\Column(type: 'user_requirement_status')]
+    private Status $status;
 
     #[ORM\Column(type: "simple_array", nullable: true)]
     private ?array $filePaths;
@@ -54,7 +55,7 @@ class UserRequirement
         $this->startDate = new DateTimeImmutable("now");
         $this->endDate = new DateTimeImmutable("+2 month");
         $this->completedAt = null;
-        $this->status = "pending";
+        $this->status = Status::PENDING;
     }
 
     public function getId(): int
@@ -87,7 +88,7 @@ class UserRequirement
         return $this->completedAt;
     }
 
-    public function getStatus(): string
+    public function getStatus(): Status
     {
         return $this->status;
     }
@@ -102,22 +103,22 @@ class UserRequirement
         return $this->textResponse;
     }
 
-    public function setStartDate(DateTimeInterface $startDate): void
+    public function setStartDate(DateTimeInterface $date): void
     {
-        $this->startDate = DateTimeImmutable::createFromInterface($startDate);
+        $this->startDate = DateTimeImmutable::createFromInterface($date);
     }
 
-    public function setEndDate(DateTimeInterface $endDate): void
+    public function setEndDate(DateTimeInterface $date): void
     {
-        $this->endDate = DateTimeImmutable::createFromInterface($endDate);
+        $this->endDate = DateTimeImmutable::createFromInterface($date);
     }
 
-    public function setCompletedAt(DateTimeInterface $completedAt): void
+    public function setCompletedAt(DateTimeInterface $date): void
     {
-        $this->completedAt = DateTimeImmutable::createFromInterface($completedAt);
+        $this->completedAt = DateTimeImmutable::createFromInterface($date);
     }
 
-    public function setStatus(string $status): void
+    public function setStatus(Status $status): void
     {
         $this->status = $status;
     }

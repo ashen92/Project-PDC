@@ -18,6 +18,10 @@ use Symfony\Component\DependencyInjection\Reference;
     "requirement_fulfill_method",
     "App\DoctrineTypes\Requirement\FulFillMethodType"
 );
+\Doctrine\DBAL\Types\Type::addType(
+    "user_requirement_status",
+    "App\DoctrineTypes\UserRequirement\StatusType"
+);
 
 $cachedContainerFile = __DIR__ . "/../cache/container.php";
 

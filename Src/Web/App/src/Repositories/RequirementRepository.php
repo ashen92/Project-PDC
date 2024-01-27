@@ -130,27 +130,34 @@ class RequirementRepository extends Repository implements IRepository
         return $userRequirement;
     }
 
-    public function updateUserRequirement(\App\Models\UserRequirement $ur): void
+    public function fulfillUserRequirement(int $id, ?array $filePaths = null, ?string $textResponse = null): bool
     {
+        if ($filePaths) {
+            $sql = "UPDATE user_requirements SET
+                    status = :status,
+                    completedAt = :completedAt,
+                    filePaths = :filePaths
+                    WHERE id = :id";
+            $stmt = $this->pdo->prepare($sql);
+            return $stmt->execute([
+                "status" => \App\Models\UserRequirement\Status::FULFILLED->value,
+                "completedAt" => (new \DateTime())->format(self::DATE_TIME_FORMAT),
+                "filePaths" => json_encode($filePaths),
+                "id" => $id,
+            ]);
+        }
+
         $sql = "UPDATE user_requirements SET
-            startDate = :startDate,
-            endDate = :endDate,
-            status = :status,
-            completedAt = :completedAt,
-            textResponse = :textResponse,
-            filePaths = :filePaths
-            WHERE id = :id";
-        $statement = $this->pdo->prepare($sql);
-        $statement->execute([
-            "startDate" => $ur->getStartDate()->format(self::DATE_TIME_FORMAT),
-            "endDate" => $ur->getEndDate()->format(self::DATE_TIME_FORMAT),
-            "status" => $ur->getStatus(),
-            "completedAt" => $ur->getCompletedAt()?->format(self::DATE_TIME_FORMAT),
-            "textResponse" => $ur->getTextResponse(),
-            "filePaths" => $ur->getFilePaths() !== null
-                ? json_encode($ur->getFilePaths())
-                : null,
-            "id" => $ur->getId(),
+                    status = :status,
+                    completedAt = :completedAt,
+                    textResponse = :textResponse
+                    WHERE id = :id";
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute([
+            "status" => \App\Models\UserRequirement\Status::FULFILLED->value,
+            "completedAt" => (new \DateTime())->format(self::DATE_TIME_FORMAT),
+            "textResponse" => $textResponse,
+            "id" => $id,
         ]);
     }
 }

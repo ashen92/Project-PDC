@@ -13,6 +13,7 @@ use App\Models\Requirement\FulFillMethod;
 use App\Models\Requirement\Type;
 use App\Repositories\RequirementRepository;
 use DateInterval;
+use Exception;
 
 readonly class RequirementService
 {
@@ -137,27 +138,23 @@ readonly class RequirementService
     public function completeUserRequirement(UserRequirementFulfillmentDTO $dto): bool
     {
         $ur = $this->requirementRepository->findUserRequirement($dto->userRequirementId);
-
         if (!$ur) {
-            return false;
-
-            // TODO: Handle user requirement not found
+            throw new Exception("User requirement not found");
         }
 
         if ($ur->getFulfillMethod() === FulFillMethod::FILE_UPLOAD) {
             $files = $this->fileStorageService->upload($dto->files);
 
             if ($files) {
-                $ur->fulfill(filePaths: $files);
+                return $this->requirementRepository
+                    ->fulfillUserRequirement($dto->userRequirementId, $files);
             }
 
             // TODO: Handle file upload failure
+            return false;
         }
 
-        if ($ur->getFulfillMethod() === FulFillMethod::TEXT_INPUT) {
-            $ur->fulfill(textResponse: $dto->textResponse);
-        }
-        $this->requirementRepository->updateUserRequirement($ur);
-        return true;
+        return $this->requirementRepository
+            ->fulfillUserRequirement($dto->userRequirementId, textResponse: $dto->textResponse);
     }
 }
