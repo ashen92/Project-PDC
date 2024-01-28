@@ -16,7 +16,7 @@ class UserRequirementMapper implements IMapper
             $row["id"],
             $row["user_id"],
             $row["requirement_id"],
-            \App\Models\Requirement\FulFillMethod::fromString($row["fulfillMethod"]),
+            \App\Models\Requirement\FulFillMethod::tryFrom($row["fulfillMethod"]),
             new \DateTimeImmutable($row["startDate"]),
             new \DateTimeImmutable($row["endDate"]),
             $row["completedAt"] === null ? null : new \DateTimeImmutable($row["completedAt"]),

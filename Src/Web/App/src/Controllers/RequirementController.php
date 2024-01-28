@@ -7,6 +7,9 @@ use App\Attributes\RequiredRole;
 use App\DTOs\CreateRequirementDTO;
 use App\DTOs\UserRequirementFulfillmentDTO;
 use App\Models\InternshipCycle;
+use App\Models\Requirement\FulFillMethod;
+use App\Models\Requirement\RepeatInterval;
+use App\Models\Requirement\Type;
 use App\Security\Identity;
 use App\Security\Role;
 use App\Services\RequirementService;
@@ -15,6 +18,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Throwable;
 use Twig\Environment;
 
 #[RequiredRole([
@@ -110,19 +114,28 @@ class RequirementController extends PageControllerBase
             $fileTypes = [$fileTypes];
         }
 
-        $requirementDTO = new CreateRequirementDTO(
-            $request->get("name"),
-            $request->get("description"),
-            $request->get("type"),
-            new DateTimeImmutable($request->get("start-date")),
-            new DateTimeImmutable($request->get("end-before")),
-            $request->get("repeat-interval"),
-            $request->get("fulfill-method"),
-            $fileTypes,
-            (int) $request->get("max-file-size"),
-            (int) $request->get("max-file-count")
-        );
-        // Validate DTO
+        try {
+            $repeatInterval = $request->get("repeat-interval");
+
+            $requirementDTO = new CreateRequirementDTO(
+                $request->get("name"),
+                $request->get("description"),
+                Type::tryFrom($request->get("type")),
+                new DateTimeImmutable($request->get("start-date")),
+                new DateTimeImmutable($request->get("end-before")),
+                $repeatInterval ? RepeatInterval::tryFrom($repeatInterval) : null,
+                FulFillMethod::tryFrom($request->get("fulfill-method")),
+                $fileTypes,
+                (int) $request->get("max-file-size"),
+                (int) $request->get("max-file-count")
+            );
+
+            // TODO: Validate
+
+        } catch (Throwable $th) {
+            // TODO: Handle errors
+            return $this->redirect("/internship-program/requirements");
+        }
 
         $this->requirementService->createRequirement($requirementDTO);
         return $this->redirect("/internship-program/requirements");

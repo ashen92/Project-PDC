@@ -62,12 +62,12 @@ readonly class RequirementService
         return $this->requirementRepository->findAllUserRequirements($cycleId, $requirementId, $userId, $status);
     }
 
-    public function createRequirement(CreateRequirementDTO $requirementDTO): void
+    public function createRequirement(CreateRequirementDTO $reqDTO): void
     {
-        $internshipCycleId = $this->internshipCycleService->getLatestInternshipCycleId();
-        $requirement = $this->requirementRepository
-            ->createRequirement($requirementDTO, $internshipCycleId);
-        $this->createUserRequirements($requirement);
+        $cycleId = $this->internshipCycleService->getLatestInternshipCycleId();
+        $reqId = $this->requirementRepository
+            ->createRequirement($cycleId, $reqDTO);
+        // $this->createUserRequirements($req);
     }
 
     private function createUserRequirements(Requirement $requirement): void

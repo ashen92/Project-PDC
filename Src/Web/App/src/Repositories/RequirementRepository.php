@@ -131,19 +131,48 @@ class RequirementRepository extends Repository implements IRepository
         }, $results);
     }
 
-    public function createRequirement(
-        CreateRequirementDTO $requirementDTO,
-        int $internshipCycleId
-    ): Requirement {
-        $requirement = new Requirement($requirementDTO);
-        $internshipCycle = $this->entityManager->find(
-            InternshipCycle::class,
-            $internshipCycleId
-        );
-        $requirement->setInternshipCycle($internshipCycle);
-        $this->entityManager->persist($requirement);
-        $this->entityManager->flush();
-        return $requirement;
+    public function createRequirement(int $cycleId, CreateRequirementDTO $reqDTO): int
+    {
+        $sql = "INSERT INTO requirements (
+            internship_cycle_id,
+            name,
+            description,
+            requirementType,
+            startDate,
+            endBeforeDate,
+            repeatInterval,
+            fulfillMethod,
+            allowedFileTypes,
+            maxFileSize,
+            maxFileCount
+        ) VALUES (
+            :cycleId,
+            :name,
+            :description,
+            :requirementType,
+            :startDate,
+            :endBeforeDate,
+            :repeatInterval,
+            :fulfillMethod,
+            :allowedFileTypes,
+            :maxFileSize,
+            :maxFileCount
+        )";
+        $statement = $this->pdo->prepare($sql);
+        $statement->execute([
+            "cycleId" => $cycleId,
+            "name" => $reqDTO->name,
+            "description" => $reqDTO->description,
+            "requirementType" => $reqDTO->requirementType->value,
+            "startDate" => $reqDTO->startDate->format(self::DATE_TIME_FORMAT),
+            "endBeforeDate" => $reqDTO->endBeforeDate ? $reqDTO->endBeforeDate->format(self::DATE_TIME_FORMAT) : null,
+            "repeatInterval" => $reqDTO->repeatInterval->value,
+            "fulfillMethod" => $reqDTO->fulfillMethod->value,
+            "allowedFileTypes" => json_encode($reqDTO->allowedFileTypes),
+            "maxFileSize" => $reqDTO->maxFileSize,
+            "maxFileCount" => $reqDTO->maxFileCount
+        ]);
+        return (int) $this->pdo->lastInsertId();
     }
 
     public function createUserRequirement(

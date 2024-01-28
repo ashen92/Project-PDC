@@ -65,18 +65,18 @@ class Requirement
     {
         $this->name = $dto->name;
         $this->description = $dto->description;
-        $this->requirementType = Type::fromString($dto->requirementType);
+        $this->requirementType = $dto->requirementType;
         $this->startDate = $dto->startDate;
 
         if ($this->requirementType === Type::ONE_TIME) {
             $this->endBeforeDate = $dto->endBeforeDate;
             $this->repeatInterval = null;
         } else {
-            $this->repeatInterval = RepeatInterval::fromString($dto->repeatInterval);
+            $this->repeatInterval = $dto->repeatInterval;
             $this->endBeforeDate = null;
         }
 
-        $this->fulfillMethod = FulFillMethod::fromString($dto->fulfillMethod);
+        $this->fulfillMethod = $dto->fulfillMethod;
 
         if ($this->fulfillMethod === FulFillMethod::FILE_UPLOAD) {
             $this->allowedFileTypes = $dto->allowedFileTypes;

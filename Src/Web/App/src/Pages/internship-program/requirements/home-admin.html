@@ -41,9 +41,9 @@
             <tr data-href="/internship-program/requirements/{{ item.id }}">
                 <td>{{ item.name }}</td>
                 <td class="capitalize">
-                    {% set requirementType = item.requirementType.toString %}
+                    {% set requirementType = item.requirementType.value %}
                     {% if requirementType == "recurring" %}
-                    {{ requirementType }} ({{ item.repeatInterval.toString }})
+                    {{ requirementType }} ({{ item.repeatInterval.value }})
                     {% else %}
                     {{ requirementType }}
                     {% endif %}

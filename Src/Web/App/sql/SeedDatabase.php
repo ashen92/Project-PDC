@@ -15,6 +15,9 @@ use App\Entities\Student;
 use App\Entities\User;
 use App\Entities\UserGroup;
 use App\Entities\UserRequirement;
+use App\Models\Requirement\FulFillMethod;
+use App\Models\Requirement\RepeatInterval;
+use App\Models\Requirement\Type;
 
 #region Users
 
@@ -630,62 +633,62 @@ echo "Done.\nAdding requirements...";
 
 $requirementData = [
     new CreateRequirementDTO(
-        "Internship Contract",
-        "Upload the contract between you and the company.",
-        "one-time",
-        new DateTimeImmutable("now"),
-        new DateTimeImmutable("+1 month"),
+        'Internship Contract',
+        'Upload the contract between you and the company.',
+        Type::ONE_TIME,
+        new DateTimeImmutable(),
+        new DateTimeImmutable('+1 month'),
         null,
-        "file-upload",
-        ["pdf"],
+        FulFillMethod::FILE_UPLOAD,
+        ['pdf'],
         5,
         3
     ),
     new CreateRequirementDTO(
-        "Monthly Report",
-        "Upload a report of your progress.",
-        "recurring",
-        new DateTimeImmutable("now"),
+        'Monthly Report',
+        'Upload a report of your progress.',
+        Type::RECURRING,
+        new DateTimeImmutable(),
         null,
-        "monthly",
-        "file-upload",
-        ["pdf"],
+        RepeatInterval::MONTHLY,
+        FulFillMethod::FILE_UPLOAD,
+        ['pdf'],
         5,
         1
     ),
     new CreateRequirementDTO(
-        "Daily Report",
-        "Upload a report of your progress.",
-        "recurring",
-        new DateTimeImmutable("now"),
+        'Daily Report',
+        'Upload a report of your progress.',
+        Type::RECURRING,
+        new DateTimeImmutable(),
         null,
-        "daily",
-        "file-upload",
-        ["pdf"],
+        RepeatInterval::DAILY,
+        FulFillMethod::FILE_UPLOAD,
+        ['pdf'],
         5,
         1
     ),
     new CreateRequirementDTO(
-        "Weekly Report",
-        "Upload a report of your progress.",
-        "recurring",
-        new DateTimeImmutable("now"),
+        'Weekly Report',
+        'Upload a report of your progress.',
+        Type::RECURRING,
+        new DateTimeImmutable(),
         null,
-        "weekly",
-        "file-upload",
-        ["pdf"],
+        RepeatInterval::WEEKLY,
+        FulFillMethod::FILE_UPLOAD,
+        ['pdf'],
         5,
         1
     ),
     new CreateRequirementDTO(
-        "Your feedback about the internship",
-        "What do you think about the company. How was your experience? Your feedback will not be shared with the company.",
-        "one-time",
-        new DateTimeImmutable("now"),
-        new DateTimeImmutable("+1 month"),
+        'Your feedback about the internship',
+        'What do you think about the company. How was your experience? Your feedback will not be shared with the company.',
+        Type::ONE_TIME,
+        new DateTimeImmutable(),
+        new DateTimeImmutable('+1 month'),
         null,
-        "text-input",
-        null,
+        FulFillMethod::TEXT_INPUT,
+        [],
         null,
         null
     )
