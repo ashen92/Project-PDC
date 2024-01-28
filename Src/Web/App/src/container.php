@@ -59,7 +59,7 @@ $container->register(
     ->setArguments([new Reference('repository.internship_program')])
     ->setPublic(true);
 
-// Database Connection --------------------------------------------------------
+#region Database Connection --------------------------------------------------------
 
 $container->setParameter("pdo_mysql.host", "localhost");
 $container->setParameter("pdo_mysql.dbname", "pdc");
@@ -76,7 +76,40 @@ $container->register(
         "%pdo_mysql.password%"
     ]);
 
-// Repositories ---------------------------------------------------------------
+$container->setParameter("doctrine.params", require_once "doctrine-config.php");
+
+$container->register(
+    "doctrine.config",
+    Doctrine\ORM\ORMSetup::class
+)
+    ->setFactory([Doctrine\ORM\ORMSetup::class, "createAttributeMetadataConfiguration"])
+    ->setArguments([
+        array(__DIR__ . "/Entities"),
+        true,
+    ]);
+
+$container->register(
+    "doctrine.connection",
+    Doctrine\DBAL\DriverManager::class
+)
+    ->setFactory([Doctrine\DBAL\DriverManager::class, "getConnection"])
+    ->setArguments([
+        "%doctrine.params%",
+        new Reference("doctrine.config")
+    ]);
+
+$container->register(
+    "doctrine.entity_manager",
+    Doctrine\ORM\EntityManager::class
+)
+    ->setArguments([
+        new Reference("doctrine.connection"),
+        new Reference("doctrine.config")
+    ]);
+
+#endregion
+
+#region Repositories ---------------------------------------------------------------
 
 $container->register(
     "repository.authorization",
@@ -117,40 +150,9 @@ $container->register(
 )
     ->setArguments([new Reference("pdo_mysql_connection"),]);
 
-// Services
+#endregion
 
-$container->setParameter("doctrine.params", require_once "doctrine-config.php");
-
-$container->register(
-    "doctrine.config",
-    Doctrine\ORM\ORMSetup::class
-)
-    ->setFactory([Doctrine\ORM\ORMSetup::class, "createAttributeMetadataConfiguration"])
-    ->setArguments([
-        array(__DIR__ . "/Entities"),
-        true,
-    ]);
-
-$container->register(
-    "doctrine.connection",
-    Doctrine\DBAL\DriverManager::class
-)
-    ->setFactory([Doctrine\DBAL\DriverManager::class, "getConnection"])
-    ->setArguments([
-        "%doctrine.params%",
-        new Reference("doctrine.config")
-    ]);
-
-$container->register(
-    "doctrine.entity_manager",
-    Doctrine\ORM\EntityManager::class
-)
-    ->setArguments([
-        new Reference("doctrine.connection"),
-        new Reference("doctrine.config")
-    ]);
-
-// Twig -----------------------------------------------------------------------
+#region Twig -----------------------------------------------------------------------
 
 $container->register(
     'twig.loader',
@@ -185,7 +187,9 @@ $container->register(
     ->addMethodCall('addGlobal', ['app', ['session' => new Reference('session')]])
     ->setPublic(true);
 
-// Services -------------------------------------------------------------------
+#endregion
+
+#region Services -------------------------------------------------------------------
 
 $container->register(
     "password_hasher",
@@ -282,7 +286,9 @@ $container->register(
 )
     ->setFactory([Symfony\Component\HttpClient\HttpClient::class, "create"]);
 
-// Event Listeners
+#endregion
+
+#region Event Listeners
 
 $container->register(
     "listener.exception",
@@ -312,7 +318,9 @@ $container->register(
     ])
     ->setPublic(true);
 
-// API Controllers
+#endregion
+
+#region API Controllers
 
 $container->register(
     "App\Controllers\API\InternshipController",
@@ -340,7 +348,9 @@ $container->register(
     ])
     ->setPublic(true);
 
-// Controllers
+#endregion
+
+#region Controllers
 
 $container->register(
     "App\Controllers\ErrorController",
@@ -399,6 +409,15 @@ $container->register(
     ->setPublic(true);
 
 $container->register(
+    "App\Controllers\ApplicationsController",
+    \App\Controllers\ApplicationsController::class
+)
+    ->setArguments([
+        new Reference("twig")
+    ])
+    ->setPublic(true);
+
+$container->register(
     "App\Controllers\RequirementController",
     \App\Controllers\RequirementController::class
 )
@@ -427,6 +446,8 @@ $container->register(
         new Reference("service.event")
     ])
     ->setPublic(true);
+
+#endregion
 
 $container->compile();
 
