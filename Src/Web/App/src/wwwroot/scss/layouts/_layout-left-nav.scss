@@ -2,15 +2,17 @@
 
 .layout-left-nav {
     display: grid;
-    grid-template-columns: 210px auto;
+    grid-template-columns: 230px auto;
 
     >.left-nav {
         border-right: $border-1;
         padding: 3rem 0 15px 0;
 
-        >.nav-link {
-            display: block;
-            padding: 9px 10px 8px 25px;
+        >a {
+            display: inline-flex;
+            align-items: center;
+            width: 100%;
+            padding: 0.565rem 0.625rem 0.565rem 1.565rem;
 
             transition-duration: 100ms;
             transition-property: background, border, color;
@@ -27,6 +29,19 @@
             &.active {
                 background-color: #e4e4e4;
             }
+
+            i {
+                margin-left: 0;
+                margin-right: 0.85rem;
+                font-size: 1.1rem;
+                color: #0078d4;
+            }
+        }
+
+        >.separator {
+            border-bottom: $border-1;
+            margin: 0.625rem 0.8125rem 0.3125rem 0.8125rem;
+            padding: 0;
         }
     }
 
