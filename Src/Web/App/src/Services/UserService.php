@@ -79,6 +79,11 @@ readonly class UserService
         $this->userRepository->updateUser($user);
     }
 
+    public function getUser(int $id): ?User
+    {
+        return $this->userRepository->findUser($id);
+    }
+
     public function getUserByEmail(string $email): ?User
     {
         return $this->userRepository->findByEmail($email);

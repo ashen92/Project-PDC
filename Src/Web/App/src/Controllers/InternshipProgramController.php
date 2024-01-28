@@ -208,4 +208,20 @@ class InternshipProgramController extends PageControllerBase
         }
         return $this->redirect("/internship-program/monitoring");
     }
+
+    #[RequiredRole(Role::InternshipProgram_Student)]
+    #[Route("/profile", methods: ["GET"])]
+    public function profile(Request $request, ?InternshipCycle $cycle): Response
+    {
+        $userId = $request->getSession()->get("user_id");
+        $user = $this->userService->getUser($userId);
+
+        return $this->render(
+            "internship-program/profile/home.html",
+            [
+                "section" => "profile",
+                "user" => $user,
+            ]
+        );
+    }
 }
