@@ -6,6 +6,7 @@ namespace App\Controllers;
 use App\Attributes\RequiredRole;
 use App\DTOs\CreateRequirementDTO;
 use App\DTOs\UserRequirementFulfillmentDTO;
+use App\Models\InternshipCycle;
 use App\Security\Identity;
 use App\Security\Role;
 use App\Services\RequirementService;
@@ -33,7 +34,7 @@ class RequirementController extends PageControllerBase
     }
 
     #[Route([""], methods: ["GET"])]
-    public function requirements(Request $request, Identity $identity): Response
+    public function requirements(Request $request, Identity $identity, ?InternshipCycle $cycle): Response
     {
         if ($identity->hasRole(Role::InternshipProgram_Admin)) {
             return $this->render(
@@ -45,12 +46,21 @@ class RequirementController extends PageControllerBase
             );
         }
 
-        $userId = $request->getSession()->get("user_id");
+        $cycleId = $cycle->getId();
+        if ($cycleId) {
+            $userReq = $this->requirementService->getUserRequirements(
+                $cycleId,
+                userId: $request->getSession()->get("user_id")
+            );
+        } else {
+            $userReq = [];
+        }
+
         return $this->render(
             "internship-program/requirements/home.html",
             [
                 "section" => "requirements",
-                "userRequirements" => $this->requirementService->getUserRequirements(userId: $userId)
+                "userRequirements" => $userReq,
             ]
         );
     }

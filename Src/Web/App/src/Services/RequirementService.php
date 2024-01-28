@@ -7,10 +7,11 @@ use App\DTOs\CreateRequirementDTO;
 use App\DTOs\CreateUserRequirementDTO;
 use App\DTOs\UserRequirementFulfillmentDTO;
 use App\Entities\Requirement;
-use App\Entities\UserRequirement;
 use App\Interfaces\IFileStorageService;
 use App\Models\Requirement\FulFillMethod;
 use App\Models\Requirement\Type;
+use App\Models\UserRequirement;
+use App\Models\UserRequirement\Status;
 use App\Repositories\RequirementRepository;
 use DateInterval;
 use Exception;
@@ -44,7 +45,7 @@ readonly class RequirementService
         return $this->requirementRepository->findAllRequirements($internshipCycleId);
     }
 
-    public function getUserRequirement(int $id): ?\App\Models\UserRequirement
+    public function getUserRequirement(int $id): ?UserRequirement
     {
         return $this->requirementRepository->findUserRequirement($id);
     }
@@ -53,32 +54,12 @@ readonly class RequirementService
      * @return array<UserRequirement>
      */
     public function getUserRequirements(
-        ?int $internshipCycleId = null,
+        int $cycleId,
         ?int $requirementId = null,
         ?int $userId = null,
-        ?string $status = null
+        ?Status $status = null
     ): array {
-        if ($internshipCycleId === null)
-            $internshipCycleId = $this->internshipCycleService->getLatestInternshipCycleId();
-
-        if ($internshipCycleId === null)
-            return [];
-
-        $criteria = [];
-
-        if ($requirementId !== null) {
-            $criteria["requirement"] = $requirementId;
-        }
-
-        if ($userId !== null) {
-            $criteria["user"] = $userId;
-        }
-
-        if ($status !== null) {
-            $criteria["status"] = $status;
-        }
-
-        return $this->requirementRepository->findAllUserRequirements($criteria);
+        return $this->requirementRepository->findAllUserRequirements($cycleId, $requirementId, $userId, $status);
     }
 
     public function createRequirement(CreateRequirementDTO $requirementDTO): void

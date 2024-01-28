@@ -12,6 +12,7 @@ use App\Entities\UserRequirement;
 use App\Interfaces\IRepository;
 use App\Mappers\RequirementMapper;
 use App\Mappers\UserRequirementMapper;
+use App\Models\UserRequirement\Status;
 use Doctrine\ORM\EntityManager;
 use PDO;
 
@@ -86,9 +87,48 @@ class RequirementRepository extends Repository implements IRepository
         return UserRequirementMapper::map($result);
     }
 
-    public function findAllUserRequirements(array $criteria): array
-    {
-        return $this->entityManager->getRepository(UserRequirement::class)->findBy($criteria);
+    /**
+     * @param array $criteria
+     * @return array</App/Models/UserRequirement>
+     */
+    public function findAllUserRequirements(
+        int $cycleId,
+        ?int $requirementId = null,
+        ?int $userId = null,
+        ?Status $status = null
+    ): array {
+        $sql = "SELECT * FROM user_requirements ur
+        INNER JOIN requirements r ON r.id = ur.requirement_id
+        WHERE r.internship_cycle_id = :cycleId";
+        $params = [
+            "cycleId" => $cycleId
+        ];
+
+        if ($requirementId) {
+            $sql .= " AND ur.requirement_id = :requirementId";
+            $params["requirementId"] = $requirementId;
+        }
+
+        if ($userId) {
+            $sql .= " AND ur.user_id = :userId";
+            $params["userId"] = $userId;
+        }
+
+        if ($status) {
+            $sql .= " AND ur.status = :status";
+            $params["status"] = $status->value;
+        }
+
+        $statement = $this->pdo->prepare($sql);
+        $statement->execute($params);
+        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+        if ($results === false) {
+            return [];
+        }
+
+        return array_map(function ($result) {
+            return UserRequirementMapper::map($result);
+        }, $results);
     }
 
     public function createRequirement(
