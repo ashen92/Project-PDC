@@ -19,7 +19,7 @@ use Exception;
 readonly class RequirementService
 {
     public function __construct(
-        private RequirementRepository $requirementRepository,
+        private RequirementRepository $requirementRepo,
         private InternshipProgramService $internshipCycleService,
         private IFileStorageService $fileStorageService
     ) {
@@ -28,7 +28,7 @@ readonly class RequirementService
 
     public function getRequirement(int $id): ?\App\Models\Requirement
     {
-        return $this->requirementRepository->findRequirement($id);
+        return $this->requirementRepo->findRequirement($id);
     }
 
     /**
@@ -42,12 +42,12 @@ readonly class RequirementService
         if ($internshipCycleId === null)
             return [];
 
-        return $this->requirementRepository->findAllRequirements($internshipCycleId);
+        return $this->requirementRepo->findAllRequirements($internshipCycleId);
     }
 
     public function getUserRequirement(int $id): ?UserRequirement
     {
-        return $this->requirementRepository->findUserRequirement($id);
+        return $this->requirementRepo->findUserRequirement($id);
     }
 
     /**
@@ -59,36 +59,33 @@ readonly class RequirementService
         ?int $userId = null,
         ?Status $status = null
     ): array {
-        return $this->requirementRepository->findAllUserRequirements($cycleId, $requirementId, $userId, $status);
+        return $this->requirementRepo->findAllUserRequirements($cycleId, $requirementId, $userId, $status);
     }
 
-    public function createRequirement(CreateRequirementDTO $reqDTO): void
+    public function createRequirement(CreateRequirementDTO $reqDTO): bool
     {
-        $cycleId = $this->internshipCycleService->getLatestInternshipCycleId();
-        $reqId = $this->requirementRepository
-            ->createRequirement($cycleId, $reqDTO);
-        // $this->createUserRequirements($req);
-    }
+        $this->requirementRepo->beginTransaction();
+        try {
+            $cycle = $this->internshipCycleService->getLatestCycle();
+            $reqId = $this->requirementRepo
+                ->createRequirement($cycle->getId(), $reqDTO);
 
-    private function createUserRequirements(Requirement $requirement): void
-    {
-        if ($requirement->getRequirementType() === Type::ONE_TIME) {
-            $this->createOneTimeUserRequirements($requirement);
-        } else {
-            $this->createRecurringUserRequirements($requirement);
+            if ($reqDTO->requirementType === Type::ONE_TIME) {
+                $this->requirementRepo
+                    ->createOneTimeUserRequirements($reqId, $cycle->getStudentGroupId());
+            } else {
+                $this->createRecurringUserRequirements($cycle, $reqId);
+            }
+
+            $this->requirementRepo->commit();
+            return true;
+        } catch (Exception $e) {
+            $this->requirementRepo->rollBack();
+            throw $e;
         }
     }
 
-    private function createOneTimeUserRequirements(Requirement $requirement): void
-    {
-        $internshipCycle = $requirement->getInternshipCycle();
-
-        foreach ($internshipCycle->getStudentGroup()->getUsers() as $user) {
-            $this->requirementRepository->createUserRequirement($requirement, $user);
-        }
-    }
-
-    private function createRecurringUserRequirements(Requirement $requirement): void
+    private function createRecurringUserRequirements(\App\Models\Requirement $requirement): void
     {
         $repeatInterval = $requirement->getRepeatInterval();
         $repeatDuration = $requirement->getRepeatInterval()->toDuration();
@@ -106,11 +103,11 @@ readonly class RequirementService
             $iterationDate = $iterationDate->add(new DateInterval($repeatDuration));
         }
 
-        $internshipCycle = $requirement->getInternshipCycle();
+        $internshipCycle = $requirement->getInternshipCycleId();
 
         foreach ($internshipCycle->getStudentGroup()->getUsers() as $user) {
             foreach ($urDTOs as $urDTO) {
-                $this->requirementRepository
+                $this->requirementRepo
                     ->createUserRequirementFromDTO($requirement, $user, $urDTO);
             }
         }
@@ -118,7 +115,7 @@ readonly class RequirementService
 
     public function completeUserRequirement(UserRequirementFulfillmentDTO $dto): bool
     {
-        $ur = $this->requirementRepository->findUserRequirement($dto->userRequirementId);
+        $ur = $this->requirementRepo->findUserRequirement($dto->userRequirementId);
         if (!$ur) {
             throw new Exception("User requirement not found");
         }
@@ -127,7 +124,7 @@ readonly class RequirementService
             $files = $this->fileStorageService->upload($dto->files);
 
             if ($files) {
-                return $this->requirementRepository
+                return $this->requirementRepo
                     ->fulfillUserRequirement($dto->userRequirementId, $files);
             }
 
@@ -135,7 +132,7 @@ readonly class RequirementService
             return false;
         }
 
-        return $this->requirementRepository
+        return $this->requirementRepo
             ->fulfillUserRequirement($dto->userRequirementId, textResponse: $dto->textResponse);
     }
 }

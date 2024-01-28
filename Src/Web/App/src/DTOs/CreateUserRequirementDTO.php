@@ -13,7 +13,6 @@ class CreateUserRequirementDTO
     public function __construct(
         public readonly DateTimeImmutable $startDate,
         public readonly RepeatInterval $repeatInterval,
-        public readonly ?string $status = "pending",
     ) {
         $this->endDate = $startDate->add(new DateInterval($repeatInterval->toDuration()));
     }
