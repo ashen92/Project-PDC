@@ -6,8 +6,8 @@ namespace App\Services;
 use App\DTOs\CreateRequirementDTO;
 use App\DTOs\CreateUserRequirementDTO;
 use App\DTOs\UserRequirementFulfillmentDTO;
-use App\Entities\Requirement;
 use App\Interfaces\IFileStorageService;
+use App\Models\Requirement;
 use App\Models\Requirement\FulFillMethod;
 use App\Models\Requirement\Type;
 use App\Models\UserRequirement;
@@ -26,13 +26,13 @@ readonly class RequirementService
 
     }
 
-    public function getRequirement(int $id): ?\App\Models\Requirement
+    public function getRequirement(int $id): ?Requirement
     {
         return $this->requirementRepo->findRequirement($id);
     }
 
     /**
-     * @return array<\App\Models\Requirement>
+     * @return array<Requirement>
      */
     public function getRequirements(?int $internshipCycleId = null): array
     {
@@ -74,7 +74,8 @@ readonly class RequirementService
                 $this->requirementRepo
                     ->createOneTimeUserRequirements($reqId, $cycle->getStudentGroupId());
             } else {
-                $this->createRecurringUserRequirements($cycle, $reqId);
+                // TODO
+                // $this->createRecurringUserRequirements($reqId);
             }
 
             $this->requirementRepo->commit();
@@ -85,8 +86,9 @@ readonly class RequirementService
         }
     }
 
-    private function createRecurringUserRequirements(\App\Models\Requirement $requirement): void
+    private function createRecurringUserRequirements(int $requirementId): void
     {
+        $requirement = $this->requirementRepo->findRequirement($requirementId);
         $repeatInterval = $requirement->getRepeatInterval();
         $repeatDuration = $requirement->getRepeatInterval()->toDuration();
 
