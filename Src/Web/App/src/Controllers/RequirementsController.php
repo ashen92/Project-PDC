@@ -28,7 +28,7 @@ use Twig\Environment;
     Role::InternshipProgram_Student,
 ])]
 #[Route("/internship-program/requirements")]
-class RequirementController extends PageControllerBase
+class RequirementsController extends PageControllerBase
 {
     public function __construct(
         Environment $twig,

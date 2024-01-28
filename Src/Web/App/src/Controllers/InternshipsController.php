@@ -20,7 +20,7 @@ use Twig\Environment;
     Role::InternshipProgram_Student,
 ])]
 #[Route("/internship-program/internships")]
-class InternshipController extends PageControllerBase
+class InternshipsController extends PageControllerBase
 {
     const int MAX_INTERNSHIP_RESULTS_PER_PAGE = 25;
 

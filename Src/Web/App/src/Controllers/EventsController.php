@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
 
-#[Route("/events", name: "events_")]
+#[Route("/events")]
 class EventsController extends PageControllerBase
 {
     public function __construct(
@@ -21,7 +21,7 @@ class EventsController extends PageControllerBase
         parent::__construct($twig);
     }
 
-    #[Route([""], name: "home")]
+    #[Route([""])]
     public function home(): Response
     {
         return $this->render("events/home.html", [
@@ -30,7 +30,7 @@ class EventsController extends PageControllerBase
         ]);
     }
 
-    #[Route("/create", name: "create_get", methods: ["GET"])]
+    #[Route("/create", methods: ["GET"])]
     public function create(): Response
     {
         return $this->render(
@@ -39,7 +39,7 @@ class EventsController extends PageControllerBase
         );
     }
 
-    #[Route("/edit/{eventId}", name: "edit", methods: ["GET"])]
+    #[Route("/edit/{eventId}", methods: ["GET"])]
     public function edit(int $eventId): Response
     {
 
@@ -53,7 +53,7 @@ class EventsController extends PageControllerBase
             ]
         );
     }
-    #[Route("/edit/{eventId}", name: "editPOST", methods: ["POST"])]
+    #[Route("/edit/{eventId}", methods: ["POST"])]
     public function editPOST(Request $request): Response
     {
         $eventId = (int) $request->get("eventId") ?? "1";
@@ -75,7 +75,7 @@ class EventsController extends PageControllerBase
         return $this->redirect("/events");
     }
 
-    #[Route("/create", name: "POSTcreate", methods: ["POST"])]
+    #[Route("/create", methods: ["POST"])]
     public function createPOST(Request $request): Response
     {
         $data = $request->request->all();
@@ -93,7 +93,7 @@ class EventsController extends PageControllerBase
         );
     }
 
-    #[Route("/delete/{eventId}", name: "deletePOST", methods: ["POST"])]
+    #[Route("/delete/{eventId}", methods: ["POST"])]
     public function deletePOST(Request $request): Response
     {
         $eventId = (int) $request->get("eventId");
@@ -101,5 +101,4 @@ class EventsController extends PageControllerBase
         $this->eventService->deleteEvent($event);
         return $this->redirect("/events");
     }
-
 }

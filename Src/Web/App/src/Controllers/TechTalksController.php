@@ -6,16 +6,16 @@ namespace App\Controllers;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route("/techtalks", name: "techtalks_")]
+#[Route("/techtalks")]
 class TechTalksController extends PageControllerBase
 {
-    #[Route([""], name: "home")]
+    #[Route([""])]
     public function home(): Response
     {
         return $this->render("techtalks/home.html");
     }
 
-    #[Route("/create", name: "create", methods: ["GET"])]
+    #[Route("/create", methods: ["GET"])]
     public function create(): Response
     {
         return $this->render("techtalks/create.html");

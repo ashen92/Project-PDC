@@ -398,8 +398,8 @@ $container->register(
     ->setPublic(true);
 
 $container->register(
-    "App\Controllers\InternshipController",
-    \App\Controllers\InternshipController::class
+    "App\Controllers\InternshipsController",
+    \App\Controllers\InternshipsController::class
 )
     ->setArguments([
         new Reference("twig"),
@@ -418,8 +418,8 @@ $container->register(
     ->setPublic(true);
 
 $container->register(
-    "App\Controllers\RequirementController",
-    \App\Controllers\RequirementController::class
+    "App\Controllers\RequirementsController",
+    \App\Controllers\RequirementsController::class
 )
     ->setArguments([
         new Reference("twig"),

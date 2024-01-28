@@ -18,7 +18,7 @@ class InternshipController
     ) {
     }
 
-    #[Route("/{id}", methods: ["GET"], requirements: ['id' => '\d+'])]
+    #[Route("/{id}", requirements: ['id' => '\d+'], methods: ["GET"])]
     public function internship(Request $request, Identity $identity, int $id): Response
     {
         $internship = $this->internshipService->getInternship($id);
@@ -38,7 +38,7 @@ class InternshipController
         return new Response(null, 404);
     }
 
-    #[Route("/{id}/apply", methods: ["PUT"], requirements: ['id' => '\d+'])]
+    #[Route("/{id}/apply", requirements: ['id' => '\d+'], methods: ["PUT"])]
     public function apply(Request $request, int $id): Response
     {
         // TODO: Validate
@@ -48,7 +48,7 @@ class InternshipController
         return new Response(null, 204);
     }
 
-    #[Route("/{id}/apply", methods: ["DELETE"], requirements: ['id' => '\d+'])]
+    #[Route("/{id}/apply", requirements: ['id' => '\d+'], methods: ["DELETE"])]
     public function cancelApplication(Request $request, int $id): Response
     {
         // TODO: Validate
