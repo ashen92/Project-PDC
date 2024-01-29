@@ -1,0 +1,65 @@
+<div class="field-file-upload">
+    <label class="btn btn-secondary btn-icon" for="{{ id }}">
+        <i class="i i-cloud-arrow-up"></i>
+        {{ button_text }}
+    </label>
+    <input type="file" name="{{ name }}" id="{{ id }}" accept="{{ accept }}" required>
+    <div class="preview" id="{{ id }}-preview">
+        <p>No files currently selected for upload</p>
+    </div>
+</div>
+
+<script>
+
+    const fileInput = document.querySelector("#{{ id|e('js') }}");
+    const filePreview = document.querySelector("#{{ id|e('js') }}-preview");
+
+    fileInput.addEventListener("change", function () {
+        updateImageDisplay(fileInput, filePreview);
+    });
+
+    function updateImageDisplay(input, preview) {
+        while (preview.firstChild) {
+            preview.removeChild(preview.firstChild);
+        }
+
+        // TODO - Use createElement in dom.js
+
+        const curFiles = input.files;
+        if (curFiles.length === 0) {
+            const para = document.createElement("p");
+            para.textContent = "No files currently selected for upload";
+            preview.appendChild(para);
+        } else {
+            const list = document.createElement("ol");
+            preview.appendChild(list);
+
+            for (const file of curFiles) {
+                const listItem = document.createElement("li");
+                const para = document.createElement("p");
+
+                para.innerHTML = `${file.name}. <small>${returnFileSize(file.size)}</small>`;
+
+                if (file.type.match("image.*")) {
+                    const image = document.createElement("img");
+                    image.src = URL.createObjectURL(file);
+                    listItem.appendChild(image);
+                }
+
+                listItem.appendChild(para);
+
+                list.appendChild(listItem);
+            }
+        }
+    }
+
+    function returnFileSize(number) {
+        if (number < 1024) {
+            return number + "bytes";
+        } else if (number > 1024 && number < 1048576) {
+            return (number / 1024).toFixed(1) + "KB";
+        } else if (number > 1048576) {
+            return (number / 1048576).toFixed(1) + "MB";
+        }
+    }
+</script>

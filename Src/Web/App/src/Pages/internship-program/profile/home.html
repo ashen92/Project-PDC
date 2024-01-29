@@ -16,7 +16,30 @@
 </div>
 
 <section>
-    Linkedin profile
+    <div class="grid-details">
+        <label>
+            Linkedin profile
+        </label>
+        <p>:</p>
+        <p>{{ user.linkedinProfile ?? 'Not set' }}</p>
+
+        <label>CV</label>
+        <p>:</p>
+        <p>{{ user.cv ?? 'Not set' }}</p>
+    </div>
+</section>
+<section>
+    <form action="" method="POST" enctype="multipart/form-data">
+
+        {% include 'shared/file-upload.html' with {
+        'id': 'cv',
+        'name': 'cv',
+        'accept': '.pdf',
+        'button_text': 'Attach CV',
+        } %}
+
+        <button class="btn" type="submit">Upload</button>
+    </form>
 </section>
 
 {% endblock %}
