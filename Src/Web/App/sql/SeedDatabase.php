@@ -707,9 +707,11 @@ $entityManager->flush();
 echo "Done.\nAdding user requirements...";
 
 $userRequirement1 = new UserRequirement($user3, $requirements[0]);
-$userRequirement2 = new UserRequirement($user3, $requirements[4]);
 $entityManager->persist($userRequirement1);
+$userRequirement2 = new UserRequirement($user3, $requirements[4]);
 $entityManager->persist($userRequirement2);
+$userRequirement3 = new UserRequirement($user3, $requirements[3]);
+$entityManager->persist($userRequirement3);
 $entityManager->flush();
 
 #endregion

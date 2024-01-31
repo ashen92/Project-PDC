@@ -53,34 +53,30 @@
                 </p>
             </div>
 
+            {% set allowedFileTypes = requirement.allowedFileTypes|join(",.")|raw %}
+            {% set allowedFileTypes = "." ~ allowedFileTypes %}
+
             {% if requirement.maxFileCount == 1 %}
-            <div class="field-file-upload">
-                <label class="btn btn-icon" for="files-to-upload">
-                    <i class="i i-arrow-bar-up"></i>
-                    <span>
-                        Select file to upload
-                    </span>
-                </label>
-                <input type="file" name="files-to-upload" id="files-to-upload" required
-                    accept="{% for t in requirement.allowedFileTypes %}.{{ t }}{% if not loop.last %},{% endif %}{% endfor %}">
-                <div class="preview" id="files-to-upload-preview">
-                    <p>No file currently selected for upload</p>
-                </div>
-            </div>
+
+            {% include 'shared/file-upload.html' with {
+            'id': 'files-to-upload',
+            'name': 'files-to-upload',
+            'accept': allowedFileTypes,
+            'button_text': 'Select file to upload',
+            'required': true
+            } %}
+
             {% else %}
-            <div class="field-file-upload mb-5">
-                <label class="btn btn-icon" for="files-to-upload">
-                    <i class="i i-arrow-bar-up"></i>
-                    <span>
-                        Select files to upload
-                    </span>
-                </label>
-                <input type="file" name="files-to-upload[]" id="files-to-upload" multiple required
-                    accept="{% for t in requirement.allowedFileTypes %}.{{ t }}{% if not loop.last %},{% endif %}{% endfor %}">
-                <div class="preview" id="files-to-upload-preview">
-                    <p>No files currently selected for upload</p>
-                </div>
-            </div>
+
+            {% include 'shared/file-upload.html' with {
+            'id': 'files-to-upload',
+            'name': 'files-to-upload[]',
+            'accept': allowedFileTypes,
+            'button_text': 'Select files to upload',
+            'multiple': true,
+            'required': true
+            } %}
+
             {% endif %}
             <div class="divider"></div>
 
@@ -118,6 +114,5 @@
 
     {% endif %}
 </section>
-<script src="/js/requirement-view.js" type="text/javascript"></script>
 
 {% endblock %}

@@ -1,6 +1,9 @@
+import { $ } from "../core/dom.js";
 import { on } from "../core/events.js";
 
-function filePicker(fileInputElement, filePreviewElement) {
+function filePicker(fileInputElementSelector, filePreviewElementSelector) {
+    const fileInputElement = $(fileInputElementSelector);
+    const filePreviewElement = $(filePreviewElementSelector);
     on(fileInputElement, "change", function () {
         updateImageDisplay(fileInputElement, filePreviewElement);
     });

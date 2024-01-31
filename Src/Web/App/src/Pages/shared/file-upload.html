@@ -3,17 +3,13 @@
         <i class="i i-cloud-arrow-up"></i>
         {{ button_text }}
     </label>
-    <input type="file" name="{{ name }}" id="{{ id }}" accept="{{ accept }}" required>
+    <input type="file" name="{{ name }}" id="{{ id }}" accept="{{ accept }}" {% if multiple %} multiple {% endif %} {%
+        if required %} required {% endif %}>
     <div class="preview" id="{{ id }}-preview">
         <p>No files currently selected for upload</p>
     </div>
 </div>
 
 <script>
-
-    const fileInput = document.querySelector("#{{ id|e('js') }}");
-    const filePreview = document.querySelector("#{{ id|e('js') }}-preview");
-
-    filePicker(fileInput, filePreview);
-
+    filePicker("#{{ id|e('js') }}", "#{{ id|e('js') }}-preview");
 </script>
