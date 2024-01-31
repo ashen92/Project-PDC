@@ -6,7 +6,7 @@
         {
             "label": "Gulp Watch",
             "type": "shell",
-            "command": "gulp build-js watch-js build-css watch-css build-scss watch-scss",
+            "command": "gulp",
             "group": {
                 "kind": "build",
                 "isDefault": true

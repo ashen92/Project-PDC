@@ -18,8 +18,18 @@ gulp.task("build-js", function (done) {
     }).then(() => done()).catch(() => done("Build failed"));
 });
 
+gulp.task("build-js-components", function (done) {
+    esbuild.build({
+        entryPoints: ["./App/src/wwwroot/js/components/main.js"],
+        bundle: true,
+        minify: false,
+        sourcemap: true,
+        outfile: "./App/public/js/components.js",
+    }).then(() => done()).catch(() => done("Build failed"));
+});
+
 gulp.task("watch-js", function () {
-    gulp.watch("./App/src/wwwroot/js/**/*", gulp.series("build-js"));
+    gulp.watch("./App/src/wwwroot/js/**/*", gulp.series("build-js", "build-js-components"));
 });
 
 // CSS tasks
@@ -63,7 +73,7 @@ gulp.task("watch-scss", function () {
 gulp.task(
     "default",
     gulp.parallel(
-        gulp.series("build-js", "watch-js"),
+        gulp.series("build-js", "build-js-components", "watch-js"),
         gulp.series("build-css", "watch-css"),
         gulp.series("build-scss", "watch-scss")
     ));
