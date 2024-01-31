@@ -23,6 +23,15 @@
     Your Internships
 </a>
 
+{% if has_role(InternshipProgram_Partner_Admin) %}
+
+<a class="{% if section == 'applicants' %} active{% endif %}" href="/internship-program/applicants">
+    <i class="i i-person-vcard"></i>
+    Applicants
+</a>
+
+{% endif %}
+
 {% elseif has_role(InternshipProgram_Student) %}
 
 <div class="separator"></div>

@@ -224,4 +224,20 @@ class InternshipProgramController extends PageControllerBase
             ]
         );
     }
+
+    #[RequiredRole(Role::InternshipProgram_Partner_Admin)]
+    #[Route("/applicants", methods: ["GET"])]
+    public function applicants(Request $request, ?InternshipCycle $cycle): Response
+    {
+        $userId = $request->getSession()->get("user_id");
+        $user = $this->userService->getUser($userId);
+
+        return $this->render(
+            "internship-program/applicants.html",
+            [
+                "section" => "applicants",
+                "user" => $user,
+            ]
+        );
+    }
 }
