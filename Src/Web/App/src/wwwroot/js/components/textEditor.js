@@ -1,9 +1,9 @@
 import { $ } from "../core/dom.js";
 import Quill from "../components/quill.js";
 
-function textEditor(textEditorElementId, textEditorContent, textEditorPlaceholder, textValueElementId) {
+function textEditor(textEditorElementSelector, textEditorContent, textEditorPlaceholder, textValueElementSelector) {
     let toolbarOptions = [["bold", "italic"], [{ "list": "bullet" }, { "list": "ordered" }]];
-    let quill = new Quill("#".concat(textEditorElementId), {
+    let quill = new Quill(textEditorElementSelector, {
         formats: ["bold", "italic", "list", "bullet"],
         modules: {
             toolbar: toolbarOptions
@@ -17,7 +17,7 @@ function textEditor(textEditorElementId, textEditorContent, textEditorPlaceholde
     }
 
     quill.on("text-change", function () {
-        $("#" + textValueElementId).value = quill.root.innerHTML;
+        $(textValueElementSelector).value = quill.root.innerHTML;
     });
 }
 
