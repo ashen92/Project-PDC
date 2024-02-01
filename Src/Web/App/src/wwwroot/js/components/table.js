@@ -28,4 +28,12 @@ function makeRowsClickable(rowContainerElementSelector) {
     });
 }
 
-export { makeRowsClickable };
+function makeRowsSelectable(selectAllCheckboxUniqueSelector, checkboxElements) {
+    on($(selectAllCheckboxUniqueSelector), "change", function () {
+        checkboxElements.forEach((checkbox) => {
+            checkbox.checked = this.checked;
+        });
+    });
+}
+
+export { makeRowsClickable, makeRowsSelectable };

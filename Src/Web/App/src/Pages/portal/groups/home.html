@@ -44,7 +44,7 @@
         </colgroup>
         <thead>
             <tr>
-                <th><input type="checkbox" id="all"></th>
+                <th><input type="checkbox"></th>
                 <th>Group name</th>
                 <th>Assigned roles</th>
                 <th></th>
@@ -64,6 +64,9 @@
 </section>
 <script>
     table.makeRowsClickable(".table-rows-clickable");
+
+    let tbodyCheckboxes = document.querySelectorAll("tbody input[type=checkbox]");
+    table.makeRowsSelectable("thead input[type=checkbox]", tbodyCheckboxes);
 </script>
 
 {% endblock %}

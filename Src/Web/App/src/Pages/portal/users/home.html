@@ -55,7 +55,7 @@
         </colgroup>
         <thead>
             <tr>
-                <th><input type="checkbox" id="all"></th>
+                <th><input type="checkbox"></th>
                 <th>Display name</th>
                 <th>Email</th>
                 <th>User type</th>
@@ -86,6 +86,9 @@
 <script src="/js/portal/users.js" type="text/javascript"></script>
 <script>
     table.makeRowsClickable(".table-rows-clickable");
+
+    let tbodyCheckboxes = document.querySelectorAll("tbody input[type=checkbox]");
+    table.makeRowsSelectable("thead input[type=checkbox]", tbodyCheckboxes);
 </script>
 
 {% endblock %}

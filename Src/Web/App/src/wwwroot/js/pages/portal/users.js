@@ -3,13 +3,10 @@ import { on } from "../../core/events";
 
 const commandBarButtons = $all(".command-bar button");
 
-let tblSelectAllCheckbox = $("thead #all");
-let tblRowCheckboxes = $all("tbody input[type='checkbox']");
+let tblSelectAllCheckbox = $("thead input[type=checkbox]");
 
 on(tblSelectAllCheckbox, "change", function () {
-    const checked = this.checked;
-
-    if (checked) {
+    if (this.checked) {
         commandBarButtons.forEach((button) => {
             button.removeAttribute("disabled");
         });
@@ -18,10 +15,6 @@ on(tblSelectAllCheckbox, "change", function () {
             button.setAttribute("disabled", "disabled");
         });
     }
-
-    tblRowCheckboxes.forEach((checkbox) => {
-        checkbox.checked = checked;
-    });
 });
 
 const tblBody = $("tbody");
