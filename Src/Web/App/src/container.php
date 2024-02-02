@@ -413,7 +413,8 @@ $container->register(
     \App\Controllers\ApplicationsController::class
 )
     ->setArguments([
-        new Reference("twig")
+        new Reference("twig"),
+        new Reference("service.internship"),
     ])
     ->setPublic(true);
 

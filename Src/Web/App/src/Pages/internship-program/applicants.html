@@ -12,11 +12,63 @@
     <h2>
         Applicants
     </h2>
-    <p>Select applicants</p>
+    <p>Recruit applicants</p>
 </div>
 
 <section>
 
+    <div class="title">
+        <h5>
+            Recruit applicants from applications
+        </h5>
+        <p>
+            Select applicants from all applications received for an internship.
+        </p>
+    </div>
+
+    {% if internships is empty %}
+    <p>No internships found.</p>
+    {% else %}
+
+    <table class="table table-hover">
+        <colgroup>
+            <col class="w-9-12">
+            <col class="w-3-12">
+        </colgroup>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Created at</th>
+            </tr>
+        </thead>
+        <tbody class="table-rows-clickable">
+            {% for i in internships %}
+            <tr data-href="/internship-program/applicants/applications?i={{ i.id }}">
+                <td>{{ i.title }}</td>
+                <td>{{ i.createdAt.format("Y-m-d") }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% endif %}
+
 </section>
+
+<section>
+    <div class="title">
+        <h5>
+            Select applicants individually
+        </h5>
+        <p>
+            You can choose applicants without associating them with an internship.
+        </p>
+    </div>
+    <a class="btn" href="">Select</a>
+</section>
+
+<script>
+    table.makeRowsClickable(".table-rows-clickable");
+</script>
 
 {% endblock %}

@@ -79,6 +79,14 @@ readonly class InternshipService
         );
     }
 
+    /**
+     * @return array<Internship>
+     */
+    public function getInternships(int $cycleId, int $ownerId): array
+    {
+        return $this->internshipRepository->findInternships($cycleId, $ownerId);
+    }
+
     public function getInternshipCount(int $cycleId, ?string $searchQuery, ?int $ownerUserId): int
     {
 

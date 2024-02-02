@@ -48,6 +48,21 @@ class InternshipRepository implements IRepository
     }
 
     /**
+     * @return array<Internship>
+     */
+    public function findInternships(int $cycleId, int $ownerId): array
+    {
+        $sql = 'SELECT * FROM internships WHERE internship_cycle_id = :cycleId AND owner_user_id = :ownerId';
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([
+            'cycleId' => $cycleId,
+            'ownerId' => $ownerId
+        ]);
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return array_map(fn(array $result) => InternshipMapper::map($result), $results);
+    }
+
+    /**
      * @return array<Student>
      */
     public function findAllApplications(int $internshipId): array
