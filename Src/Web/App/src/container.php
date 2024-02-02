@@ -7,25 +7,29 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
 \Doctrine\DBAL\Types\Type::addType(
-    "requirement_type",
-    "App\DoctrineTypes\Requirement\TypeType"
+    'requirement_type',
+    'App\DoctrineTypes\Requirement\TypeType'
 );
 \Doctrine\DBAL\Types\Type::addType(
-    "requirement_repeat_interval",
-    "App\DoctrineTypes\Requirement\RepeatIntervalType"
+    'requirement_repeat_interval',
+    'App\DoctrineTypes\Requirement\RepeatIntervalType'
 );
 \Doctrine\DBAL\Types\Type::addType(
-    "requirement_fulfill_method",
-    "App\DoctrineTypes\Requirement\FulFillMethodType"
+    'requirement_fulfill_method',
+    'App\DoctrineTypes\Requirement\FulFillMethodType'
 );
 \Doctrine\DBAL\Types\Type::addType(
-    "user_requirement_status",
-    "App\DoctrineTypes\UserRequirement\StatusType"
+    'user_requirement_status',
+    'App\DoctrineTypes\UserRequirement\StatusType'
+);
+\Doctrine\DBAL\Types\Type::addType(
+    'application_status',
+    'App\DoctrineTypes\Application\StatusType'
 );
 
-$cachedContainerFile = __DIR__ . "/../cache/container.php";
+$cachedContainerFile = __DIR__ . '/../cache/container.php';
 
-if (getenv("IS_PRODUCTION") && file_exists($cachedContainerFile)) {
+if (getenv('IS_PRODUCTION') && file_exists($cachedContainerFile)) {
     require_once $cachedContainerFile;
     return new CachedContainer();
 }
@@ -61,19 +65,19 @@ $container->register(
 
 #region Database Connection --------------------------------------------------------
 
-$container->setParameter("pdo_mysql.host", "localhost");
-$container->setParameter("pdo_mysql.dbname", "pdc");
-$container->setParameter("pdo_mysql.user", "root");
-$container->setParameter("pdo_mysql.password", "root");
+$container->setParameter('pdo_mysql.host', 'localhost');
+$container->setParameter('pdo_mysql.dbname', 'pdc');
+$container->setParameter('pdo_mysql.user', 'root');
+$container->setParameter('pdo_mysql.password', 'root');
 
 $container->register(
-    "pdo_mysql_connection",
+    'pdo_mysql_connection',
     PDO::class
 )
     ->setArguments([
-        "mysql:host=%pdo_mysql.host%;dbname=%pdo_mysql.dbname%",
-        "%pdo_mysql.user%",
-        "%pdo_mysql.password%"
+        'mysql:host=%pdo_mysql.host%;dbname=%pdo_mysql.dbname%',
+        '%pdo_mysql.user%',
+        '%pdo_mysql.password%'
     ]);
 
 $container->setParameter("doctrine.params", require_once "doctrine-config.php");
