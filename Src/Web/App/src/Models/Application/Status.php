@@ -6,6 +6,6 @@ namespace App\Models\Application;
 enum Status: string
 {
     case Pending = 'pending';
-    case Accepted = 'accepted';
+    case Hired = 'hired';
     case Rejected = 'rejected';
 }

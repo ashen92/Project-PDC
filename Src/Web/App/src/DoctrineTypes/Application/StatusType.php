@@ -10,7 +10,7 @@ class StatusType extends \Doctrine\DBAL\Types\Type
 {
     public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform): string
     {
-        return "ENUM('pending', 'accepted', 'rejected')";
+        return "ENUM('pending', 'hired', 'rejected')";
     }
 
     public function convertToPHPValue($value, AbstractPlatform $platform)

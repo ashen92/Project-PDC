@@ -23,7 +23,7 @@
             'Email',
             'Status',
             {
-                name: 'Actions',
+                name: 'Hire',
                 formatter: (cell, row) => {
                     return gridjs.h('button', {
                         className: "btn",
@@ -31,11 +31,11 @@
                             alert(`Editing "${row.cells[0].data}" "${row.cells[1].data}"`);
                             e.stopPropagation();
                         }
-                    }, 'Accept');
+                    }, 'Hire');
                 }
             },
             {
-                name: 'Actions',
+                name: 'Reject',
                 formatter: (cell, row) => {
                     return gridjs.h('button', {
                         className: "btn",
