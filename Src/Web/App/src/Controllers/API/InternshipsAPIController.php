@@ -59,7 +59,10 @@ class InternshipsAPIController
         return new Response(null, 204);
     }
 
-    #[RequiredRole(Role::InternshipProgram_Partner_Admin)]
+    #[RequiredRole([
+        Role::InternshipProgram_Admin,
+        Role::InternshipProgram_Partner_Admin
+    ])]
     #[Route('/{id}/applications', methods: ['GET'])]
     public function internshipApplications(Request $request, int $id): Response
     {

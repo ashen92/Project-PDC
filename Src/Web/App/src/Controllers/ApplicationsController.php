@@ -45,12 +45,26 @@ class ApplicationsController extends PageControllerBase
         );
     }
 
-    #[RequiredRole(Role::InternshipProgram_Partner_Admin)]
+    #[RequiredRole([
+        Role::InternshipProgram_Admin,
+        Role::InternshipProgram_Partner_Admin
+    ])]
     #[Route('/applicants/applications', methods: ['GET'])]
-    public function applicantsApplications(Request $request, ?InternshipCycle $cycle): Response
+    public function applicantsApplications(Request $request): Response
     {
         $internshipId = $request->query->getInt('i');
         // TODO: Validate
+
+        if (!$internshipId || $internshipId < 1) {
+            return $this->render(
+                'internship-program/applicants/applications.html',
+                [
+                    'section' => 'applicants',
+                    'internship' => null,
+                    'apiEndpoint' => 'http://localhost:80/api/applications',
+                ]
+            );
+        }
 
         return $this->render(
             'internship-program/applicants/applications.html',
@@ -58,6 +72,7 @@ class ApplicationsController extends PageControllerBase
                 'section' => 'applicants',
                 'internship' => $this->internshipService
                     ->getInternship($internshipId),
+                'apiEndpoint' => 'http://localhost:80/api/internships/' . $internshipId . '/applications',
             ]
         );
     }
