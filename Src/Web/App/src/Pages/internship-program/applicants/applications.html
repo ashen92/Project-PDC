@@ -1,7 +1,7 @@
 {% extends "shared/layout-left-nav.html" %}
 
 {% if internship %}
-{% set title = 'Applications for ' ~ internship.title %}
+{% set title = 'Applications for \'' ~ internship.title ~ '\'' %}
 {% else %}
 {% set title = 'All Applications' %}
 {% endif %}
@@ -14,7 +14,7 @@
 
 {% block content %}
 
-<div class="mb-20">
+<div class="title">
     <h4>{{ title }}</h4>
 </div>
 
