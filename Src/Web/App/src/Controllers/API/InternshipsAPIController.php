@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route("/api/internships")]
-class InternshipController
+class InternshipsAPIController
 {
     public function __construct(
         private InternshipService $internshipService,

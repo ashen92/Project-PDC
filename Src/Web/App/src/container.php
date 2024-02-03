@@ -327,8 +327,8 @@ $container->register(
 #region API Controllers
 
 $container->register(
-    "App\Controllers\API\InternshipController",
-    \App\Controllers\API\InternshipController::class
+    "App\Controllers\API\InternshipsAPIController",
+    \App\Controllers\API\InternshipsAPIController::class
 )
     ->setArguments([
         new Reference("service.internship"),
