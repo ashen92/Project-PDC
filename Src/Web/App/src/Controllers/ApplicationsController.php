@@ -36,7 +36,7 @@ class ApplicationsController extends PageControllerBase
     public function applicants(Request $request, ?InternshipCycle $cycle): Response
     {
         return $this->render(
-            'internship-program/applicants.html',
+            'internship-program/applicants/home.html',
             [
                 'section' => 'applicants',
                 'internships' => $this->internshipService
