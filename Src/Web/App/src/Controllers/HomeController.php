@@ -8,9 +8,9 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends PageControllerBase
 {
-    #[Route([""])]
+    #[Route([''])]
     public function home(): Response
     {
-        return $this->render("home.html");
+        return $this->render('home.html');
     }
 }

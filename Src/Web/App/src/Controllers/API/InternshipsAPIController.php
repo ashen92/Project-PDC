@@ -11,51 +11,51 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route("/api/internships")]
-class InternshipsAPIController
+#[Route('/api/internships')]
+readonly class InternshipsAPIController
 {
     public function __construct(
         private InternshipService $internshipService,
     ) {
     }
 
-    #[Route("/{id}", requirements: ['id' => '\d+'], methods: ["GET"])]
+    #[Route('/{id}', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function internship(Request $request, Identity $identity, int $id): Response
     {
         $internship = $this->internshipService->getInternship($id);
         if ($internship) {
             $data = [
-                "title" => $internship->getTitle(),
-                "description" => $internship->getDescription(),
+                'title' => $internship->getTitle(),
+                'description' => $internship->getDescription(),
             ];
 
             if ($identity->hasRole(Role::InternshipProgram_Student)) {
-                $userId = $request->getSession()->get("user_id");
-                $data["hasApplied"] = $this->internshipService->hasAppliedToInternship($id, $userId);
+                $userId = $request->getSession()->get('user_id');
+                $data['hasApplied'] = $this->internshipService->hasAppliedToInternship($id, $userId);
             }
 
-            return new Response(json_encode($data), 200, ["Content-Type" => "application/json"]);
+            return new Response(json_encode($data), 200, ['Content-Type' => 'application/json']);
         }
         return new Response(null, 404);
     }
 
-    #[Route("/{id}/apply", requirements: ['id' => '\d+'], methods: ["PUT"])]
+    #[Route('/{id}/apply', requirements: ['id' => '\d+'], methods: ['PUT'])]
     public function apply(Request $request, int $id): Response
     {
         // TODO: Validate
 
         $this->internshipService
-            ->apply($id, (int) $request->getSession()->get("user_id"));
+            ->apply($id, (int) $request->getSession()->get('user_id'));
         return new Response(null, 204);
     }
 
-    #[Route("/{id}/apply", requirements: ['id' => '\d+'], methods: ["DELETE"])]
+    #[Route('/{id}/apply', requirements: ['id' => '\d+'], methods: ['DELETE'])]
     public function cancelApplication(Request $request, int $id): Response
     {
         // TODO: Validate
 
         $this->internshipService
-            ->undoApply($id, (int) $request->getSession()->get("user_id"));
+            ->undoApply($id, (int) $request->getSession()->get('user_id'));
         return new Response(null, 204);
     }
 
@@ -64,7 +64,7 @@ class InternshipsAPIController
         Role::InternshipProgram_Partner_Admin
     ])]
     #[Route('/{id}/applications', methods: ['GET'])]
-    public function internshipApplications(Request $request, int $id): Response
+    public function internshipApplications(int $id): Response
     {
         return new Response(
             json_encode($this->internshipService->getApplications($id)),

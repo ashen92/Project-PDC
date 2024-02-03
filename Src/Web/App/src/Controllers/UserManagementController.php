@@ -9,10 +9,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/api')]
-class UserManagementController
+readonly class UserManagementController
 {
     public function __construct(
-        private readonly UserManagementHandler $userMgmtHandler,
+        private UserManagementHandler $userMgmtHandler,
     ) {
     }
 

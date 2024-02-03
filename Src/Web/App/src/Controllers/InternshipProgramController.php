@@ -28,7 +28,7 @@ use Twig\Environment;
     Role::InternshipProgram_Partner,
     Role::InternshipProgram_Student,
 ])]
-#[Route("/internship-program", name: "internship_program_")]
+#[Route('/internship-program')]
 class InternshipProgramController extends PageControllerBase
 {
     public function __construct(
@@ -40,83 +40,83 @@ class InternshipProgramController extends PageControllerBase
         parent::__construct($twig);
     }
 
-    #[Route([""], name: "home")]
+    #[Route([''])]
     public function home(Request $request, Identity $identity, ?InternshipCycle $cycle): Response
     {
-        $userId = $request->getSession()->get("user_id");
+        $userId = $request->getSession()->get('user_id');
 
         if ($identity->hasRole(Role::InternshipProgram_Admin)) {
             return $this->render(
-                "internship-program/home-admin.html",
+                'internship-program/home-admin.html',
                 [
-                    "section" => "home",
-                    "internshipCycle" => $cycle
+                    'section' => 'home',
+                    'internshipCycle' => $cycle
                 ]
             );
         }
         if ($identity->hasRole(Role::InternshipProgram_Partner_Admin)) {
             return $this->render(
-                "internship-program/home-partner.html",
+                'internship-program/home-partner.html',
                 [
-                    "section" => "home",
-                    "users" => $this->userService->getManagedUsers($userId),
+                    'section' => 'home',
+                    'users' => $this->userService->getManagedUsers($userId),
                 ]
             );
         }
         return $this->render(
-            "internship-program/home.html",
+            'internship-program/home.html',
             [
-                "section" => "home",
-                "internshipCycle" => $cycle
+                'section' => 'home',
+                'internshipCycle' => $cycle
             ]
         );
     }
 
-    #[Route("/users/create", name: "user_create", methods: ["GET"])]
+    #[Route('/users/create', methods: ['GET'])]
     public function userCreate(): Response
     {
         return $this->render(
-            "internship-program/create_user.html",
-            ["section" => "home"]
+            'internship-program/create_user.html',
+            ['section' => 'home']
         );
     }
 
-    #[Route("/users/create", methods: ["POST"])]
+    #[Route('/users/create', methods: ['POST'])]
     public function userCreatePost(Request $request): Response|RedirectResponse
     {
         $dto = new CreateUserDTO(
-            $request->get("user-type"),
-            $request->get("email"),
-            $request->get("first-name"),
+            $request->get('user-type'),
+            $request->get('email'),
+            $request->get('first-name'),
         );
 
         try {
-            $this->internshipCycleService->createManagedUser($request->getSession()->get("user_id"), $dto);
+            $this->internshipCycleService->createManagedUser($request->getSession()->get('user_id'), $dto);
         } catch (UserExistsException) {
 
             // TODO: Set error message
 
             return $this->render(
-                "internship-program/create_user.html",
-                ["section" => "home"]
+                'internship-program/create_user.html',
+                ['section' => 'home']
             );
         }
 
-        return $this->redirect("/internship-program/users/create");
+        return $this->redirect('/internship-program/users/create');
     }
 
     #[RequiredRole(Role::InternshipProgram_Admin)]
     #[RequiredPolicy(InternshipProgramState::Ended)]
-    #[Route("/cycle/create", methods: ["GET"])]
+    #[Route('/cycle/create', methods: ['GET'])]
     public function cycleCreateGET(): Response
     {
         return $this->render(
-            "internship-program/cycle/create.html",
+            'internship-program/cycle/create.html',
             [
-                "section" => "home",
-                "eligiblePartnerGroups" => $this->internshipCycleService
+                'section' => 'home',
+                'eligiblePartnerGroups' => $this->internshipCycleService
                     ->getEligiblePartnerGroupsForInternshipCycle(),
-                "eligibleStudentGroups" => $this->internshipCycleService
+                'eligibleStudentGroups' => $this->internshipCycleService
                     ->getEligibleStudentGroupsForInternshipCycle()
             ]
         );
@@ -124,65 +124,65 @@ class InternshipProgramController extends PageControllerBase
 
     #[RequiredRole(Role::InternshipProgram_Admin)]
     #[RequiredPolicy(InternshipProgramState::Ended)]
-    #[Route("/cycle/create", methods: ["POST"])]
+    #[Route('/cycle/create', methods: ['POST'])]
     public function cycleCreatePOST(Request $request): RedirectResponse
     {
         $createInternshipCycleDTO = new CreateCycleDTO(
-            $request->get("collection-start-date"),
-            $request->get("collection-end-date"),
-            $request->get("application-start-date"),
-            $request->get("application-end-date"),
-            (int) $request->get("partner-group"),
-            (int) $request->get("student-group")
+            $request->get('collection-start-date'),
+            $request->get('collection-end-date'),
+            $request->get('application-start-date'),
+            $request->get('application-end-date'),
+            (int) $request->get('partner-group'),
+            (int) $request->get('student-group')
         );
         // TODO: validate DTO
 
         // TODO: handle exceptions
         $this->internshipCycleService->createCycle($createInternshipCycleDTO);
 
-        return $this->redirect("/internship-program");
+        return $this->redirect('/internship-program');
     }
 
     #[RequiredRole(Role::InternshipProgram_Admin)]
     #[RequiredPolicy(InternshipProgramState::Active)]
-    #[Route("/cycle/end")]
+    #[Route('/cycle/end')]
     public function cycleEnd(): RedirectResponse
     {
         $this->internshipCycleService->endInternshipCycle();
-        return $this->redirect("/internship-program");
+        return $this->redirect('/internship-program');
     }
 
     #[RequiredRole(Role::InternshipProgram_Admin)]
-    #[Route("/monitoring", methods: ["GET"])]
+    #[Route('/monitoring', methods: ['GET'])]
     public function monitoring(): Response
     {
         return $this->render(
-            "internship-program/monitoring/home.html",
+            'internship-program/monitoring/home.html',
             [
-                "section" => "monitoring",
-                "requirements" => $this->requirementService->getRequirements()
+                'section' => 'monitoring',
+                'requirements' => $this->requirementService->getRequirements()
             ]
         );
     }
 
     #[RequiredRole(Role::InternshipProgram_Admin)]
-    #[Route("/monitoring/students", methods: ["GET"])]
+    #[Route('/monitoring/students', methods: ['GET'])]
     public function monitoringStudentUsers(): Response
     {
         return $this->render(
-            "internship-program/monitoring/student-users.html",
+            'internship-program/monitoring/student-users.html',
             [
-                "section" => "monitoring",
-                "users" => $this->internshipCycleService->getStudentUsers()
+                'section' => 'monitoring',
+                'users' => $this->internshipCycleService->getStudentUsers()
             ]
         );
     }
 
     #[RequiredRole(Role::InternshipProgram_Admin)]
-    #[Route("/monitoring/submissions", methods: ["GET"])]
+    #[Route('/monitoring/submissions', methods: ['GET'])]
     public function requirementSubmissions(Request $request, ?InternshipCycle $cycle): Response|RedirectResponse
     {
-        $id = (int) $request->get("r");
+        $id = (int) $request->get('r');
 
         $cycleId = $cycle->getId();
         if ($cycleId) {
@@ -198,29 +198,29 @@ class InternshipProgramController extends PageControllerBase
         $requirement = $this->requirementService->getRequirement($id);
         if ($requirement) {
             return $this->render(
-                "internship-program/monitoring/submissions.html",
+                'internship-program/monitoring/submissions.html',
                 [
-                    "section" => "monitoring",
-                    "requirement" => $requirement,
-                    "userRequirements" => $userReq
+                    'section' => 'monitoring',
+                    'requirement' => $requirement,
+                    'userRequirements' => $userReq
                 ]
             );
         }
-        return $this->redirect("/internship-program/monitoring");
+        return $this->redirect('/internship-program/monitoring');
     }
 
     #[RequiredRole(Role::InternshipProgram_Student)]
-    #[Route("/profile", methods: ["GET"])]
-    public function profile(Request $request, ?InternshipCycle $cycle): Response
+    #[Route('/profile', methods: ['GET'])]
+    public function profile(Request $request): Response
     {
-        $userId = $request->getSession()->get("user_id");
+        $userId = $request->getSession()->get('user_id');
         $user = $this->userService->getUser($userId);
 
         return $this->render(
-            "internship-program/profile/home.html",
+            'internship-program/profile/home.html',
             [
-                "section" => "profile",
-                "user" => $user,
+                'section' => 'profile',
+                'user' => $user,
             ]
         );
     }
