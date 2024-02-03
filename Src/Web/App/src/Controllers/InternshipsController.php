@@ -107,19 +107,6 @@ class InternshipsController extends PageControllerBase
         return new Response(null, 204);
     }
 
-    #[Route("/{id}/applicants")]
-    public function internshipApplicants(int $id): Response
-    {
-        return $this->render(
-            "internship-program/internship/applicants.html",
-            [
-                "section" => "internships",
-                "internship" => $this->internshipService->getInternship($id),
-                "applicants" => $this->internshipService->getApplications($id)
-            ]
-        );
-    }
-
     #[Route("/{id}/modify", methods: ["GET"])]
     public function updateGET(int $id): Response
     {

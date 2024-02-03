@@ -107,8 +107,7 @@ const modifyJobBtn = $("#modify-job-btn");
 const removeJobBtn = $("#remove-job-btn");
 
 on(applicantsJobBtn, "click", function () {
-    console.log(previouslySelectedItemCard.getAttribute("data-job-id"));
-    window.location.href = `${window.location.pathname}/${previouslySelectedItemCard.getAttribute("data-job-id")}/applicants`;
+    window.location.href = `http://localhost/internship-program/applicants/applications?i=${previouslySelectedItemCard.getAttribute("data-job-id")}`;
 });
 
 on(modifyJobBtn, "click", function () {
