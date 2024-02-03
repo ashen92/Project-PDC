@@ -10,7 +10,13 @@ function makeRowsClickable(rowContainerElementSelector) {
                 const target = event.target;
                 const row = target.closest("tr");
 
-                if (row && !target.matches("input[type='checkbox']") && !target.closest("td").querySelector("input[type='checkbox']")) {
+                if (target.matches("input[type='checkbox']") && target.closest("td").querySelector("input[type='checkbox']"))
+                    return;
+
+                if (target.matches("button") && target.closest("td").querySelector("button"))
+                    return;
+
+                if (row) {
                     window.location.href = row.dataset.href;
                 }
             });

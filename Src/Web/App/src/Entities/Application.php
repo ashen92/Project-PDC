@@ -15,6 +15,10 @@ class Application
     #[ORM\Column(type: 'integer')]
     private int $id;
 
+    #[ORM\ManyToOne(targetEntity: Student::class)]
+    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id')]
+    private Student $student;
+
     #[ORM\ManyToOne(targetEntity: Internship::class)]
     #[ORM\JoinColumn(name: 'internship_id', referencedColumnName: 'id')]
     private Internship $internship;
@@ -23,9 +27,11 @@ class Application
     private Status $status;
 
     public function __construct(
+        Student $student,
         Internship $internship,
         Status $status
     ) {
+        $this->student = $student;
         $this->internship = $internship;
         $this->status = $status;
     }

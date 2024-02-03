@@ -1,0 +1,66 @@
+{% extends "shared/layout-left-nav.html" %}
+
+{% block title %}Applications for '{{ internship.title }}'{% endblock %}
+
+{% block left_nav %}
+{% include "internship-program/left-nav.html" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="mb-20">
+    <h4>
+        Applications for '{{ internship.title }}'
+    </h4>
+</div>
+<div id="grid-applications"></div>
+<script>
+    const grid = new gridjs.Grid({
+        columns: [
+            { name: 'id', hidden: true },
+            'First name',
+            'Full name',
+            'Email',
+            'Status',
+            {
+                name: 'Actions',
+                formatter: (cell, row) => {
+                    return gridjs.h('button', {
+                        className: "btn",
+                        onClick: (e) => {
+                            alert(`Editing "${row.cells[0].data}" "${row.cells[1].data}"`);
+                            e.stopPropagation();
+                        }
+                    }, 'Accept');
+                }
+            },
+            {
+                name: 'Actions',
+                formatter: (cell, row) => {
+                    return gridjs.h('button', {
+                        className: "btn",
+                        onClick: (e) => {
+                            alert(`Editing "${row.cells[0].data}" "${row.cells[1].data}"`);
+                            e.stopPropagation();
+                        }
+                    }, 'Reject');
+                }
+            },
+        ],
+        server: {
+            url: "http://localhost:80/api/internships/{{ internship.id|e('js') }}/applications",
+            then: data => data.applications.map(a => [a.id, a.userFirstName, a.studentFullName, a.userEmail, a.status])
+        },
+        search: {
+            server: {
+                url: (prev, keyword) => `${prev}?fullName=${keyword}`
+            }
+        },
+    });
+    grid.render(document.getElementById("grid-applications"));
+    grid.on('rowClick', (e, row) => {
+        window.location.href = `/internship-program/applicants/applications/${row.cells[0].data}`;
+    });
+</script>
+
+{% endblock %}

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controllers\API;
 
+use App\Attributes\RequiredRole;
 use App\Security\Identity;
 use App\Security\Role;
 use App\Services\InternshipService;
@@ -56,5 +57,16 @@ class InternshipController
         $this->internshipService
             ->undoApply($id, (int) $request->getSession()->get("user_id"));
         return new Response(null, 204);
+    }
+
+    #[RequiredRole(Role::InternshipProgram_Partner_Admin)]
+    #[Route('/{id}/applications', methods: ['GET'])]
+    public function internshipApplications(Request $request, int $id): Response
+    {
+        return new Response(
+            json_encode($this->internshipService->getApplications($id)),
+            200,
+            ['Content-Type' => 'application/json']
+        );
     }
 }
