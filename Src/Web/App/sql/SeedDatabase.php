@@ -657,18 +657,6 @@ $requirementData = [
         1
     ),
     new CreateRequirementDTO(
-        'Daily Report',
-        'Upload a report of your progress.',
-        Type::RECURRING,
-        new DateTimeImmutable(),
-        null,
-        RepeatInterval::DAILY,
-        FulFillMethod::FILE_UPLOAD,
-        ['pdf'],
-        5,
-        1
-    ),
-    new CreateRequirementDTO(
         'Weekly Report',
         'Upload a report of your progress.',
         Type::RECURRING,
@@ -708,10 +696,8 @@ echo "Done.\nAdding user requirements...";
 
 $userRequirement1 = new UserRequirement($user3, $requirements[0]);
 $entityManager->persist($userRequirement1);
-$userRequirement2 = new UserRequirement($user3, $requirements[4]);
+$userRequirement2 = new UserRequirement($user3, $requirements[3]);
 $entityManager->persist($userRequirement2);
-$userRequirement3 = new UserRequirement($user3, $requirements[3]);
-$entityManager->persist($userRequirement3);
 $entityManager->flush();
 
 #endregion

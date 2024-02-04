@@ -11,7 +11,7 @@ class RepeatIntervalType extends Type
 {
     public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
     {
-        return "ENUM('daily', 'weekly', 'monthly')";
+        return "ENUM('weekly', 'monthly')";
     }
 
     public function convertToPHPValue($value, AbstractPlatform $platform)
@@ -29,6 +29,6 @@ class RepeatIntervalType extends Type
 
     public function getName()
     {
-        return "requirement_repeat_interval";
+        return 'requirement_repeat_interval';
     }
 }
