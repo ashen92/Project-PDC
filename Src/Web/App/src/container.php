@@ -154,6 +154,12 @@ $container->register(
 )
     ->setArguments([new Reference("pdo_mysql_connection"),]);
 
+$container->register(
+    "repository.intern_monitoring",
+    App\Repositories\InternMonitoringRepository::class
+)
+    ->setArguments([new Reference("pdo_mysql_connection"),]);
+
 #endregion
 
 #region Twig -----------------------------------------------------------------------
@@ -259,6 +265,15 @@ $container->register(
     ]);
 
 $container->register(
+    'service.intern_monitoring',
+    App\Services\InternMonitoringService::class
+)
+    ->setArguments([
+        new Reference('repository.intern_monitoring'),
+        new Reference('repository.requirement'),
+    ]);
+
+$container->register(
     "service.event",
     App\Services\EventService::class
 )
@@ -336,6 +351,15 @@ $container->register(
     ->setPublic(true);
 
 $container->register(
+    "App\Controllers\API\InternMonitoringAPIController",
+    \App\Controllers\API\InternMonitoringAPIController::class
+)
+    ->setArguments([
+        new Reference("service.intern_monitoring"),
+    ])
+    ->setPublic(true);
+
+$container->register(
     "user_management_handler",
     \App\Services\UserManagementHandler::class
 )
@@ -397,6 +421,16 @@ $container->register(
         new Reference("twig"),
         new Reference("service.user"),
         new Reference("service.internship_program"),
+        new Reference("service.requirement"),
+    ])
+    ->setPublic(true);
+
+$container->register(
+    "App\Controllers\InternMonitoringController",
+    \App\Controllers\InternMonitoringController::class
+)
+    ->setArguments([
+        new Reference("twig"),
         new Reference("service.requirement"),
     ])
     ->setPublic(true);

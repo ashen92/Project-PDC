@@ -1,6 +1,6 @@
 {% extends "shared/layout-left-nav.html" %}
 
-{% block title %}Student Users{% endblock %}
+{% block title %}Students{% endblock %}
 
 {% block left_nav %}
 {% include "internship-program/left-nav.html" %}
@@ -8,40 +8,45 @@
 
 {% block content %}
 
-<div class="mb-20">
-    <h5>
-        Student users
-    </h5>
-    <p class="fs-small">{{ users|length }} users found</p>
+<div class="title">
+    <h4>
+        Students
+    </h4>
 </div>
-<table class="table table-hover border-0 table-compact">
-    <colgroup>
-        <col class="w-2-12">
-        <col class="w-2-12">
-        <col class="w-2-12">
-        <col class="w-6-12">
-    </colgroup>
-    <thead>
-        <tr>
-            <th>First name</th>
-            <th>Full name</th>
-            <th>Index number</th>
-            <th>Student email</th>
-        </tr>
-    </thead>
-    <tbody class="table-rows-clickable">
-        {% for i in users %}
-        <tr data-href="students?user={{ i.id }}">
-            <td class="capitalize">{{ i.firstName }}</td>
-            <td class="capitalize">{{ i.fullName }}</td>
-            <td>{{ i.indexNumber }}</td>
-            <td>{{ i.studentEmail }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+
+<section>
+    <div id="students-grid"></div>
+</section>
+
 <script>
-    table.makeRowsClickable(".table-rows-clickable");
+    grid = new gridjs.Grid({
+        columns: [
+            { name: 'id', hidden: true },
+            'Index Number',
+            'Registration Number',
+            'Full name',
+            'Student Email',
+        ],
+        server: {
+            url: "{{ apiEndpoint|e('js') }}",
+            then: data => data.map(u => [
+                u.id,
+                u.indexNumber,
+                u.registrationNumber,
+                u.fullName,
+                u.studentEmail
+            ])
+        },
+        search: {
+            server: {
+                url: (prev, keyword) => `${prev}?q=${keyword}`
+            }
+        },
+    });
+    grid.render(document.getElementById("students-grid"));
+    grid.on('rowClick', (e, row) => {
+        window.location.href = `/internship-program/monitoring/students/${row.cells[0].data}`;
+    });
 </script>
 
 {% endblock %}

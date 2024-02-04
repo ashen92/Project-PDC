@@ -66,30 +66,6 @@ class InternshipProgramRepository implements IRepository
         return InternshipCycleMapper::map($result);
     }
 
-    public function findStudents(int $cycleId): array
-    {
-        $statement = $this->pdo->prepare("
-            SELECT * FROM users
-            INNER JOIN students
-            ON users.id = students.id
-            INNER JOIN user_group_membership
-            ON users.id = user_group_membership.user_id
-            WHERE user_group_membership.usergroup_id = (
-                SELECT student_group_id FROM internship_cycles WHERE id = :internship_cycle_id
-            )");
-        $statement->execute([
-            ":internship_cycle_id" => $cycleId,
-        ]);
-        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
-        if ($result === false) {
-            return [];
-        }
-
-        return array_map(function ($row) {
-            return StudentMapper::map($row);
-        }, $result);
-    }
-
     public function createCycle(): int
     {
         $statement = $this->pdo->prepare("

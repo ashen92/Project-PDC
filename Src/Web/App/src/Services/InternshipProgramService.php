@@ -133,22 +133,6 @@ readonly class InternshipProgramService
     }
 
     /**
-     * @return array<Student>
-     */
-    public function getStudentUsers(?int $internshipCycleId = null): array
-    {
-        if ($internshipCycleId === null) {
-            $internshipCycleId = $this->getLatestInternshipCycleId();
-        }
-
-        if ($internshipCycleId === null) {
-            return [];
-        }
-
-        return $this->internshipProgramRepository->findStudents($internshipCycleId);
-    }
-
-    /**
      * @throws Throwable
      */
     public function endInternshipCycle(): bool

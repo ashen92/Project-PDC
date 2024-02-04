@@ -10,7 +10,6 @@ use App\DTOs\CreateCycleDTO;
 use App\DTOs\CreateUserDTO;
 use App\Exceptions\UserExistsException;
 use App\Models\InternshipCycle;
-use App\Models\UserRequirement\Status;
 use App\Security\Identity;
 use App\Security\Role;
 use App\Services\InternshipProgramService;
@@ -150,63 +149,6 @@ class InternshipProgramController extends PageControllerBase
     {
         $this->internshipCycleService->endInternshipCycle();
         return $this->redirect('/internship-program');
-    }
-
-    #[RequiredRole(Role::InternshipProgram_Admin)]
-    #[Route('/monitoring', methods: ['GET'])]
-    public function monitoring(): Response
-    {
-        return $this->render(
-            'internship-program/monitoring/home.html',
-            [
-                'section' => 'monitoring',
-                'requirements' => $this->requirementService->getRequirements()
-            ]
-        );
-    }
-
-    #[RequiredRole(Role::InternshipProgram_Admin)]
-    #[Route('/monitoring/students', methods: ['GET'])]
-    public function monitoringStudentUsers(): Response
-    {
-        return $this->render(
-            'internship-program/monitoring/students.html',
-            [
-                'section' => 'monitoring',
-                'users' => $this->internshipCycleService->getStudentUsers()
-            ]
-        );
-    }
-
-    #[RequiredRole(Role::InternshipProgram_Admin)]
-    #[Route('/monitoring/submissions', methods: ['GET'])]
-    public function requirementSubmissions(Request $request, ?InternshipCycle $cycle): Response|RedirectResponse
-    {
-        $id = (int) $request->get('r');
-
-        $cycleId = $cycle->getId();
-        if ($cycleId) {
-            $userReq = $this->requirementService->getUserRequirements(
-                $cycleId,
-                requirementId: $id,
-                status: Status::FULFILLED
-            );
-        } else {
-            $userReq = [];
-        }
-
-        $requirement = $this->requirementService->getRequirement($id);
-        if ($requirement) {
-            return $this->render(
-                'internship-program/monitoring/submissions.html',
-                [
-                    'section' => 'monitoring',
-                    'requirement' => $requirement,
-                    'userRequirements' => $userReq
-                ]
-            );
-        }
-        return $this->redirect('/internship-program/monitoring');
     }
 
     #[RequiredRole(Role::InternshipProgram_Student)]
