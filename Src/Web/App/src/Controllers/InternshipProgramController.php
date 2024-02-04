@@ -170,7 +170,7 @@ class InternshipProgramController extends PageControllerBase
     public function monitoringStudentUsers(): Response
     {
         return $this->render(
-            'internship-program/monitoring/student-users.html',
+            'internship-program/monitoring/students.html',
             [
                 'section' => 'monitoring',
                 'users' => $this->internshipCycleService->getStudentUsers()
