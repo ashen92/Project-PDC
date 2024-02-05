@@ -43,7 +43,7 @@ class InternMonitoringController extends PageControllerBase
             'internship-program/monitoring/students.html',
             [
                 'section' => 'monitoring',
-                'apiEndpoint' => 'http://localhost:80/api/internship-monitoring/students'
+                'apiEndpoint' => 'http://localhost:80/api/intern-monitoring/students'
             ]
         );
     }
@@ -58,14 +58,14 @@ class InternMonitoringController extends PageControllerBase
 
         // TODO: Validate
 
-        $requirement = $this->requirementService->getRequirement((int)$requirementId);
+        $requirement = $this->requirementService->getRequirement((int) $requirementId);
 
         return $this->render(
             'internship-program/monitoring/submissions.html',
             [
                 'section' => 'monitoring',
                 'requirement' => $requirement,
-                'apiEndpoint' => 'http://localhost:80/api/internship-monitoring/requirements/'
+                'apiEndpoint' => 'http://localhost:80/api/intern-monitoring/requirements/'
                     . $requirementId .
                     '/user-requirements',
             ]

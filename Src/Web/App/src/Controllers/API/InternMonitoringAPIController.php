@@ -8,7 +8,7 @@ use App\Services\InternMonitoringService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/api/internship-monitoring')]
+#[Route('/api/intern-monitoring')]
 readonly class InternMonitoringAPIController
 {
     public function __construct(
