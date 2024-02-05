@@ -50,7 +50,11 @@ class InternMonitoringRepository implements IRepository
     public function findUserRequirements(int $cycleId, int $requirementId): array
     {
         $stmt = $this->pdo->prepare(
-            'SELECT ur.*, s.* 
+            'SELECT ur.status, 
+                DATE(ur.startDate) as startDate, 
+                DATE(ur.endDate) as endDate, 
+                s.indexNumber,
+                s.fullName 
             FROM user_requirements ur
             INNER JOIN students s ON ur.user_id = s.id
             INNER JOIN requirements r ON ur.requirement_id = r.id
