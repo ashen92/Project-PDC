@@ -86,35 +86,6 @@ readonly class RequirementService
         }
     }
 
-    private function createRecurringUserRequirements(int $requirementId): void
-    {
-        $requirement = $this->requirementRepo->findRequirement($requirementId);
-        $repeatInterval = $requirement->getRepeatInterval();
-        $repeatDuration = $requirement->getRepeatInterval()->toDuration();
-
-        $iterationDate = $requirement->getStartDate();
-        $endDate = $iterationDate->add(new DateInterval(Requirement::MAXIMUM_REPEAT_DURATION));
-
-        $urDTOs = [];
-
-        while ($iterationDate < $endDate) {
-            $urDTOs[] = new CreateUserRequirementDTO(
-                $iterationDate,
-                $repeatInterval,
-            );
-            $iterationDate = $iterationDate->add(new DateInterval($repeatDuration));
-        }
-
-        $internshipCycle = $requirement->getInternshipCycleId();
-
-        foreach ($internshipCycle->getStudentGroup()->getUsers() as $user) {
-            foreach ($urDTOs as $urDTO) {
-                $this->requirementRepo
-                    ->createUserRequirementFromDTO($requirement, $user, $urDTO);
-            }
-        }
-    }
-
     public function completeUserRequirement(UserRequirementFulfillmentDTO $dto): bool
     {
         $ur = $this->requirementRepo->findUserRequirement($dto->userRequirementId);

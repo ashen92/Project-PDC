@@ -7,9 +7,11 @@ use App\DTOs\CreateRequirementDTO;
 use App\Models\Requirement\FulFillMethod;
 use App\Models\Requirement\RepeatInterval;
 use App\Models\Requirement\Type;
+use DateInterval;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
@@ -88,6 +90,30 @@ class Requirement
             $this->maxFileCount = null;
         }
         $this->userRequirements = new ArrayCollection();
+    }
+
+    public function createUserRequirements(User $user, EntityManager $em): void
+    {
+        if ($this->requirementType === Type::ONE_TIME) {
+
+            $ur = new UserRequirement($user, $this, $this->startDate, $this->endBeforeDate);
+            $this->userRequirements->add($ur);
+            $em->persist($ur);
+
+            return;
+        }
+
+        $interval = new DateInterval($this->repeatInterval->toDuration());
+
+        $startDate = $this->startDate;
+        $currentDate = $this->startDate;
+
+        while ($currentDate < $startDate->add(new DateInterval(self::MAXIMUM_REPEAT_DURATION))) {
+            $ur = new UserRequirement($user, $this, $currentDate, $currentDate->add($interval));
+            $this->userRequirements->add($ur);
+            $currentDate = $currentDate->add($interval);
+            $em->persist($ur);
+        }
     }
 
     public function getId(): int

@@ -706,23 +706,33 @@ $entityManager->flush();
 
 echo "Done.\nAdding user requirements...";
 
-$ur = new UserRequirement($user3, $requirements[0]);
+$ur = new UserRequirement(
+    $user3,
+    $requirements[0],
+    $requirements[0]->getStartDate(),
+    $requirements[0]->getEndBeforeDate()
+);
 $entityManager->persist($ur);
-$ur = new UserRequirement($user3, $requirements[1]);
+$ur = new UserRequirement(
+    $user3,
+    $requirements[3],
+    $requirements[3]->getStartDate(),
+    $requirements[3]->getEndBeforeDate()
+);
 $entityManager->persist($ur);
-$ur = new UserRequirement($user3, $requirements[2]);
-$entityManager->persist($ur);
-$ur = new UserRequirement($user3, $requirements[3]);
-$entityManager->persist($ur);
+
+$requirements[1]->createUserRequirements($user3, $entityManager);
+$requirements[2]->createUserRequirements($user3, $entityManager);
 
 $entityManager->flush();
 
 foreach ($requirements as $r) {
     for ($i = 1; $i < 200; $i++) {
-        $ur = new UserRequirement($studentUsers[$i], $r);
-        $entityManager->persist($ur);
+        $r->createUserRequirements($studentUsers[$i], $entityManager);
     }
 }
 $entityManager->flush();
+
+echo "Done.\nDatabase seeded successfully.\n";
 
 #endregion

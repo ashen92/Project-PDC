@@ -47,13 +47,17 @@ class UserRequirement
     #[ORM\Column(type: "text", nullable: true)]
     private ?string $textResponse;
 
-    public function __construct(User $user, Requirement $requirement)
-    {
+    public function __construct(
+        User $user,
+        Requirement $requirement,
+        DateTimeImmutable $startDate,
+        DateTimeImmutable $endDate,
+    ) {
         $this->user = $user;
         $this->requirement = $requirement;
         $this->fulfillMethod = $requirement->getFulfillMethod();
-        $this->startDate = new DateTimeImmutable("now");
-        $this->endDate = new DateTimeImmutable("+2 month");
+        $this->startDate = $startDate;
+        $this->endDate = $endDate;
         $this->completedAt = null;
         $this->status = Status::PENDING;
     }

@@ -222,20 +222,6 @@ class RequirementRepository extends Repository implements IRepository
         ]);
     }
 
-    public function createUserRequirementFromDTO(
-        Requirement $requirement,
-        User $user,
-        CreateUserRequirementDTO $userRequirementDTO
-    ): UserRequirement {
-        $userRequirement = new UserRequirement($user, $requirement);
-        $userRequirement->setStartDate($userRequirementDTO->startDate);
-        $userRequirement->setEndDate($userRequirementDTO->endDate);
-        $userRequirement->setStatus(Status::PENDING);
-        $this->entityManager->persist($userRequirement);
-        $this->entityManager->flush();
-        return $userRequirement;
-    }
-
     public function fulfillUserRequirement(int $id, ?array $filePaths = null, ?string $textResponse = null): bool
     {
         if ($filePaths) {
