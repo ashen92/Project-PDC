@@ -270,7 +270,6 @@ $container->register(
 )
     ->setArguments([
         new Reference('repository.intern_monitoring'),
-        new Reference('repository.requirement'),
     ]);
 
 $container->register(

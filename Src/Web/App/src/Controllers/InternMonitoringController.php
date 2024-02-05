@@ -51,10 +51,23 @@ class InternMonitoringController extends PageControllerBase
     #[Route('/submissions', methods: ['GET'])]
     public function requirementSubmissions(Request $request, ?InternshipCycle $cycle): Response|RedirectResponse
     {
+        $requirementId = $request->get('r');
+        if ($requirementId === null) {
+            return new RedirectResponse('/internship-program/monitoring');
+        }
+
+        // TODO: Validate
+
+        $requirement = $this->requirementService->getRequirement((int)$requirementId);
+
         return $this->render(
             'internship-program/monitoring/submissions.html',
             [
                 'section' => 'monitoring',
+                'requirement' => $requirement,
+                'apiEndpoint' => 'http://localhost:80/api/internship-monitoring/requirements/'
+                    . $requirementId .
+                    '/user-requirements',
             ]
         );
     }

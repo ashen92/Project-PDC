@@ -1,6 +1,6 @@
 {% extends "shared/layout-left-nav.html" %}
 
-{% block title %}Student Users{% endblock %}
+{% block title %}All User Requirements{% endblock %}
 
 {% block left_nav %}
 {% include "internship-program/left-nav.html" %}
@@ -8,43 +8,47 @@
 
 {% block content %}
 
-<div class="mb-20">
-    <h5>
-        All submissions for '{{ requirement.name }}'
-    </h5>
-    <p class="fs-small">{{ userRequirements|length }} submissions found</p>
+<div class="title">
+    <h4>
+        All user requirements for '{{ requirement.name }}'
+    </h4>
 </div>
-<table class="table table-hover border-0 table-compact">
-    <colgroup>
-        <col class="w-2-12">
-        <col class="w-3-12">
-        <col class="w-2-12">
-        <col class="w-2-12">
-        <col class="w-5-12">
-    </colgroup>
-    <thead>
-        <tr>
-            <th>First name</th>
-            <th>Full name</th>
-            <th>Completed on</th>
-            <th>Index number</th>
-            <th>Student email</th>
-        </tr>
-    </thead>
-    <tbody class="table-rows-clickable">
-        {% for i in userRequirements %}
-        <tr data-href="submissions?r={{ requirement.id }}&u={{ i.user.id }}">
-            <td class="capitalize">{{ i.user.firstName }}</td>
-            <td class="capitalize">{{ i.user.fullName }}</td>
-            <td class="capitalize">{{ i.completedAt.format("Y-m-d") }}</td>
-            <td>{{ i.user.indexNumber }}</td>
-            <td>{{ i.user.studentEmail }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+
+<section>
+    <div id="user-requirements-grid"></div>
+</section>
+
 <script>
-    table.makeRowsClickable(".table-rows-clickable");
+    grid = new gridjs.Grid({
+        columns: [
+            { name: 'id', hidden: true },
+            'Index Number',
+            'Full name',
+            'Status',
+            'Start date',
+            'End date',
+        ],
+        server: {
+            url: "{{ apiEndpoint|e('js') }}",
+            then: data => data.map(u => [
+                u.id,
+                u.indexNumber,
+                u.fullName,
+                u.status,
+                u.startDate,
+                u.endDate
+            ])
+        },
+        search: {
+            server: {
+                url: (prev, keyword) => `${prev}?q=${keyword}`
+            }
+        },
+    });
+    grid.render(document.getElementById("user-requirements-grid"));
+    grid.on('rowClick', (e, row) => {
+        window.location.href = `/internship-program/monitoring/students/${row.cells[0].data}`;
+    });
 </script>
 
 {% endblock %}
