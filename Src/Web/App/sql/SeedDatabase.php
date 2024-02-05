@@ -351,9 +351,17 @@ $groupCycleStudents = new UserGroup("InternshipCycle-Students");
 $entityManager->persist($groupCycleStudents);
 $groupCycleStudents->addUser($user3);
 
+for ($i = 1; $i < 200; $i++) {
+    $groupCycleStudents->addUser($studentUsers[$i]);
+}
+
 $groupCyclePartnerAdmins = new UserGroup("InternshipCycle-Partner-Admins");
 $entityManager->persist($groupCyclePartnerAdmins);
 $groupCyclePartnerAdmins->addUser($user4);
+
+for ($i = 1; $i < 50; $i++) {
+    $groupCyclePartnerAdmins->addUser($partnerUsers[$i]);
+}
 
 $groupCyclePartners = new UserGroup("InternshipCycle-Partners");
 $entityManager->persist($groupCyclePartners);
@@ -692,12 +700,29 @@ foreach ($requirementData as $requirement) {
 }
 $entityManager->flush();
 
+#endregion
+
+#region User Requirements
+
 echo "Done.\nAdding user requirements...";
 
-$userRequirement1 = new UserRequirement($user3, $requirements[0]);
-$entityManager->persist($userRequirement1);
-$userRequirement2 = new UserRequirement($user3, $requirements[3]);
-$entityManager->persist($userRequirement2);
+$ur = new UserRequirement($user3, $requirements[0]);
+$entityManager->persist($ur);
+$ur = new UserRequirement($user3, $requirements[1]);
+$entityManager->persist($ur);
+$ur = new UserRequirement($user3, $requirements[2]);
+$entityManager->persist($ur);
+$ur = new UserRequirement($user3, $requirements[3]);
+$entityManager->persist($ur);
+
+$entityManager->flush();
+
+foreach ($requirements as $r) {
+    for ($i = 1; $i < 200; $i++) {
+        $ur = new UserRequirement($studentUsers[$i], $r);
+        $entityManager->persist($ur);
+    }
+}
 $entityManager->flush();
 
 #endregion
