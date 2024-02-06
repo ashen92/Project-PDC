@@ -83,6 +83,29 @@
             background-color: $btn-secondary-active-bg;
         }
     }
+
+    &.btn-danger {
+        color: $btn-danger;
+        background-color: $btn-danger-bg;
+        border-color: $btn-danger-border-color;
+
+        &:hover {
+            color: $btn-danger;
+            background-color: $btn-danger-hover-bg;
+        }
+
+        &:active {
+            color: $btn-danger;
+            background-color: $btn-danger-active-bg;
+        }
+
+        &:disabled,
+        &.disabled {
+            color: $btn-danger-disabled-color;
+            background-color: $btn-danger-disabled-bg;
+            border-color: $btn-danger-disabled-border-color;
+        }
+    }
 }
 
 .btn-icon {

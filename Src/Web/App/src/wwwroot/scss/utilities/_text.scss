@@ -10,6 +10,20 @@
     }
 }
 
+.text {
+    &-success {
+        color: #0f7b0f;
+    }
+
+    &-warning {
+        color: #ff8c00;
+    }
+
+    &-danger {
+        color: #dc3545;
+    }
+}
+
 .title {
     margin-bottom: 1rem;
 

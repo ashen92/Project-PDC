@@ -27,7 +27,32 @@
             { name: 'id', hidden: true },
             'Index Number',
             'Full name',
-            'Status',
+            {
+                name: 'Status',
+                formatter: (cell) => {
+                    if (cell === 'pending') {
+                        return gridjs.html(
+                            "<span class='fs-6 i i-dash-circle-fill text-warning'></span><span>Pending</span>"
+                        );
+                    }
+                    return gridjs.html(
+                        "<span class='fs-6 i i-check-circle-fill text-success'></span><span>Fulfilled</span>"
+                    );
+                },
+            },
+            {
+                name: 'Quick View',
+                formatter: (cell, row) => {
+                    return gridjs.h('button', {
+                        className: 'btn',
+                        disabled: row.cells[3].data === 'pending',
+                        onClick: (e) => {
+                            alert('View');
+                        },
+                        innerText: 'View'
+                    });
+                }
+            },
             'Start date',
             'End date',
         ],
@@ -38,6 +63,7 @@
                 u.indexNumber,
                 u.fullName,
                 u.status,
+                ,
                 u.startDate,
                 u.endDate
             ])
@@ -48,8 +74,16 @@
             }
         },
     });
-    grid.render(document.getElementById("user-requirements-grid"));
+    grid.render(document.getElementById('user-requirements-grid'));
     grid.on('rowClick', (e, row) => {
+        if (e.target.tagName === 'BUTTON' || e.target.querySelector('button')) {
+            return;
+        }
+
+        if (e.target.tagName === 'A' || e.target.querySelector('a')) {
+            return;
+        }
+
         window.location.href = `/internship-program/monitoring/students/${row.cells[0].data}`;
     });
 </script>

@@ -46,7 +46,7 @@
             }
         },
     });
-    grid.render(document.getElementById("students-grid"));
+    grid.render(document.getElementById('students-grid'));
     grid.on('rowClick', (e, row) => {
         window.location.href = `/internship-program/monitoring/students/${row.cells[0].data}`;
     });

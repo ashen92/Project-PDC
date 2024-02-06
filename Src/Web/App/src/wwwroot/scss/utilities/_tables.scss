@@ -110,8 +110,21 @@ $table-row-hover-bg: #f2f2f2;
 
 td.gridjs-td {
     padding: 10px 15px;
+
+    button {
+        margin: -10px 0;
+        box-sizing: border-box;
+    }
+
+    .i:first-child {
+        margin-right: 0.75rem;
+    }
+
+    .i:last-child {
+        margin-left: 0.75rem;
+    }
 }
 
 th.gridjs-th {
-    padding: 12px 20px;
+    padding: 12px 15px;
 }
