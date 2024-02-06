@@ -265,7 +265,7 @@ $filter-item-active-bg-color: #c8c6c6;
         width: 30rem;
 
         max-height: 75vh;
-        box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+        box-shadow: $popup-dialog-box-shadow;
         background-color: #fff;
         padding: 2rem 2rem 1.5rem 2.5rem;
         border-radius: $rounded-2;

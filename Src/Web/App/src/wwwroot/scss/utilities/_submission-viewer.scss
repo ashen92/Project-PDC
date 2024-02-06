@@ -1,0 +1,65 @@
+@use "../variables" as *;
+
+.submission-viewer {
+    display: none;
+    position: fixed;
+    top: 8%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+    background-color: #fff;
+    width: 75%;
+    height: 85vh;
+    overflow-y: auto;
+    flex-direction: column;
+
+    border: $border-1;
+    border-radius: $rounded-2;
+    box-shadow: $popup-dialog-box-shadow;
+
+    .content {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .pdf-viewer {
+        width: 100%;
+        height: 100%;
+    }
+
+    .file-picker {
+        margin: auto;
+        padding: 0.25rem 0;
+
+        label {
+            font-weight: $fw-semibold;
+            padding-right: 1rem;
+        }
+    }
+
+    .title-bar {
+        display: flex;
+        align-items: center;
+
+        h6 {
+            margin: 0;
+            padding-left: 1.5rem;
+        }
+
+        .close {
+            margin-left: auto;
+            cursor: pointer;
+            padding: 0.7rem 0.9rem 0.7rem 0.9rem;
+
+            &:hover {
+                color: #fff;
+                background-color: red;
+            }
+
+            .i {
+                font-weight: 600;
+            }
+        }
+    }
+}
