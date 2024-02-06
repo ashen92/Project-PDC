@@ -20,6 +20,25 @@ class InternMonitoringService
 
     public function getUserRequirements(int $cycleId, int $requirementId): array
     {
-        return $this->internMonitoringRepo->findUserRequirements($cycleId, $requirementId);
+        $results = $this->internMonitoringRepo->findUserRequirements($cycleId, $requirementId);
+        foreach ($results as &$ur) {
+            if ($ur['files'] === null) {
+                $ur['files'] = [];
+                continue;
+            }
+            $ur['files'] = explode('|', $ur['files']);
+            foreach ($ur['files'] as &$file) {
+                $file = explode(':', $file);
+                $file = [
+                    'id' => $file[0],
+                    'name' => $file[1],
+                    'url' => 'http://localhost:80/api/intern-monitoring/requirements/'
+                        . $requirementId . '/user-requirements/'
+                        . $ur['id'] . '/submissions/files/' . $file[2],
+                ];
+            }
+        }
+        return $results;
+    }
     }
 }
