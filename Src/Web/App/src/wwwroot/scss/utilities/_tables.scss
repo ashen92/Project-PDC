@@ -108,6 +108,18 @@ $table-row-hover-bg: #f2f2f2;
     }
 }
 
+.gridjs-row-hover {
+    tr:hover {
+        td {
+            background-color: $table-row-hover-bg;
+        }
+
+        td:not(:last-child) {
+            border-right: 1px solid #c9c9c9;
+        }
+    }
+}
+
 td.gridjs-td {
     padding: 10px 15px;
 

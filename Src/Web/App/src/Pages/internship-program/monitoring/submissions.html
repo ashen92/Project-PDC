@@ -43,7 +43,7 @@
 <script>
     grid = new gridjs.Grid({
         className: {
-            tbody: 'gridjs-row-clickable'
+            tbody: 'gridjs-row-hover'
         },
         columns: [
             { name: 'id', hidden: true },
@@ -106,17 +106,6 @@
         },
     });
     grid.render(document.getElementById('user-requirements-grid'));
-    grid.on('rowClick', (e, row) => {
-        if (e.target.tagName === 'BUTTON' || e.target.querySelector('button')) {
-            return;
-        }
-
-        if (e.target.tagName === 'A' || e.target.querySelector('a')) {
-            return;
-        }
-
-        window.location.href = `/internship-program/monitoring/students/${row.cells[0].data}`;
-    });
 </script>
 
 {% endblock %}
