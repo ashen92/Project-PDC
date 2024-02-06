@@ -227,16 +227,37 @@ class RequirementRepository extends Repository implements IRepository
         if ($filePaths) {
             $sql = "UPDATE user_requirements SET
                     status = :status,
-                    completedAt = :completedAt,
-                    filePaths = :filePaths
+                    completedAt = :completedAt
                     WHERE id = :id";
             $stmt = $this->pdo->prepare($sql);
-            return $stmt->execute([
+            if(!$stmt->execute([
                 "status" => Status::FULFILLED->value,
                 "completedAt" => (new \DateTime())->format(self::DATE_TIME_FORMAT),
-                "filePaths" => json_encode($filePaths),
                 "id" => $id,
-            ]);
+            ])) {
+                return false;
+            }
+
+            $sql = "INSERT INTO files (name, path) VALUES (:name, :path)";
+            $stmt = $this->pdo->prepare($sql);
+
+            $fileIds = [];
+            foreach ($filePaths as $file) {
+                if (!$stmt->execute([
+                    'name' => $file['name'],
+                    'path' => $file['path'],
+                ])) {
+                    return false;
+                }
+                $fileIds[] = $this->pdo->lastInsertId();
+            }
+
+            $sql = "INSERT INTO user_requirement_files (user_requirement_id, file_id) VALUES ";
+            $sql .= implode(", ", array_map(function ($fileId) use ($id) {
+                return "($id, $fileId)";
+            }, $fileIds));
+            $stmt = $this->pdo->prepare($sql);
+            return $stmt->execute();
         }
 
         $sql = "UPDATE user_requirements SET
