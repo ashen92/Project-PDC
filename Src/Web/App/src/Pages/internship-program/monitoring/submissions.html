@@ -28,10 +28,7 @@
     <div class="content">
         <div class="file-picker">
             <label for="file">Currently Viewing :</label>
-            <select name="file" id="file">
-                <option value="1">File 1</option>
-                <option value="2">File 2</option>
-                <option value="3">File 3</option>
+            <select name="file" id="file" data-user-requirement-id="">
             </select>
         </div>
         <object class="pdf-viewer" id="pdf-viewer" data="" type="application/pdf">
@@ -73,11 +70,28 @@
                             let pdfViewer = document.getElementById('pdf-viewer');
                             if (popup.style.display === 'flex') {
                                 popup.style.display = 'none';
-                                pdfViewer.src = '';
                                 return;
                             }
+
+                            let fileSelect = document.getElementById('file');
+
+                            if (parseInt(fileSelect.dataset.userRequirementId) === row.cells[0].data) {
+                                popup.style.display = 'flex';
+                                return;
+                            }
+
+                            fileSelect.dataset.userRequirementId = row.cells[0].data;
+                            fileSelect.innerHTML = '';
+
+                            row.cells[8].data.forEach((item) => {
+                                let option = document.createElement('option');
+                                option.value = item.url;
+                                option.textContent = item.name
+                                fileSelect.appendChild(option);
+                            });
+
                             document.getElementById('title-bar-title').textContent = row.cells[1].data + ' | ' + row.cells[2].data;
-                            pdfViewer.data = 'https://interactive-examples.mdn.mozilla.net/media/examples/In-CC0.pdf';
+                            pdfViewer.data = row.cells[8].data[0].url;
                             popup.style.display = 'flex';
                         },
                         innerText: 'View'
@@ -86,6 +100,8 @@
             },
             'Start date',
             'End date',
+            { name: 'fulfillMethod', hidden: true },
+            { name: 'files', hidden: true }
         ],
         server: {
             url: "{{ apiEndpoint|e('js') }}",
@@ -96,7 +112,9 @@
                 u.status,
                 ,
                 u.startDate,
-                u.endDate
+                u.endDate,
+                u.fulfillMethod,
+                u.files
             ])
         },
         search: {
@@ -106,6 +124,13 @@
         },
     });
     grid.render(document.getElementById('user-requirements-grid'));
+
+    let pdfViewer = document.getElementById('pdf-viewer');
+    let fileSelect = document.getElementById('file');
+    fileSelect.addEventListener('change', function () {
+        pdfViewer.data = this.value;
+    });
+
 </script>
 
 {% endblock %}

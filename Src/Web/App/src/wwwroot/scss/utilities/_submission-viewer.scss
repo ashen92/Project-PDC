@@ -31,16 +31,25 @@
     .file-picker {
         margin: auto;
         padding: 0.25rem 0;
+        text-align: center;
 
         label {
             font-weight: $fw-semibold;
             padding-right: 1rem;
+        }
+
+        select {
+            width: 50%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
     }
 
     .title-bar {
         display: flex;
         align-items: center;
+        border-bottom: $border-1;
 
         h6 {
             margin: 0;

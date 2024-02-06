@@ -3,12 +3,14 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Interfaces\IFileStorageService;
 use App\Repositories\InternMonitoringRepository;
 
 class InternMonitoringService
 {
     public function __construct(
         private InternMonitoringRepository $internMonitoringRepo,
+        private IFileStorageService $fileStorageService,
     ) {
 
     }
@@ -40,5 +42,9 @@ class InternMonitoringService
         }
         return $results;
     }
+
+    public function getFile(int $cycleId, int $reqId, int $userReqId, string $fileId): ?array
+    {
+        return $this->fileStorageService->get($fileId);
     }
 }

@@ -270,6 +270,7 @@ $container->register(
 )
     ->setArguments([
         new Reference('repository.intern_monitoring'),
+        new Reference('service.file_storage'),
     ]);
 
 $container->register(
