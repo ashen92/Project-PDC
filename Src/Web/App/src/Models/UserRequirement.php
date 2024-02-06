@@ -17,7 +17,6 @@ class UserRequirement
         private DateTimeImmutable $endDate,
         private ?DateTimeImmutable $completedAt,
         private string $status,
-        private ?array $filePaths,
         private ?string $textResponse,
     ) {
     }
@@ -60,11 +59,6 @@ class UserRequirement
     public function getStatus(): string
     {
         return $this->status;
-    }
-
-    public function getFilePaths(): ?array
-    {
-        return $this->filePaths;
     }
 
     public function getTextResponse(): ?string

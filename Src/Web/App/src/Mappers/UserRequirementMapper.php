@@ -21,7 +21,6 @@ class UserRequirementMapper implements IMapper
             new \DateTimeImmutable($row["endDate"]),
             $row["completedAt"] === null ? null : new \DateTimeImmutable($row["completedAt"]),
             $row["status"],
-            $row["filePaths"] === null ? null : json_decode($row["filePaths"]),
             $row["textResponse"],
         );
     }

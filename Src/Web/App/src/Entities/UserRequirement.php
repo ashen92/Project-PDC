@@ -42,9 +42,6 @@ class UserRequirement
     #[ORM\Column(type: 'user_requirement_status')]
     private Status $status;
 
-    #[ORM\Column(type: "simple_array", nullable: true)]
-    private ?array $filePaths;
-
     /**
      * @var Collection<int, File>
      */
@@ -107,11 +104,6 @@ class UserRequirement
         return $this->status;
     }
 
-    public function getFilePaths(): ?array
-    {
-        return $this->filePaths;
-    }
-
     public function getTextResponse(): string
     {
         return $this->textResponse;
@@ -135,11 +127,6 @@ class UserRequirement
     public function setStatus(Status $status): void
     {
         $this->status = $status;
-    }
-
-    public function setFilePaths(array $filePaths): void
-    {
-        $this->filePaths = $filePaths;
     }
 
     public function setTextResponse(string $textResponse): void
