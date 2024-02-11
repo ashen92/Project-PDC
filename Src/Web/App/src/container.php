@@ -188,12 +188,18 @@ $container->register(
 );
 
 $container->register(
+    'twig.extension',
+    App\TwigExtension\Extension::class
+);
+
+$container->register(
     'twig',
     Twig\Environment::class
 )
     ->setArguments([new Reference('twig.loader')])
     ->addMethodCall('addRuntimeLoader', [new Reference('twig.runtime_loader.security')])
     ->addMethodCall('addExtension', [new Reference('twig.extension.security')])
+    ->addMethodCall('addExtension', [new Reference('twig.extension')])
     ->addMethodCall('addGlobal', ['app', ['session' => new Reference('session')]])
     ->setPublic(true);
 

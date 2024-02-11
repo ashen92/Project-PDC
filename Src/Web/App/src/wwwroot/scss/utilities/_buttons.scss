@@ -1,5 +1,7 @@
 @use "../variables" as *;
 
+$btn-outline-primary: $btn-bg;
+
 .btn {
     display: inline-block;
     padding: $btn-padding;
@@ -121,5 +123,41 @@
 }
 
 .btn-outline {
-    // @include button-outline-variant($value);
+    &-primary {
+        color: $btn-outline-primary;
+        background-color: transparent;
+        border-color: $btn-bg;
+        font-weight: $fw-medium;
+
+        &:hover {
+            color: $btn-hover-color;
+            background-color: $btn-bg;
+        }
+
+        &:active {
+            color: $btn-active-color;
+            background-color: $btn-active-bg;
+        }
+    }
+
+    &-danger {
+        color: $btn-danger-bg;
+        background-color: transparent;
+        border-color: $btn-danger-border-color;
+        font-weight: $fw-medium;
+
+        &:hover {
+            color: $btn-danger;
+            background-color: $btn-danger-bg;
+            border-color: $btn-danger-border-color;
+
+        }
+
+        &:active {
+            color: $btn-danger;
+            background-color: $btn-danger-active-bg;
+            border-color: $btn-danger-border-color;
+
+        }
+    }
 }

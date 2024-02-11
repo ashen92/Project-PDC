@@ -28,9 +28,6 @@
 {% endif %}
 
 <section>
-    <div class="title">
-        <h5>Details of the internship cycle</h5>
-    </div>
 
     {% if internshipCycle.endedAt is not null or internshipCycle is null %}
 
@@ -38,45 +35,131 @@
 
     {% else %}
 
-    <form class="border-1 rounded-1 p-20 bg-grey-100">
-        <div class="grid-details">
-            <label>Created at</label>
-            <p>:</p>
-            <p>{{ internshipCycle.createdAt.format("Y-m-d H:i:s") ?? 'Not set' }}</p>
+    <div class="grid max-w-max grid-cols-3 xl-grid-cols-2 lg-grid-cols-1 col-gap-25 row-gap-25">
 
-            {% if internshipCycle.endedAt is not null %}
-            <label>Ended at</label>
-            <p>:</p>
-            <p>{{ internshipCycle.endedAt.format("Y-m-d H:i:s") ?? 'Not set' }}</p>
+        <div class="card">
+            <div class="flex justify-between col-gap-20">
+                <h5 class="header">Internship Collection</h5>
+                <div>
+                    {% if internshipCycle.nextState == InternshipCycleState_JobCollection %}
+                    <button class="btn">Start</button>
+                    {% elseif internshipCycle.activeState == InternshipCycleState_JobCollection %}
+                    <button class="btn btn-secondary">Undo</button>
+                    <button class="btn btn-danger">End</button>
+                    {% endif %}
+                </div>
+            </div>
+            {% if internshipCycle.nextState == InternshipCycleState_JobCollection %}
+            {% if not internshipCycle.jobCollectionStart %}
+            <p>Pick a date to automatically start the process</p>
+            <div class="flex col-gap-10">
+                <input type="date" class="w-3-5" />
+                <button class="btn btn-outline-primary w-2-5">Set</button>
+            </div>
+            {% else %}
+            <p>
+                Starts on <span class="fw-semibold">{{ internshipCycle.jobCollectionStart.format('Y-m-d') }}</span>
+            </p>
+            <div class="flex col-gap-10">
+                <button class="btn btn-outline-primary w-1-2">Change</button>
+                <button class="btn btn-outline-danger w-1-2">Remove</button>
+            </div>
+            {% endif %}
+            {% else %}
+            <p>
+                Started on <span class="fw-semibold">{{ internshipCycle.jobCollectionStart.format('Y-m-d') }}</span>
+            </p>
+            {% if internshipCycle.activeState != InternshipCycleState_JobCollection %}
+            <p>
+                Ended on <span class="fw-semibold">{{ internshipCycle.jobCollectionEnd.format('Y-m-d') }}</span>
+            </p>
+            {% endif %}
             {% endif %}
         </div>
 
-        <div class="grid-details">
-            <div class="title">Internship gathering phase</div>
-            <label>Start date</label>
-            <p>:</p>
-            <p>{{ internshipCycle.collectionStartDate.format("Y-m-d") ?? 'Not set' }}</p>
-
-            <label>End date</label>
-            <p>:</p>
-            <p>{{ internshipCycle.collectionEndDate.format("Y-m-d") ?? 'Not set' }}</p>
+        <div class="card">
+            <div class="flex justify-between col-gap-20">
+                <h5 class="header">Application Collection</h5>
+                <div>
+                    {% if internshipCycle.nextState == InternshipCycleState_Applying %}
+                    <button class="btn">Start</button>
+                    {% elseif internshipCycle.activeState == InternshipCycleState_Applying %}
+                    <button class="btn btn-secondary">Undo</button>
+                    <button class="btn btn-danger">End</button>
+                    {% endif %}
+                </div>
+            </div>
+            {% if internshipCycle.nextState == InternshipCycleState_JobCollection
+            or internshipCycle.nextState == InternshipCycleState_Applying %}
+            {% if not internshipCycle.applyingStart %}
+            <p>Pick a date to automatically start the process</p>
+            <div class="flex col-gap-10">
+                <input type="date" class="w-3-5" />
+                <button class="btn btn-outline-primary w-2-5">Set</button>
+            </div>
+            {% else %}
+            <p>
+                Starts on <span class="fw-semibold">{{ internshipCycle.applyingStart.format('Y-m-d') }}</span>
+            </p>
+            <div class="flex col-gap-10">
+                <button class="btn btn-outline-primary w-1-2">Change</button>
+                <button class="btn btn-outline-danger w-1-2">Remove</button>
+            </div>
+            {% endif %}
+            {% else %}
+            <p>
+                Started on <span class="fw-semibold">{{ internshipCycle.applyingStart.format('Y-m-d') }}</span>
+            </p>
+            {% if internshipCycle.activeState != InternshipCycleState_Applying %}
+            <p>
+                Ended on <span class="fw-semibold">{{ internshipCycle.applyingEnd.format('Y-m-d') }}</span>
+            </p>
+            {% endif %}
+            {% endif %}
         </div>
 
-        <div class="grid-details">
-            <div class="title">Application gathering phase</div>
-            <label>Start date</label>
-            <p>:</p>
-            <p>{{ internshipCycle.applicationStartDate.format("Y-m-d") ?? 'Not set' }}</p>
-
-            <label>End date</label>
-            <p>:</p>
-            <p>{{ internshipCycle.applicationEndDate.format("Y-m-d") ?? 'Not set' }}</p>
+        <div class="card">
+            <div class="flex justify-between col-gap-20">
+                <h5 class="header">Interning</h5>
+                <div>
+                    {% if internshipCycle.nextState == InternshipCycleState_Interning %}
+                    <button class="btn">Start</button>
+                    {% elseif internshipCycle.activeState == InternshipCycleState_Interning %}
+                    <button class="btn btn-secondary">Undo</button>
+                    <button class="btn btn-danger">End</button>
+                    {% endif %}
+                </div>
+            </div>
+            {% if internshipCycle.nextState == InternshipCycleState_JobCollection
+            or internshipCycle.nextState == InternshipCycleState_Applying
+            or internshipCycle.nextState == InternshipCycleState_Interning %}
+            {% if not internshipCycle.interningStart %}
+            <p>Pick a date to automatically start the process</p>
+            <div class="flex col-gap-10">
+                <input type="date" class="w-3-5" />
+                <button class="btn btn-outline-primary w-2-5">Set</button>
+            </div>
+            {% else %}
+            <p>
+                Starts on <span class="fw-semibold">{{ internshipCycle.interningStart.format('Y-m-d') }}</span>
+            </p>
+            <div class="flex col-gap-10">
+                <button class="btn btn-outline-primary w-1-2">Change</button>
+                <button class="btn btn-outline-danger w-1-2">Remove</button>
+            </div>
+            {% endif %}
+            {% else %}
+            <p>
+                Started on <span class="fw-semibold">{{ internshipCycle.interningStart.format('Y-m-d') }}</span>
+            </p>
+            {% if internshipCycle.activeState != InternshipCycleState_Interning %}
+            <p>
+                Ended on <span class="fw-semibold">{{ internshipCycle.interningEnd.format('Y-m-d') }}</span>
+            </p>
+            {% endif %}
+            {% endif %}
         </div>
-
-        <div class="actions">
-            <a class="link" href="/internship-program">Modify</a>
-        </div>
-    </form>
+    </div>
 
     {% endif %}
 
