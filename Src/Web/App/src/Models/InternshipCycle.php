@@ -4,27 +4,28 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Models\InternshipCycle\State;
+use DateTimeImmutable;
 
 class InternshipCycle
 {
     public function __construct(
         private int $id,
-        private \DateTimeImmutable $createdAt,
-        private ?\DateTimeImmutable $endedAt,
-        private ?\DateTimeImmutable $jobCollectionStart,
-        private ?\DateTimeImmutable $jobCollectionEnd,
-        private ?\DateTimeImmutable $applyingStart,
-        private ?\DateTimeImmutable $applyingEnd,
+        private DateTimeImmutable $createdAt,
+        private ?DateTimeImmutable $endedAt,
+        private ?DateTimeImmutable $jobCollectionStart,
+        private ?DateTimeImmutable $jobCollectionEnd,
+        private ?DateTimeImmutable $applyingStart,
+        private ?DateTimeImmutable $applyingEnd,
+        private ?DateTimeImmutable $interningStart,
+        private ?DateTimeImmutable $interningEnd,
         private array $partnerGroupIds,
         private ?int $studentGroupId,
-        private ?\DateTimeImmutable $interningStart = null,
-        private ?\DateTimeImmutable $interningEnd = null,
     ) {
     }
 
     public function getActiveState(): State
     {
-        $now = new \DateTimeImmutable();
+        $now = new DateTimeImmutable();
         if ($this->jobCollectionStart <= $now && $now <= $this->jobCollectionEnd) {
             return State::JobCollection;
         }
@@ -50,7 +51,7 @@ class InternshipCycle
             return State::None;
         }
 
-        $now = new \DateTimeImmutable();
+        $now = new DateTimeImmutable();
         if (!$this->jobCollectionStart || $now <= $this->jobCollectionStart) {
             return State::JobCollection;
         }
@@ -68,32 +69,32 @@ class InternshipCycle
         return $this->id;
     }
 
-    public function getCreatedAt(): \DateTimeImmutable
+    public function getCreatedAt(): DateTimeImmutable
     {
         return $this->createdAt;
     }
 
-    public function getEndedAt(): ?\DateTimeImmutable
+    public function getEndedAt(): ?DateTimeImmutable
     {
         return $this->endedAt;
     }
 
-    public function getJobCollectionStart(): ?\DateTimeImmutable
+    public function getJobCollectionStart(): ?DateTimeImmutable
     {
         return $this->jobCollectionStart;
     }
 
-    public function getJobCollectionEnd(): ?\DateTimeImmutable
+    public function getJobCollectionEnd(): ?DateTimeImmutable
     {
         return $this->jobCollectionEnd;
     }
 
-    public function getApplyingStart(): ?\DateTimeImmutable
+    public function getApplyingStart(): ?DateTimeImmutable
     {
         return $this->applyingStart;
     }
 
-    public function getApplyingEnd(): ?\DateTimeImmutable
+    public function getApplyingEnd(): ?DateTimeImmutable
     {
         return $this->applyingEnd;
     }
@@ -108,22 +109,22 @@ class InternshipCycle
         return $this->studentGroupId;
     }
 
-    public function setJobCollectionStart(\DateTimeImmutable $date): void
+    public function setJobCollectionStart(DateTimeImmutable $date): void
     {
         $this->jobCollectionStart = $date;
     }
 
-    public function setJobCollectionEnd(\DateTimeImmutable $date): void
+    public function setJobCollectionEnd(DateTimeImmutable $date): void
     {
         $this->jobCollectionEnd = $date;
     }
 
-    public function setApplyingStart(\DateTimeImmutable $date): void
+    public function setApplyingStart(DateTimeImmutable $date): void
     {
         $this->applyingStart = $date;
     }
 
-    public function setApplyingEnd(\DateTimeImmutable $date): void
+    public function setApplyingEnd(DateTimeImmutable $date): void
     {
         $this->applyingEnd = $date;
     }

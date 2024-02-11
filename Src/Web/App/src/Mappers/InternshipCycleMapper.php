@@ -3,23 +3,30 @@ declare(strict_types=1);
 
 namespace App\Mappers;
 
-class InternshipCycleMapper implements \App\Interfaces\IMapper
+use App\Interfaces\IMapper;
+use App\Models\InternshipCycle;
+use DateTimeImmutable;
+use Exception;
+
+class InternshipCycleMapper implements IMapper
 {
     /**
-     * @throws \Exception
+     * @throws Exception
      */
-    #[\Override] public static function map(array $row): \App\Models\InternshipCycle
+    #[\Override] public static function map(array $row): InternshipCycle
     {
-        return new \App\Models\InternshipCycle(
-            $row["id"],
-            new \DateTimeImmutable($row["createdAt"]),
-            $row["endedAt"] === null ? null : new \DateTimeImmutable($row["endedAt"]),
-            $row["collectionStartDate"] === null ? null : new \DateTimeImmutable($row["collectionStartDate"]),
-            $row["collectionEndDate"] === null ? null : new \DateTimeImmutable($row["collectionEndDate"]),
-            $row["applicationStartDate"] === null ? null : new \DateTimeImmutable($row["applicationStartDate"]),
-            $row["applicationEndDate"] === null ? null : new \DateTimeImmutable($row["applicationEndDate"]),
-            explode(',', $row["partner_group_ids"]),
-            $row["student_group_id"],
+        return new InternshipCycle(
+            $row['id'],
+            new DateTimeImmutable($row['createdAt']),
+            $row['endedAt'] === null ? null : new DateTimeImmutable($row['endedAt']),
+            $row['jobCollectionStart'] === null ? null : new DateTimeImmutable($row['jobCollectionStart']),
+            $row['jobCollectionEnd'] === null ? null : new DateTimeImmutable($row['jobCollectionEnd']),
+            $row['applyingStart'] === null ? null : new DateTimeImmutable($row['applyingStart']),
+            $row['applyingEnd'] === null ? null : new DateTimeImmutable($row['applyingEnd']),
+            $row['interningStart'] === null ? null : new DateTimeImmutable($row['interningStart']),
+            $row['interningEnd'] === null ? null : new DateTimeImmutable($row['interningEnd']),
+            explode(',', $row['partner_group_ids']),
+            $row['student_group_id'],
         );
     }
 }

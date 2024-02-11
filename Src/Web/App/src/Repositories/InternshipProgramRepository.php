@@ -68,12 +68,12 @@ class InternshipProgramRepository implements IRepository
 
     public function createCycle(): int
     {
-        $statement = $this->pdo->prepare("
+        $statement = $this->pdo->prepare('
             INSERT INTO internship_cycles
             (createdAt)
             VALUES
             (NOW())
-        ");
+        ');
         $statement->execute();
         return (int) $this->pdo->lastInsertId();
     }
@@ -89,30 +89,17 @@ class InternshipProgramRepository implements IRepository
         return $statement->rowCount() > 0;
     }
 
-    public function updateCycle(
+    public function updateCycleUserGroups(
         int $id,
-        DateTimeImmutable $collectionStartDate,
-        DateTimeImmutable $collectionEndDate,
-        DateTimeImmutable $applicationStartDate,
-        DateTimeImmutable $applicationEndDate,
         array $partnerGroupIds,
         int $studentGroupId,
     ): bool {
         $statement = $this->pdo->prepare(
             'UPDATE internship_cycles
-            SET
-                collectionStartDate = :col_start_date,
-                collectionEndDate = :col_end_date,
-                applicationStartDate = :app_start_date,
-                applicationEndDate = :app_end_date,
-                student_group_id = :stu_group_id
+            SET student_group_id = :stu_group_id
             WHERE id = :id'
         );
         $statement->execute([
-            ':col_start_date' => $collectionStartDate->format(self::DATE_TIME_FORMAT),
-            ':col_end_date' => $collectionEndDate->format(self::DATE_TIME_FORMAT),
-            ':app_start_date' => $applicationStartDate->format(self::DATE_TIME_FORMAT),
-            ':app_end_date' => $applicationEndDate->format(self::DATE_TIME_FORMAT),
             ':stu_group_id' => $studentGroupId,
             ':id' => $id,
         ]);

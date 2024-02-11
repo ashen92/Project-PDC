@@ -113,12 +113,8 @@ readonly class InternshipProgramService
             $this->userRepository
                 ->addUsersToUserGroup($studentGroup->getId(), $dto->studentGroup);
 
-            $this->internshipProgramRepository->updateCycle(
+            $this->internshipProgramRepository->updateCycleUserGroups(
                 $cycleId,
-                new DateTimeImmutable($dto->collectionStartDate),
-                new DateTimeImmutable($dto->collectionEndDate),
-                new DateTimeImmutable($dto->applicationStartDate),
-                new DateTimeImmutable($dto->applicationEndDate),
                 [$partnerGroup->getId()],
                 $studentGroup->getId(),
             );

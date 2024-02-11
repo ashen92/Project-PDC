@@ -3,40 +3,46 @@ declare(strict_types=1);
 
 namespace App\Entities;
 
-use DateTime;
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
-#[ORM\Table(name: "internship_cycles")]
+#[ORM\Table(name: 'internship_cycles')]
 class InternshipCycle
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: "integer")]
+    #[ORM\Column(type: 'integer')]
     private int $id;
 
-    #[ORM\Column(type: "datetime")]
-    private DateTime $createdAt;
+    #[ORM\Column(type: 'datetime')]
+    private DateTimeImmutable $createdAt;
 
-    #[ORM\Column(type: "datetime", nullable: true)]
-    private ?DateTime $endedAt;
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?DateTimeImmutable $endedAt;
 
-    #[ORM\Column(type: "date", nullable: true)]
-    private ?DateTime $collectionStartDate;
+    #[ORM\Column(type: 'date', nullable: true)]
+    private ?DateTimeImmutable $jobCollectionStart;
 
-    #[ORM\Column(type: "date", nullable: true)]
-    private ?DateTime $collectionEndDate;
+    #[ORM\Column(type: 'date', nullable: true)]
+    private ?DateTimeImmutable $jobCollectionEnd;
 
-    #[ORM\Column(type: "date", nullable: true)]
-    private ?DateTime $applicationStartDate;
+    #[ORM\Column(type: 'date', nullable: true)]
+    private ?DateTimeImmutable $applyingStart;
 
-    #[ORM\Column(type: "date", nullable: true)]
-    private ?DateTime $applicationEndDate;
+    #[ORM\Column(type: 'date', nullable: true)]
+    private ?DateTimeImmutable $applyingEnd;
+
+    #[ORM\Column(type: 'date', nullable: true)]
+    private ?DateTimeImmutable $interningStart;
+
+    #[ORM\Column(type: 'date', nullable: true)]
+    private ?DateTimeImmutable $interningEnd;
 
     #[ORM\OneToOne(targetEntity: UserGroup::class)]
-    #[ORM\JoinColumn(name: "student_group_id", referencedColumnName: "id")]
+    #[ORM\JoinColumn(name: 'student_group_id', referencedColumnName: 'id')]
     private UserGroup $studentGroup;
 
     /**
@@ -56,7 +62,7 @@ class InternshipCycle
 
     public function __construct()
     {
-        $this->createdAt = new DateTime("now");
+        $this->createdAt = new DateTimeImmutable();
         $this->partnerGroups = new ArrayCollection();
         $this->internships = new ArrayCollection();
         $this->requirements = new ArrayCollection();
@@ -67,34 +73,44 @@ class InternshipCycle
         return $this->id;
     }
 
-    public function getCreatedAt(): DateTime
+    public function getCreatedAt(): DateTimeImmutable
     {
         return $this->createdAt;
     }
 
-    public function getEndedAt(): ?DateTime
+    public function getEndedAt(): ?DateTimeImmutable
     {
         return $this->endedAt;
     }
 
-    public function getCollectionStartDate(): ?DateTime
+    public function getJobCollectionStart(): ?DateTimeImmutable
     {
-        return $this->collectionStartDate;
+        return $this->jobCollectionStart;
     }
 
-    public function getCollectionEndDate(): ?DateTime
+    public function getJobCollectionEnd(): ?DateTimeImmutable
     {
-        return $this->collectionEndDate;
+        return $this->jobCollectionEnd;
     }
 
-    public function getApplicationStartDate(): ?DateTime
+    public function getApplyingStart(): ?DateTimeImmutable
     {
-        return $this->applicationStartDate;
+        return $this->applyingStart;
     }
 
-    public function getApplicationEndDate(): ?DateTime
+    public function getApplyingEnd(): ?DateTimeImmutable
     {
-        return $this->applicationEndDate;
+        return $this->applyingEnd;
+    }
+
+    public function getInterningStart(): ?DateTimeImmutable
+    {
+        return $this->interningStart;
+    }
+
+    public function getInterningEnd(): ?DateTimeImmutable
+    {
+        return $this->interningEnd;
     }
 
     public function getStudentGroup(): UserGroup
@@ -107,29 +123,39 @@ class InternshipCycle
         return $this->studentGroup->getName();
     }
 
-    public function setEndedAt(DateTime $endedAt): void
+    public function setEndedAt(DateTimeImmutable $endedAt): void
     {
         $this->endedAt = $endedAt;
     }
 
-    public function setCollectionStartDate(DateTime $collectionStartDate): void
+    public function setJobCollectionStart(DateTimeImmutable $jobCollectionStart): void
     {
-        $this->collectionStartDate = $collectionStartDate;
+        $this->jobCollectionStart = $jobCollectionStart;
     }
 
-    public function setCollectionEndDate(DateTime $collectionEndDate): void
+    public function setJobCollectionEnd(DateTimeImmutable $jobCollectionEnd): void
     {
-        $this->collectionEndDate = $collectionEndDate;
+        $this->jobCollectionEnd = $jobCollectionEnd;
     }
 
-    public function setApplicationStartDate(DateTime $applicationStartDate): void
+    public function setApplyingStart(DateTimeImmutable $applyingStart): void
     {
-        $this->applicationStartDate = $applicationStartDate;
+        $this->applyingStart = $applyingStart;
     }
 
-    public function setApplicationEndDate(DateTime $applicationEndDate): void
+    public function setApplyingEnd(DateTimeImmutable $applyingEnd): void
     {
-        $this->applicationEndDate = $applicationEndDate;
+        $this->applyingEnd = $applyingEnd;
+    }
+
+    public function setInterningStart(DateTimeImmutable $interningStart): void
+    {
+        $this->interningStart = $interningStart;
+    }
+
+    public function setInterningEnd(DateTimeImmutable $interningEnd): void
+    {
+        $this->interningEnd = $interningEnd;
     }
 
     public function addPartnerGroup(UserGroup $partnerGroup): void
