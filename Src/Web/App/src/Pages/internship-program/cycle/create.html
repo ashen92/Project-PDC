@@ -15,31 +15,9 @@
 </div>
 <form action="/internship-program/cycle/create" method="POST">
     <div class="field-group">
-        <label>Internship collection</label>
+        <label class="mb-30">Choose who participates in this cycle</label>
         <div class="field row">
-            <label for="collection-start-date">Pick a start date</label>
-            <input type="date" name="collection-start-date" id="collection-start-date" required>
-        </div>
-        <div class="field row">
-            <label for="collection-end-date">Pick an end date</label>
-            <input type="date" name="collection-end-date" id="collection-end-date" required>
-        </div>
-    </div>
-    <div class="field-group">
-        <label>Internship application collection</label>
-        <div class="field row">
-            <label for="application-start-date">Pick a start date</label>
-            <input type="date" name="application-start-date" id="application-start-date">
-        </div>
-        <div class="field row">
-            <label for="application-end-date">Pick an end date</label>
-            <input type="date" name="application-end-date" id="application-end-date">
-        </div>
-    </div>
-    <div class="field-group">
-        <label>Choose who participates in this cycle</label>
-        <div class="field row">
-            <label for="partner-group">Select the group partners belong to</label>
+            <label for="partner-group">Select partner user group</label>
             <select name="partner-group" id="partner-group">
                 {% for group in eligiblePartnerGroups %}
                 <option value="{{ group.id }}">{{ group.name }}</option>
@@ -47,7 +25,7 @@
             </select>
         </div>
         <div class="field row">
-            <label for="student-group">Select the group students belong to</label>
+            <label for="student-group">Select student user group</label>
             <select name="student-group" id="student-group">
                 {% for group in eligibleStudentGroups %}
                 <option value="{{ group.id }}">{{ group.name }}</option>

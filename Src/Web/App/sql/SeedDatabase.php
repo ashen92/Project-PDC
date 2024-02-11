@@ -1,5 +1,6 @@
 <?php
 
+use App\Constant\Constants;
 use App\DTOs\CreateRequirementDTO;
 use App\Entities\Event;
 use App\Entities\Internship;
@@ -319,11 +320,11 @@ $entityManager->flush();
 
 echo "Done.\nAdding groups...";
 
-$groupCoordinators = new UserGroup("Coordinators");
-$groupPartners = new UserGroup("Partners");
-$groupStudents = new UserGroup("Students");
-$groupThirdYearStudents = new UserGroup("ThirdYearStudents");
-$groupFirstYearStudents = new UserGroup("FirstYearStudents");
+$groupCoordinators = new UserGroup('Coordinators');
+$groupPartners = new UserGroup('Partners');
+$groupStudents = new UserGroup('Students');
+$groupThirdYearStudents = new UserGroup('ThirdYearStudents');
+$groupFirstYearStudents = new UserGroup('FirstYearStudents');
 
 foreach ($studentUsers as $user) {
     $groupStudents->addUser($user);
@@ -347,7 +348,9 @@ $groupPartners->addUser($user4);
 $groupCoordinators->addUser($user1);
 $groupCoordinators->addUser($user2);
 
-$groupCycleStudents = new UserGroup("InternshipCycle-Students");
+$groupCycleStudents = new UserGroup(
+    Constants::AUTO_GENERATED_USER_GROUP_PREFIX->value.'InternshipCycle-Students'
+);
 $entityManager->persist($groupCycleStudents);
 $groupCycleStudents->addUser($user3);
 
@@ -355,7 +358,9 @@ for ($i = 1; $i < 200; $i++) {
     $groupCycleStudents->addUser($studentUsers[$i]);
 }
 
-$groupCyclePartnerAdmins = new UserGroup("InternshipCycle-Partner-Admins");
+$groupCyclePartnerAdmins = new UserGroup(
+    Constants::AUTO_GENERATED_USER_GROUP_PREFIX->value.'InternshipCycle-Partner-Admins'
+);
 $entityManager->persist($groupCyclePartnerAdmins);
 $groupCyclePartnerAdmins->addUser($user4);
 
@@ -363,7 +368,9 @@ for ($i = 1; $i < 50; $i++) {
     $groupCyclePartnerAdmins->addUser($partnerUsers[$i]);
 }
 
-$groupCyclePartners = new UserGroup("InternshipCycle-Partners");
+$groupCyclePartners = new UserGroup(
+    Constants::AUTO_GENERATED_USER_GROUP_PREFIX->value.'InternshipCycle-Partners'
+);
 $entityManager->persist($groupCyclePartners);
 
 $entityManager->persist($groupCoordinators);

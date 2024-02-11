@@ -4,17 +4,13 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Constant\Constants;
-use App\DTOs\CreateCycleDTO;
 use App\DTOs\CreateUserDTO;
-use App\Entities\Student;
-use App\Entities\UserGroup;
 use App\Exceptions\UserExistsException;
-use App\Interfaces\IEmailService;
 use App\Models\InternshipCycle;
+use App\Models\UserGroup;
 use App\Repositories\InternshipProgramRepository;
 use App\Repositories\UserRepository;
 use App\Security\Role;
-use DateTimeImmutable;
 use Throwable;
 
 readonly class InternshipProgramService
@@ -34,16 +30,16 @@ readonly class InternshipProgramService
         $groups = $this->userRepository->findAllUserGroups();
         $eligibleGroups = [];
         foreach ($groups as $group) {
-            if (str_contains(strtolower($group->getName()), "admin")) {
+            if (str_contains(strtolower($group->getName()), 'admin')) {
                 continue;
             }
-            if (str_contains(strtolower($group->getName()), "coordinator")) {
+            if (str_contains(strtolower($group->getName()), 'coordinator')) {
                 continue;
             }
-            if (str_contains(strtolower($group->getName()), "partner")) {
+            if (str_contains(strtolower($group->getName()), 'partner')) {
                 continue;
             }
-            if (str_starts_with($group->getName(), "InternshipCycle-")) {
+            if (str_starts_with($group->getName(), Constants::AUTO_GENERATED_USER_GROUP_PREFIX->value)) {
                 continue;
             }
             $eligibleGroups[] = $group;
@@ -59,16 +55,16 @@ readonly class InternshipProgramService
         $groups = $this->userRepository->findAllUserGroups();
         $eligibleGroups = [];
         foreach ($groups as $group) {
-            if (str_contains(strtolower($group->getName()), "admin")) {
+            if (str_contains(strtolower($group->getName()), 'admin')) {
                 continue;
             }
-            if (str_contains(strtolower($group->getName()), "coordinator")) {
+            if (str_contains(strtolower($group->getName()), 'coordinator')) {
                 continue;
             }
-            if (str_contains(strtolower($group->getName()), "student")) {
+            if (str_contains(strtolower($group->getName()), 'student')) {
                 continue;
             }
-            if (str_starts_with($group->getName(), "InternshipCycle-")) {
+            if (str_starts_with($group->getName(), Constants::AUTO_GENERATED_USER_GROUP_PREFIX->value)) {
                 continue;
             }
             $eligibleGroups[] = $group;
@@ -86,7 +82,7 @@ readonly class InternshipProgramService
         return $this->internshipProgramRepository->findLatestCycle();
     }
 
-    public function createCycle(CreateCycleDTO $dto): bool
+    public function createCycle(int $partnerGroupId, int $studentGroupId): bool
     {
         $this->internshipProgramRepository->beginTransaction();
         try {
@@ -109,9 +105,9 @@ readonly class InternshipProgramService
                 ->addRoleToUserGroup($studentGroup->getId(), Role::InternshipProgram_Student);
 
             $this->userRepository
-                ->addUsersToUserGroup($partnerGroup->getId(), $dto->partnerGroup);
+                ->addUsersToUserGroup($partnerGroup->getId(), $partnerGroupId);
             $this->userRepository
-                ->addUsersToUserGroup($studentGroup->getId(), $dto->studentGroup);
+                ->addUsersToUserGroup($studentGroup->getId(), $studentGroupId);
 
             $this->internshipProgramRepository->updateCycleUserGroups(
                 $cycleId,

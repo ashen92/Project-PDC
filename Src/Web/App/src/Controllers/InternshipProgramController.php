@@ -6,7 +6,6 @@ namespace App\Controllers;
 use App\Attributes\RequiredPolicy;
 use App\Attributes\RequiredRole;
 use App\Constant\InternshipProgramState;
-use App\DTOs\CreateCycleDTO;
 use App\DTOs\CreateUserDTO;
 use App\Exceptions\UserExistsException;
 use App\Models\InternshipCycle;
@@ -126,18 +125,13 @@ class InternshipProgramController extends PageControllerBase
     #[Route('/cycle/create', methods: ['POST'])]
     public function cycleCreatePOST(Request $request): RedirectResponse
     {
-        $createInternshipCycleDTO = new CreateCycleDTO(
-            $request->get('collection-start-date'),
-            $request->get('collection-end-date'),
-            $request->get('application-start-date'),
-            $request->get('application-end-date'),
-            (int) $request->get('partner-group'),
-            (int) $request->get('student-group')
-        );
-        // TODO: validate DTO
+        $partnerGroup = (int) $request->get('partner-group');
+        $studentGroup = (int) $request->get('student-group');
+
+        // TODO: Validate
 
         // TODO: handle exceptions
-        $this->internshipCycleService->createCycle($createInternshipCycleDTO);
+        $this->internshipCycleService->createCycle($partnerGroup, $studentGroup);
 
         return $this->redirect('/internship-program');
     }
