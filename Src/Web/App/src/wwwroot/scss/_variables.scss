@@ -1,6 +1,5 @@
-@forward "var/borders";
-@forward "var/shadows";
-@forward "var/sizing";
+$webpage-max-allowed-width: 1920px;
+$authentication-page-max-width: 1200px;
 
 $breakpoints: (
     xs: 0,
@@ -11,7 +10,7 @@ $breakpoints: (
     xxl: 1400px
 );
 
-//#region Text
+// #region Text
 
 $fs-1: 2.5rem;
 $fs-2: 2rem;
@@ -27,7 +26,7 @@ $fw-medium: 500;
 $fw-normal: 400;
 $fw-light: 300;
 
-//#endregion 
+// #endregion 
 
 $btn-padding: 8px 24px;
 $btn-padding-top: 8px;
@@ -82,6 +81,28 @@ $text-field-padding: 5px 12px;
 
 $date-field-padding: 5px 12px;
 $select-field-padding: 6px 12px;
+
+// #region Shadows
+$shadow-1: rgba(0, 0, 0, 0.14) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+$shadow-2: 0 2px 6px rgba(0, 0, 0, .2);
+$shadow-3: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+$shadow-4: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+$shadow-5: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
+
+// #endregion
+
+// #region Borders
+
+$rounded-0: 0;
+$rounded-1: 5px;
+$rounded-2: 10px;
+
+$border-0: none;
+$border-1: 1px solid #d4d2d0;
+$border-2: 1px solid #4f4f4f;
+
+// #endregion
+
 
 // // office.com
 // $btn-transition-duration: 100ms;
