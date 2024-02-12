@@ -1,4 +1,4 @@
-@use "../variables" as *;
+@use '../variables' as *;
 
 @function breakpoint-min($name, $breakpoints: $breakpoints) {
     $min: map-get($breakpoints, $name);
