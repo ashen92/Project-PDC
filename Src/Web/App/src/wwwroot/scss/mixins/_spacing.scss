@@ -1,3 +1,5 @@
+@use '../variables' as *;
+
 @mixin margin {
     @for $i from 0 through 10 {
         &-#{$i * 5} {
@@ -82,59 +84,43 @@
 }
 
 @mixin padding {
-    @for $i from 1 through 10 {
-        &-#{$i * 5} {
-            padding: #{$i * 5}px !important;
-        }
-    }
+    @each $key, $value in $padding-sizes {
 
-    &t {
-        @for $i from 1 through 10 {
-            &-#{$i * 5} {
-                padding-top: #{$i * 5}px !important;
-            }
+        // All sides
+        &-#{$key} {
+            padding: $value;
         }
-    }
 
-    &b {
-        @for $i from 1 through 10 {
-            &-#{$i * 5} {
-                padding-bottom: #{$i * 5}px !important;
-            }
+        // Top
+        &t-#{$key} {
+            padding-top: $value;
         }
-    }
 
-    &l {
-        @for $i from 1 through 10 {
-            &-#{$i * 5} {
-                padding-left: #{$i * 5}px !important;
-            }
+        // Right
+        &r-#{$key} {
+            padding-right: $value;
         }
-    }
 
-    &r {
-        @for $i from 1 through 10 {
-            &-#{$i * 5} {
-                padding-right: #{$i * 5}px !important;
-            }
+        // Bottom
+        &b-#{$key} {
+            padding-bottom: $value;
         }
-    }
 
-    &x {
-        @for $i from 1 through 10 {
-            &-#{$i * 5} {
-                padding-left: #{$i * 5}px !important;
-                padding-right: #{$i * 5}px !important;
-            }
+        // Left
+        &l-#{$key} {
+            padding-left: $value;
         }
-    }
 
-    &y {
-        @for $i from 1 through 10 {
-            &-#{$i * 5} {
-                padding-top: #{$i * 5}px !important;
-                padding-bottom: #{$i * 5}px !important;
-            }
+        // X-axis (left and right)
+        &x-#{$key} {
+            padding-left: $value;
+            padding-right: $value;
+        }
+
+        // Y-axis (top and bottom)
+        &y-#{$key} {
+            padding-top: $value;
+            padding-bottom: $value;
         }
     }
 }
