@@ -52,6 +52,8 @@ $fw-light: 300;
 
 // #endregion 
 
+// #region Buttons
+
 $btn-padding: 8px 24px;
 $btn-padding-top: 8px;
 $btn-padding-left: 24px;
@@ -73,32 +75,11 @@ $btn-active-color: #ffffff;
 $btn-active-bg: #005499;
 $btn-active-border-color: #005499;
 $btn-focus-box-shadow: none;
-$btn-disabled-color: #ffffff;
+$btn-disabled: #939393;
 $btn-disabled-bg: #e8e8e8;
-$btn-disabled-border-color: #e8e8e8;
+$btn-disabled-border: #e8e8e8;
 
-$btn-regular: #323130;
-$btn-regular-bg: transparent;
-$btn-regular-border-color: #8a8886;
-$btn-regular-hover-bg: #f2f2f2;
-$btn-regular-active-bg: #dedede;
-$btn-regular-disabled-color: #979796;
-
-$btn-secondary: #323130;
-$btn-secondary-bg: #ffffff;
-$btn-secondary-hover-bg: #e8e8e8;
-$btn-secondary-active-bg: #dedede;
-$btn-secondary-border-color: #8a8886;
-
-$btn-danger: #ffffff;
-$btn-danger-bg: #d13438;
-$btn-danger-hover-bg: #c12f33;
-$btn-danger-active-bg: #b22a2e;
-$btn-danger-border-color: #d13438;
-
-$btn-danger-disabled-color: #e8e8e8;
-$btn-danger-disabled-bg: #cd9193;
-$btn-danger-disabled-border-color: #cd9193;
+// #endregion
 
 $text-field-font-size: 0.9375rem;
 $text-field-padding: 5px 12px;

@@ -116,10 +116,4 @@ class PortalController extends PageControllerBase
 			]
 		);
 	}
-
-	#[Route('/partners')]
-	public function partners(): Response
-	{
-		return $this->render('portal/companylist.html');
-	}
 }

@@ -19,11 +19,11 @@
 
 {% if internshipCycle.endedAt is not null or internshipCycle is null %}
 <div class="info-card">
-    <a class="btn" role="button" href="/internship-program/cycle/create">Create an internship cycle</a>
+    <a class="btn btn-primary" role="button" href="/internship-program/cycle/create">Create an internship cycle</a>
 </div>
 {% else %}
 <div class="info-card">
-    <a class="btn" role="button" href="/internship-program/cycle/end">End current internship cycle</a>
+    <a class="btn btn-danger" role="button" href="/internship-program/cycle/end">End current internship cycle</a>
 </div>
 {% endif %}
 
@@ -42,7 +42,7 @@
                 <h5 class="header">Internship Collection</h5>
                 <div>
                     {% if internshipCycle.nextState == InternshipCycleState_JobCollection %}
-                    <button class="btn">Start</button>
+                    <button class="btn btn-primary">Start</button>
                     {% elseif internshipCycle.activeState == InternshipCycleState_JobCollection %}
                     <button class="btn btn-secondary">Undo</button>
                     <button class="btn btn-danger">End</button>
@@ -82,7 +82,7 @@
                 <h5 class="header">Application Collection</h5>
                 <div>
                     {% if internshipCycle.nextState == InternshipCycleState_Applying %}
-                    <button class="btn">Start</button>
+                    <button class="btn btn-primary">Start</button>
                     {% elseif internshipCycle.activeState == InternshipCycleState_Applying %}
                     <button class="btn btn-secondary">Undo</button>
                     <button class="btn btn-danger">End</button>
@@ -123,7 +123,7 @@
                 <h5 class="header">Interning</h5>
                 <div>
                     {% if internshipCycle.nextState == InternshipCycleState_Interning %}
-                    <button class="btn">Start</button>
+                    <button class="btn btn-primary">Start</button>
                     {% elseif internshipCycle.activeState == InternshipCycleState_Interning %}
                     <button class="btn btn-secondary">Undo</button>
                     <button class="btn btn-danger">End</button>

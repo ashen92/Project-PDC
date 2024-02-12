@@ -63,7 +63,7 @@
                 name: 'Submission',
                 formatter: (cell, row) => {
                     return gridjs.h('button', {
-                        className: 'btn',
+                        className: 'btn btn-primary',
                         disabled: row.cells[3].data === 'pending',
                         onClick: () => {
                             let popup = document.getElementById('popup-dialog');

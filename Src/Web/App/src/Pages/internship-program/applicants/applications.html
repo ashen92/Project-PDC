@@ -61,7 +61,7 @@
                 name: 'Hire',
                 formatter: (cell, row) => {
                     return gridjs.h('button', {
-                        className: "btn",
+                        className: "btn btn-primary",
                         onClick: (e) => {
                             alert(`Editing "${row.cells[0].data}" "${row.cells[1].data}"`);
                             e.stopPropagation();
@@ -73,7 +73,7 @@
                 name: 'Reject',
                 formatter: (cell, row) => {
                     return gridjs.h('button', {
-                        className: "btn",
+                        className: "btn btn-outline-danger",
                         onClick: (e) => {
                             alert(`Editing "${row.cells[0].data}" "${row.cells[1].data}"`);
                             e.stopPropagation();

@@ -18,7 +18,7 @@
         <div class="search">
             <i class="i i-search"></i>
             <input id="search-query" class="search" type="text" placeholder="Search" autocomplete="off">
-            <button id="search-btn" class="btn" type="button">Search</button>
+            <button id="search-btn" class="btn btn-primary" type="button">Search</button>
         </div>
 
         {% if has_role(InternshipProgram_Admin) or has_role(InternshipProgram_Student) %}
@@ -52,7 +52,8 @@
             {% if has_permission('internship', 'create') %}
 
             <div class="mb-2 text-right">
-                <a class="btn" role="button" href="/internship-program/internships/create">Post an internship</a>
+                <a class="btn btn-primary" role="button" href="/internship-program/internships/create">Post an
+                    internship</a>
             </div>
 
             {% endif %}
@@ -123,20 +124,21 @@
                 <h3 class="title" id="job-title"></h3>
                 <div class="actions">
                     {% if has_permission('application', 'read') %}
-                    <button type="button" class="btn" id="applicants-job-btn">Applicants</button>
+                    <button type="button" class="btn btn-primary" id="applicants-job-btn">Applicants</button>
                     {% endif %}
 
                     {% if has_permission('internship', 'update') %}
-                    <button type="button" class="btn" id="modify-job-btn">Modify</button>
+                    <button type="button" class="btn btn-outline-primary" id="modify-job-btn">Modify</button>
                     {% endif %}
 
                     {% if has_permission('internship', 'delete') %}
-                    <button type="button" class="btn" id="remove-job-btn">Remove</button>
+                    <button type="button" class="btn btn-outline-danger" id="remove-job-btn">Remove</button>
                     {% endif %}
 
                     {% if has_permission('internship', 'apply') %}
-                    <button type="button" class="btn" id="btn-apply">Apply</button>
-                    <button type="button" class="btn hidden" id="btn-undo-apply">Cancel Application</button>
+                    <button type="button" class="btn btn-primary" id="btn-apply">Apply</button>
+                    <button type="button" class="btn btn-primary hidden" id="btn-undo-apply">Cancel
+                        Application</button>
                     {% endif %}
                 </div>
                 <div class="description">
@@ -161,7 +163,7 @@
             {% endfor %}
         </ul>
         <div class="actions">
-            <button type="button" class="btn" id="company-multi-select-list-apply-btn">Apply</button>
+            <button type="button" class="btn btn-primary" id="company-multi-select-list-apply-btn">Apply</button>
             <button type="button" class="btn btn-secondary" id="company-multi-select-list-reset-btn">Reset</button>
             <button type="button" class="btn btn-secondary" id="company-multi-select-list-hide-btn">Hide</button>
         </div>
