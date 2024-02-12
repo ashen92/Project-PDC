@@ -14,13 +14,13 @@
 <section class="mt-0">
     <form>
         <div class="divider"></div>
-        <div class="row mb-25">
+        <div class="row mb-6">
             <p class="fw-medium">Complete this requirement before the following date :</p>
             <p>{{ userRequirement.endDate.format("Y-m-d") }}</p>
         </div>
 
-        <p class="fw-medium mb-20">Description</p>
-        <div class="mb-30 bg-grey-100 formatted-text-area p-5 rounded-1">
+        <p class="fw-medium mb-5">Description</p>
+        <div class="mb-7 bg-grey-100 formatted-text-area p-5 rounded-1">
             {{ requirement.description|raw }}
         </div>
 
@@ -34,17 +34,17 @@
         <form action="/internship-program/requirements/complete" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="user-requirement-id" value="{{ userRequirement.id }}" />
 
-            <div class="row mb-5">
+            <div class="row mb-1">
                 <p>Maximum number of files :</p>
                 <p>{{ requirement.maxFileCount }}</p>
             </div>
 
-            <div class="row mb-5">
+            <div class="row mb-1">
                 <p>Maximum file size :</p>
                 <p>{{ requirement.maxFileSize }} MB</p>
             </div>
 
-            <div class="row mb-25">
+            <div class="row mb-6">
                 <p>Allowed file types :</p>
                 <p class="uppercase">
                     {% for t in requirement.allowedFileTypes %}
@@ -80,7 +80,7 @@
             {% endif %}
             <div class="divider"></div>
 
-            <button class="btn mt-25" type="submit">Submit</button>
+            <button class="btn mt-6" type="submit">Submit</button>
         </form>
         {% endif %}
 
@@ -99,7 +99,7 @@
             </div>
             <div class="divider"></div>
 
-            <button class="btn mt-25" type="submit">Submit</button>
+            <button class="btn mt-6" type="submit">Submit</button>
         </form>
         {% endif %}
     </div>
