@@ -217,7 +217,7 @@ $container->register(
     App\Services\AuthenticationService::class
 )
     ->setArguments([
-        new Reference('service.user'),
+        new Reference('repository.user'),
         new Reference('password_hasher')
     ]);
 
@@ -400,7 +400,6 @@ $container->register(
     ->setArguments([
         new Reference('twig'),
         new Reference('service.authentication'),
-        new Reference('service.user'),
         new Reference('service.email')
     ])
     ->setPublic(true);

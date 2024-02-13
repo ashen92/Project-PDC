@@ -3,13 +3,11 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use App\DTOs\CreateStudentUserDTO;
 use App\DTOs\CreateUserDTO;
 use App\Exceptions\UserExistsException;
 use App\Interfaces\IEmailService;
 use App\Interfaces\IPasswordHasher;
 use App\Models\Partner;
-use App\Models\Student;
 use App\Models\User;
 use App\Models\UserInviteEmail;
 use App\Repositories\UserRepository;
@@ -65,45 +63,9 @@ readonly class UserService
         return $userId;
     }
 
-    public function createStudentUser(CreateStudentUserDTO $createStudentDTO): void
-    {
-        $user = $this->userRepository->findUser($createStudentDTO->id);
-
-        $user->setFirstName($createStudentDTO->firstName);
-        $user->setLastName($createStudentDTO->lastName);
-        $user->setEmail($createStudentDTO->email);
-        $user->setPasswordHash($this->passwordHasher->hashPassword($createStudentDTO->password));
-        $user->setIsActive(true);
-        $user->resetActivationToken();
-
-        $this->userRepository->updateUser($user);
-    }
-
     public function getUser(int $id): ?User
     {
         return $this->userRepository->findUser($id);
-    }
-
-    public function getUserByEmail(string $email): ?User
-    {
-        return $this->userRepository->findByEmail($email);
-    }
-
-    public function getStudentByStudentEmail(string $email): ?Student
-    {
-        return $this->userRepository->findStudentByStudentEmail($email);
-    }
-
-    public function getUserByActivationToken(string $token): ?User
-    {
-        return $this->userRepository->findByActivationToken($token);
-    }
-
-    public function generateActivationToken(User $user): string
-    {
-        $token = $user->generateActivationToken();
-        $this->userRepository->updateUser($user);
-        return $token;
     }
 
     /**
@@ -112,11 +74,6 @@ readonly class UserService
     public function getManagedUsers(int $userId): array
     {
         return $this->userRepository->findManagedUsers($userId);
-    }
-
-    public function updateUser(User $user): void
-    {
-        $this->userRepository->updateUser($user);
     }
 
     public function searchUsers(?int $numberOfResults, ?int $offsetBy): array
