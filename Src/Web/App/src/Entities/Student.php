@@ -22,13 +22,6 @@ class Student extends User
     #[ORM\Column]
     private string $indexNumber;
 
-    /**
-     * Many Users apply to Many Internships.
-     * @var Collection<int, Internship>
-     */
-    #[ORM\ManyToMany(targetEntity: Internship::class, mappedBy: "applicants")]
-    private Collection $internshipsApplied;
-
     #[ORM\OneToMany(targetEntity: UserRequirement::class, mappedBy: "user")]
     private Collection $assignedRequirements;
 

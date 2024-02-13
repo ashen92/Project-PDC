@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Entities;
 
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
@@ -28,14 +27,6 @@ class Internship
     #[ORM\ManyToOne(targetEntity: Organization::class)]
     #[ORM\JoinColumn(name: "organization_id", referencedColumnName: "id")]
     private Organization $organization;
-
-    /**
-     * Many Internships have Many Students who applied to it.
-     * @var Collection<int, Student>
-     */
-    #[ORM\ManyToMany(targetEntity: Student::class, inversedBy: "internshipsApplied")]
-    #[ORM\JoinTable(name: "internship_applicants")]
-    private Collection $applicants;
 
     #[ORM\ManyToOne(targetEntity: InternshipCycle::class, inversedBy: "internships")]
     #[ORM\JoinColumn(name: "internship_cycle_id", referencedColumnName: "id")]
