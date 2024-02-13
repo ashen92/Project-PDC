@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Attributes\RequiredRole;
+use App\DTOs\createInternshipDTO;
 use App\Models\InternshipCycle;
 use App\Security\Identity;
 use App\Security\Role;
@@ -153,24 +154,16 @@ class InternshipsController extends PageControllerBase
     #[Route('/create', methods: ['POST'])]
     public function createPOST(Request $request, InternshipCycle $cycle): RedirectResponse
     {
-        $title = $request->get('title');
-        $description = $request->get('description');
-        $ownerId = (int) $request->getSession()->get('user_id');
-        $organizationId = (int) $request->get('organization_id');
-        $isPublished = (bool) $request->get('is_published');
+        $dto = new createInternshipDTO(
+            $request->get('title'),
+            $request->get('description'),
+            (int) $request->getSession()->get('user_id'),
+            (int) $request->get('organization_id', 1)
+        );
 
         // TODO: Validate data
 
-        $this->internshipService->createInternship(
-            $cycle->getId(),
-            $title,
-            $description,
-            $ownerId,
-            // $organizationId,
-            // $isPublished,
-            1,
-            true,
-        );
+        $this->internshipService->createInternship($cycle->getId(), $dto);
         return $this->redirect('/internship-program/internships');
     }
 }

@@ -3,51 +3,58 @@ declare(strict_types=1);
 
 namespace App\Entities;
 
+use App\Models\Internship\Status;
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
-#[ORM\Table(name: "internships")]
+#[ORM\Table(name: 'internships')]
 class Internship
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: "integer")]
+    #[ORM\Column(type: 'integer')]
     private int $id;
 
     #[ORM\Column]
     private string $title;
 
-    #[ORM\Column(type: "text")]
+    #[ORM\Column(type: 'text')]
     private string $description;
 
-    #[ORM\ManyToOne(targetEntity: Partner::class, inversedBy: "internshipsCreated")]
-    #[ORM\JoinColumn(name: "owner_user_id", referencedColumnName: "id")]
-    private Partner $owner;
+    #[ORM\Column(type: 'internship_status')]
+    private Status $status;
 
-    #[ORM\ManyToOne(targetEntity: Organization::class)]
-    #[ORM\JoinColumn(name: "organization_id", referencedColumnName: "id")]
-    private Organization $organization;
-
-    #[ORM\ManyToOne(targetEntity: InternshipCycle::class, inversedBy: "internships")]
-    #[ORM\JoinColumn(name: "internship_cycle_id", referencedColumnName: "id")]
+    #[ORM\ManyToOne(targetEntity: InternshipCycle::class, inversedBy: 'internships')]
+    #[ORM\JoinColumn(name: 'internship_cycle_id', referencedColumnName: 'id')]
     private InternshipCycle $internshipCycle;
 
-    #[ORM\Column(type: "datetime_immutable")]
-    private \DateTimeImmutable $createdAt;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'created_by_user_id', referencedColumnName: 'id')]
+    private User $createdBy;
 
-    #[ORM\Column(type: "boolean")]
-    private bool $isPublished;
+    #[ORM\ManyToOne(targetEntity: Organization::class)]
+    #[ORM\JoinColumn(name: 'organization_id', referencedColumnName: 'id')]
+    private Organization $organization;
 
-    public function __construct(string $title, string $description, Partner $owner, InternshipCycle $internshipCycle)
-    {
+    #[ORM\Column(type: 'datetime_immutable')]
+    private DateTimeImmutable $createdAt;
+
+    public function __construct(
+        string $title,
+        string $description,
+        Status $status,
+        InternshipCycle $internshipCycle,
+        User $createdBy,
+        Organization $organization,
+    ) {
         $this->title = $title;
         $this->description = $description;
-        $this->owner = $owner;
-        $this->organization = $owner->getOrganization();
-        $owner->addToInternshipsCreated($this);
+        $this->status = $status;
         $this->internshipCycle = $internshipCycle;
-        $this->createdAt = new \DateTimeImmutable();
-        $this->isPublished = true;
+        $this->createdBy = $createdBy;
+        $this->organization = $organization;
+        $this->createdAt = new DateTimeImmutable();
     }
 
     public function getId(): int
@@ -65,40 +72,13 @@ class Internship
         return $this->description;
     }
 
-    public function getOwner(): Partner
+    public function getCreatedBy(): User
     {
-        return $this->owner;
+        return $this->createdBy;
     }
 
     public function getOrganization(): Organization
     {
         return $this->organization;
-    }
-
-    public function getApplicants(): array
-    {
-        return $this->applicants->toArray();
-    }
-
-    public function setTitle(string $title): void
-    {
-        $this->title = $title;
-    }
-
-    public function setDescription(string $description): void
-    {
-        $this->description = $description;
-    }
-
-    public function addApplicant(Student $user): void
-    {
-        $this->applicants[] = $user;
-        $user->addToInternshipsApplied($this);
-    }
-
-    public function removeApplicant(Student $user): void
-    {
-        $this->applicants->removeElement($user);
-        $user->removeFromInternshipsApplied($this);
     }
 }

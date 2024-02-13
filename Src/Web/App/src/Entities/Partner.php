@@ -11,9 +11,6 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: "partners")]
 class Partner extends User
 {
-    #[ORM\OneToMany(targetEntity: Internship::class, mappedBy: "owner")]
-    private Collection $internshipsCreated;
-
     #[ORM\ManyToOne(targetEntity: Organization::class)]
     #[ORM\JoinColumn(name: "organization_id", referencedColumnName: "id")]
     private Organization $organization;
@@ -30,7 +27,6 @@ class Partner extends User
         ?string $passwordHash = null
     ) {
         parent::__construct($email, $firstName, $passwordHash);
-        $this->internshipsCreated = new ArrayCollection();
         $this->manage = new ArrayCollection();
     }
 
@@ -47,11 +43,6 @@ class Partner extends User
     public function getManage(): Collection
     {
         return $this->manage;
-    }
-
-    public function addToInternshipsCreated(Internship $internship): void
-    {
-        $this->internshipsCreated[] = $internship;
     }
 
     public function addToManage(Partner $partner): void

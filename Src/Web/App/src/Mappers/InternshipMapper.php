@@ -3,22 +3,29 @@ declare(strict_types=1);
 
 namespace App\Mappers;
 
-class InternshipMapper implements \App\Interfaces\IMapper
+use App\Interfaces\IMapper;
+use App\Models\Internship;
+use App\Models\Internship\Status;
+use DateTimeImmutable;
+use Exception;
+use Override;
+
+class InternshipMapper implements IMapper
 {
     /**
-     * @throws \Exception
+     * @throws Exception
      */
-    #[\Override] public static function map(array $row): \App\Models\Internship
+    #[Override] public static function map(array $row): Internship
     {
-        return new \App\Models\Internship(
-            $row["id"],
-            $row["title"],
-            $row["description"],
-            $row["owner_user_id"],
-            $row["organization_id"],
-            $row["internship_cycle_id"],
-            new \DateTimeImmutable($row["createdAt"]),
-            $row["isPublished"] === 1,
+        return new Internship(
+            $row['id'],
+            $row['title'],
+            $row['description'],
+            Status::tryFrom($row['status']),
+            $row['created_by_user_id'],
+            $row['organization_id'],
+            $row['internship_cycle_id'],
+            new DateTimeImmutable($row['createdAt']),
         );
     }
 }

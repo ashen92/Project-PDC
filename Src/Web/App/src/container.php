@@ -26,6 +26,10 @@ use Symfony\Component\DependencyInjection\Reference;
     'application_status',
     'App\DoctrineTypes\Application\StatusType'
 );
+\Doctrine\DBAL\Types\Type::addType(
+    'internship_status',
+    'App\DoctrineTypes\Internship\StatusType'
+);
 
 $cachedContainerFile = __DIR__ . '/../cache/container.php';
 

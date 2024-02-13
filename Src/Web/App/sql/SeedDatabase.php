@@ -349,7 +349,7 @@ $groupCoordinators->addUser($user1);
 $groupCoordinators->addUser($user2);
 
 $groupCycleStudents = new UserGroup(
-    Constants::AUTO_GENERATED_USER_GROUP_PREFIX->value.'InternshipCycle-Students'
+    Constants::AUTO_GENERATED_USER_GROUP_PREFIX->value . 'InternshipCycle-Students'
 );
 $entityManager->persist($groupCycleStudents);
 $groupCycleStudents->addUser($user3);
@@ -359,7 +359,7 @@ for ($i = 1; $i < 200; $i++) {
 }
 
 $groupCyclePartnerAdmins = new UserGroup(
-    Constants::AUTO_GENERATED_USER_GROUP_PREFIX->value.'InternshipCycle-Partner-Admins'
+    Constants::AUTO_GENERATED_USER_GROUP_PREFIX->value . 'InternshipCycle-Partner-Admins'
 );
 $entityManager->persist($groupCyclePartnerAdmins);
 $groupCyclePartnerAdmins->addUser($user4);
@@ -369,7 +369,7 @@ for ($i = 1; $i < 50; $i++) {
 }
 
 $groupCyclePartners = new UserGroup(
-    Constants::AUTO_GENERATED_USER_GROUP_PREFIX->value.'InternshipCycle-Partners'
+    Constants::AUTO_GENERATED_USER_GROUP_PREFIX->value . 'InternshipCycle-Partners'
 );
 $entityManager->persist($groupCyclePartners);
 
@@ -564,12 +564,26 @@ $internships = [];
 
 $counter = 0;
 
-$i = new Internship($internData[0][0], $internData[0][1], $user4, $internshipCycle);
+$i = new Internship(
+    $internData[0][0],
+    $internData[0][1],
+    \App\Models\Internship\Status::Public ,
+    $internshipCycle,
+    $user4,
+    $user4->getOrganization(),
+);
 $entityManager->persist($i);
 
 for ($x = 1; $x < count($internData); $x++) {
     $data = $internData[$x];
-    $i = new Internship($data[0], $data[1], $data[2], $internshipCycle);
+    $i = new Internship(
+        $data[0],
+        $data[1],
+        \App\Models\Internship\Status::Draft,
+        $internshipCycle,
+        $data[2],
+        $data[2]->getOrganization(),
+    );
     $entityManager->persist($i);
     $internships[] = $i;
 }

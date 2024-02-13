@@ -3,12 +3,14 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
+use App\DTOs\createInternshipDTO;
 use App\Interfaces\IRepository;
 use App\Mappers\InternshipMapper;
 use App\Mappers\InternshipSearchResultMapper;
 use App\Mappers\OrganizationMapper;
 use App\Mappers\StudentMapper;
 use App\Models\Internship;
+use App\Models\Internship\Status;
 use App\Models\InternshipSearchResult;
 use App\Models\Organization;
 use App\Models\Student;
@@ -74,8 +76,7 @@ class InternshipRepository implements IRepository
     ): array {
         $sql = 'SELECT i.*, o.name AS orgName, o.logoFilePath AS orgLogoFilePath
                 FROM internships i
-                JOIN organizations o ON i.organization_id = o.id
-                WHERE i.isPublished = 1';
+                JOIN organizations o ON i.organization_id = o.id';
         $params = [];
         if ($cycleId) {
             $sql .= ' AND i.internship_cycle_id = :cycleId';
@@ -106,7 +107,7 @@ class InternshipRepository implements IRepository
         $sql = 'SELECT DISTINCT o.*
                 FROM internships i
                 JOIN organizations o ON i.organization_id = o.id
-                WHERE i.isPublished = 1 AND i.internship_cycle_id = :cycleId';
+                WHERE i.internship_cycle_id = :cycleId';
         $params = ['cycleId' => $cycleId];
         if ($searchQuery) {
             $sql .= ' AND i.title LIKE :searchQuery';
@@ -208,26 +209,26 @@ class InternshipRepository implements IRepository
     }
 
     public function createInternship(
-        string $title,
-        string $description,
-        int $ownerId,
-        int $organizationId,
         int $internshipCycleId,
-        bool $isPublished,
-    ): Internship {
-        $sql = 'INSERT INTO internships (title, description, owner_user_id, organization_id, internship_cycle_id, createdAt, isPublished)
-                VALUES (:title, :description, :ownerId, :organizationId, :internshipCycleId, NOW(), :isPublished)';
+        createInternshipDTO $dto,
+    ): bool {
+        $sql = 'INSERT INTO internships (
+                    title, description, 
+                    status,internship_cycle_id,
+                    created_by_user_id, organization_id, createdAt)
+                VALUES (
+                    :title, :description, 
+                    :status, :internshipCycleId, 
+                    :createdByUserId, :organizationId, NOW())';
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([
-            'title' => $title,
-            'description' => $description,
-            'ownerId' => $ownerId,
-            'organizationId' => $organizationId,
+        return $stmt->execute([
+            'title' => $dto->title,
+            'description' => $dto->description,
+            'status' => $dto->status->value,
             'internshipCycleId' => $internshipCycleId,
-            'isPublished' => $isPublished,
+            'createdByUserId' => $dto->createdByUserId,
+            'organizationId' => $dto->organizationId,
         ]);
-        $internshipId = (int) $this->pdo->lastInsertId();
-        return $this->findInternship($internshipId);
     }
 
     public function updateInternship(

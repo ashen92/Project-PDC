@@ -3,8 +3,10 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\DTOs\createInternshipDTO;
 use App\Interfaces\IFileStorageService;
 use App\Models\Internship;
+use App\Models\Internship\Status;
 use App\Models\InternshipSearchResult;
 use App\Models\Organization;
 use App\Models\Student;
@@ -117,24 +119,13 @@ readonly class InternshipService
 
     public function createInternship(
         int $cycleId,
-        string $title,
-        string $description,
-        int $ownerId,
-        int $organizationId,
-        bool $isPublished,
+        createInternshipDTO $dto,
     ): void {
         // TODO: Check if organization exists
         // TODO: Check if owner exists
         // TODO: Check if active internship cycle exists
 
-        $this->internshipRepository->createInternship(
-            $title,
-            $description,
-            $ownerId,
-            $organizationId,
-            $cycleId,
-            $isPublished
-        );
+        $this->internshipRepository->createInternship($cycleId, $dto);
     }
 
     public function updateInternship(
