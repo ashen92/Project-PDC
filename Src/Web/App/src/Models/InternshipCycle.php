@@ -26,13 +26,13 @@ class InternshipCycle
     public function getActiveState(): State
     {
         $now = new DateTimeImmutable();
-        if ($this->jobCollectionStart <= $now && $now <= $this->jobCollectionEnd) {
+        if ($this->jobCollectionStart <= $now && (!$this->jobCollectionEnd || $now <= $this->jobCollectionEnd)) {
             return State::JobCollection;
         }
-        if ($this->applyingStart <= $now && $now <= $this->applyingEnd) {
+        if ($this->applyingStart <= $now && (!$this->applyingEnd || $now <= $this->applyingEnd)) {
             return State::Applying;
         }
-        if ($this->interningStart <= $now && $now <= $this->interningEnd) {
+        if ($this->interningStart <= $now && (!$this->interningEnd || $now <= $this->interningEnd)) {
             return State::Interning;
         }
         if ($this->endedAt) {

@@ -11,7 +11,7 @@ readonly class createInternshipDTO
         public string $title,
         public string $description,
         public int $createdByUserId,
-        public int $organizationId,
+        public ?int $organizationId,
         public Status $status = Status::Draft,
     ) {
     }

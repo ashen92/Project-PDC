@@ -159,14 +159,18 @@ class InternshipsController extends PageControllerBase
         );
     }
 
+    #[RequiredPolicy(InternshipCycle\State::JobCollection)]
     #[Route('/create', methods: ['POST'])]
-    public function createPOST(Request $request, InternshipCycle $cycle): RedirectResponse
+    public function createPOST(Request $request, Identity $identity, InternshipCycle $cycle): RedirectResponse
     {
+        $orgId = $identity->hasRole(Role::InternshipProgram_Admin) ?
+            (int) $request->get('organization') : null;
+
         $dto = new createInternshipDTO(
             $request->get('title'),
             $request->get('description'),
             (int) $request->getSession()->get('user_id'),
-            (int) $request->get('organization_id', 1)
+            $orgId
         );
 
         // TODO: Validate data

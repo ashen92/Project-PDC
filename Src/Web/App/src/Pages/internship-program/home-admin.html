@@ -41,7 +41,7 @@
         <div class="card">
             <div class="flex justify-between col-gap-20">
                 <h5 class="header">Internship Collection</h5>
-                <div>
+                <div class="flex items-start col-gap-5">
                     {% if internshipCycle.nextState == InternshipCycleState_JobCollection %}
                     <button class="btn btn-primary">Start</button>
                     {% elseif internshipCycle.activeState == InternshipCycleState_JobCollection %}
@@ -81,7 +81,7 @@
         <div class="card">
             <div class="flex justify-between col-gap-20">
                 <h5 class="header">Application Collection</h5>
-                <div>
+                <div class="flex items-start col-gap-5">
                     {% if internshipCycle.nextState == InternshipCycleState_Applying %}
                     <button class="btn btn-primary">Start</button>
                     {% elseif internshipCycle.activeState == InternshipCycleState_Applying %}
@@ -122,7 +122,7 @@
         <div class="card">
             <div class="flex justify-between col-gap-20">
                 <h5 class="header">Interning</h5>
-                <div>
+                <div class="flex items-start col-gap-5">
                     {% if internshipCycle.nextState == InternshipCycleState_Interning %}
                     <button class="btn btn-primary">Start</button>
                     {% elseif internshipCycle.activeState == InternshipCycleState_Interning %}

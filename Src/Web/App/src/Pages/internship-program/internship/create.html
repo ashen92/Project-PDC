@@ -30,8 +30,8 @@
 
     {% if has_role(Admin) %}
     <div class="field">
-        <label for="org">Company or institute</label>
-        <select name="org" id="org">
+        <label for="organization">Company or institute</label>
+        <select name="organization" id="org">
             <option value="" selected disabled>Select a company or institute</option>
             {% for org in organizations %}
             <option value="{{ org.id }}">{{ org.name }}</option>

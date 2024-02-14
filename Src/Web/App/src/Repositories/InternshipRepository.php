@@ -8,12 +8,9 @@ use App\Interfaces\IRepository;
 use App\Mappers\InternshipMapper;
 use App\Mappers\InternshipSearchResultMapper;
 use App\Mappers\OrganizationMapper;
-use App\Mappers\StudentMapper;
 use App\Models\Internship;
-use App\Models\Internship\Status;
 use App\Models\InternshipSearchResult;
 use App\Models\Organization;
-use App\Models\Student;
 use PDO;
 
 class InternshipRepository implements IRepository
@@ -212,6 +209,26 @@ class InternshipRepository implements IRepository
         int $internshipCycleId,
         createInternshipDTO $dto,
     ): bool {
+        if ($dto->organizationId === null) {
+            $sql = 'INSERT INTO internships (
+                title, description, 
+                status,internship_cycle_id,
+                created_by_user_id, organization_id, createdAt)
+            VALUES (
+                :title, :description, 
+                :status, :internshipCycleId, 
+                :createdByUserId, 
+                (SELECT organization_id FROM partners WHERE id = :createdByUserId),
+                NOW())';
+            $stmt = $this->pdo->prepare($sql);
+            return $stmt->execute([
+                'title' => $dto->title,
+                'description' => $dto->description,
+                'status' => $dto->status->value,
+                'internshipCycleId' => $internshipCycleId,
+                'createdByUserId' => $dto->createdByUserId,
+            ]);
+        }
         $sql = 'INSERT INTO internships (
                     title, description, 
                     status,internship_cycle_id,
