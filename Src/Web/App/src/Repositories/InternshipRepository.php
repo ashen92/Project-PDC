@@ -123,9 +123,9 @@ class InternshipRepository implements IRepository
      * @param array<int> $ids
      * @return array<Organization>
      */
-    public function findOrganizations(array $ids): array
+    public function findOrganizations(): array
     {
-        $sql = 'SELECT * FROM organizations WHERE id IN (' . implode(',', $ids) . ')';
+        $sql = 'SELECT * FROM organizations';
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);

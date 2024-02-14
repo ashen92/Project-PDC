@@ -5,6 +5,7 @@
     "license": "UNLICENSED",
     "private": true,
     "devDependencies": {
+        "choices.js": "^10.2.0",
         "esbuild": "^0.19.4",
         "eslint": "^8.50.0",
         "gulp": "^4.0.2",

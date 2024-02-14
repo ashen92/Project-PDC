@@ -146,9 +146,15 @@ class InternshipsController extends PageControllerBase
     }
 
     #[Route('/create', methods: ['GET'])]
-    public function createGET(): Response
+    public function createGET(Identity $identity): Response
     {
-        return $this->render('internship-program/internship/create.html', ['section' => 'internships']);
+        return $this->render(
+            'internship-program/internship/create.html',
+            [
+                'section' => 'internships',
+                'organizations' => $identity->hasRole(Role::InternshipProgram_Admin) ? $this->internshipService->getOrganizations() : null,
+            ]
+        );
     }
 
     #[Route('/create', methods: ['POST'])]

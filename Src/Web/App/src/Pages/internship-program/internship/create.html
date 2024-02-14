@@ -28,6 +28,18 @@
         } %}
     </div>
 
+    {% if has_role(Admin) %}
+    <div class="field">
+        <label for="org">Company or institute</label>
+        <select name="org" id="org">
+            <option value="" selected disabled>Select a company or institute</option>
+            {% for org in organizations %}
+            <option value="{{ org.id }}">{{ org.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    {% endif %}
+
     <div class="field-radio" id="apply-method">
         <div class="label">Do you want to receive applications on a different website?</div>
         <div class="option">

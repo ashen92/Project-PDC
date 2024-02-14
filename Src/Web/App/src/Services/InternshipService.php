@@ -162,4 +162,9 @@ readonly class InternshipService
 
         return $this->internshipRepository->hasApplied($internshipId, $userId);
     }
+
+    public function getOrganizations(): array
+    {
+        return $this->internshipRepository->findOrganizations();
+    }
 }
