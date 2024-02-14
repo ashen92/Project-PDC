@@ -50,23 +50,7 @@
                     {% endif %}
                 </div>
             </div>
-            {% if internshipCycle.nextState == InternshipCycleState_JobCollection %}
-            {% if not internshipCycle.jobCollectionStart %}
-            <p>Pick a date to automatically start the process</p>
-            <div class="flex col-gap-10">
-                <input type="date" class="w-3/5" />
-                <button class="btn btn-outline-primary w-2/5">Set</button>
-            </div>
-            {% else %}
-            <p>
-                Starts on <span class="fw-semibold">{{ internshipCycle.jobCollectionStart.format('Y-m-d') }}</span>
-            </p>
-            <div class="flex col-gap-10">
-                <button class="btn btn-outline-primary w-1/2">Change</button>
-                <button class="btn btn-outline-danger w-1/2">Remove</button>
-            </div>
-            {% endif %}
-            {% else %}
+            {% if internshipCycle.nextState != InternshipCycleState_JobCollection %}
             <p>
                 Started on <span class="fw-semibold">{{ internshipCycle.jobCollectionStart.format('Y-m-d') }}</span>
             </p>
@@ -92,21 +76,6 @@
             </div>
             {% if internshipCycle.nextState == InternshipCycleState_JobCollection
             or internshipCycle.nextState == InternshipCycleState_Applying %}
-            {% if not internshipCycle.applyingStart %}
-            <p>Pick a date to automatically start the process</p>
-            <div class="flex col-gap-10">
-                <input type="date" class="w-3/5" />
-                <button class="btn btn-outline-primary w-2/5">Set</button>
-            </div>
-            {% else %}
-            <p>
-                Starts on <span class="fw-semibold">{{ internshipCycle.applyingStart.format('Y-m-d') }}</span>
-            </p>
-            <div class="flex col-gap-10">
-                <button class="btn btn-outline-primary w-1/2">Change</button>
-                <button class="btn btn-outline-danger w-1/2">Remove</button>
-            </div>
-            {% endif %}
             {% else %}
             <p>
                 Started on <span class="fw-semibold">{{ internshipCycle.applyingStart.format('Y-m-d') }}</span>
@@ -134,21 +103,6 @@
             {% if internshipCycle.nextState == InternshipCycleState_JobCollection
             or internshipCycle.nextState == InternshipCycleState_Applying
             or internshipCycle.nextState == InternshipCycleState_Interning %}
-            {% if not internshipCycle.interningStart %}
-            <p>Pick a date to automatically start the process</p>
-            <div class="flex col-gap-10">
-                <input type="date" class="w-3/5" />
-                <button class="btn btn-outline-primary w-2/5">Set</button>
-            </div>
-            {% else %}
-            <p>
-                Starts on <span class="fw-semibold">{{ internshipCycle.interningStart.format('Y-m-d') }}</span>
-            </p>
-            <div class="flex col-gap-10">
-                <button class="btn btn-outline-primary w-1/2">Change</button>
-                <button class="btn btn-outline-danger w-1/2">Remove</button>
-            </div>
-            {% endif %}
             {% else %}
             <p>
                 Started on <span class="fw-semibold">{{ internshipCycle.interningStart.format('Y-m-d') }}</span>
