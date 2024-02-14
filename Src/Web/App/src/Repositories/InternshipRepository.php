@@ -54,7 +54,7 @@ class InternshipRepository implements IRepository
      */
     public function findInternships(int $cycleId, int $ownerId): array
     {
-        $sql = 'SELECT * FROM internships WHERE internship_cycle_id = :cycleId AND owner_user_id = :ownerId';
+        $sql = 'SELECT * FROM internships WHERE internship_cycle_id = :cycleId AND created_by_user_id = :ownerId';
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([
             'cycleId' => $cycleId,
@@ -83,7 +83,7 @@ class InternshipRepository implements IRepository
             $params['cycleId'] = $cycleId;
         }
         if ($ownerUserId) {
-            $sql .= ' AND i.owner_user_id = :ownerUserId';
+            $sql .= ' AND i.created_by_user_id = :ownerUserId';
             $params['ownerUserId'] = $ownerUserId;
         }
         if ($searchQuery) {
@@ -141,7 +141,7 @@ class InternshipRepository implements IRepository
             $params['searchQuery'] = '%' . $searchQuery . '%';
         }
         if ($ownerUserId) {
-            $sql .= ' AND owner_user_id = :ownerId';
+            $sql .= ' AND created_by_user_id = :ownerId';
             $params['ownerId'] = $ownerUserId;
         }
         $stmt = $this->pdo->prepare($sql);
