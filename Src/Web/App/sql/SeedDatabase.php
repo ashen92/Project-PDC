@@ -1,6 +1,5 @@
 <?php
 
-use App\Constant\Constants;
 use App\DTOs\CreateRequirementDTO;
 use App\Entities\Event;
 use App\Entities\Internship;
@@ -349,7 +348,7 @@ $groupCoordinators->addUser($user1);
 $groupCoordinators->addUser($user2);
 
 $groupCycleStudents = new UserGroup(
-    Constants::AUTO_GENERATED_USER_GROUP_PREFIX->value . 'InternshipCycle-Students'
+    \App\Models\UserGroup::AUTO_GENERATED_USER_GROUP_PREFIX . 'InternshipCycle-Students'
 );
 $entityManager->persist($groupCycleStudents);
 $groupCycleStudents->addUser($user3);
@@ -359,7 +358,7 @@ for ($i = 1; $i < 200; $i++) {
 }
 
 $groupCyclePartnerAdmins = new UserGroup(
-    Constants::AUTO_GENERATED_USER_GROUP_PREFIX->value . 'InternshipCycle-Partner-Admins'
+    \App\Models\UserGroup::AUTO_GENERATED_USER_GROUP_PREFIX . 'InternshipCycle-Partner-Admins'
 );
 $entityManager->persist($groupCyclePartnerAdmins);
 $groupCyclePartnerAdmins->addUser($user4);
@@ -369,7 +368,7 @@ for ($i = 1; $i < 50; $i++) {
 }
 
 $groupCyclePartners = new UserGroup(
-    Constants::AUTO_GENERATED_USER_GROUP_PREFIX->value . 'InternshipCycle-Partners'
+    \App\Models\UserGroup::AUTO_GENERATED_USER_GROUP_PREFIX . 'InternshipCycle-Partners'
 );
 $entityManager->persist($groupCyclePartners);
 

@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use App\Constant\Constants;
 use App\DTOs\CreateUserDTO;
 use App\Exceptions\UserExistsException;
 use App\Models\InternshipCycle;
@@ -39,7 +38,7 @@ readonly class InternshipProgramService
             if (str_contains(strtolower($group->getName()), 'partner')) {
                 continue;
             }
-            if (str_starts_with($group->getName(), Constants::AUTO_GENERATED_USER_GROUP_PREFIX->value)) {
+            if (str_starts_with($group->getName(), UserGroup::AUTO_GENERATED_USER_GROUP_PREFIX)) {
                 continue;
             }
             $eligibleGroups[] = $group;
@@ -64,7 +63,7 @@ readonly class InternshipProgramService
             if (str_contains(strtolower($group->getName()), 'student')) {
                 continue;
             }
-            if (str_starts_with($group->getName(), Constants::AUTO_GENERATED_USER_GROUP_PREFIX->value)) {
+            if (str_starts_with($group->getName(), UserGroup::AUTO_GENERATED_USER_GROUP_PREFIX)) {
                 continue;
             }
             $eligibleGroups[] = $group;
@@ -90,12 +89,12 @@ readonly class InternshipProgramService
 
             $partnerGroup = $this->userRepository
                 ->createUserGroup(
-                    Constants::AUTO_GENERATED_USER_GROUP_PREFIX->value .
+                    UserGroup::AUTO_GENERATED_USER_GROUP_PREFIX .
                     "InternshipCycle-{$cycleId}-Partners"
                 );
             $studentGroup = $this->userRepository
                 ->createUserGroup(
-                    Constants::AUTO_GENERATED_USER_GROUP_PREFIX->value .
+                    UserGroup::AUTO_GENERATED_USER_GROUP_PREFIX .
                     "InternshipCycle-{$cycleId}-Students"
                 );
 
@@ -164,7 +163,7 @@ readonly class InternshipProgramService
 
         $this->userService->managePartner($managedBy, $userId);
 
-        $groupName = Constants::AUTO_GENERATED_USER_GROUP_PREFIX->value . "Users-Managed-By-$managedBy";
+        $groupName = UserGroup::AUTO_GENERATED_USER_GROUP_PREFIX . "Users-Managed-By-$managedBy";
         $group = $this->userRepository->findUserGroupByName($groupName);
 
         if (!$group) {
