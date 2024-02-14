@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+use App\Attributes\RequiredPolicy;
 use App\Attributes\RequiredRole;
 use App\DTOs\createInternshipDTO;
 use App\Models\InternshipCycle;
@@ -145,6 +146,7 @@ class InternshipsController extends PageControllerBase
         );
     }
 
+    #[RequiredPolicy(InternshipCycle\State::JobCollection)]
     #[Route('/create', methods: ['GET'])]
     public function createGET(Identity $identity): Response
     {

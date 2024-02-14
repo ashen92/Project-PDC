@@ -9,4 +9,6 @@ enum State
     case Applying;
     case Interning;
     case None;
+    case Started;
+    case Ended;
 }

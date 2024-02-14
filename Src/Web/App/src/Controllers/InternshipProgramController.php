@@ -5,7 +5,6 @@ namespace App\Controllers;
 
 use App\Attributes\RequiredPolicy;
 use App\Attributes\RequiredRole;
-use App\Constant\InternshipProgramState;
 use App\DTOs\CreateUserDTO;
 use App\Exceptions\UserExistsException;
 use App\Models\InternshipCycle;
@@ -104,7 +103,7 @@ class InternshipProgramController extends PageControllerBase
     }
 
     #[RequiredRole(Role::InternshipProgram_Admin)]
-    #[RequiredPolicy(InternshipProgramState::Ended)]
+    #[RequiredPolicy(InternshipCycle\State::Ended)]
     #[Route('/cycle/create', methods: ['GET'])]
     public function cycleCreateGET(): Response
     {
@@ -121,7 +120,7 @@ class InternshipProgramController extends PageControllerBase
     }
 
     #[RequiredRole(Role::InternshipProgram_Admin)]
-    #[RequiredPolicy(InternshipProgramState::Ended)]
+    #[RequiredPolicy(InternshipCycle\State::Ended)]
     #[Route('/cycle/create', methods: ['POST'])]
     public function cycleCreatePOST(Request $request): RedirectResponse
     {
@@ -137,7 +136,7 @@ class InternshipProgramController extends PageControllerBase
     }
 
     #[RequiredRole(Role::InternshipProgram_Admin)]
-    #[RequiredPolicy(InternshipProgramState::Active)]
+    #[RequiredPolicy(InternshipCycle\State::Active)]
     #[Route('/cycle/end')]
     public function cycleEnd(): RedirectResponse
     {

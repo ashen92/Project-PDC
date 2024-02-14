@@ -35,6 +35,10 @@ class InternshipCycle
         if ($this->interningStart <= $now && $now <= $this->interningEnd) {
             return State::Interning;
         }
+        if ($this->endedAt) {
+            return State::Ended;
+        }
+
         return State::None;
     }
 
@@ -62,6 +66,16 @@ class InternshipCycle
             return State::Interning;
         }
         return State::None;
+    }
+
+    public function isState(State $state): bool
+    {
+        $activeState = $this->getActiveState();
+        if ($state === $activeState) {
+            return true;
+        }
+
+        return $state === State::Ended;
     }
 
     public function getId(): int

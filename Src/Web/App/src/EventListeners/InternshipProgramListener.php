@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\EventListeners;
 
 use App\Attributes\RequiredPolicy;
-use App\Constant\InternshipProgramState;
+use App\Models\InternshipCycle\State;
 use App\Repositories\InternshipProgramRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
@@ -24,7 +24,7 @@ class InternshipProgramListener implements EventSubscriberInterface
         $controller = $event->getControllerReflector()->getDeclaringClass()->name;
         if (
             $controller != "App\Controllers\InternshipProgramController" &&
-            $controller != "App\Controllers\InternshipController" &&
+            $controller != "App\Controllers\InternshipsController" &&
             $controller != "App\Controllers\RequirementController"
         )
             return;
@@ -35,20 +35,15 @@ class InternshipProgramListener implements EventSubscriberInterface
         if (empty($attributes))
             return;
 
-        $state = $attributes[0]->newInstance()->policy;
-        if (!$state instanceof InternshipProgramState)
+        $requiredState = $attributes[0]->newInstance()->policy;
+        if (!$requiredState instanceof State)
             return;
 
         $activeCycle = $this->internshipProgramRepository->findLatestActiveCycle();
+        $currentState = $activeCycle->getActiveState();
 
-        if ($state === InternshipProgramState::Ended) {
-            if ($activeCycle)
-                throw new AccessDeniedHttpException();
-        }
-
-        if ($state === InternshipProgramState::Active) {
-            if (!$activeCycle)
-                throw new AccessDeniedHttpException();
+        if ($requiredState !== $currentState) {
+            throw new AccessDeniedHttpException();
         }
     }
 
