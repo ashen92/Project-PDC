@@ -3,7 +3,7 @@ import { on } from "../core/events";
 
 const params = new URLSearchParams(window.location.search);
 
-// --------------------------------------------------------------------------------------------
+//#region
 // This section handles the search bar
 
 const searchBtn = $("#search-btn");
@@ -31,7 +31,9 @@ if (query) {
     searchQueryElement.value = query;
 }
 
-// --------------------------------------------------------------------------------------------
+//#endregion
+
+//#region
 // This section handles the job list
 
 const jobDetailsContent = $("#job-details-content");
@@ -54,6 +56,16 @@ function fetchJobDetails(jobId) {
             jobDescription.innerHTML = data.description;
             jobDetailsSkeleton.classList.toggle("hidden");
             jobDetailsContent.classList.toggle("hidden");
+
+            if (applyBtn) {
+                let applyExternal = data.applyOnExternalWebsite;
+                applyBtn.dataset.applyExternal = data.applyOnExternalWebsite;
+                if (applyExternal) {
+                    applyBtn.dataset.externalUrl = data.externalWebsite;
+                } else {
+                    applyBtn.removeAttribute("data-external-url");
+                }
+            }
 
             if ("hasApplied" in data) {
                 if (data.hasApplied) {
@@ -99,7 +111,9 @@ on(document, "DOMContentLoaded", function () {
     fetchJobDetails(itemCard.getAttribute("data-job-id"));
 });
 
-// --------------------------------------------------------------------------------------------
+//#endregion
+
+//#region 
 // This section handles the buttons in the details pane
 
 const applicantsJobBtn = $("#applicants-job-btn");
@@ -122,10 +136,16 @@ on(removeJobBtn, "click", function () {
         .catch(error => console.error("Error deleting job:", error));
 });
 
-// --------------------------------------------------------------------------------------------
+//#endregion
+
+//#region
 // This section handles the applying for a internship
 
 on(applyBtn, "click", function () {
+    if (applyBtn.dataset.applyExternal === "true") {
+        window.open(applyBtn.dataset.externalUrl, "_blank", "noopener, noreferrer");
+        return;
+    }
     fetch("/api/internships/" + previouslySelectedItemCard.getAttribute("data-job-id") + "/apply", { method: "PUT" })
         .then(response => {
             if (response.status === 204) {
@@ -151,7 +171,9 @@ on(undoApplyBtn, "click", function () {
         .catch(error => console.error("Error undoing application for job:", error));
 });
 
-// --------------------------------------------------------------------------------------------
+//#endregion
+
+//#region 
 // This section handles the filtering of the job list
 
 const filterByCompany = $("#filter-by-company");
@@ -194,7 +216,9 @@ on(companyMultiSelectApplyBtn, "click", function () {
     window.location.href = `${window.location.pathname}?${params.toString()}`;
 });
 
-// --------------------------------------------------------------------------------------------
+//#endregion
+
+//#region
 // This section handles the pagination of the job list
 
 let btnNextPage = $("#btn-next-page");
@@ -212,4 +236,4 @@ on(btnPreviousPage, "click", function () {
     window.location.href = `${window.location.pathname}?${params.toString()}`;
 });
 
-// --------------------------------------------------------------------------------------------
+//#endregion
