@@ -48,6 +48,30 @@ let isLoading = false;
 const applyBtn = $("#btn-apply");
 const undoApplyBtn = $("#btn-undo-apply");
 
+function createApplyBtnIcon(btn,) {
+    let icon = btn.querySelector("i");
+    if (icon) {
+        return;
+    }
+
+    applyBtn.classList.add("btn-icon");
+
+    icon = document.createElement("i");
+    icon.classList.add("i", "i-box-arrow-up-left", "pb-1");
+
+    let btnText = applyBtn.firstChild;
+    applyBtn.insertBefore(icon, btnText);
+}
+
+function removeApplyBtnIcon(btn) {
+    let icon = btn.querySelector("i");
+    if (icon) {
+        icon.remove();
+        btn.classList.remove("btn-icon");
+        return;
+    }
+}
+
 function fetchJobDetails(jobId) {
     fetch(`/api/internships/${jobId}`, { method: "GET" })
         .then(response => response.json())
@@ -62,8 +86,10 @@ function fetchJobDetails(jobId) {
                 applyBtn.dataset.applyExternal = data.applyOnExternalWebsite;
                 if (applyExternal) {
                     applyBtn.dataset.externalUrl = data.externalWebsite;
+                    createApplyBtnIcon(applyBtn);
                 } else {
                     applyBtn.removeAttribute("data-external-url");
+                    removeApplyBtnIcon(applyBtn);
                 }
             }
 
