@@ -40,6 +40,12 @@ class Internship
     #[ORM\Column(type: 'datetime_immutable')]
     private DateTimeImmutable $createdAt;
 
+    #[ORM\Column(type: 'boolean')]
+    private bool $applyOnExternalWebsite;
+
+    #[ORM\Column(nullable: true)]
+    private ?string $externalWebsite;
+
     public function __construct(
         string $title,
         string $description,
@@ -47,6 +53,8 @@ class Internship
         InternshipCycle $internshipCycle,
         User $createdBy,
         Organization $organization,
+        bool $applyOnExternalWebsite,
+        ?string $externalWebsite = null,
     ) {
         $this->title = $title;
         $this->description = $description;
@@ -55,6 +63,8 @@ class Internship
         $this->createdBy = $createdBy;
         $this->organization = $organization;
         $this->createdAt = new DateTimeImmutable();
+        $this->applyOnExternalWebsite = $applyOnExternalWebsite;
+        $this->externalWebsite = $externalWebsite;
     }
 
     public function getId(): int

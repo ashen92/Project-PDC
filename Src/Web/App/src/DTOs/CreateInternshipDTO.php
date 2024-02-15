@@ -12,6 +12,8 @@ readonly class createInternshipDTO
         public string $description,
         public int $createdByUserId,
         public ?int $organizationId,
+        public bool $applyOnExternalWebsite,
+        public ?string $externalWebsite = null,
         public Status $status = Status::Draft,
     ) {
     }

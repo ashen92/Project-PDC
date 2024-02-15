@@ -166,11 +166,16 @@ class InternshipsController extends PageControllerBase
         $orgId = $identity->hasRole(Role::InternshipProgram_Admin) ?
             (int) $request->get('organization') : null;
 
+        $applyOnExternalWebsite = (bool) $request->get('apply-method');
+        $externalWebsite = $applyOnExternalWebsite ? $request->get('external-website') : null;
+
         $dto = new createInternshipDTO(
             $request->get('title'),
             $request->get('description'),
             (int) $request->getSession()->get('user_id'),
-            $orgId
+            $orgId,
+            $applyOnExternalWebsite,
+            $externalWebsite,
         );
 
         // TODO: Validate data
