@@ -113,6 +113,16 @@ class InternshipCycle
         return $this->applyingEnd;
     }
 
+    public function getInterningStart(): ?DateTimeImmutable
+    {
+        return $this->interningStart;
+    }
+
+    public function getInterningEnd(): ?DateTimeImmutable
+    {
+        return $this->interningEnd;
+    }
+
     public function getPartnerGroupIds(): array
     {
         return $this->partnerGroupIds;
