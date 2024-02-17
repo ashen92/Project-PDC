@@ -24,6 +24,7 @@ RUN docker-php-ext-install zip pdo pdo_mysql
 
 RUN a2enmod rewrite
 RUN a2enmod headers
+RUN a2enmod expires
 
 COPY ./.docker/apache/App.conf /etc/apache2/sites-available/App.conf
 COPY ./.docker/apache/apache2.conf /etc/apache2/apache2.conf
@@ -43,6 +44,7 @@ RUN chown -R www-data:www-data ./App/cache
 
 COPY --from=build /App/public/js/ ./App/public/js/
 COPY --from=build /App/public/css/ ./App/public/css/
+COPY --from=build /App/src/Pages/ ./App/src/Pages/
 
 #####
 ##### Configure SSH for Azure Web Service
