@@ -43,7 +43,6 @@ class InternMonitoringController extends PageControllerBase
             'internship-program/monitoring/students.html',
             [
                 'section' => 'monitoring',
-                'apiEndpoint' => 'http://localhost:80/api/intern-monitoring/students'
             ]
         );
     }
