@@ -44,7 +44,7 @@
         </colgroup>
         <thead>
             <tr>
-                <th><input type="checkbox"></th>
+                <th><input type="checkbox" title="Select All"></th>
                 <th>Group name</th>
                 <th>Assigned roles</th>
                 <th></th>
@@ -53,7 +53,7 @@
         <tbody class="table-rows-clickable">
             {% for i in groups %}
             <tr data-href="groups?g={{ i.id }}">
-                <td><input type="checkbox" id="{{ i.id }}"></td>
+                <td><input type="checkbox" id="{{ i.id }}" title="Select"></td>
                 <td>{{ i.name }}</td>
                 <td>{{ i.role }}</td>
                 <td></td>

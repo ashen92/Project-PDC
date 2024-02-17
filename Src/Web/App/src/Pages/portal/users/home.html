@@ -55,7 +55,7 @@
         </colgroup>
         <thead>
             <tr>
-                <th><input type="checkbox"></th>
+                <th><input type="checkbox" title="Select All"></th>
                 <th>Display name</th>
                 <th>Email</th>
                 <th>User type</th>
@@ -66,7 +66,7 @@
         <tbody class="table-rows-clickable">
             {% for i in users %}
             <tr data-href="users?u={{ i.id }}">
-                <td><input type="checkbox" id="{{ i.id }}"></td>
+                <td><input type="checkbox" id="{{ i.id }}" title="Select"></td>
                 <td class="capitalize">{{ i.firstName ?? i.fullName }}</td>
                 <td>{{ i.email ?? i.studentEmail }}</td>
                 <td class="capitalize">{{ i.type }}</td>
