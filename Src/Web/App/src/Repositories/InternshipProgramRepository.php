@@ -5,10 +5,8 @@ namespace App\Repositories;
 
 use App\Interfaces\IRepository;
 use App\Mappers\InternshipCycleMapper;
-use App\Mappers\StudentMapper;
 use App\Models\InternshipCycle;
 use App\Security\Role;
-use DateTimeImmutable;
 use PDO;
 
 class InternshipProgramRepository implements IRepository
@@ -68,25 +66,25 @@ class InternshipProgramRepository implements IRepository
 
     public function createCycle(): int
     {
-        $statement = $this->pdo->prepare('
-            INSERT INTO internship_cycles
+        $stmt = $this->pdo->prepare(
+            'INSERT INTO internship_cycles
             (createdAt)
             VALUES
-            (NOW())
-        ');
-        $statement->execute();
+            (NOW())'
+        );
+        $stmt->execute();
         return (int) $this->pdo->lastInsertId();
     }
 
     public function endCycle(): bool
     {
-        $statement = $this->pdo->prepare('
-            UPDATE internship_cycles
+        $stmt = $this->pdo->prepare(
+            'UPDATE internship_cycles
             SET endedAt = NOW()
-            WHERE endedAt IS NULL
-        ');
-        $statement->execute();
-        return $statement->rowCount() > 0;
+            WHERE endedAt IS NULL'
+        );
+        $stmt->execute();
+        return $stmt->rowCount() > 0;
     }
 
     public function updateCycleUserGroups(
@@ -131,6 +129,138 @@ class InternshipProgramRepository implements IRepository
                 SELECT id FROM roles WHERE name IN ('" . implode("','", $roles) . "'))";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
+        return $stmt->rowCount() > 0;
+    }
+
+    public function startJobCollection(int $cycleId): bool
+    {
+        $stmt = $this->pdo->prepare(
+            'UPDATE internship_cycles
+            SET jobCollectionStart = NOW()
+            WHERE id = :id'
+        );
+        $stmt->execute([':id' => $cycleId]);
+        return $stmt->rowCount() > 0;
+    }
+
+    public function undoStartJobCollection(int $cycleId): bool
+    {
+        $stmt = $this->pdo->prepare(
+            'UPDATE internship_cycles
+            SET jobCollectionStart = null
+            WHERE id = :id'
+        );
+        $stmt->execute([':id' => $cycleId]);
+        return $stmt->rowCount() > 0;
+    }
+
+    public function endJobCollection(int $cycleId): bool
+    {
+        $stmt = $this->pdo->prepare(
+            'UPDATE internship_cycles
+            SET jobCollectionEnd = NOW()
+            WHERE id = :id'
+        );
+        $stmt->execute([':id' => $cycleId]);
+        return $stmt->rowCount() > 0;
+    }
+
+    public function undoEndJobCollection(int $cycleId): bool
+    {
+        $stmt = $this->pdo->prepare(
+            'UPDATE internship_cycles
+            SET jobCollectionEnd = null
+            WHERE id = :id'
+        );
+        $stmt->execute([':id' => $cycleId]);
+        return $stmt->rowCount() > 0;
+    }
+
+    public function startApplying(int $cycleId): bool
+    {
+        $stmt = $this->pdo->prepare(
+            'UPDATE internship_cycles
+            SET applyingStart = NOW()
+            WHERE id = :id'
+        );
+        $stmt->execute([':id' => $cycleId]);
+        return $stmt->rowCount() > 0;
+    }
+
+    public function undoStartApplying(int $cycleId)
+    {
+        $stmt = $this->pdo->prepare(
+            'UPDATE internship_cycles
+            SET applyingStart = null
+            WHERE id = :id'
+        );
+        $stmt->execute([':id' => $cycleId]);
+        return $stmt->rowCount() > 0;
+    }
+
+    public function endApplying(int $cycleId)
+    {
+        $stmt = $this->pdo->prepare(
+            'UPDATE internship_cycles
+            SET applyingEnd = NOW()
+            WHERE id = :id'
+        );
+        $stmt->execute([':id' => $cycleId]);
+        return $stmt->rowCount() > 0;
+    }
+
+    public function undoEndApplying(int $cycleId)
+    {
+        $stmt = $this->pdo->prepare(
+            'UPDATE internship_cycles
+            SET applyingEnd = null
+            WHERE id = :id'
+        );
+        $stmt->execute([':id' => $cycleId]);
+        return $stmt->rowCount() > 0;
+    }
+
+    public function startInterning(int $cycleId)
+    {
+        $stmt = $this->pdo->prepare(
+            'UPDATE internship_cycles
+            SET interningStart = NOW()
+            WHERE id = :id'
+        );
+        $stmt->execute([':id' => $cycleId]);
+        return $stmt->rowCount() > 0;
+    }
+
+    public function undoStartInterning(int $cycleId)
+    {
+        $stmt = $this->pdo->prepare(
+            'UPDATE internship_cycles
+            SET interningStart = null
+            WHERE id = :id'
+        );
+        $stmt->execute([':id' => $cycleId]);
+        return $stmt->rowCount() > 0;
+    }
+
+    public function endInterning(int $cycleId)
+    {
+        $stmt = $this->pdo->prepare(
+            'UPDATE internship_cycles
+            SET interningEnd = NOW()
+            WHERE id = :id'
+        );
+        $stmt->execute([':id' => $cycleId]);
+        return $stmt->rowCount() > 0;
+    }
+
+    public function undoEndInterning(int $cycleId)
+    {
+        $stmt = $this->pdo->prepare(
+            'UPDATE internship_cycles
+            SET interningEnd = null
+            WHERE id = :id'
+        );
+        $stmt->execute([':id' => $cycleId]);
         return $stmt->rowCount() > 0;
     }
 }

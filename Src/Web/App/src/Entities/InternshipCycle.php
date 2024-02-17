@@ -23,22 +23,22 @@ class InternshipCycle
     #[ORM\Column(type: 'datetime', nullable: true)]
     private ?DateTimeImmutable $endedAt;
 
-    #[ORM\Column(type: 'date', nullable: true)]
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private ?DateTimeImmutable $jobCollectionStart;
 
-    #[ORM\Column(type: 'date', nullable: true)]
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private ?DateTimeImmutable $jobCollectionEnd;
 
-    #[ORM\Column(type: 'date', nullable: true)]
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private ?DateTimeImmutable $applyingStart;
 
-    #[ORM\Column(type: 'date', nullable: true)]
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private ?DateTimeImmutable $applyingEnd;
 
-    #[ORM\Column(type: 'date', nullable: true)]
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private ?DateTimeImmutable $interningStart;
 
-    #[ORM\Column(type: 'date', nullable: true)]
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private ?DateTimeImmutable $interningEnd;
 
     #[ORM\OneToOne(targetEntity: UserGroup::class)]

@@ -573,8 +573,6 @@ $internshipCycle->addPartnerGroup($groupCyclePartnerAdmins);
 $internshipCycle->addPartnerGroup($groupCyclePartners);
 $internshipCycle->setStudentGroup($groupCycleStudents);
 
-$internshipCycle->setJobCollectionStart(new DateTimeImmutable());
-
 $internships = [];
 
 $counter = 0;

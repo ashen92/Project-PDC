@@ -352,6 +352,15 @@ $container->register(
 #region API Controllers
 
 $container->register(
+    'App\Controllers\API\InternshipProgramAPIController',
+    \App\Controllers\API\InternshipProgramAPIController::class
+)
+    ->setArguments([
+        new Reference('service.internship_program'),
+    ])
+    ->setPublic(true);
+
+$container->register(
     'App\Controllers\API\InternshipsAPIController',
     \App\Controllers\API\InternshipsAPIController::class
 )
