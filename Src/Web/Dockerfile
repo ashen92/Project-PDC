@@ -5,7 +5,6 @@
 FROM node:18.18-slim AS build
 
 COPY . .
-WORKDIR /App
 
 RUN npm install -g gulp-cli
 RUN npm install
@@ -16,15 +15,12 @@ RUN gulp --gulpfile gulpfile.prod.js
 ##### Production Stage
 #####
 
-FROM php:8.1-apache
+FROM php:8.3-apache
 RUN apt-get update && apt-get install -y
 RUN apt-get install git libzip-dev dos2unix -y
 
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 RUN docker-php-ext-install zip pdo pdo_mysql
-
-RUN pecl install apcu \
-    && docker-php-ext-enable apcu
 
 RUN a2enmod rewrite
 RUN a2enmod headers
@@ -35,16 +31,18 @@ COPY ./.docker/apache/mime.conf /etc/apache2/mods-enabled/mime.conf
 RUN a2dissite 000-default.conf
 RUN a2ensite App
 
-COPY ./App/ /var/www/
-COPY ./.docker/config/doctrine-config.php /var/www/src/doctrine-config.php
+COPY . /var/www/
+COPY ./.docker/config/doctrine-config.php /var/www/App/src/doctrine-config.php
+COPY ./.docker/config/container.php /var/www/App/src/container.php
 COPY --from=composer/composer:latest-bin /composer /usr/bin/composer
 
 WORKDIR /var/www/
-
-COPY --from=build /App/public/js/ ./public/js/
-COPY --from=build /App/public/css/ ./public/css/
-
 RUN composer install --no-dev --optimize-autoloader
+RUN mkdir ./App/cache
+RUN chown -R www-data:www-data ./App/cache
+
+COPY --from=build /App/public/js/ ./App/public/js/
+COPY --from=build /App/public/css/ ./App/public/css/
 
 #####
 ##### Configure SSH for Azure Web Service

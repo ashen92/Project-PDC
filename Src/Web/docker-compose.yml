@@ -2,6 +2,12 @@ version: "3"
 services:
   web:
     image: ashensandaruwan/groupproject
+    environment:
+      - IS_PRODUCTION=1
+      - DB_HOST=db
+      - DB_DATABASE=pdc
+      - DB_USERNAME=root
+      - DB_PASSWORD=root
     ports:
       - "8080:80"
     depends_on:

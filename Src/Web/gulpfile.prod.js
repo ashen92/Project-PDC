@@ -1,17 +1,29 @@
-const gulp = require("gulp");
-const esbuild = require("esbuild");
-const sass = require("gulp-sass")(require("sass"));
-const autoprefixer = require("gulp-autoprefixer");
-const cleanCSS = require("gulp-clean-css");
-const rename = require("gulp-rename");
+import gulp from "gulp";
+import esbuild from "esbuild";
+import autoprefixer from "gulp-autoprefixer";
+import cleanCSS from "gulp-clean-css";
+import rename from "gulp-rename";
+import dartSass from "sass";
+import gulpSass from "gulp-sass";
+const sass = gulpSass(dartSass);
 
 gulp.task("build-js", function (done) {
     esbuild.build({
-        entryPoints: ["./App/src/wwwroot/js/*.js"],
+        entryPoints: ["./App/src/wwwroot/js/pages/**/*.js"],
         bundle: true,
         minify: true,
         sourcemap: false,
         outdir: "./App/public/js",
+    }).then(() => done()).catch(() => done("Build failed"));
+});
+
+gulp.task("build-js-components", function (done) {
+    esbuild.build({
+        entryPoints: ["./App/src/wwwroot/js/components/main.js"],
+        bundle: true,
+        minify: true,
+        sourcemap: false,
+        outfile: "./App/public/js/components.js",
     }).then(() => done()).catch(() => done("Build failed"));
 });
 
@@ -38,4 +50,4 @@ gulp.task("build-css", () => {
         .pipe(gulp.dest("./App/public/css"));
 });
 
-gulp.task("default", gulp.parallel("scss", "build-js"));
+gulp.task("default", gulp.parallel("scss", "build-js", "build-js-components", "build-css"));
