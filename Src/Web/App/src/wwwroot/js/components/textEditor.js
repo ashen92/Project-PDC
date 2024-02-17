@@ -1,5 +1,5 @@
 import { $ } from "../core/dom.js";
-import Quill from "../components/quill.js";
+import Quill from "quill";
 
 function textEditor(textEditorElementSelector, textEditorContent, textEditorPlaceholder, textValueElementSelector) {
     let toolbarOptions = [["bold", "italic"], [{ "list": "bullet" }, { "list": "ordered" }]];

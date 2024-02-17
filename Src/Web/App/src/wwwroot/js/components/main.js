@@ -1,6 +1,6 @@
-import { filePicker } from "./filePicker.js";
-import { textEditor } from "./textEditor.js";
-import * as table from "./table.js";
+import { filePicker } from "./filePicker";
+import { textEditor } from "./textEditor";
+import * as table from "./table";
 
 window.filePicker = filePicker;
 window.textEditor = textEditor;
