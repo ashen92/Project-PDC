@@ -64,9 +64,6 @@ class InternMonitoringController extends PageControllerBase
             [
                 'section' => 'monitoring',
                 'requirement' => $requirement,
-                'apiEndpoint' => 'http://localhost:80/api/intern-monitoring/requirements/'
-                    . $requirementId .
-                    '/user-requirements',
             ]
         );
     }
