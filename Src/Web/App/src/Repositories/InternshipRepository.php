@@ -66,10 +66,12 @@ class InternshipRepository implements IRepository
      */
     public function searchInternships(
         ?int $cycleId,
-        ?int $ownerUserId,
         ?string $searchQuery,
+        ?array $filterByOrgIds,
+        ?array $filterByStatuses,
         ?int $numberOfResults,
         ?int $offsetBy,
+        ?int $filterByCreatorUserId,
     ): array {
         $sql = 'SELECT i.*, o.name AS orgName, o.logoFilePath AS orgLogoFilePath
                 FROM internships i
@@ -79,9 +81,17 @@ class InternshipRepository implements IRepository
             $sql .= ' AND i.internship_cycle_id = :cycleId';
             $params['cycleId'] = $cycleId;
         }
-        if ($ownerUserId) {
-            $sql .= ' AND i.created_by_user_id = :ownerUserId';
-            $params['ownerUserId'] = $ownerUserId;
+        if ($filterByOrgIds) {
+            $val = implode(',', $filterByOrgIds);
+            $sql .= " AND i.organization_id in ($val)";
+        }
+        if ($filterByStatuses) {
+            $val = implode(',', $filterByStatuses);
+            $sql .= " AND i.status in ($val)";
+        }
+        if ($filterByCreatorUserId) {
+            $sql .= ' AND i.created_by_user_id = :creatorUserId';
+            $params['creatorUserId'] = $filterByCreatorUserId;
         }
         if ($searchQuery) {
             $sql .= ' AND i.title LIKE :searchQuery';

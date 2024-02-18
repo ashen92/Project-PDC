@@ -49,9 +49,11 @@ readonly class InternshipService
     public function searchInternships(
         int $cycleId,
         ?string $searchQuery,
-        ?int $ownerUserId,
+        ?array $filterByOrgIds,
+        ?array $filterByStatuses,
         ?int $numberOfResults,
         ?int $offsetBy,
+        ?int $filterByCreatorUserId = null,
     ): array {
 
         // TODO: Check if internship cycle exists
@@ -59,10 +61,12 @@ readonly class InternshipService
 
         $result = $this->internshipRepository->searchInternships(
             $cycleId,
-            $ownerUserId,
             $searchQuery,
+            $filterByOrgIds,
+            $filterByStatuses,
             $numberOfResults,
             $offsetBy,
+            $filterByCreatorUserId,
         );
 
         return $this->setOrgLogos($result);

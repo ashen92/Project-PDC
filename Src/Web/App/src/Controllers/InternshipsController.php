@@ -45,6 +45,12 @@ class InternshipsController extends PageControllerBase
         $searchQuery = $queryParams['q'] ?? null;
         $pageNumber = $queryParams['p'] ?? 1;
 
+        $orgIds = $queryParams['c'] ?? null;
+        if ($orgIds) {
+            $orgIds = explode(',', $orgIds);
+            $orgIds = array_map('intval', $orgIds);
+        }
+
         // TODO: Validate query params
 
         $cycleId = $cycle->getId();
@@ -56,9 +62,11 @@ class InternshipsController extends PageControllerBase
                 ->searchInternships(
                     $cycleId,
                     $searchQuery,
-                    $userId,
+                    null,
+                    null,
                     self::MAX_INTERNSHIP_RESULTS_PER_PAGE,
-                    (int) (($pageNumber - 1) * self::MAX_INTERNSHIP_RESULTS_PER_PAGE)
+                    (int) (($pageNumber - 1) * self::MAX_INTERNSHIP_RESULTS_PER_PAGE),
+                    $userId
                 );
 
             $numberOfResults = $this->internshipService->getInternshipCount(
@@ -71,6 +79,7 @@ class InternshipsController extends PageControllerBase
                 ->searchInternships(
                     $cycleId,
                     $searchQuery,
+                    $orgIds,
                     null,
                     self::MAX_INTERNSHIP_RESULTS_PER_PAGE,
                     (int) (($pageNumber - 1) * self::MAX_INTERNSHIP_RESULTS_PER_PAGE)

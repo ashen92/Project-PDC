@@ -130,11 +130,13 @@ on(jobList, "click", function (event) {
 
 on(document, "DOMContentLoaded", function () {
     const itemCard = document.querySelector(".job");
-    itemCard.classList.toggle("active");
-    previouslySelectedItemCard = itemCard;
+    if (itemCard) {
+        itemCard.classList.toggle("active");
+        previouslySelectedItemCard = itemCard;
 
-    isLoading = true;
-    fetchJobDetails(itemCard.getAttribute("data-job-id"));
+        isLoading = true;
+        fetchJobDetails(itemCard.getAttribute("data-job-id"));
+    }
 });
 
 //#endregion
@@ -214,6 +216,27 @@ const companyMultiSelectResetBtn = $("#company-multi-select-list-reset-btn");
 const companyMultiSelectHideBtn = $("#company-multi-select-list-hide-btn");
 
 let companyCheckboxes = $all("#company-multi-select-list input[type=checkbox]");
+
+let filterByCompanyParam = params.get("c");
+if (filterByCompanyParam) {
+    filterByCompanyParam.split(",").map(function (i) {
+        const parsed = parseInt(i, 10);
+        if (isNaN(parsed)) {
+            return null;
+        }
+        return parsed;
+    });
+}
+
+on(document, "DOMContentLoaded", function () {
+    if (filterByCompanyParam) {
+        companyCheckboxes.forEach(checkbox => {
+            if (filterByCompanyParam.includes(parseInt(checkbox.getAttribute("id")))) {
+                checkbox.checked = true;
+            }
+        });
+    }
+});
 
 on(companyMultiSelectResetBtn, "click", function () {
     companyCheckboxes.forEach(checkbox => {
