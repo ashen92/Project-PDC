@@ -6,31 +6,6 @@ use App\Security\IdentityResolver;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
-\Doctrine\DBAL\Types\Type::addType(
-    'requirement_type',
-    'App\DoctrineTypes\Requirement\TypeType'
-);
-\Doctrine\DBAL\Types\Type::addType(
-    'requirement_repeat_interval',
-    'App\DoctrineTypes\Requirement\RepeatIntervalType'
-);
-\Doctrine\DBAL\Types\Type::addType(
-    'requirement_fulfill_method',
-    'App\DoctrineTypes\Requirement\FulFillMethodType'
-);
-\Doctrine\DBAL\Types\Type::addType(
-    'user_requirement_status',
-    'App\DoctrineTypes\UserRequirement\StatusType'
-);
-\Doctrine\DBAL\Types\Type::addType(
-    'application_status',
-    'App\DoctrineTypes\Application\StatusType'
-);
-\Doctrine\DBAL\Types\Type::addType(
-    'internship_status',
-    'App\DoctrineTypes\Internship\StatusType'
-);
-
 $cachedContainerFile = __DIR__ . '/../cache/container.php';
 
 if (getenv('IS_PRODUCTION') && file_exists($cachedContainerFile)) {
@@ -84,37 +59,6 @@ $container->register(
         '%pdo_mysql.password%'
     ]);
 
-$container->setParameter('doctrine.params', require_once 'doctrine-config.php');
-
-$container->register(
-    'doctrine.config',
-    Doctrine\ORM\ORMSetup::class
-)
-    ->setFactory([Doctrine\ORM\ORMSetup::class, 'createAttributeMetadataConfiguration'])
-    ->setArguments([
-        array(__DIR__ . '/Entities'),
-        true,
-    ]);
-
-$container->register(
-    'doctrine.connection',
-    Doctrine\DBAL\DriverManager::class
-)
-    ->setFactory([Doctrine\DBAL\DriverManager::class, 'getConnection'])
-    ->setArguments([
-        '%doctrine.params%',
-        new Reference('doctrine.config')
-    ]);
-
-$container->register(
-    'doctrine.entity_manager',
-    Doctrine\ORM\EntityManager::class
-)
-    ->setArguments([
-        new Reference('doctrine.connection'),
-        new Reference('doctrine.config')
-    ]);
-
 #endregion
 
 #region Repositories ---------------------------------------------------------------
@@ -149,7 +93,6 @@ $container->register(
 )
     ->setArguments([
         new Reference('pdo_mysql_connection'),
-        new Reference('doctrine.entity_manager'),
     ]);
 
 $container->register(
@@ -288,7 +231,6 @@ $container->register(
     App\Services\EventService::class
 )
     ->setArguments([
-        new Reference('doctrine.entity_manager')
     ]);
 
 $container->register(

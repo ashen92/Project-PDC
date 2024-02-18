@@ -33,7 +33,6 @@ RUN a2dissite 000-default.conf
 RUN a2ensite App
 
 COPY . /var/www/
-COPY ./.docker/config/doctrine-config.php /var/www/App/src/doctrine-config.php
 COPY ./.docker/config/container.php /var/www/App/src/container.php
 COPY --from=composer/composer:latest-bin /composer /usr/bin/composer
 
