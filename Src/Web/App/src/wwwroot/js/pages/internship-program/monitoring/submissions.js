@@ -80,7 +80,7 @@ const grid = new Grid({
     ],
     server: {
         url: apiEndpoint,
-        then: data => data.map(u => [
+        then: data => data.data.map(u => [
             u.id,
             u.indexNumber,
             u.fullName,
@@ -90,13 +90,20 @@ const grid = new Grid({
             u.endDate,
             u.fulfillMethod,
             u.files
-        ])
+        ]),
+        total: data => data.totalCount
     },
     search: {
         server: {
             url: (prev, keyword) => `${prev}?q=${keyword}`
         }
     },
+    pagination: {
+        limit: 50,
+        server: {
+            url: (prev, page) => `${prev}?page=${page}`
+        }
+    }
 });
 grid.render($("#user-requirements-grid"));
 grid.on("rowClick", (e, row) => {
