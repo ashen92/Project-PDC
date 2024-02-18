@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
-use App\Entities\Event;
 use App\Services\EventService;
 use DateTime;
 use Symfony\Component\HttpFoundation\Request;

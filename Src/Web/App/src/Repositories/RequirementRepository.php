@@ -4,24 +4,20 @@ declare(strict_types=1);
 namespace App\Repositories;
 
 use App\DTOs\CreateRequirementDTO;
-use App\DTOs\CreateUserRequirementDTO;
-use App\Entities\Requirement;
-use App\Entities\User;
-use App\Entities\UserRequirement;
 use App\Interfaces\IRepository;
 use App\Mappers\RequirementMapper;
 use App\Mappers\UserRequirementMapper;
+use App\Models\Requirement;
+use App\Models\UserRequirement;
 use App\Models\UserRequirement\Status;
-use Doctrine\ORM\EntityManager;
+use DateTime;
 use PDO;
 
-class RequirementRepository extends Repository implements IRepository
+readonly class RequirementRepository implements IRepository
 {
     public function __construct(
-        private readonly PDO $pdo,
-        EntityManager $entityManager
+        private PDO $pdo
     ) {
-        parent::__construct($entityManager);
     }
 
     public function beginTransaction(): void
@@ -39,7 +35,7 @@ class RequirementRepository extends Repository implements IRepository
         $this->pdo->rollBack();
     }
 
-    public function findRequirement(int $id): ?\App\Models\Requirement
+    public function findRequirement(int $id): ?Requirement
     {
         $sql = "SELECT * FROM requirements WHERE id = :id";
         $statement = $this->pdo->prepare($sql);
@@ -71,7 +67,7 @@ class RequirementRepository extends Repository implements IRepository
         }, $results);
     }
 
-    public function findUserRequirement(int $id): ?\App\Models\UserRequirement
+    public function findUserRequirement(int $id): ?UserRequirement
     {
         $sql = "SELECT * FROM user_requirements WHERE id = :id";
         $statement = $this->pdo->prepare($sql);
@@ -87,7 +83,6 @@ class RequirementRepository extends Repository implements IRepository
     }
 
     /**
-     * @param array $criteria
      * @return array</App/Models/UserRequirement>
      */
     public function findAllUserRequirements(
@@ -232,7 +227,7 @@ class RequirementRepository extends Repository implements IRepository
             $stmt = $this->pdo->prepare($sql);
             if(!$stmt->execute([
                 "status" => Status::FULFILLED->value,
-                "completedAt" => (new \DateTime())->format(self::DATE_TIME_FORMAT),
+                "completedAt" => (new DateTime())->format(self::DATE_TIME_FORMAT),
                 "id" => $id,
             ])) {
                 return false;
@@ -268,7 +263,7 @@ class RequirementRepository extends Repository implements IRepository
         $stmt = $this->pdo->prepare($sql);
         return $stmt->execute([
             "status" => Status::FULFILLED->value,
-            "completedAt" => (new \DateTime())->format(self::DATE_TIME_FORMAT),
+            "completedAt" => (new DateTime())->format(self::DATE_TIME_FORMAT),
             "textResponse" => $textResponse,
             "id" => $id,
         ]);
