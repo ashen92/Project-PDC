@@ -1,4 +1,5 @@
-@use "../variables" as *;
+@use '../variables' as *;
+@use '../mixins';
 
 .btn {
     display: inline-block;
@@ -6,91 +7,129 @@
     font-size: $btn-font-size;
     font-weight: $btn-font-weight;
     line-height: $btn-line-height;
-    color: $btn-color;
-    background-color: $btn-bg;
     text-align: center;
     cursor: pointer;
     user-select: none;
     border: $btn-border;
     border-radius: $btn-border-radius;
-    border-color: $btn-border-color;
     box-shadow: $btn-box-shadow;
     transition: $btn-transition;
 
-    &:hover {
-        color: $btn-hover-color;
-        background-color: $btn-hover-bg;
-        border-color: $btn-hover-border-color;
-    }
-
-    &:active {
-        color: $btn-active-color;
-        background-color: $btn-active-bg;
-        border-color: $btn-active-border-color;
-    }
-
     &:focus-visible {
-        color: $btn-hover-color;
-        border-color: $btn-hover-border-color;
         outline: 0;
         box-shadow: $btn-focus-box-shadow;
     }
 
     &:disabled,
     &.disabled {
-        color: $btn-disabled-color;
         pointer-events: none;
-        background-color: $btn-disabled-bg;
-        border-color: $btn-disabled-border-color;
         box-shadow: none;
-    }
-
-    &.btn-regular {
-        color: $btn-regular;
-        background-color: $btn-regular-bg;
-        border: none;
-        box-shadow: none;
-
-        &:hover {
-            color: $btn-regular;
-            background-color: $btn-regular-hover-bg;
-        }
-
-        &:active {
-            color: $btn-regular;
-            background-color: $btn-regular-active-bg;
-        }
-
-        &:disabled,
-        &.disabled {
-            color: $btn-regular-disabled-color;
-            pointer-events: none;
-        }
-    }
-
-    &.btn-secondary {
-        color: $btn-secondary;
-        background-color: $btn-secondary-bg;
-        border-color: $btn-secondary-border-color;
-
-        &:hover {
-            color: $btn-secondary;
-            background-color: $btn-secondary-hover-bg;
-        }
-
-        &:active {
-            color: $btn-secondary;
-            background-color: $btn-secondary-active-bg;
-        }
     }
 }
 
 .btn-icon {
     display: inline-flex;
-    padding-left: 14px;
-    column-gap: 12px;
+    padding-left: 16px;
+    align-items: center;
+    column-gap: 0.3rem;
+
+    .i {
+        font-size: 1.2rem;
+        line-height: 1;
+    }
+}
+
+.btn-regular {
+    @include mixins.button-variant(#323130,
+        transparent,
+        #8a8886,
+        #323130,
+        #f2f2f2,
+        #8a8886,
+        #323130,
+        #dedede,
+        #8a8886,
+        #979796,
+        transparent,
+        #8a8886);
+
+    border: none;
+    box-shadow: none;
+}
+
+.btn-primary {
+    @include mixins.button-variant(#fff,
+        #006fc9,
+        #006fc9,
+        #fff,
+        #0064b5,
+        #0064b5,
+        #fff,
+        #005499,
+        #005499,
+        #fff,
+        #afc7e9,
+        #afc7e9);
+}
+
+.btn-secondary {
+    @include mixins.button-variant(#323130,
+        #fff,
+        #8a8886,
+        #323130,
+        #e8e8e8,
+        #8a8886,
+        #323130,
+        #dedede,
+        #8a8886,
+        #939393,
+        #e8e8e8,
+        #e8e8e8);
+}
+
+.btn-danger {
+    @include mixins.button-variant(#fff,
+        #d13438,
+        #d13438,
+        #fff,
+        #c12f33,
+        #d13438,
+        #fff,
+        #b22a2e,
+        #d13438,
+        #e8e8e8,
+        #cd9193,
+        #cd9193);
 }
 
 .btn-outline {
-    // @include button-outline-variant($value);
+    &-primary {
+        @include mixins.button-variant(#006fc9,
+            transparent,
+            #006fc9,
+            #006fc9,
+            #46acff41,
+            #006fc9,
+            #006fc9,
+            #46acff66,
+            #006fc9,
+            $btn-disabled,
+            $btn-disabled-bg,
+            $btn-disabled-border);
+    }
+
+    &-danger {
+        @include mixins.button-variant(#d13438,
+            transparent,
+            #d13438,
+            #fff,
+            #d13438,
+            #d13438,
+            #fff,
+            #c12f33,
+            #d13438,
+            $btn-disabled,
+            $btn-disabled-bg,
+            $btn-disabled-border);
+    }
 }

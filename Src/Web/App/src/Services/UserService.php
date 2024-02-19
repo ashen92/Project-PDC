@@ -5,16 +5,16 @@ namespace App\Services;
 
 use App\DTOs\CreateStudentUserDTO;
 use App\DTOs\CreateUserDTO;
-use App\Entities\User;
 use App\Exceptions\UserExistsException;
 use App\Interfaces\IEmailService;
 use App\Interfaces\IPasswordHasher;
-use App\Interfaces\IUserService;
+use App\Models\Partner;
+use App\Models\Student;
+use App\Models\User;
 use App\Models\UserInviteEmail;
 use App\Repositories\UserRepository;
-use App\Security\Role;
 
-class UserService implements IUserService
+readonly class UserService
 {
     public function __construct(
         private UserRepository $userRepository,
@@ -23,40 +23,46 @@ class UserService implements IUserService
     ) {
     }
 
-    public function createUser(CreateUserDTO $userDTO): User
+    /**
+     * @return int The ID of the created user
+     * @throws UserExistsException If a user with the same email already exists
+     */
+    public function createUser(CreateUserDTO $userDTO): int
     {
-        if ($userDTO->userType == "student") {
-            $user = $this->userRepository->findByStudentEmail($userDTO->studentEmail);
-        } else {
-            $user = $this->userRepository->findByEmail($userDTO->email);
+        if (
+            $this->userRepository->doesUserExist(
+                $userDTO->email ?? $userDTO->studentEmail,
+                !$userDTO->email
+            )
+        ) {
+            throw new UserExistsException();
         }
 
-        if ($user === null) {
-            $user = $this->userRepository->createUser($userDTO);
+        $userId = $this->userRepository->createUser($userDTO);
 
-            if ($userDTO->userType != "student" || ($userDTO->userType == "student" && $userDTO->sendEmail !== null)) {
+        if ($userDTO->userType != "student" || ($userDTO->userType == "student" && $userDTO->sendEmail !== null)) {
 
-                if ($userDTO->userType == "student") {
-                    $mail = new UserInviteEmail(
-                        $user->getStudentEmail(),
-                        $user->getFullName(),
-                        $user->generateActivationToken()
-                    );
-                } else {
-                    $mail = new UserInviteEmail(
-                        $user->getEmail(),
-                        $user->getFirstName(),
-                        $user->generateActivationToken()
-                    );
-                }
-
-                $this->userRepository->save($user);
-
-                $this->emailService->sendEmail($mail);
+            if ($userDTO->userType == "student") {
+                $user = $this->userRepository->findStudent($userId);
+                $mail = new UserInviteEmail(
+                    $user->getStudentEmail(),
+                    $user->getFullName(),
+                    $user->generateActivationToken()
+                );
+            } else {
+                $user = $this->userRepository->findUser($userId);
+                $mail = new UserInviteEmail(
+                    $user->getEmail(),
+                    $user->getFirstName(),
+                    $user->generateActivationToken()
+                );
             }
-            return $user;
+
+            $this->userRepository->updateUser($user);
+
+            $this->emailService->sendEmail($mail);
         }
-        throw new UserExistsException();
+        return $userId;
     }
 
     public function createStudentUser(CreateStudentUserDTO $createStudentDTO): void
@@ -73,48 +79,58 @@ class UserService implements IUserService
         $this->userRepository->updateUser($user);
     }
 
-    public function getUserRoles(int $userId): array
+    public function getUser(int $id): ?User
     {
-        return $this->userRepository->findUserRoles($userId);
+        return $this->userRepository->findUser($id);
     }
 
-    public function hasRole(int $userId, Role $role): bool
-    {
-        if ($role == "")
-            return true;
-        $roles = $this->userRepository->findUserRoles($userId);
-        if (in_array($role->value, $roles))
-            return true;
-        return false;
-    }
-
-    #[\Override] public function getUserByEmail(string $email): ?\App\Models\User
+    public function getUserByEmail(string $email): ?User
     {
         return $this->userRepository->findByEmail($email);
     }
 
-    public function getUserByStudentEmail(string $email): ?User
+    public function getStudentByStudentEmail(string $email): ?Student
     {
-        return $this->userRepository->findByStudentEmail($email);
+        return $this->userRepository->findStudentByStudentEmail($email);
     }
 
-    #[\Override] public function getUserByActivationToken(string $token): ?\App\Models\User
+    public function getUserByActivationToken(string $token): ?User
     {
         return $this->userRepository->findByActivationToken($token);
     }
 
-    public function saveUser(User $user): void
+    public function generateActivationToken(User $user): string
     {
-        $this->userRepository->save($user);
+        $token = $user->generateActivationToken();
+        $this->userRepository->updateUser($user);
+        return $token;
     }
 
+    /**
+     * @return array<Partner>
+     */
     public function getManagedUsers(int $userId): array
     {
         return $this->userRepository->findManagedUsers($userId);
     }
 
-    #[\Override] public function updateUser(\App\Models\User $user): void
+    public function updateUser(User $user): void
     {
         $this->userRepository->updateUser($user);
+    }
+
+    public function searchUsers(?int $numberOfResults, ?int $offsetBy): array
+    {
+        return $this->userRepository->searchUsers($numberOfResults, $offsetBy);
+    }
+
+    public function searchGroups(?int $numberOfResults, ?int $offsetBy): array
+    {
+        return $this->userRepository->searchGroups($numberOfResults, $offsetBy);
+    }
+
+    public function managePartner(int $managedBy, int $partnerId): bool
+    {
+        return $this->userRepository->managePartner($managedBy, $partnerId);
     }
 }

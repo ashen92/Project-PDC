@@ -3,19 +3,18 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use App\Interfaces\IAuthenticationService;
 use App\Interfaces\IPasswordHasher;
-use App\Interfaces\IUserService;
+use App\Models\User;
 
-class AuthenticationService implements IAuthenticationService
+readonly class AuthenticationService
 {
     public function __construct(
-        private IUserService $userService,
+        private UserService $userService,
         private IPasswordHasher $passwordHasher
     ) {
     }
 
-    public function login(string $email, string $password): ?\App\Models\User
+    public function login(string $email, string $password): ?User
     {
         $user = $this->userService->getUserByEmail($email);
 

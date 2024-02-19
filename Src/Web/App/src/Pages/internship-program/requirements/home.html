@@ -20,9 +20,9 @@
 
     <table class="table table-hover">
         <colgroup>
-            <col class="w-3-5">
-            <col class="w-1-5">
-            <col class="w-1-5">
+            <col class="w-3/5">
+            <col class="w-1/5">
+            <col class="w-1/5">
         </colgroup>
         <thead>
             <tr>
@@ -37,9 +37,9 @@
             <tr data-href="/internship-program/requirements/{{ i.id }}">
                 <td>{{ r.name }}</td>
                 <td class="capitalize">
-                    {% set requirementType = r.requirementType.toString %}
+                    {% set requirementType = r.requirementType.value %}
                     {% if requirementType == "recurring" %}
-                    {{ requirementType }} ({{ r.repeatInterval.toString }})
+                    {{ requirementType }} ({{ r.repeatInterval.value }})
                     {% else %}
                     {{ requirementType }}
                     {% endif %}
@@ -52,5 +52,8 @@
 
     {% endif %}
 </section>
+<script>
+    table.makeRowsClickable(".table-rows-clickable");
+</script>
 
 {% endblock %}

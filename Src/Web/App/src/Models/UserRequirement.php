@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Models\Requirement\FulFillMethod;
+use DateTimeImmutable;
 
 class UserRequirement
 {
@@ -12,21 +13,12 @@ class UserRequirement
         private int $userId,
         private int $requirementId,
         private FulFillMethod $fulfillMethod,
-        private \DateTimeImmutable $startDate,
-        private \DateTimeImmutable $endDate,
-        private ?\DateTimeImmutable $completedAt,
+        private DateTimeImmutable $startDate,
+        private DateTimeImmutable $endDate,
+        private ?DateTimeImmutable $completedAt,
         private string $status,
-        private ?array $filePaths,
         private ?string $textResponse,
     ) {
-    }
-
-    public function fulfill(?array $filePaths = null, ?string $textResponse = null)
-    {
-        $this->filePaths = $filePaths;
-        $this->textResponse = $textResponse;
-        $this->completedAt = new \DateTimeImmutable();
-        $this->status = "fulfilled";
     }
 
     public function getId(): int
@@ -49,17 +41,17 @@ class UserRequirement
         return $this->fulfillMethod;
     }
 
-    public function getStartDate(): \DateTimeImmutable
+    public function getStartDate(): DateTimeImmutable
     {
         return $this->startDate;
     }
 
-    public function getEndDate(): \DateTimeImmutable
+    public function getEndDate(): DateTimeImmutable
     {
         return $this->endDate;
     }
 
-    public function getCompletedAt(): ?\DateTimeImmutable
+    public function getCompletedAt(): ?DateTimeImmutable
     {
         return $this->completedAt;
     }
@@ -69,23 +61,8 @@ class UserRequirement
         return $this->status;
     }
 
-    public function getFilePaths(): ?array
-    {
-        return $this->filePaths;
-    }
-
     public function getTextResponse(): ?string
     {
         return $this->textResponse;
-    }
-
-    public function setStartDate(\DateTimeImmutable $startDate): void
-    {
-        $this->startDate = $startDate;
-    }
-
-    public function setEndDate(\DateTimeImmutable $endDate): void
-    {
-        $this->endDate = $endDate;
     }
 }

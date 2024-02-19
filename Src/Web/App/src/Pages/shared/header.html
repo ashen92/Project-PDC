@@ -1,4 +1,4 @@
-<div class="header">
+<div class="navbar-container">
     <nav class="navbar">
         <button class="navbar-toggler" type="button" title="Open menu">
             <i class="i i-list" id="navbar-toggle-show"></i>
@@ -19,12 +19,7 @@
                         TechTalks
                     </a>
                 </li>
-                {% if
-                "ROLE_ADMIN" in user_roles or
-                "ROLE_INTERNSHIP_PARTNER" in user_roles or
-                "ROLE_INTERNSHIP_MANAGED_PARTNER" in user_roles or
-                "ROLE_INTERNSHIP_STUDENT" in user_roles
-                %}
+                {% if has_permission('internship_program', 'read') %}
                 <li>
                     <a href="/internship-program">
                         Internship Program
@@ -52,11 +47,7 @@
                     TechTalks
                 </a>
             </li>
-            {% if
-            "ROLE_ADMIN" in user_roles or
-            "ROLE_INTERNSHIP_PARTNER" in user_roles or
-            "ROLE_INTERNSHIP_STUDENT" in user_roles
-            %}
+            {% if has_permission('internship_program', 'read') %}
             <li>
                 <a href="/internship-program">
                     Internship Program

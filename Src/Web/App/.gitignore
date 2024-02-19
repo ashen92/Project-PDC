@@ -25,6 +25,7 @@ cache
 ### Generated CSS and JavaScript ###
 /public/css/*.css
 /public/js/*.js
+/public/js
 
 ### Sass ###
 .sass-cache/

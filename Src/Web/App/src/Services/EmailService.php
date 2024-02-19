@@ -6,8 +6,9 @@ namespace App\Services;
 use App\Interfaces\IEmailService;
 use App\Models\Email;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Throwable;
 
-class EmailService implements IEmailService
+readonly class EmailService implements IEmailService
 {
     public function __construct(
         private HttpClientInterface $httpClient,
@@ -31,7 +32,7 @@ class EmailService implements IEmailService
             );
 
             return $response->getStatusCode() === 201;
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             return false;
         }
     }

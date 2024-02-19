@@ -15,12 +15,15 @@ class TypeType extends \Doctrine\DBAL\Types\Type
 
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
-        return Requirement\Type::fromString($value);
+        return $value !== null ? Requirement\Type::tryFrom($value) : null;
     }
 
+    /**
+     * @param Requirement\Type|null $value
+     */
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
-        return $value->toString();
+        return $value !== null ? $value->value : null;
     }
 
     public function getName()

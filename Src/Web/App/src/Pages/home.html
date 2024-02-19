@@ -22,16 +22,11 @@
 </div>
 <section class="content">
     <div class="card-container">
-        {% if "ROLE_ADMIN" in user_roles %}
+        {% if has_role(Admin) %}
         <a class="card" href="/portal">Admin Portal</a>
         {% endif %}
         <a class="card" href="/techtalks">TechTalks</a>
-        {% if
-        "ROLE_ADMIN" in user_roles or
-        "ROLE_INTERNSHIP_PARTNER" in user_roles or
-        "ROLE_INTERNSHIP_MANAGED_PARTNER" in user_roles or
-        "ROLE_INTERNSHIP_STUDENT" in user_roles
-        %}
+        {% if has_permission('internship_program', 'read') %}
         <a class="card" href="/internship-program">Internship Program</a>
         {% endif %}
         <a class="card" href="/events">Events</a>

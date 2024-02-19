@@ -5,21 +5,25 @@ namespace App\Mappers;
 
 class StudentMapper implements \App\Interfaces\IMapper
 {
-    #[\Override] public static function map(array $data): \App\Models\Student
+    /**
+     * @throws \Exception
+     */
+    #[\Override] public static function map(array $row): \App\Models\Student
     {
         return new \App\Models\Student(
-            $data["studentEmail"],
-            $data["fullName"],
-            $data["registrationNumber"],
-            $data["indexNumber"],
-            $data["id"],
-            $data["email"],
-            $data["firstName"],
-            $data["lastName"],
-            $data["passwordHash"],
-            $data["isActive"] === 1,
-            $data["activationToken"],
-            $data["activationTokenExpiresAt"] === null ? null : new \DateTimeImmutable($data["activationTokenExpiresAt"]),
+            $row["studentEmail"],
+            $row["fullName"],
+            $row["registrationNumber"],
+            $row["indexNumber"],
+            $row["id"],
+            $row["email"],
+            $row["firstName"],
+            $row["lastName"],
+            $row["passwordHash"],
+            $row["isActive"] === 1,
+            $row["activationToken"],
+            $row["activationTokenExpiresAt"] === null ? null : new \DateTimeImmutable($row["activationTokenExpiresAt"]),
+            $row["type"],
         );
     }
 }

@@ -7,14 +7,13 @@
     <link href="/css/main.css" type="text/css" rel="stylesheet">
     <link href="/css/quill.snow.min.css" type="text/css" rel="stylesheet">
     <link rel="icon" type="image/png" href="/favicon.png">
-    <script src="/js/script.js" type="text/javascript"></script>
     <title>{% block title %}{% endblock %}</title>
 </head>
 
 <body>
     <div class="wrapper">
         {{ include("shared/header.html") }}
-        <div class="content mx-auto xxl-max-w px-50">
+        <div class="content mx-auto xxl-max-w px-10">
             {% block content %}{% endblock %}
         </div>
         {{ include("shared/footer.html") }}

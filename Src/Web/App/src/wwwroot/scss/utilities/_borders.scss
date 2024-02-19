@@ -1,5 +1,5 @@
-@use "../variables" as *;
-@use "../mixins";
+@use '../variables' as *;
+@use '../mixins';
 
 .rounded-0 {
     border-radius: $rounded-0 !important;

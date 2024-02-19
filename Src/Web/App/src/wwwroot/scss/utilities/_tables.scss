@@ -1,4 +1,9 @@
-@use "../variables" as *;
+@use '../variables' as *;
+
+$table-font-size: 0.95rem;
+$table-header-color: #0000009c;
+$table-header-font-size: 0.9rem;
+$table-row-hover-bg: #f2f2f2;
 
 .table {
     table-layout: fixed;
@@ -49,6 +54,19 @@
         }
     }
 
+    &.rows-selectable {
+
+        tr>th:first-child,
+        tr>td:first-child {
+            padding-left: 0.5rem;
+            padding-right: 0.5rem;
+
+            input {
+                display: block;
+            }
+        }
+    }
+
     &.table-hover {
         tbody>tr:hover>* {
             background-color: $table-row-hover-bg;
@@ -71,4 +89,54 @@
             height: 2.25rem;
         }
     }
+}
+
+.gridjs-row-clickable {
+    tr {
+        cursor: pointer;
+        user-select: none;
+    }
+
+    tr:hover {
+        td {
+            background-color: $table-row-hover-bg;
+        }
+
+        td:not(:last-child) {
+            border-right: 1px solid #c9c9c9;
+        }
+    }
+}
+
+.gridjs-row-hover {
+    tr:hover {
+        td {
+            background-color: $table-row-hover-bg;
+        }
+
+        td:not(:last-child) {
+            border-right: 1px solid #c9c9c9;
+        }
+    }
+}
+
+td.gridjs-td {
+    padding: 10px 15px;
+
+    button {
+        margin: -10px 0;
+        box-sizing: border-box;
+    }
+
+    .i:first-child {
+        margin-right: 0.75rem;
+    }
+
+    .i:last-child {
+        margin-left: 0.75rem;
+    }
+}
+
+th.gridjs-th {
+    padding: 12px 15px;
 }

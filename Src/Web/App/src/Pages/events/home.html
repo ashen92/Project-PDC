@@ -14,14 +14,14 @@
     </h2>
 </div>
 {% for event in events %}
-<div class="p-40 mb-10 border-1 rounded-2 ">
-    <div class="fw-semibold fs-4 pl-15 pb-20">
+<div class="p-9 mb-2 border-1 rounded-2 ">
+    <div class="fw-semibold fs-4 pl-4 pb-5">
         {{ event.title}}
     </div>
     <div>
         {{ event.description}}
     </div>
-    {% if "ROLE_ADMIN" in user_roles %}
+    {% if has_role(Admin) %}
     <div class="actions">
         <a class="btn btn-primary" role="button" href="/events/edit/{{event.id}}">Modify</a>
         <form action="/events/delete/{{event.id}}" method="POST">

@@ -5,11 +5,11 @@ namespace App\Mappers;
 
 class UserGroupMapper implements \App\Interfaces\IMapper
 {
-    #[\Override] public static function map(array $data): \App\Models\UserGroup
+    #[\Override] public static function map(array $row): \App\Models\UserGroup
     {
         return new \App\Models\UserGroup(
-            $data["id"],
-            $data["name"],
+            $row["id"],
+            $row["name"],
         );
     }
 }

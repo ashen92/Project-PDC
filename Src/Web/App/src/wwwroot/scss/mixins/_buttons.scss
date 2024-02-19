@@ -1,0 +1,41 @@
+@mixin button-variant($color,
+    $bg,
+    $border,
+    $hover-color,
+    $hover-bg,
+    $hover-border,
+    $active-color,
+    $active-bg,
+    $active-border,
+    $disabled-color,
+    $disabled-bg,
+    $disabled-border) {
+    color: $color;
+    background-color: $bg;
+    border-color: $border;
+
+    &:hover {
+        color: $hover-color;
+        background-color: $hover-bg;
+        border-color: $hover-border;
+    }
+
+    &:active {
+        color: $active-color;
+        background-color: $active-bg;
+        border-color: $active-border;
+    }
+
+    &:focus-visible {
+        color: $hover-color;
+        background-color: $hover-bg;
+        border-color: $hover-border;
+    }
+
+    &:disabled,
+    &.disabled {
+        color: $disabled-color;
+        background-color: $disabled-bg;
+        border-color: $disabled-border;
+    }
+}

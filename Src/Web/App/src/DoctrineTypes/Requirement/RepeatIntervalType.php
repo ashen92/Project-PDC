@@ -11,21 +11,24 @@ class RepeatIntervalType extends Type
 {
     public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
     {
-        return "ENUM('daily', 'weekly', 'monthly')";
+        return "ENUM('weekly', 'monthly')";
     }
 
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
-        return $value !== null ? RepeatInterval::fromString($value) : null;
+        return $value !== null ? RepeatInterval::tryFrom($value) : null;
     }
 
+    /**
+     * @param RepeatInterval|null $value
+     */
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
-        return $value !== null ? $value->toString() : null;
+        return $value !== null ? $value->value : null;
     }
 
     public function getName()
     {
-        return "requirement_repeat_interval";
+        return 'requirement_repeat_interval';
     }
 }

@@ -15,11 +15,15 @@ class FulFillMethodType extends Type
     }
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
-        return $value !== null ? FulFillMethod::fromString($value) : null;
+        return $value !== null ? FulFillMethod::tryFrom($value) : null;
     }
+
+    /**
+     * @param FulfillMethod|null $value
+     */
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
-        return $value !== null ? $value->toString() : null;
+        return $value !== null ? $value->value : null;
     }
     public function getName()
     {

@@ -1,5 +1,6 @@
 <?php
 
+use App\Constant\Constants;
 use App\DTOs\CreateRequirementDTO;
 use App\Entities\Event;
 use App\Entities\Internship;
@@ -7,14 +8,19 @@ use App\Entities\InternshipCycle;
 use App\Entities\Organization;
 use App\Entities\Partner;
 use App\Entities\Permission;
+use App\Entities\Permission\Action;
+use App\Entities\Permission\Resource;
 use App\Entities\Requirement;
 use App\Entities\Role;
 use App\Entities\Student;
 use App\Entities\User;
 use App\Entities\UserGroup;
 use App\Entities\UserRequirement;
-use App\Security\Permission\Action;
-use App\Security\Permission\Resource;
+use App\Models\Requirement\FulFillMethod;
+use App\Models\Requirement\RepeatInterval;
+use App\Models\Requirement\Type;
+
+#region Users
 
 echo "Adding users... ";
 
@@ -189,8 +195,9 @@ for ($i = 0; $i < 15; $i++) {
 $entityManager->persist($user4);
 $entityManager->flush();
 
-// ----------------------------------------------------------------
-// Add organizations ----------------------------------------------
+#endregion
+
+#region Organizations
 
 echo "Done.\nAdding organizations...";
 
@@ -307,15 +314,17 @@ $partnerUsers[7]->setOrganization($organizations[8]);
 $entityManager->persist($user4);
 $entityManager->flush();
 
-// ----------------------------------------------------------------
+#endregion
+
+#region Groups
 
 echo "Done.\nAdding groups...";
 
-$groupCoordinators = new UserGroup("Coordinators");
-$groupPartners = new UserGroup("Partners");
-$groupStudents = new UserGroup("Students");
-$groupThirdYearStudents = new UserGroup("ThirdYearStudents");
-$groupFirstYearStudents = new UserGroup("FirstYearStudents");
+$groupCoordinators = new UserGroup('Coordinators');
+$groupPartners = new UserGroup('Partners');
+$groupStudents = new UserGroup('Students');
+$groupThirdYearStudents = new UserGroup('ThirdYearStudents');
+$groupFirstYearStudents = new UserGroup('FirstYearStudents');
 
 foreach ($studentUsers as $user) {
     $groupStudents->addUser($user);
@@ -339,14 +348,30 @@ $groupPartners->addUser($user4);
 $groupCoordinators->addUser($user1);
 $groupCoordinators->addUser($user2);
 
-$groupInternshipCycleStudents = new UserGroup("InternshipCycle-Students");
-$groupInternshipCycleStudents->addUser($user3);
+$groupCycleStudents = new UserGroup(
+    Constants::AUTO_GENERATED_USER_GROUP_PREFIX->value.'InternshipCycle-Students'
+);
+$entityManager->persist($groupCycleStudents);
+$groupCycleStudents->addUser($user3);
 
-$groupInternshipCyclePartners = new UserGroup("InternshipCycle-Partners");
-$groupInternshipCyclePartners->addUser($user4);
+for ($i = 1; $i < 200; $i++) {
+    $groupCycleStudents->addUser($studentUsers[$i]);
+}
 
-$entityManager->persist($groupInternshipCycleStudents);
-$entityManager->persist($groupInternshipCyclePartners);
+$groupCyclePartnerAdmins = new UserGroup(
+    Constants::AUTO_GENERATED_USER_GROUP_PREFIX->value.'InternshipCycle-Partner-Admins'
+);
+$entityManager->persist($groupCyclePartnerAdmins);
+$groupCyclePartnerAdmins->addUser($user4);
+
+for ($i = 1; $i < 50; $i++) {
+    $groupCyclePartnerAdmins->addUser($partnerUsers[$i]);
+}
+
+$groupCyclePartners = new UserGroup(
+    Constants::AUTO_GENERATED_USER_GROUP_PREFIX->value.'InternshipCycle-Partners'
+);
+$entityManager->persist($groupCyclePartners);
 
 $entityManager->persist($groupCoordinators);
 $entityManager->persist($groupPartners);
@@ -355,46 +380,105 @@ $entityManager->persist($groupFirstYearStudents);
 $entityManager->persist($groupThirdYearStudents);
 $entityManager->flush();
 
+#endregion
+
+#region Roles
+
 echo "Done.\nAdding roles...";
 
-$roleCoordinator = new Role("ROLE_COORDINATOR");
-$rolePartner = new Role("ROLE_PARTNER");
-$roleStudent = new Role("ROLE_STUDENT");
-$roleAdmin = new Role("ROLE_ADMIN");
-$roleInternshipAdmin = new Role("ROLE_INTERNSHIP_ADMIN");
-$roleInternshipPartner = new Role("ROLE_INTERNSHIP_PARTNER");
-$roleInternshipStudent = new Role("ROLE_INTERNSHIP_STUDENT");
-$roleInternshipManagedPartner = new Role("ROLE_INTERNSHIP_MANAGED_PARTNER");
-
+$roleCoordinator = new Role('coordinator');
+$entityManager->persist($roleCoordinator);
 $roleCoordinator->addGroup($groupCoordinators);
+
+$rolePartner = new Role('partner');
+$entityManager->persist($rolePartner);
 $rolePartner->addGroup($groupPartners);
+
+$roleStudent = new Role('student');
+$entityManager->persist($roleStudent);
 $roleStudent->addGroup($groupStudents);
+
+$roleAdmin = new Role('admin');
+$entityManager->persist($roleAdmin);
 $roleAdmin->addGroup($groupCoordinators);
 
-$roleInternshipAdmin->addGroup($groupCoordinators);
-$roleInternshipPartner->addGroup($groupInternshipCyclePartners);
-$roleInternshipStudent->addGroup($groupInternshipCycleStudents);
+$roleIntProgAdmin = new Role('internship_program_admin');
+$entityManager->persist($roleIntProgAdmin);
+$roleIntProgAdmin->addGroup($groupCoordinators);
 
-$entityManager->persist($roleCoordinator);
-$entityManager->persist($rolePartner);
-$entityManager->persist($roleStudent);
-$entityManager->persist($roleAdmin);
-$entityManager->persist($roleInternshipAdmin);
-$entityManager->persist($roleInternshipPartner);
-$entityManager->persist($roleInternshipStudent);
-$entityManager->persist($roleInternshipManagedPartner);
+$roleIntProgPartnerAdmin = new Role('internship_program_partner_admin');
+$entityManager->persist($roleIntProgPartnerAdmin);
+$roleIntProgPartnerAdmin->addGroup($groupCyclePartnerAdmins);
+
+$roleIntProgStudent = new Role('internship_program_student');
+$entityManager->persist($roleIntProgStudent);
+$roleIntProgStudent->addGroup($groupCycleStudents);
+
+$roleIntProgPartner = new Role('internship_program_partner');
+$entityManager->persist($roleIntProgPartner);
+$roleIntProgPartner->addGroup($groupCyclePartnerAdmins);
+
 $entityManager->flush();
+
+#endregion
+
+#region Permissions
 
 echo "Done.\nAdding permissions...";
 
-$permissionViewInternship = new Permission(
-    Resource::INTERNSHIP,
-    Action::CREATE
-);
-$roleInternshipPartner->addPermission($permissionViewInternship);
+$rInternship = new Resource('internship');
+$entityManager->persist($rInternship);
+$rApplication = new Resource('application');
+$entityManager->persist($rApplication);
+$rInternshipProgram = new Resource('internship_program');
+$entityManager->persist($rInternshipProgram);
 
-$entityManager->persist($permissionViewInternship);
+$aRead = new Action('read');
+$aCreate = new Action('create');
+$aUpdate = new Action('update');
+$aDelete = new Action('delete');
+$aApply = new Action('apply');
+$entityManager->persist($aRead);
+$entityManager->persist($aCreate);
+$entityManager->persist($aUpdate);
+$entityManager->persist($aDelete);
+$entityManager->persist($aApply);
+
+$pCInternship = new Permission($rInternship, $aCreate);
+$entityManager->persist($pCInternship);
+$pUInternship = new Permission($rInternship, $aUpdate);
+$entityManager->persist($pUInternship);
+$pDInternship = new Permission($rInternship, $aDelete);
+$entityManager->persist($pDInternship);
+$pAInternship = new Permission($rInternship, $aApply);
+$entityManager->persist($pAInternship);
+$pRApplication = new Permission($rApplication, $aRead);
+$entityManager->persist($pRApplication);
+$pRInternshipProgram = new Permission($rInternshipProgram, $aRead);
+$entityManager->persist($pRInternshipProgram);
+
 $entityManager->flush();
+
+$roleIntProgPartnerAdmin->addPermission($pCInternship);
+$roleIntProgPartnerAdmin->addPermission($pUInternship);
+$roleIntProgPartnerAdmin->addPermission($pDInternship);
+$roleIntProgPartnerAdmin->addPermission($pRApplication);
+$roleIntProgPartnerAdmin->addPermission($pRInternshipProgram);
+
+$roleIntProgAdmin->addPermission($pCInternship);
+$roleIntProgAdmin->addPermission($pUInternship);
+$roleIntProgAdmin->addPermission($pDInternship);
+$roleIntProgAdmin->addPermission($pRApplication);
+$roleIntProgAdmin->addPermission($pRInternshipProgram);
+
+$roleIntProgStudent->addPermission($pAInternship);
+$roleIntProgStudent->addPermission($pRInternshipProgram);
+
+$entityManager->flush();
+
+#endregion
+
+#region Internships
 
 echo "Done.\nAdding internships...";
 
@@ -472,8 +556,9 @@ $internData = [
 ];
 
 $internshipCycle = new InternshipCycle();
-$internshipCycle->setPartnerGroup($groupInternshipCyclePartners);
-$internshipCycle->setStudentGroup($groupInternshipCycleStudents);
+$internshipCycle->addPartnerGroup($groupCyclePartnerAdmins);
+$internshipCycle->addPartnerGroup($groupCyclePartners);
+$internshipCycle->setStudentGroup($groupCycleStudents);
 
 $internships = [];
 
@@ -491,6 +576,10 @@ for ($x = 1; $x < count($internData); $x++) {
 
 $entityManager->persist($internshipCycle);
 $entityManager->flush();
+
+#endregion
+
+#region Events
 
 echo "Done.\nAdding events...";
 
@@ -551,66 +640,58 @@ foreach ($eventData as $eventData) {
 }
 $entityManager->flush();
 
+#endregion
+
+#region Requirements
+
 echo "Done.\nAdding requirements...";
 
 $requirementData = [
     new CreateRequirementDTO(
-        "Internship Contract",
-        "Upload the contract between you and the company.",
-        "one-time",
-        new DateTimeImmutable("now"),
-        new DateTimeImmutable("+1 month"),
+        'Internship Contract',
+        'Upload the contract between you and the company.',
+        Type::ONE_TIME,
+        new DateTimeImmutable(),
+        new DateTimeImmutable('+1 month'),
         null,
-        "file-upload",
-        ["pdf"],
+        FulFillMethod::FILE_UPLOAD,
+        ['pdf'],
         5,
         3
     ),
     new CreateRequirementDTO(
-        "Monthly Report",
-        "Upload a report of your progress.",
-        "recurring",
-        new DateTimeImmutable("now"),
+        'Monthly Report',
+        'Upload a report of your progress.',
+        Type::RECURRING,
+        new DateTimeImmutable(),
         null,
-        "monthly",
-        "file-upload",
-        ["pdf"],
+        RepeatInterval::MONTHLY,
+        FulFillMethod::FILE_UPLOAD,
+        ['pdf'],
         5,
         1
     ),
     new CreateRequirementDTO(
-        "Daily Report",
-        "Upload a report of your progress.",
-        "recurring",
-        new DateTimeImmutable("now"),
+        'Weekly Report',
+        'Upload a report of your progress.',
+        Type::RECURRING,
+        new DateTimeImmutable(),
         null,
-        "daily",
-        "file-upload",
-        ["pdf"],
+        RepeatInterval::WEEKLY,
+        FulFillMethod::FILE_UPLOAD,
+        ['pdf'],
         5,
         1
     ),
     new CreateRequirementDTO(
-        "Weekly Report",
-        "Upload a report of your progress.",
-        "recurring",
-        new DateTimeImmutable("now"),
+        'Your feedback about the internship',
+        'What do you think about the company. How was your experience? Your feedback will not be shared with the company.',
+        Type::ONE_TIME,
+        new DateTimeImmutable(),
+        new DateTimeImmutable('+1 month'),
         null,
-        "weekly",
-        "file-upload",
-        ["pdf"],
-        5,
-        1
-    ),
-    new CreateRequirementDTO(
-        "Your feedback about the internship",
-        "What do you think about the company. How was your experience? Your feedback will not be shared with the company.",
-        "one-time",
-        new DateTimeImmutable("now"),
-        new DateTimeImmutable("+1 month"),
-        null,
-        "text-input",
-        null,
+        FulFillMethod::TEXT_INPUT,
+        [],
         null,
         null
     )
@@ -626,10 +707,39 @@ foreach ($requirementData as $requirement) {
 }
 $entityManager->flush();
 
+#endregion
+
+#region User Requirements
+
 echo "Done.\nAdding user requirements...";
 
-$userRequirement1 = new UserRequirement($user3, $requirements[0]);
-$userRequirement2 = new UserRequirement($user3, $requirements[4]);
-$entityManager->persist($userRequirement1);
-$entityManager->persist($userRequirement2);
+$ur = new UserRequirement(
+    $user3,
+    $requirements[0],
+    $requirements[0]->getStartDate(),
+    $requirements[0]->getEndBeforeDate()
+);
+$entityManager->persist($ur);
+$ur = new UserRequirement(
+    $user3,
+    $requirements[3],
+    $requirements[3]->getStartDate(),
+    $requirements[3]->getEndBeforeDate()
+);
+$entityManager->persist($ur);
+
+$requirements[1]->createUserRequirements($user3, $entityManager);
+$requirements[2]->createUserRequirements($user3, $entityManager);
+
 $entityManager->flush();
+
+foreach ($requirements as $r) {
+    for ($i = 1; $i < 200; $i++) {
+        $r->createUserRequirements($studentUsers[$i], $entityManager);
+    }
+}
+$entityManager->flush();
+
+echo "Done.\nDatabase seeded successfully.\n";
+
+#endregion

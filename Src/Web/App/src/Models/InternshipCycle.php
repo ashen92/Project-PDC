@@ -3,24 +3,65 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Models\InternshipCycle\State;
+use DateTimeImmutable;
+
 class InternshipCycle
 {
     public function __construct(
         private int $id,
-        private \DateTimeImmutable $createdAt,
-        private ?\DateTimeImmutable $endedAt,
-        private ?\DateTimeImmutable $collectionStartDate,
-        private ?\DateTimeImmutable $collectionEndDate,
-        private ?\DateTimeImmutable $applicationStartDate,
-        private ?\DateTimeImmutable $applicationEndDate,
-        private ?int $partnerGroupId,
+        private DateTimeImmutable $createdAt,
+        private ?DateTimeImmutable $endedAt,
+        private ?DateTimeImmutable $jobCollectionStart,
+        private ?DateTimeImmutable $jobCollectionEnd,
+        private ?DateTimeImmutable $applyingStart,
+        private ?DateTimeImmutable $applyingEnd,
+        private ?DateTimeImmutable $interningStart,
+        private ?DateTimeImmutable $interningEnd,
+        private array $partnerGroupIds,
         private ?int $studentGroupId,
     ) {
     }
 
-    public function end(): void
+    public function getActiveState(): State
     {
-        $this->endedAt = new \DateTimeImmutable();
+        $now = new DateTimeImmutable();
+        if ($this->jobCollectionStart <= $now && $now <= $this->jobCollectionEnd) {
+            return State::JobCollection;
+        }
+        if ($this->applyingStart <= $now && $now <= $this->applyingEnd) {
+            return State::Applying;
+        }
+        if ($this->interningStart <= $now && $now <= $this->interningEnd) {
+            return State::Interning;
+        }
+        return State::None;
+    }
+
+    public function getNextState(): State
+    {
+        $activeState = $this->getActiveState();
+        if ($activeState === State::JobCollection) {
+            return State::Applying;
+        }
+        if ($activeState === State::Applying) {
+            return State::Interning;
+        }
+        if ($activeState === State::Interning) {
+            return State::None;
+        }
+
+        $now = new DateTimeImmutable();
+        if (!$this->jobCollectionStart || $now <= $this->jobCollectionStart) {
+            return State::JobCollection;
+        }
+        if ($this->jobCollectionEnd <= $now && (!$this->applyingStart || $now <= $this->applyingStart)) {
+            return State::Applying;
+        }
+        if ($this->applyingEnd <= $now && (!$this->interningStart || $now <= $this->interningStart)) {
+            return State::Interning;
+        }
+        return State::None;
     }
 
     public function getId(): int
@@ -28,39 +69,39 @@ class InternshipCycle
         return $this->id;
     }
 
-    public function getCreatedAt(): \DateTimeImmutable
+    public function getCreatedAt(): DateTimeImmutable
     {
         return $this->createdAt;
     }
 
-    public function getEndedAt(): ?\DateTimeImmutable
+    public function getEndedAt(): ?DateTimeImmutable
     {
         return $this->endedAt;
     }
 
-    public function getCollectionStartDate(): ?\DateTimeImmutable
+    public function getJobCollectionStart(): ?DateTimeImmutable
     {
-        return $this->collectionStartDate;
+        return $this->jobCollectionStart;
     }
 
-    public function getCollectionEndDate(): ?\DateTimeImmutable
+    public function getJobCollectionEnd(): ?DateTimeImmutable
     {
-        return $this->collectionEndDate;
+        return $this->jobCollectionEnd;
     }
 
-    public function getApplicationStartDate(): ?\DateTimeImmutable
+    public function getApplyingStart(): ?DateTimeImmutable
     {
-        return $this->applicationStartDate;
+        return $this->applyingStart;
     }
 
-    public function getApplicationEndDate(): ?\DateTimeImmutable
+    public function getApplyingEnd(): ?DateTimeImmutable
     {
-        return $this->applicationEndDate;
+        return $this->applyingEnd;
     }
 
-    public function getPartnerGroupId(): ?int
+    public function getPartnerGroupIds(): array
     {
-        return $this->partnerGroupId;
+        return $this->partnerGroupIds;
     }
 
     public function getStudentGroupId(): ?int
@@ -68,33 +109,33 @@ class InternshipCycle
         return $this->studentGroupId;
     }
 
-    public function setCollectionStartDate(\DateTimeImmutable $collectionStartDate): void
+    public function setJobCollectionStart(DateTimeImmutable $date): void
     {
-        $this->collectionStartDate = $collectionStartDate;
+        $this->jobCollectionStart = $date;
     }
 
-    public function setCollectionEndDate(\DateTimeImmutable $collectionEndDate): void
+    public function setJobCollectionEnd(DateTimeImmutable $date): void
     {
-        $this->collectionEndDate = $collectionEndDate;
+        $this->jobCollectionEnd = $date;
     }
 
-    public function setApplicationStartDate(\DateTimeImmutable $applicationStartDate): void
+    public function setApplyingStart(DateTimeImmutable $date): void
     {
-        $this->applicationStartDate = $applicationStartDate;
+        $this->applyingStart = $date;
     }
 
-    public function setApplicationEndDate(\DateTimeImmutable $applicationEndDate): void
+    public function setApplyingEnd(DateTimeImmutable $date): void
     {
-        $this->applicationEndDate = $applicationEndDate;
+        $this->applyingEnd = $date;
     }
 
-    public function setPartnerGroupId(int $partnerGroupId): void
+    public function addPartnerGroupId(int $id): void
     {
-        $this->partnerGroupId = $partnerGroupId;
+        $this->partnerGroupIds[] = $id;
     }
 
-    public function setStudentGroupId(int $studentGroupId): void
+    public function setStudentGroupId(int $id): void
     {
-        $this->studentGroupId = $studentGroupId;
+        $this->studentGroupId = $id;
     }
 }

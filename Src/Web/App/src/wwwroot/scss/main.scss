@@ -1,10 +1,10 @@
-@use "input";
-@use "variables" as *;
-@use "utilities";
-@use "layouts";
-@use "fonts";
-@use "header";
-@use "pages";
+@use 'input';
+@use 'variables' as *;
+@use 'utilities';
+@use 'layouts';
+@use 'fonts';
+@use 'navbar';
+@use 'pages';
 
 * {
     margin: 0;
@@ -19,9 +19,9 @@
 }
 
 html {
-    font-family: "Open Sans", sans-serif;
+    font-family: 'Open Sans', sans-serif;
     box-sizing: border-box;
-    font-size: 1rem;
+    font-size: 15px;
 }
 
 body {

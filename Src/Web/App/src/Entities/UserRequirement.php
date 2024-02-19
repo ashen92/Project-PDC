@@ -4,8 +4,10 @@ declare(strict_types=1);
 namespace App\Entities;
 
 use App\Models\Requirement\FulFillMethod;
+use App\Models\UserRequirement\Status;
 use DateTimeImmutable;
 use DateTimeInterface;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
@@ -37,24 +39,34 @@ class UserRequirement
     #[ORM\Column(type: "datetime_immutable", nullable: true)]
     private ?DateTimeImmutable $completedAt;
 
-    #[ORM\Column]
-    private string $status;
+    #[ORM\Column(type: 'user_requirement_status')]
+    private Status $status;
 
-    #[ORM\Column(type: "simple_array", nullable: true)]
-    private ?array $filePaths;
+    /**
+     * @var Collection<int, File>
+     */
+    #[ORM\JoinTable(name: 'user_requirement_files')]
+    #[ORM\JoinColumn(name: 'user_requirement_id', referencedColumnName: 'id')]
+    #[ORM\InverseJoinColumn(name: 'file_id', referencedColumnName: 'id', unique: true)]
+    #[ORM\ManyToMany(targetEntity: 'File')]
+    private Collection $files;
 
     #[ORM\Column(type: "text", nullable: true)]
     private ?string $textResponse;
 
-    public function __construct(User $user, Requirement $requirement)
-    {
+    public function __construct(
+        User $user,
+        Requirement $requirement,
+        DateTimeImmutable $startDate,
+        DateTimeImmutable $endDate,
+    ) {
         $this->user = $user;
         $this->requirement = $requirement;
         $this->fulfillMethod = $requirement->getFulfillMethod();
-        $this->startDate = new DateTimeImmutable("now");
-        $this->endDate = new DateTimeImmutable("+2 month");
+        $this->startDate = $startDate;
+        $this->endDate = $endDate;
         $this->completedAt = null;
-        $this->status = "pending";
+        $this->status = Status::PENDING;
     }
 
     public function getId(): int
@@ -87,14 +99,9 @@ class UserRequirement
         return $this->completedAt;
     }
 
-    public function getStatus(): string
+    public function getStatus(): Status
     {
         return $this->status;
-    }
-
-    public function getFilePaths(): ?array
-    {
-        return $this->filePaths;
     }
 
     public function getTextResponse(): string
@@ -102,29 +109,24 @@ class UserRequirement
         return $this->textResponse;
     }
 
-    public function setStartDate(DateTimeInterface $startDate): void
+    public function setStartDate(DateTimeInterface $date): void
     {
-        $this->startDate = DateTimeImmutable::createFromInterface($startDate);
+        $this->startDate = DateTimeImmutable::createFromInterface($date);
     }
 
-    public function setEndDate(DateTimeInterface $endDate): void
+    public function setEndDate(DateTimeInterface $date): void
     {
-        $this->endDate = DateTimeImmutable::createFromInterface($endDate);
+        $this->endDate = DateTimeImmutable::createFromInterface($date);
     }
 
-    public function setCompletedAt(DateTimeInterface $completedAt): void
+    public function setCompletedAt(DateTimeInterface $date): void
     {
-        $this->completedAt = DateTimeImmutable::createFromInterface($completedAt);
+        $this->completedAt = DateTimeImmutable::createFromInterface($date);
     }
 
-    public function setStatus(string $status): void
+    public function setStatus(Status $status): void
     {
         $this->status = $status;
-    }
-
-    public function setFilePaths(array $filePaths): void
-    {
-        $this->filePaths = $filePaths;
     }
 
     public function setTextResponse(string $textResponse): void

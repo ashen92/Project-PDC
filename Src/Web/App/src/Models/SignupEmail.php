@@ -13,7 +13,7 @@ class SignupEmail extends Email
         $subject = "Welcome to Professional Development Center at UCSC";
         $bodyPlainText = <<<EOT
             Click the link below to create your account.
-            http://localhost:80/signup/activate?token=$token
+            http://localhost:80/signup/continue?token=$token
             EOT;
 
         parent::__construct($receiverAddress, $receiverName, $subject, $bodyPlainText);

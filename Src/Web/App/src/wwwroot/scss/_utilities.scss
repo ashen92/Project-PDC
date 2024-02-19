@@ -1,15 +1,18 @@
-@forward "utilities/spacing";
-@forward "utilities/sizing";
-@forward "utilities/text";
-@forward "utilities/shadows";
-@forward "utilities/grid";
-@forward "utilities/alerts";
-@forward "utilities/borders";
-@forward "utilities/flexbox-grid-positioning";
-@forward "utilities/buttons";
-@forward "utilities/display";
-@forward "utilities/tables";
-@forward "utilities/bg-color";
+@forward 'utilities/spacing';
+@forward 'utilities/sizing';
+@forward 'utilities/text';
+@forward 'utilities/shadows';
+@forward 'utilities/grid';
+@forward 'utilities/alerts';
+@forward 'utilities/borders';
+@forward 'utilities/flexbox-grid-positioning';
+@forward 'utilities/buttons';
+@forward 'utilities/display';
+@forward 'utilities/tables';
+@forward 'utilities/bg-color';
+@forward 'utilities/command-bar';
+@forward 'utilities/submission-viewer';
+@forward 'utilities/card';
 
 .divider {
     border-bottom-color: rgb(214, 214, 214);

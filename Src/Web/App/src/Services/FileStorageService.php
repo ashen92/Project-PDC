@@ -4,11 +4,13 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Interfaces\IFileStorageService;
+use Override;
 use Symfony\Component\Mime\Part\DataPart;
 use Symfony\Component\Mime\Part\Multipart\FormDataPart;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Throwable;
 
-class FileStorageService implements IFileStorageService
+readonly class FileStorageService implements IFileStorageService
 {
     public function __construct(
         private HttpClientInterface $httpClient,
@@ -16,7 +18,7 @@ class FileStorageService implements IFileStorageService
     ) {
     }
 
-    #[\Override] public function upload(array $files): ?array
+    #[Override] public function upload(array $files): ?array
     {
         $formData = [];
         foreach ($files as $file) {
@@ -44,12 +46,12 @@ class FileStorageService implements IFileStorageService
                 return null;
             }
 
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             return null;
         }
     }
 
-    #[\Override] public function get(string $filePath): ?array
+    #[Override] public function get(string $filePath): ?array
     {
         // Temporary solution
         return null;
@@ -70,7 +72,7 @@ class FileStorageService implements IFileStorageService
                 return null;
             }
 
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             return null;
         }
     }

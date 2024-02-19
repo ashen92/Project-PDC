@@ -10,7 +10,7 @@ use App\Models\Requirement\Type;
 class Requirement
 {
     // A requirement can be repeated up to 6 months after the start date.
-    const string MAXIMUM_REPEAT_DURATION = "P6M";
+    public const MAXIMUM_REPEAT_DURATION = "P6M";
 
     public function __construct(
         private int $id,

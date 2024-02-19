@@ -1,5 +1,5 @@
-@use "../variables" as *;
-@use "../mixins";
+@use '../variables' as *;
+@use '../mixins';
 
 .grid {
     @include mixins.grid-grid;
@@ -36,49 +36,21 @@
     }
 }
 
-@include mixins.media-breakpoint-up(sm) {
-    .sm-grid {
+@include mixins.media-breakpoint-down(xxl) {
+    .xxl-grid {
         @include mixins.grid-grid;
     }
 
-    .sm-col {
+    .xxl-col {
         @include mixins.grid-col;
     }
 
-    .sm-row {
+    .xxl-row {
         @include mixins.grid-row;
     }
 }
 
-@include mixins.media-breakpoint-up(md) {
-    .md-grid {
-        @include mixins.grid-grid;
-    }
-
-    .md-col {
-        @include mixins.grid-col;
-    }
-
-    .md-row {
-        @include mixins.grid-row;
-    }
-}
-
-@include mixins.media-breakpoint-up(lg) {
-    .lg-grid {
-        @include mixins.grid-grid;
-    }
-
-    .lg-col {
-        @include mixins.grid-col;
-    }
-
-    .lg-row {
-        @include mixins.grid-row;
-    }
-}
-
-@include mixins.media-breakpoint-up(xl) {
+@include mixins.media-breakpoint-down(xl) {
     .xl-grid {
         @include mixins.grid-grid;
     }
@@ -92,16 +64,44 @@
     }
 }
 
-@include mixins.media-breakpoint-up(xxl) {
-    .xxl-grid {
+@include mixins.media-breakpoint-down(lg) {
+    .lg-grid {
         @include mixins.grid-grid;
     }
 
-    .xxl-col {
+    .lg-col {
         @include mixins.grid-col;
     }
 
-    .xxl-row {
+    .lg-row {
+        @include mixins.grid-row;
+    }
+}
+
+@include mixins.media-breakpoint-down(md) {
+    .md-grid {
+        @include mixins.grid-grid;
+    }
+
+    .md-col {
+        @include mixins.grid-col;
+    }
+
+    .md-row {
+        @include mixins.grid-row;
+    }
+}
+
+@include mixins.media-breakpoint-down(sm) {
+    .sm-grid {
+        @include mixins.grid-grid;
+    }
+
+    .sm-col {
+        @include mixins.grid-col;
+    }
+
+    .sm-row {
         @include mixins.grid-row;
     }
 }

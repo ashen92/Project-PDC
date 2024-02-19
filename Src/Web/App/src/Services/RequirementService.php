@@ -6,30 +6,35 @@ namespace App\Services;
 use App\DTOs\CreateRequirementDTO;
 use App\DTOs\CreateUserRequirementDTO;
 use App\DTOs\UserRequirementFulfillmentDTO;
-use App\Entities\Requirement;
 use App\Interfaces\IFileStorageService;
-use App\Interfaces\IRequirementService;
+use App\Models\Requirement;
 use App\Models\Requirement\FulFillMethod;
 use App\Models\Requirement\Type;
+use App\Models\UserRequirement;
+use App\Models\UserRequirement\Status;
 use App\Repositories\RequirementRepository;
 use DateInterval;
+use Exception;
 
-class RequirementService implements IRequirementService
+readonly class RequirementService
 {
     public function __construct(
-        private RequirementRepository $requirementRepository,
-        private InternshipCycleService $internshipCycleService,
+        private RequirementRepository $requirementRepo,
+        private InternshipProgramService $internshipCycleService,
         private IFileStorageService $fileStorageService
     ) {
 
     }
 
-    #[\Override] public function getRequirement(int $id): ?\App\Models\Requirement
+    public function getRequirement(int $id): ?Requirement
     {
-        return $this->requirementRepository->findRequirement($id);
+        return $this->requirementRepo->findRequirement($id);
     }
 
-    #[\Override] public function getRequirements(?int $internshipCycleId = null): array
+    /**
+     * @return array<Requirement>
+     */
+    public function getRequirements(?int $internshipCycleId = null): array
     {
         if ($internshipCycleId === null)
             $internshipCycleId = $this->internshipCycleService->getLatestInternshipCycleId();
@@ -37,121 +42,70 @@ class RequirementService implements IRequirementService
         if ($internshipCycleId === null)
             return [];
 
-        return $this->requirementRepository->findAllRequirements($internshipCycleId);
+        return $this->requirementRepo->findAllRequirements($internshipCycleId);
     }
 
-    #[\Override] public function getUserRequirement(int $id): ?\App\Models\UserRequirement
+    public function getUserRequirement(int $id): ?UserRequirement
     {
-        return $this->requirementRepository->findUserRequirement($id);
+        return $this->requirementRepo->findUserRequirement($id);
     }
 
-    #[\Override] public function getUserRequirements(
-        ?int $internshipCycleId = null,
+    /**
+     * @return array<UserRequirement>
+     */
+    public function getUserRequirements(
+        int $cycleId,
         ?int $requirementId = null,
         ?int $userId = null,
-        ?string $status = null
+        ?Status $status = null
     ): array {
-        if ($internshipCycleId === null)
-            $internshipCycleId = $this->internshipCycleService->getLatestInternshipCycleId();
-
-        if ($internshipCycleId === null)
-            return [];
-
-        $criteria = [];
-
-        if ($requirementId !== null) {
-            $criteria["requirement"] = $requirementId;
-        }
-
-        if ($userId !== null) {
-            $criteria["user"] = $userId;
-        }
-
-        if ($status !== null) {
-            $criteria["status"] = $status;
-        }
-
-        return $this->requirementRepository->findAllUserRequirements($criteria);
+        return $this->requirementRepo->findAllUserRequirements($cycleId, $requirementId, $userId, $status);
     }
 
-    #[\Override] public function createRequirement(CreateRequirementDTO $requirementDTO): void
+    public function createRequirement(CreateRequirementDTO $reqDTO): bool
     {
-        $internshipCycleId = $this->internshipCycleService->getLatestInternshipCycleId();
-        $requirement = $this->requirementRepository
-            ->createRequirement($requirementDTO, $internshipCycleId);
-        $this->createUserRequirements($requirement);
-    }
+        $this->requirementRepo->beginTransaction();
+        try {
+            $cycle = $this->internshipCycleService->getLatestCycle();
+            $reqId = $this->requirementRepo
+                ->createRequirement($cycle->getId(), $reqDTO);
 
-    private function createUserRequirements(Requirement $requirement): void
-    {
-        if ($requirement->getRequirementType() === Type::ONE_TIME) {
-            $this->createOneTimeUserRequirements($requirement);
-        } else {
-            $this->createRecurringUserRequirements($requirement);
-        }
-    }
-
-    private function createOneTimeUserRequirements(Requirement $requirement): void
-    {
-        $internshipCycle = $requirement->getInternshipCycle();
-
-        foreach ($internshipCycle->getStudentGroup()->getUsers() as $user) {
-            $this->requirementRepository->createUserRequirement($requirement, $user);
-        }
-    }
-
-    private function createRecurringUserRequirements(Requirement $requirement): void
-    {
-        $repeatInterval = $requirement->getRepeatInterval();
-        $repeatDuration = $requirement->getRepeatInterval()->toDuration();
-
-        $iterationDate = $requirement->getStartDate();
-        $endDate = $iterationDate->add(new DateInterval(Requirement::MAXIMUM_REPEAT_DURATION));
-
-        $urDTOs = [];
-
-        while ($iterationDate < $endDate) {
-            $urDTOs[] = new CreateUserRequirementDTO(
-                $iterationDate,
-                $repeatInterval,
-            );
-            $iterationDate = $iterationDate->add(new DateInterval($repeatDuration));
-        }
-
-        $internshipCycle = $requirement->getInternshipCycle();
-
-        foreach ($internshipCycle->getStudentGroup()->getUsers() as $user) {
-            foreach ($urDTOs as $urDTO) {
-                $this->requirementRepository
-                    ->createUserRequirementFromDTO($requirement, $user, $urDTO);
+            if ($reqDTO->requirementType === Type::ONE_TIME) {
+                $this->requirementRepo
+                    ->createOneTimeUserRequirements($reqId, $cycle->getStudentGroupId());
+            } else {
+                // TODO
+                // $this->createRecurringUserRequirements($reqId);
             }
+
+            $this->requirementRepo->commit();
+            return true;
+        } catch (Exception $e) {
+            $this->requirementRepo->rollBack();
+            throw $e;
         }
     }
 
-    #[\Override] public function completeUserRequirement(UserRequirementFulfillmentDTO $dto): bool
+    public function completeUserRequirement(UserRequirementFulfillmentDTO $dto): bool
     {
-        $ur = $this->requirementRepository->findUserRequirement($dto->userRequirementId);
-
+        $ur = $this->requirementRepo->findUserRequirement($dto->userRequirementId);
         if (!$ur) {
-            return false;
-
-            // TODO: Handle user requirement not found
+            throw new Exception("User requirement not found");
         }
 
         if ($ur->getFulfillMethod() === FulFillMethod::FILE_UPLOAD) {
             $files = $this->fileStorageService->upload($dto->files);
 
             if ($files) {
-                $ur->fulfill(filePaths: $files);
+                return $this->requirementRepo
+                    ->fulfillUserRequirement($dto->userRequirementId, $files);
             }
 
             // TODO: Handle file upload failure
+            return false;
         }
 
-        if ($ur->getFulfillMethod() === FulFillMethod::TEXT_INPUT) {
-            $ur->fulfill(textResponse: $dto->textResponse);
-        }
-        $this->requirementRepository->updateUserRequirement($ur);
-        return true;
+        return $this->requirementRepo
+            ->fulfillUserRequirement($dto->userRequirementId, textResponse: $dto->textResponse);
     }
 }

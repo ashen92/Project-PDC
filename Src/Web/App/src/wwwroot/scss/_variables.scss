@@ -1,7 +1,5 @@
-@forward "var/borders";
-@forward "var/text";
-@forward "var/shadows";
-@forward "var/sizing";
+$webpage-max-allowed-width: 1920px;
+$authentication-page-max-width: 1200px;
 
 $breakpoints: (
     xs: 0,
@@ -12,7 +10,53 @@ $breakpoints: (
     xxl: 1400px
 );
 
-$btn-padding: 9px 24px;
+$spacers: (
+    '0': 0,
+    '1': 0.25rem,
+    // 4px
+    '2': 0.5rem,
+    // 8px
+    '3': 0.75rem,
+    // 12px
+    '4': 1rem,
+    // 16px
+    '5': 1.25rem,
+    // 20px
+    '6': 1.5rem,
+    // 24px
+    '7': 1.75rem,
+    // 28px
+    '8': 2rem,
+    // 32px
+    '9': 2.5rem,
+    // 40px
+    '10': 3rem,
+    // 48px
+);
+
+// #region Text
+
+$fs-1: 2.5rem;
+$fs-2: 2rem;
+$fs-3: 1.75rem;
+$fs-4: 1.5rem;
+$fs-5: 1.25rem;
+$fs-6: 1.125rem;
+
+$fs-small: 0.875rem;
+
+$fw-semibold: 600;
+$fw-medium: 500;
+$fw-normal: 400;
+$fw-light: 300;
+
+// #endregion 
+
+// #region Buttons
+
+$btn-padding: 8px 24px;
+$btn-padding-top: 8px;
+$btn-padding-left: 24px;
 $btn-font-size: 0.9375rem;
 $btn-font-weight: 500;
 $btn-line-height: 1.15;
@@ -31,23 +75,11 @@ $btn-active-color: #ffffff;
 $btn-active-bg: #005499;
 $btn-active-border-color: #005499;
 $btn-focus-box-shadow: none;
-$btn-disabled-color: #ffffff;
+$btn-disabled: #939393;
 $btn-disabled-bg: #e8e8e8;
-$btn-disabled-border-color: #e8e8e8;
+$btn-disabled-border: #e8e8e8;
 
-$btn-regular: #323130;
-$btn-regular-bg: #ffffff;
-$btn-regular-border-color: #8a8886;
-$btn-regular-hover-bg: #f2f2f2;
-$btn-regular-active-bg: #dedede;
-$btn-regular-disabled-color: #979796;
-
-$btn-secondary: #323130;
-$btn-secondary-bg: #ffffff;
-$btn-secondary-hover-bg: #e8e8e8;
-$btn-secondary-active-bg: #dedede;
-$btn-secondary-border-color: #8a8886;
-
+// #endregion
 
 $text-field-font-size: 0.9375rem;
 $text-field-padding: 5px 12px;
@@ -55,10 +87,30 @@ $text-field-padding: 5px 12px;
 $date-field-padding: 5px 12px;
 $select-field-padding: 6px 12px;
 
-$table-font-size: 0.95rem;
-$table-header-color: #0000009c;
-$table-header-font-size: 0.9rem;
-$table-row-hover-bg: #f2f2f2;
+// #region Shadows
+
+$shadow-1: rgba(0, 0, 0, 0.14) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+$shadow-2: 0 2px 6px rgba(0, 0, 0, .2);
+$shadow-3: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+$shadow-4: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+$shadow-5: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
+
+$popup-dialog-box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+
+// #endregion
+
+// #region Borders
+
+$rounded-0: 0;
+$rounded-1: 5px;
+$rounded-2: 10px;
+
+$border-0: none;
+$border-1: 1px solid #d4d2d0;
+$border-2: 1px solid #4f4f4f;
+
+// #endregion
+
 
 // // office.com
 // $btn-transition-duration: 100ms;

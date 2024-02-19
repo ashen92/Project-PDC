@@ -11,7 +11,6 @@
     line-height: inherit;
     font-weight: normal;
     font-style: normal;
-    font-size: 1rem;
     vertical-align: middle;
     margin: 0 0.2rem;
 }
@@ -62,6 +61,74 @@
 
 .i-plus-lg::before {
     content: "\F64D";
+}
+
+.i-trash::before {
+    content: "\F5DE";
+}
+
+.i-arrow-repeat::before {
+    content: "\F130";
+}
+
+.i-check-circle::before {
+    content: "\F26B";
+}
+
+.i-x-circle::before {
+    content: "\F623";
+}
+
+.i-people::before {
+    content: "\F4D0";
+}
+
+.i-person-bounding-box::before {
+    content: "\F4D4";
+}
+
+.i-list-task::before {
+    content: "\F477";
+}
+
+.i-clipboard-pulse::before {
+    content: "\F722";
+}
+
+.i-person-square::before {
+    content: "\F4DE";
+}
+
+.i-briefcase::before {
+    content: "\F1CC";
+}
+
+.i-journal-text::before {
+    content: "\F444";
+}
+
+.i-clipboard-check::before {
+    content: "\F28B";
+}
+
+.i-cloud-arrow-up::before {
+    content: "\F297";
+}
+
+.i-person-vcard::before {
+    content: "\F8C9";
+}
+
+.i-check-circle-fill::before {
+    content: "\F26A";
+}
+
+.i-dash-circle-fill::before {
+    content: "\F2E5";
+}
+
+.i-x-circle-fill::before {
+    content: "\F622";
 }
 
 // Font family Poppins

@@ -1,5 +1,5 @@
-@use "../variables" as *;
-@use "../mixins" as *;
+@use '../variables' as *;
+@use '../mixins' as *;
 
 .layout-home {
     .content {
@@ -85,7 +85,7 @@
     }
 }
 
-.card-container {
+.layout-home .card-container {
     display: grid;
     grid-template-columns: repeat(4, auto);
     justify-items: center;
@@ -107,7 +107,7 @@
     }
 }
 
-.card {
+.layout-home .card {
     min-width: 225px;
     width: 250px;
     border-radius: $rounded-1;

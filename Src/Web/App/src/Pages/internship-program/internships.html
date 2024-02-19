@@ -18,17 +18,17 @@
         <div class="search">
             <i class="i i-search"></i>
             <input id="search-query" class="search" type="text" placeholder="Search" autocomplete="off">
-            <button id="search-btn" class="btn" type="button">Search</button>
+            <button id="search-btn" class="btn btn-primary" type="button">Search</button>
         </div>
 
-        {% if ("ROLE_ADMIN" in user_roles) or ("ROLE_STUDENT" in user_roles) %}
+        {% if has_role(InternshipProgram_Admin) or has_role(InternshipProgram_Student) %}
         <div class="item" id="filter-by-company">
             Company
             <i class="i i-chevron-down"></i>
         </div>
         {% endif %}
 
-        {# {% if ("ROLE_ADMIN" in user_roles) or ("ROLE_PARTNER" in user_roles) %}
+        {# {% if has_role(InternshipProgram_Admin) or has_role(InternshipProgram_Partner) %}
         <div class="item">
             Status
             <i class="i i-chevron-down"></i>
@@ -38,21 +38,22 @@
 
     {% if internships|length == 0 %}
 
-    <div class="grid h-1/3 items-end text-center">
-        <h5 class="fw-semibold">Nothing found</h5>
-        {% if "ROLE_INTERNSHIP_STUDENT" in user_roles %}
-        <div class="description">Modify the search term or adjust the filters and try again.</div>
-        {% endif %}
+    <div class="grid h-1/2 items-center text-center">
+        <div>
+            <h5 class="fw-semibold">Nothing found</h5>
+            <div class="description">Modify the search term or adjust the filters and try again.</div>
+        </div>
     </div>
 
     {% else %}
 
     <div class="container">
         <div>
-            {% if "ROLE_INTERNSHIP_STUDENT" not in user_roles %}
+            {% if has_permission('internship', 'create') %}
 
-            <div class="mb-10 text-right">
-                <a class="btn" role="button" href="/internship-program/internships/create">Post an internship</a>
+            <div class="mb-2 text-right">
+                <a class="btn btn-primary" role="button" href="/internship-program/internships/create">Post an
+                    internship</a>
             </div>
 
             {% endif %}
@@ -122,15 +123,22 @@
             <div class="content hidden" id="job-details-content">
                 <h3 class="title" id="job-title"></h3>
                 <div class="actions">
-                    {% if ("ROLE_PARTNER" in user_roles) or ("ROLE_ADMIN" in user_roles) %}
-                    <button type="button" class="btn" id="applicants-job-btn">Applicants</button>
-                    <button type="button" class="btn" id="modify-job-btn">Modify</button>
-                    <button type="button" class="btn" id="remove-job-btn">Remove</button>
+                    {% if has_permission('application', 'read') %}
+                    <button type="button" class="btn btn-primary" id="applicants-job-btn">Applicants</button>
                     {% endif %}
 
-                    {% if "ROLE_STUDENT" in user_roles %}
-                    <button type="button" class="btn" id="btn-apply">Apply</button>
-                    <button type="button" class="btn hidden" id="btn-undo-apply">Cancel Application</button>
+                    {% if has_permission('internship', 'update') %}
+                    <button type="button" class="btn btn-outline-primary" id="modify-job-btn">Modify</button>
+                    {% endif %}
+
+                    {% if has_permission('internship', 'delete') %}
+                    <button type="button" class="btn btn-outline-danger" id="remove-job-btn">Remove</button>
+                    {% endif %}
+
+                    {% if has_permission('internship', 'apply') %}
+                    <button type="button" class="btn btn-primary" id="btn-apply">Apply</button>
+                    <button type="button" class="btn btn-primary hidden" id="btn-undo-apply">Cancel
+                        Application</button>
                     {% endif %}
                 </div>
                 <div class="description">
@@ -143,7 +151,7 @@
 
     {% endif %}
 
-    {% if "ROLE_INTERNSHIP_PARTNER" not in user_roles %}
+    {% if not has_role(InternshipProgram_Partner) %}
     <div class="pop-up-multi-select-list hidden" id="company-multi-select-list">
         <h4>Companies</h4>
         <ul>
@@ -155,7 +163,7 @@
             {% endfor %}
         </ul>
         <div class="actions">
-            <button type="button" class="btn" id="company-multi-select-list-apply-btn">Apply</button>
+            <button type="button" class="btn btn-primary" id="company-multi-select-list-apply-btn">Apply</button>
             <button type="button" class="btn btn-secondary" id="company-multi-select-list-reset-btn">Reset</button>
             <button type="button" class="btn btn-secondary" id="company-multi-select-list-hide-btn">Hide</button>
         </div>

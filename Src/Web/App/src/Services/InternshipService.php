@@ -4,23 +4,22 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Interfaces\IFileStorageService;
-use App\Interfaces\IInternshipCycleService;
-use App\Interfaces\IInternshipService;
 use App\Models\Internship;
 use App\Models\InternshipSearchResult;
+use App\Models\Organization;
+use App\Models\Student;
 use App\Repositories\InternshipRepository;
-use Override;
 
-class InternshipService implements IInternshipService
+readonly class InternshipService
 {
     public function __construct(
-        private readonly InternshipRepository $internshipRepository,
-        private readonly IInternshipCycleService $internshipCycleService,
-        private readonly IFileStorageService $fileStorageService
+        private InternshipRepository $internshipRepository,
+        private InternshipProgramService $internshipCycleService,
+        private IFileStorageService $fileStorageService
     ) {
     }
 
-    #[Override] public function getInternship(int $id, ?int $cycleId = null): ?Internship
+    public function getInternship(int $id): ?Internship
     {
         return $this->internshipRepository->findInternship($id);
     }
@@ -42,7 +41,10 @@ class InternshipService implements IInternshipService
         return $internshipSearchResults;
     }
 
-    #[Override] public function searchInternships(
+    /**
+     * @return array<InternshipSearchResult>
+     */
+    public function searchInternships(
         int $cycleId,
         ?string $searchQuery,
         ?int $ownerUserId,
@@ -64,7 +66,10 @@ class InternshipService implements IInternshipService
         return $this->setOrgLogos($result);
     }
 
-    #[Override] public function searchInternshipsGetOrganizations(int $cycleId, ?string $searchQuery): array
+    /**
+     * @return array<Organization>
+     */
+    public function searchInternshipsGetOrganizations(int $cycleId, ?string $searchQuery): array
     {
         // TODO: Check if internship cycle exists
 
@@ -72,6 +77,14 @@ class InternshipService implements IInternshipService
             $cycleId,
             $searchQuery,
         );
+    }
+
+    /**
+     * @return array<Internship>
+     */
+    public function getInternships(int $cycleId, int $ownerId): array
+    {
+        return $this->internshipRepository->findInternships($cycleId, $ownerId);
     }
 
     public function getInternshipCount(int $cycleId, ?string $searchQuery, ?int $ownerUserId): int
@@ -82,9 +95,19 @@ class InternshipService implements IInternshipService
         return $this->internshipRepository->count($cycleId, $searchQuery, $ownerUserId);
     }
 
-    #[Override] public function getApplications(int $internshipId): array
+    /**
+     * @return array<Student>
+     */
+    public function getApplications(int $internshipId): array
     {
-        return $this->internshipRepository->findAllApplications($internshipId);
+        $applications = $this->internshipRepository->findAllApplications($internshipId);
+        $internship = $this->internshipRepository->findInternship($internshipId);
+
+        $res['id'] = $internship->getId();
+        $res['title'] = $internship->getTitle();
+        $res['applications'] = $applications;
+
+        return $res;
     }
 
     public function deleteInternship(int $id): bool
@@ -92,7 +115,8 @@ class InternshipService implements IInternshipService
         return $this->internshipRepository->delete($id);
     }
 
-    #[Override] public function createInternship(
+    public function createInternship(
+        int $cycleId,
         string $title,
         string $description,
         int $ownerId,
@@ -108,12 +132,12 @@ class InternshipService implements IInternshipService
             $description,
             $ownerId,
             $organizationId,
-            $this->internshipCycleService->getLatestActiveCycle()->getId(),
+            $cycleId,
             $isPublished
         );
     }
 
-    #[Override] public function updateInternship(
+    public function updateInternship(
         int $id,
         ?string $title = null,
         ?string $description = null,
@@ -124,7 +148,7 @@ class InternshipService implements IInternshipService
         return $this->internshipRepository->updateInternship($id, $title, $description);
     }
 
-    #[Override] public function apply(int $internshipId, int $userId): bool
+    public function apply(int $internshipId, int $userId): bool
     {
         // TODO: Check if internship exists
         // TODO: Check if user exists and is a student
@@ -132,7 +156,7 @@ class InternshipService implements IInternshipService
         return $this->internshipRepository->apply($internshipId, $userId);
     }
 
-    #[Override] public function undoApply(int $internshipId, int $userId): bool
+    public function undoApply(int $internshipId, int $userId): bool
     {
         // TODO: Check if internship exists
         // TODO: Check if user exists and is a student
@@ -140,7 +164,7 @@ class InternshipService implements IInternshipService
         return $this->internshipRepository->undoApply($internshipId, $userId);
     }
 
-    #[Override] public function hasAppliedToInternship(int $internshipId, int $userId): bool
+    public function hasAppliedToInternship(int $internshipId, int $userId): bool
     {
         // TODO: Check if internship exists
         // TODO: Check if user exists and is a student

@@ -1,0 +1,31 @@
+{% extends "shared/layout-left-nav.html" %}
+
+{% block title %}Your Applications{% endblock %}
+
+{% block left_nav %}
+{% include "internship-program/left-nav.html" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="title">
+    <h2>
+        Internships you have applied for
+    </h2>
+</div>
+
+<section>
+    <div class="title">
+        <h5>
+            Applications
+        </h5>
+    </div>
+
+    {% if requirements is empty %}
+    <p>No applications have found.</p>
+    {% else %}
+
+    {% endif %}
+</section>
+
+{% endblock %}

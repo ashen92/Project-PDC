@@ -1,4 +1,4 @@
-@use "../variables" as *;
+@use '../variables' as *;
 
 .text {
     &-center {
@@ -7,6 +7,20 @@
 
     &-right {
         text-align: right;
+    }
+}
+
+.text {
+    &-success {
+        color: #0f7b0f;
+    }
+
+    &-warning {
+        color: #ff8c00;
+    }
+
+    &-danger {
+        color: #dc3545;
     }
 }
 

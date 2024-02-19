@@ -13,7 +13,7 @@
     <p>Manage requirements that students and partners must complete.</p>
 </div>
 
-<div class="actions mb-20">
+<div class="actions mb-5">
     <a class="btn btn-primary" role="button" href="requirements/create">Add Requirement</a>
 </div>
 
@@ -25,9 +25,9 @@
 
     <table class="table table-hover">
         <colgroup>
-            <col class="w-3-5">
-            <col class="w-1-5">
-            <col class="w-1-5">
+            <col class="w-3/5">
+            <col class="w-1/5">
+            <col class="w-1/5">
         </colgroup>
         <thead>
             <tr>
@@ -41,9 +41,9 @@
             <tr data-href="/internship-program/requirements/{{ item.id }}">
                 <td>{{ item.name }}</td>
                 <td class="capitalize">
-                    {% set requirementType = item.requirementType.toString %}
+                    {% set requirementType = item.requirementType.value %}
                     {% if requirementType == "recurring" %}
-                    {{ requirementType }} ({{ item.repeatInterval.toString }})
+                    {{ requirementType }} ({{ item.repeatInterval.value }})
                     {% else %}
                     {{ requirementType }}
                     {% endif %}
@@ -56,5 +56,8 @@
 
     {% endif %}
 </section>
+<script>
+    table.makeRowsClickable(".table-rows-clickable");
+</script>
 
 {% endblock %}

@@ -1,0 +1,45 @@
+{% extends "shared/layout-left-nav.html" %}
+
+{% block title %}Your Profile{% endblock %}
+
+{% block left_nav %}
+{% include "internship-program/left-nav.html" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="title">
+    <h2>
+        Your profile
+    </h2>
+    <p>Mange how recruiters see your profile</p>
+</div>
+
+<section>
+    <div class="grid-details">
+        <label>
+            Linkedin profile
+        </label>
+        <p>:</p>
+        <p>{{ user.linkedinProfile ?? 'Not set' }}</p>
+
+        <label>CV</label>
+        <p>:</p>
+        <p>{{ user.cv ?? 'Not set' }}</p>
+    </div>
+</section>
+<section>
+    <form action="" method="POST" enctype="multipart/form-data">
+
+        {% include 'shared/file-upload.html' with {
+        'id': 'cv',
+        'name': 'cv',
+        'accept': '.pdf',
+        'button_text': 'Attach CV',
+        } %}
+
+        <button class="btn btn-primary" type="submit">Upload</button>
+    </form>
+</section>
+
+{% endblock %}

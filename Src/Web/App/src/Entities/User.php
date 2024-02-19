@@ -52,6 +52,16 @@ class User
     #[ORM\ManyToMany(targetEntity: UserGroup::class, mappedBy: "users")]
     private Collection $groups;
 
+    /**
+     * Many Users have Many Permissions.
+     * @var Collection<int, Permission>
+     */
+    #[ORM\JoinTable(name: 'user_permissions')]
+    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id')]
+    #[ORM\InverseJoinColumn(name: 'permission_id', referencedColumnName: 'id')]
+    #[ORM\ManyToMany(targetEntity: Permission::class)]
+    private Collection $permissions;
+
     public function __construct(
         ?string $email = null,
         ?string $firstName = null,
@@ -61,6 +71,11 @@ class User
         $this->firstName = $firstName;
         $this->passwordHash = $passwordHash;
         $this->groups = new ArrayCollection();
+        $this->permissions = new ArrayCollection();
+
+        if ($email !== null && $firstName !== null && $passwordHash !== null) {
+            $this->isActive = true;
+        }
     }
 
     public function generateActivationToken(): string
@@ -154,5 +169,10 @@ class User
     public function addToGroup(UserGroup $group): void
     {
         $this->groups[] = $group;
+    }
+
+    public function addPermission(Permission $permission): void
+    {
+        $this->permissions[] = $permission;
     }
 }

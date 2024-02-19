@@ -1,6 +1,6 @@
 {% extends "shared/layout-left-nav.html" %}
 
-{% block title %}Student Users{% endblock %}
+{% block title %}All User Requirements{% endblock %}
 
 {% block left_nav %}
 {% include "internship-program/left-nav.html" %}
@@ -8,40 +8,140 @@
 
 {% block content %}
 
-<div class="mb-20">
-    <h5>
-        All submissions for '{{ requirement.name }}'
-    </h5>
-    <p class="fs-small">{{ userRequirements|length }} submissions found</p>
+<div class="title">
+    <h4>
+        All user requirements for '{{ requirement.name }}'
+    </h4>
 </div>
-<table class="table table-hover border-0 table-compact">
-    <colgroup>
-        <col class="w-2-12">
-        <col class="w-3-12">
-        <col class="w-2-12">
-        <col class="w-2-12">
-        <col class="w-5-12">
-    </colgroup>
-    <thead>
-        <tr>
-            <th>First name</th>
-            <th>Full name</th>
-            <th>Completed on</th>
-            <th>Index number</th>
-            <th>Student email</th>
-        </tr>
-    </thead>
-    <tbody class="table-rows-clickable">
-        {% for i in userRequirements %}
-        <tr data-href="submissions?r={{ requirement.id }}&u={{ i.user.id }}">
-            <td class="capitalize">{{ i.user.firstName }}</td>
-            <td class="capitalize">{{ i.user.fullName }}</td>
-            <td class="capitalize">{{ i.completedAt.format("Y-m-d") }}</td>
-            <td>{{ i.user.indexNumber }}</td>
-            <td>{{ i.user.studentEmail }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+
+<section>
+    <div id="user-requirements-grid"></div>
+</section>
+
+<div class="submission-viewer" id="popup-dialog">
+    <div class="title-bar">
+        <h6 id="title-bar-title"></h6>
+        <button class="close" onclick="document.getElementById('popup-dialog').style.display = 'none'">
+            <span class="i i-x-lg"></span>
+        </button>
+    </div>
+    <div class="content">
+        <div class="file-picker">
+            <label for="file">Currently Viewing :</label>
+            <select name="file" id="file" data-user-requirement-id="">
+            </select>
+        </div>
+        <object class="pdf-viewer" id="pdf-viewer" data="" type="application/pdf">
+            Your browser does not support this feature.
+        </object>
+    </div>
+</div>
+
+<script>
+    grid = new gridjs.Grid({
+        className: {
+            tbody: 'gridjs-row-clickable'
+        },
+        columns: [
+            { name: 'id', hidden: true },
+            'Index Number',
+            'Full name',
+            {
+                name: 'Status',
+                formatter: (cell) => {
+                    if (cell === 'pending') {
+                        return gridjs.html(
+                            "<span class='fs-6 i i-dash-circle-fill text-warning'></span><span>Pending</span>"
+                        );
+                    }
+                    return gridjs.html(
+                        "<span class='fs-6 i i-check-circle-fill text-success'></span><span>Fulfilled</span>"
+                    );
+                },
+            },
+            {
+                name: 'Submission',
+                formatter: (cell, row) => {
+                    return gridjs.h('button', {
+                        className: 'btn btn-primary',
+                        disabled: row.cells[3].data === 'pending',
+                        onClick: () => {
+                            let popup = document.getElementById('popup-dialog');
+                            let pdfViewer = document.getElementById('pdf-viewer');
+                            if (popup.style.display === 'flex') {
+                                popup.style.display = 'none';
+                                return;
+                            }
+
+                            let fileSelect = document.getElementById('file');
+
+                            if (parseInt(fileSelect.dataset.userRequirementId) === row.cells[0].data) {
+                                popup.style.display = 'flex';
+                                return;
+                            }
+
+                            fileSelect.dataset.userRequirementId = row.cells[0].data;
+                            fileSelect.innerHTML = '';
+
+                            row.cells[8].data.forEach((item) => {
+                                let option = document.createElement('option');
+                                option.value = item.url;
+                                option.textContent = item.name
+                                fileSelect.appendChild(option);
+                            });
+
+                            document.getElementById('title-bar-title').textContent = row.cells[1].data + ' | ' + row.cells[2].data;
+                            pdfViewer.data = row.cells[8].data[0].url;
+                            popup.style.display = 'flex';
+                        },
+                        innerText: 'View'
+                    });
+                }
+            },
+            'Start date',
+            'End date',
+            { name: 'fulfillMethod', hidden: true },
+            { name: 'files', hidden: true }
+        ],
+        server: {
+            url: "{{ apiEndpoint|e('js') }}",
+            then: data => data.map(u => [
+                u.id,
+                u.indexNumber,
+                u.fullName,
+                u.status,
+                ,
+                u.startDate,
+                u.endDate,
+                u.fulfillMethod,
+                u.files
+            ])
+        },
+        search: {
+            server: {
+                url: (prev, keyword) => `${prev}?q=${keyword}`
+            }
+        },
+    });
+    grid.render(document.getElementById('user-requirements-grid'));
+    grid.on('rowClick', (e, row) => {
+        if (e.target.tagName === 'BUTTON' || e.target.querySelector('button')) {
+            return;
+        }
+
+        if (e.target.tagName === 'A' || e.target.querySelector('a')) {
+            return;
+        }
+
+        window.location.href = `/internship-program/monitoring/submissions/${row.cells[0].data}`;
+    });
+
+    let pdfViewer = document.getElementById('pdf-viewer');
+    let fileSelect = document.getElementById('file');
+    fileSelect.addEventListener('change', function () {
+        pdfViewer.data = this.value;
+    });
+
+</script>
 
 {% endblock %}

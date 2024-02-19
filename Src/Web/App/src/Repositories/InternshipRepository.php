@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
-use App\Interfaces\Repository\IRepository;
+use App\Interfaces\IRepository;
 use App\Mappers\InternshipMapper;
 use App\Mappers\InternshipSearchResultMapper;
 use App\Mappers\OrganizationMapper;
@@ -48,19 +48,18 @@ class InternshipRepository implements IRepository
     }
 
     /**
-     * @return array<Student>
+     * @return array<Internship>
      */
-    public function findAllApplications(int $internshipId): array
+    public function findInternships(int $cycleId, int $ownerId): array
     {
-        $sql = 'SELECT u.*, s.*
-                FROM users u
-                JOIN students s ON u.id = s.id
-                JOIN internship_applicants ia ON u.id = ia.student_id
-                WHERE ia.internship_id = :internshipId';
+        $sql = 'SELECT * FROM internships WHERE internship_cycle_id = :cycleId AND owner_user_id = :ownerId';
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute(['internshipId' => $internshipId]);
+        $stmt->execute([
+            'cycleId' => $cycleId,
+            'ownerId' => $ownerId
+        ]);
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        return array_map(fn(array $result) => StudentMapper::map($result), $results);
+        return array_map(fn(array $result) => InternshipMapper::map($result), $results);
     }
 
     /**
@@ -149,34 +148,53 @@ class InternshipRepository implements IRepository
         return (int) $stmt->fetch(PDO::FETCH_COLUMN);
     }
 
-    public function apply(int $internshipId, int $studentUserId): bool
+    /**
+     * @return array<mixed>
+     */
+    public function findAllApplications(int $internshipId): array
     {
-        $sql = 'INSERT INTO internship_applicants (internship_id, student_id)
-                VALUES (:internshipId, :studentUserId)';
+        $sql = 'SELECT a.id, a.user_id, a.status, 
+                        s.fullName AS studentFullName, 
+                        u.firstName AS userFirstName,
+                        u.email AS userEmail
+                FROM applications a
+                INNER JOIN students s ON a.user_id = s.id
+                INNER JOIN users u ON a.user_id = u.id
+                WHERE a.internship_id = :internshipId';
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['internshipId' => $internshipId]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function apply(int $internshipId, int $userId): bool
+    {
+        $sql = 'INSERT INTO applications (internship_id, user_id, status)
+                VALUES (:internshipId, :userId, :status)';
         $stmt = $this->pdo->prepare($sql);
         return $stmt->execute([
             'internshipId' => $internshipId,
-            'studentUserId' => $studentUserId,
+            'userId' => $userId,
+            'status' => 'pending',
         ]);
     }
 
-    public function undoApply(int $internshipId, int $studentUserId): bool
+    public function undoApply(int $internshipId, int $userId): bool
     {
-        $sql = 'DELETE FROM internship_applicants WHERE internship_id = :internshipId AND student_id = :studentUserId';
+        $sql = 'DELETE FROM applications WHERE internship_id = :internshipId AND user_id = :userId';
         $stmt = $this->pdo->prepare($sql);
         return $stmt->execute([
             'internshipId' => $internshipId,
-            'studentUserId' => $studentUserId,
+            'userId' => $userId,
         ]);
     }
 
-    public function hasApplied(int $internshipId, int $studentUserId): bool
+    public function hasApplied(int $internshipId, int $userId): bool
     {
-        $sql = 'SELECT COUNT(*) FROM internship_applicants WHERE internship_id = :internshipId AND student_id = :studentUserId';
+        $sql = 'SELECT COUNT(*) FROM applications WHERE internship_id = :internshipId AND user_id = :userId';
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([
             'internshipId' => $internshipId,
-            'studentUserId' => $studentUserId,
+            'userId' => $userId,
         ]);
         $result = $stmt->fetch(PDO::FETCH_COLUMN);
         return $result > 0;

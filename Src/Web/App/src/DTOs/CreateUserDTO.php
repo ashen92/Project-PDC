@@ -13,7 +13,7 @@ readonly class CreateUserDTO
         public ?string $fullName = null,
         public ?string $registrationNumber = null,
         public ?string $indexNumber = null,
-        public ?string $organization = null,
+        public ?int    $organizationId = null,
     ) {
     }
 }

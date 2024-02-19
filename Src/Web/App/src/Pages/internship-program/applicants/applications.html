@@ -1,0 +1,103 @@
+{% extends "shared/layout-left-nav.html" %}
+
+{% if internship %}
+{% set title = 'Applications for \'' ~ internship.title ~ '\'' %}
+{% else %}
+{% set title = 'All Applications' %}
+{% endif %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block left_nav %}
+{% include "internship-program/left-nav.html" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="title">
+    <h4>{{ title }}</h4>
+</div>
+
+<div id="grid-applications"></div>
+
+{% if has_role(InternshipProgram_Admin) %}
+
+<script>
+    grid = new gridjs.Grid({
+        columns: [
+            { name: 'id', hidden: true },
+            'First name',
+            'Full name',
+            'Email',
+            'Status',
+        ],
+        server: {
+            url: "{{ apiEndpoint|e('js') }}",
+            then: data => data.applications.map(a => [a.id, a.userFirstName, a.studentFullName, a.userEmail, a.status])
+        },
+        search: {
+            server: {
+                url: (prev, keyword) => `${prev}?fullName=${keyword}`
+            }
+        },
+    });
+    grid.render(document.getElementById("grid-applications"));
+    grid.on('rowClick', (e, row) => {
+        window.location.href = `/internship-program/applicants/applications/${row.cells[0].data}`;
+    });
+</script>
+
+{% else %}
+
+<script>
+    grid = new gridjs.Grid({
+        columns: [
+            { name: 'id', hidden: true },
+            'First name',
+            'Full name',
+            'Email',
+            'Status',
+            {
+                name: 'Hire',
+                formatter: (cell, row) => {
+                    return gridjs.h('button', {
+                        className: "btn btn-primary",
+                        onClick: (e) => {
+                            alert(`Editing "${row.cells[0].data}" "${row.cells[1].data}"`);
+                            e.stopPropagation();
+                        }
+                    }, 'Hire');
+                }
+            },
+            {
+                name: 'Reject',
+                formatter: (cell, row) => {
+                    return gridjs.h('button', {
+                        className: "btn btn-outline-danger",
+                        onClick: (e) => {
+                            alert(`Editing "${row.cells[0].data}" "${row.cells[1].data}"`);
+                            e.stopPropagation();
+                        }
+                    }, 'Reject');
+                }
+            },
+        ],
+        server: {
+            url: "{{ apiEndpoint|e('js') }}",
+            then: data => data.applications.map(a => [a.id, a.userFirstName, a.studentFullName, a.userEmail, a.status])
+        },
+        search: {
+            server: {
+                url: (prev, keyword) => `${prev}?fullName=${keyword}`
+            }
+        },
+    });
+    grid.render(document.getElementById("grid-applications"));
+    grid.on('rowClick', (e, row) => {
+        window.location.href = `/internship-program/applicants/applications/${row.cells[0].data}`;
+    });
+</script>
+
+{% endif %}
+
+{% endblock %}
