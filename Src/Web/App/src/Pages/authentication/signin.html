@@ -4,33 +4,38 @@
 
 {% block content %}
 
-<h4>Sign in</h4>
+
 <div class="form-wrapper">
-    <form action="/login" method="post">
-        {% for message in app.session.flashbag.get("signin_error") %}
-        <div class="alert alert-error">
-            {{ message }}
-        </div>
-        {% endfor %}
-        <div class="field">
-            <label for="email">Email</label>
-            <input type="email" name="email" id="email" autocomplete="email" required>
-        </div>
-        <div class="field">
-            <label for="password">Password</label>
-            <input type="password" name="password" id="password" autocomplete="current-password" required>
-        </div>
-        <div class="actions">
-            <input class="btn" type="submit" value="Sign in">
-        </div>
-    </form>
+    <div class="container">
+        <h4>Sign in</h4>
+        <form action="/login" method="post">
+            {% for message in app.session.flashbag.get("signin_error") %}
+            <div class="alert alert-error">
+                {{ message }}
+            </div>
+            {% endfor %}
+            <div class="field">
+                <label for="email">Email</label>
+                <input type="email" name="email" id="email" autocomplete="email" required>
+            </div>
+            <div class="field">
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" autocomplete="current-password" required>
+            </div>
+            <div class="actions">
+                <input class="btn" type="submit" value="Sign in">
+            </div>
+        </form>
+    
     <div class="pt-50 text-center">Don't have an account?
         <div>
-            <a class="link" href="/signup">Create one!</a>
+            <a class="link" href="/signup">Create one</a>
         </div>
     </div>
-    <div class="pt-30 text-center">Want to register with our Partner Program? <a class="link" href="/register">Click
-            here!</a></div>
+    <div class="pt-30 text-center">Join with Our Partner Program? 
+        <a class="link" href="/register">Click here</a></div>
+
+    </div>
 </div>
 
 {% endblock %}
