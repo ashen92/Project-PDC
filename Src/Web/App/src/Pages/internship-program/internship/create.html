@@ -21,11 +21,10 @@
 
     <div class="field">
         <label for="description">Description</label>
-        {% include 'shared/text-editor.html' with {
-        'name': 'description',
-        'maxlength': '2000',
-        'placeholder': 'Put your description here.'
-        } %}
+        <div class="text-editor-container">
+            <input type="hidden" name="description" id="description" placeholder="Put your description here.">
+            <div class="text-editor"></div>
+        </div>
     </div>
 
     {% if has_role(Admin) %}

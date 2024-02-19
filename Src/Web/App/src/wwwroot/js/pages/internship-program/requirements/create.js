@@ -1,5 +1,8 @@
-import { $, $all } from "../core/dom.js";
-import { on } from "../core/events.js";
+import { $, $all } from "../../../core/dom.js";
+import { on } from "../../../core/events.js";
+import { createTextEditors } from "../../../components/textEditor.js";
+
+createTextEditors();
 
 const oneTimeEndDateElement = $("#field-one-time");
 const recurringRepeatElement = $("#field-recurring");

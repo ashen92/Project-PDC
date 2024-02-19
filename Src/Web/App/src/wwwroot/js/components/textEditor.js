@@ -1,9 +1,9 @@
-import { $ } from "../core/dom.js";
+import { $, $all } from "../core/dom.js";
 import Quill from "quill";
 
-function textEditor(textEditorElementSelector, textEditorContent, textEditorPlaceholder, textValueElementSelector) {
+function textEditor(textEditorElement, textEditorContent, textEditorPlaceholder, textValueElement) {
     let toolbarOptions = [["bold", "italic"], [{ "list": "bullet" }, { "list": "ordered" }]];
-    let quill = new Quill(textEditorElementSelector, {
+    let quill = new Quill(textEditorElement, {
         formats: ["bold", "italic", "list", "bullet"],
         modules: {
             toolbar: toolbarOptions
@@ -17,8 +17,22 @@ function textEditor(textEditorElementSelector, textEditorContent, textEditorPlac
     }
 
     quill.on("text-change", function () {
-        $(textValueElementSelector).value = quill.root.innerHTML;
+        textValueElement.value = quill.root.innerHTML;
     });
 }
 
-export { textEditor };
+function createTextEditors() {
+    const textEditorContainers = $all(".text-editor-container");
+    let editors = [];
+    textEditorContainers.forEach(function (container) {
+        const textEditorElement = container.querySelector(".text-editor");
+        const textValueElement = container.querySelector("input");
+        const textEditorContent = textValueElement.value;
+        const textEditorPlaceholder = textValueElement.getAttribute("placeholder");
+        textEditor(textEditorElement, textEditorContent, textEditorPlaceholder, textValueElement);
+        editors.push(textEditorElement);
+    });
+    return editors;
+}
+
+export { createTextEditors };
