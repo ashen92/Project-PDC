@@ -2,11 +2,12 @@
 
 .layout-left-nav {
     display: grid;
-    grid-template-columns: 230px auto;
+    grid-template-columns: 15rem auto;
 
     >.left-nav {
         border-right: $border-1;
-        padding: 3rem 0 15px 0;
+        padding: 3rem 0 1rem 0;
+        background-color: #f2f7ff;
 
         >a {
             display: inline-flex;
@@ -19,22 +20,22 @@
             transition-timing-function: cubic-bezier(0.33, 0, 0.67, 1);
 
             &:hover {
-                background-color: #DEDEDE;
+                background-color: #c0e0fe;
             }
 
             &:active {
-                background-color: #D4D4D4;
+                background-color: #b1d8fc;
             }
 
             &.active {
-                background-color: #e4e4e4;
+                background-color: #b1d8fc;
             }
 
             i {
                 margin-left: 0;
                 margin-right: 0.85rem;
                 font-size: 1.1rem;
-                color: #0078d4;
+                color: #00589b;
             }
         }
 
