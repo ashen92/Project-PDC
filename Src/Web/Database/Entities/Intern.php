@@ -18,6 +18,10 @@ class Intern
     #[ORM\JoinColumn(name: 'student_id', referencedColumnName: 'id')]
     private Student $student;
 
+    #[ORM\OneToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'adder_user_id', referencedColumnName: 'id')]
+    private Student $adderUserId;
+
     #[ORM\OneToOne(targetEntity: Organization::class)]
     #[ORM\JoinColumn(name: 'organization_id', referencedColumnName: 'id')]
     private Organization $organization;
@@ -28,10 +32,12 @@ class Intern
 
     public function __construct(
         Student $student,
+        User $adderUserId,
         Organization $organization,
         ?Application $application = null
     ) {
         $this->student = $student;
+        $this->adderUserId = $adderUserId;
         $this->organization = $organization;
         $this->application = $application;
     }

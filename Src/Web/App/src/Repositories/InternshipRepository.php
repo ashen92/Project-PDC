@@ -161,13 +161,18 @@ class InternshipRepository implements IRepository
      */
     public function findAllApplications(int $internshipId): array
     {
-        $sql = 'SELECT a.id, a.user_id, a.status, 
-                        s.fullName AS studentFullName, 
-                        u.firstName AS userFirstName,
-                        u.email AS userEmail
+        $sql = 'SELECT a.id, a.user_id AS userId, a.status, 
+                    s.fullName AS studentFullName,
+                    u.firstName AS userFirstName,
+                    u.email AS userEmail,
+                    CASE
+                        WHEN interns.student_id IS NOT NULL THEN 0
+                        ELSE 1
+                    END AS isApplicantAvailable
                 FROM applications a
                 INNER JOIN students s ON a.user_id = s.id
                 INNER JOIN users u ON a.user_id = u.id
+                LEFT JOIN interns ON a.user_id = interns.student_id
                 WHERE a.internship_id = :internshipId';
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['internshipId' => $internshipId]);

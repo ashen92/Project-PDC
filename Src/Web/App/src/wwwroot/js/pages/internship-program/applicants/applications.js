@@ -1,6 +1,7 @@
-import { Grid, h } from "gridjs";
+import { Grid, h, html } from "gridjs";
 
-let apiEndpoint = window.location.protocol + "//" + window.location.host;
+const domain = window.location.protocol + "//" + window.location.host;
+let apiEndpoint = domain;
 
 const params = new URLSearchParams(window.location.search);
 const i = parseInt(params.get("i"));
@@ -14,19 +15,52 @@ if (isNaN(i)) {
 const grid = new Grid({
     columns: [
         { name: "id", hidden: true },
+        { name: "user_id", hidden: true },
+        { name: "applications_status", hidden: true },
         "First name",
         "Full name",
         "Email",
-        "Status",
+        {
+            name: "Applicant Availability",
+            formatter: (cell, row) => {
+                if (cell === true) {
+                    return html(
+                        "<span class='fs-6 i i-check-circle text-success'></span><span>Available</span>"
+                    );
+                }
+                if (row.cells[2].data === "hired") {
+                    return html(
+                        "<span class='fs-6 i i-check-circle-fill text-success'></span><span>Hired</span>"
+                    );
+                }
+                return html(
+                    "<span class='fs-6 i i-x-circle text-danger'></span><span>Not available</span>"
+                );
+            },
+        },
         {
             name: "Hire",
             formatter: (cell, row) => {
                 return h("button", {
                     className: "btn btn-primary",
                     onClick: (e) => {
-                        alert(`Editing "${row.cells[0].data}" "${row.cells[1].data}"`);
-                        e.stopPropagation();
-                    }
+                        let data = {
+                            applicationId: row.cells[0].data
+                        };
+                        fetch(domain + "/api/applicants/" + row.cells[1].data + "/hire", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify(data)
+                        }).then(() => {
+                            e.target.disabled = true;
+                            grid.forceRender();
+                        }).catch((error) => {
+                            console.error("Error:", error);
+                        });
+                    },
+                    disabled: row.cells[6].data === false
                 }, "Hire");
             }
         },
@@ -35,9 +69,8 @@ const grid = new Grid({
             formatter: (cell, row) => {
                 return h("button", {
                     className: "btn btn-outline-danger",
-                    onClick: (e) => {
+                    onClick: () => {
                         alert(`Editing "${row.cells[0].data}" "${row.cells[1].data}"`);
-                        e.stopPropagation();
                     }
                 }, "Reject");
             }
@@ -45,7 +78,10 @@ const grid = new Grid({
     ],
     server: {
         url: apiEndpoint,
-        then: data => data.applications.map(a => [a.id, a.userFirstName, a.studentFullName, a.userEmail, a.status])
+        then: data => data.applications.map(a => [
+            a.id, a.userId, a.status, a.userFirstName,
+            a.studentFullName, a.userEmail, a.isApplicantAvailable
+        ])
     },
     search: {
         server: {
@@ -55,5 +91,13 @@ const grid = new Grid({
 });
 grid.render(document.getElementById("grid-applications"));
 grid.on("rowClick", (e, row) => {
+    if (e.target.tagName === "BUTTON" || e.target.querySelector("button")) {
+        return;
+    }
+
+    if (e.target.tagName === "A" || e.target.querySelector("a")) {
+        return;
+    }
+
     window.location.href = `/internship-program/applicants/applications/${row.cells[0].data}`;
 });

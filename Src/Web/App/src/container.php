@@ -107,6 +107,12 @@ $container->register(
 )
     ->setArguments([new Reference('pdo_mysql_connection'),]);
 
+$container->register(
+    'repository.application',
+    App\Repositories\ApplicationRepository::class
+)
+    ->setArguments([new Reference('pdo_mysql_connection'),]);
+
 #endregion
 
 #region Twig -----------------------------------------------------------------------
@@ -227,6 +233,14 @@ $container->register(
     ]);
 
 $container->register(
+    'service.application',
+    App\Services\ApplicationService::class
+)
+    ->setArguments([
+        new Reference('repository.application'),
+    ]);
+
+$container->register(
     'service.event',
     App\Services\EventService::class
 )
@@ -308,6 +322,15 @@ $container->register(
 )
     ->setArguments([
         new Reference('service.internship'),
+    ])
+    ->setPublic(true);
+
+$container->register(
+    'App\Controllers\API\ApplicationsAPIController',
+    \App\Controllers\API\ApplicationsAPIController::class
+)
+    ->setArguments([
+        new Reference('service.application'),
     ])
     ->setPublic(true);
 

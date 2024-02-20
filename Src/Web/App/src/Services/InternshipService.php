@@ -109,6 +109,10 @@ readonly class InternshipService
         $applications = $this->internshipRepository->findAllApplications($internshipId);
         $internship = $this->internshipRepository->findInternship($internshipId);
 
+        foreach ($applications as &$application) {
+            $application["isApplicantAvailable"] = $application["isApplicantAvailable"] === 1;
+        }
+
         $res['id'] = $internship->getId();
         $res['title'] = $internship->getTitle();
         $res['applications'] = $applications;
