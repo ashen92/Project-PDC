@@ -72,4 +72,21 @@ final readonly class ApplicationService
             throw $e;
         }
     }
+
+    public function resetApplicationStatus(int $applicantId, int $applicationId): bool
+    {
+        // TODO: Check if parameters exist
+
+        $this->applicationRepository->beginTransaction();
+
+        try {
+            $this->applicationRepository->deleteInternIfExists($applicantId, $applicationId);
+            $this->applicationRepository
+                ->updateApplicationStatus($applicationId, Application\Status::Pending);
+            return $this->applicationRepository->commit();
+        } catch (\Exception $e) {
+            $this->applicationRepository->rollback();
+            throw $e;
+        }
+    }
 }

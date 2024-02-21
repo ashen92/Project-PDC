@@ -82,4 +82,17 @@ class ApplicationsAPIController
         // TODO: Handle errors
         return new Response(null, 500);
     }
+
+    #[Route('/applicants/{id}/applications/{applicationId}/status/reset',
+        requirements: ['id' => '\d+', 'applicationId' => '\d+'], methods: ['POST'])]
+    public function resetApplicationStatus(Request $request, int $id, int $applicationId): Response
+    {
+        # TODO: Validate data
+
+        if ($this->applicationService->resetApplicationStatus($id, $applicationId)) {
+            return new Response(null, 204);
+        }
+        // TODO: Handle errors
+        return new Response(null, 500);
+    }
 }

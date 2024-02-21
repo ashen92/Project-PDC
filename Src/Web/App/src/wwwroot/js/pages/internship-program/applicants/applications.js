@@ -90,6 +90,29 @@ const grid = new Grid({
                 }, "Reject");
             }
         },
+        {
+            name: "Undo Hiring or Rejection",
+            formatter: (cell, row) => {
+                return h("button", {
+                    className: "btn btn-secondary",
+                    onClick: (e) => {
+                        fetch(domain + "/api/applicants/" + row.cells[1].data +
+                            "/applications/" + row.cells[0].data + "/status/reset", {
+                            method: "POST",
+                        }).then(response => {
+                            if (!response.ok) {
+                                throw new Error("Error resetting application");
+                            }
+                            e.target.disabled = true;
+                            grid.forceRender();
+                        }).catch(error => {
+                            console.error("Error:", error);
+                        });
+                    },
+                    disabled: row.cells[2].data === "pending"
+                }, "Reset");
+            }
+        },
     ],
     server: {
         url: apiEndpoint,
