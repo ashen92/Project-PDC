@@ -53,10 +53,13 @@ const grid = new Grid({
                                 "Content-Type": "application/json"
                             },
                             body: JSON.stringify(data)
-                        }).then(() => {
+                        }).then(response => {
+                            if (!response.ok) {
+                                throw new Error("Error hiring applicant");
+                            }
                             e.target.disabled = true;
                             grid.forceRender();
-                        }).catch((error) => {
+                        }).catch(error => {
                             console.error("Error:", error);
                         });
                     },
@@ -69,9 +72,21 @@ const grid = new Grid({
             formatter: (cell, row) => {
                 return h("button", {
                     className: "btn btn-outline-danger",
-                    onClick: () => {
-                        alert(`Editing "${row.cells[0].data}" "${row.cells[1].data}"`);
-                    }
+                    onClick: (e) => {
+                        fetch(domain + "/api/applicants/" + row.cells[1].data +
+                            "/applications/" + row.cells[0].data + "/reject", {
+                            method: "POST",
+                        }).then(response => {
+                            if (!response.ok) {
+                                throw new Error("Error rejecting application");
+                            }
+                            e.target.disabled = true;
+                            grid.forceRender();
+                        }).catch(error => {
+                            console.error("Error:", error);
+                        });
+                    },
+                    disabled: row.cells[2].data === "rejected"
                 }, "Reject");
             }
         },

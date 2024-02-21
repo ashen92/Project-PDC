@@ -69,4 +69,17 @@ class ApplicationsAPIController
             // TODO: Handle errors
         }
     }
+
+    #[Route('/applicants/{id}/applications/{applicationId}/reject',
+        requirements: ['id' => '\d+', 'applicationId' => '\d+'], methods: ['POST'])]
+    public function rejectApplication(Request $request, int $id, int $applicationId): Response
+    {
+        # TODO: Validate data
+
+        if ($this->applicationService->reject($id, $applicationId)) {
+            return new Response(null, 204);
+        }
+        // TODO: Handle errors
+        return new Response(null, 500);
+    }
 }
