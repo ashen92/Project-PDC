@@ -21,7 +21,13 @@ const grid = new Grid({
         "Full name",
         "Email",
         {
-            name: "Applicant Availability",
+            name: h("span", {}, [
+                "Availability",
+                h("i", {
+                    className: "i i-question-circle-fill",
+                    title: "Indicates if the applicant is already hired or not available for hiring."
+                })
+            ]),
             formatter: (cell, row) => {
                 if (cell === true) {
                     return html(
@@ -91,7 +97,13 @@ const grid = new Grid({
             }
         },
         {
-            name: "Undo Hiring or Rejection",
+            name: h("span", {}, [
+                "Reset",
+                h("i", {
+                    className: "i i-question-circle-fill",
+                    title: "Reset the hired or rejected status of the application"
+                })
+            ]),
             formatter: (cell, row) => {
                 return h("button", {
                     className: "btn btn-secondary",
