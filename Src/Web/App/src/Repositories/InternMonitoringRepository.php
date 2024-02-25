@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
+use App\DTOMappers\UserRequirementTableViewDTOMapper;
+use App\DTOs\UserRequirementTableViewDTO;
 use App\Interfaces\IRepository;
 use PDO;
 
@@ -101,5 +103,47 @@ class InternMonitoringRepository implements IRepository
             ':requirementId' => $requirementId,
         ]);
         return (int) $stmt->fetchColumn();
+    }
+
+    public function findStudent(int $studentId): array
+    {
+        $stmt = $this->pdo->prepare(
+            'SELECT s.id, s.indexNumber, s.registrationNumber, s.fullName, s.studentEmail 
+            FROM students s
+            WHERE s.id = :studentId'
+        );
+        $stmt->execute([
+            ':studentId' => $studentId,
+        ]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * @return array<UserRequirementTableViewDTO>
+     */
+    public function getUserRequirementsByUserId(int $cycleId, int $studentId): array
+    {
+        $stmt = $this->pdo->prepare(
+            "SELECT ur.id,
+                ur.user_id,
+                ur.requirement_id,
+                ur.startDate,
+                ur.endDate,
+                ur.completedAt,
+                ur.status,
+                r.name AS requirementName
+            FROM user_requirements ur
+            INNER JOIN requirements r ON ur.requirement_id = r.id
+            WHERE r.internship_cycle_id = :cycleId
+                AND ur.user_id = :studentId"
+        );
+        $stmt->execute([
+            ':cycleId' => $cycleId,
+            ':studentId' => $studentId,
+        ]);
+        return array_map(
+            fn($row) => UserRequirementTableViewDTOMapper::map($row),
+            $stmt->fetchAll(PDO::FETCH_ASSOC)
+        );
     }
 }

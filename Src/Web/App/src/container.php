@@ -414,6 +414,7 @@ $container->register(
 )
     ->setArguments([
         new Reference('twig'),
+        new Reference('service.intern_monitoring'),
         new Reference('service.requirement'),
     ])
     ->setPublic(true);

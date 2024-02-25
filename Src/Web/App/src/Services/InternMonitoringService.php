@@ -53,4 +53,12 @@ class InternMonitoringService
     {
         return $this->fileStorageService->get($fileId);
     }
+
+    public function getStudentSummary(int $cycleId, int $studentId): array
+    {
+        return [
+            'student' => $this->internMonitoringRepo->findStudent($studentId),
+            'userRequirements' => $this->internMonitoringRepo->getUserRequirementsByUserId($cycleId, $studentId),
+        ];
+    }
 }
