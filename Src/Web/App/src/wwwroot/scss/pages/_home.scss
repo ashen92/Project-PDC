@@ -4,7 +4,7 @@
 .layout-home {
     .content {
         max-width: $webpage-max-allowed-width;
-        padding-left: 50px;
+        padding-left: 150px;
         padding-right: 50px;
         margin: 0 auto;
     }
@@ -12,9 +12,12 @@
 
 .hero-container {
     height: 500px;
-    background-color: #c9eee5;
+    background-image: linear-gradient(hsl(206, 46%, 70%, 0.6), 40%, hsl(262, 100%, 98%)), url('/images/bg1.jpeg');
+    background-repeat: no-repeat;
+    background-size: cover;
     padding: 5rem;
     box-shadow: rgba(0, 0, 0, 0.12) 0px 0px 2px 0px, rgba(0, 0, 0, 0.14) 0px 1.008px 2px 0px;
+    //display: flex;
 
     @include media-breakpoint-down(md) {
         height: 450px;
@@ -30,19 +33,29 @@
         padding: 3rem 2rem;
     }
 
+    .hero-image {
+        height: auto;
+        width: 100%;
+        display: block;
+    }
+
     .hero-text {
-        text-align: left;
-        width: 60%;
+        text-align: center;
+        position: absolute;
+        top: 40%; // Position at the vertical center
+        left: 50%; // Position at the horizontal center
+        transform: translate(-50%, -50%); // Center the element precisely
+        width: 80%;
 
         &-title {
             line-height: 1.25;
-            font-size: 4rem;
+            font-size: 3.4rem;
             font-weight: $fw-semibold;
         }
 
         &-subtitle {
             margin-top: 2.5rem;
-            font-size: 1.45rem;
+            font-size: 1.55rem;
             font-weight: $fw-normal;
             color: #00243a;
         }
@@ -84,6 +97,15 @@
         }
     }
 }
+
+/*.background-image-container {
+    background-image: url('/images/bg.jpeg');
+    background-image: linear-gradient(hsl(206, 46%, 82%), 40%, hsl(262, 100%, 98%));
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}*/
+
 
 .layout-home .card-container {
     display: grid;
