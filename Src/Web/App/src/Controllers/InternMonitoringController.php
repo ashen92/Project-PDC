@@ -82,4 +82,15 @@ class InternMonitoringController extends PageControllerBase
             ]
         );
     }
+
+    #[Route('/interns', methods: ['GET'])]
+    public function interns(): Response
+    {
+        return $this->render(
+            'internship-program/monitoring/interns.html',
+            [
+                'section' => 'monitoring',
+            ]
+        );
+    }
 }

@@ -1,0 +1,49 @@
+{% extends "shared/layout-left-nav.html" %}
+
+{% block title %}Interns{% endblock %}
+
+{% block left_nav %}
+{% include "internship-program/left-nav.html" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="title">
+    <h2>
+        Lorem ipsum dolor sit.
+    </h2>
+    <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum, enim?
+    </p>
+</div>
+
+<section>
+    <table class="table table-hover">
+        <tbody class="table-rows-clickable">
+            <tr data-href="/internship-program/interns">
+                <td>Students</td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+<section>
+    <div class="title">
+        <h5>
+            Lorem, ipsum.
+        </h5>
+        <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae, eius!
+        </p>
+    </div>
+
+    {% if interns is empty %}
+    <p>Lorem ipsum dolor sit amet.</p>
+    {% else %}
+
+    <table>
+    </table>
+
+    {% endif %}
+</section>
+<script src="/js/internship-program/monitoring/home.js"></script>
+{% endblock %}
