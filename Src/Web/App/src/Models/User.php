@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-class User
+class User implements \JsonSerializable
 {
     private const ACTIVATION_TOKEN_VALID_DURATION = "PT1H";
 
@@ -106,5 +106,15 @@ class User
     public function setPasswordHash(string $passwordHash): void
     {
         $this->passwordHash = $passwordHash;
+    }
+
+    /**
+     * Specify data which should be serialized to JSON
+     * Serializes the object to a value that can be serialized natively by json_encode().
+     * @return mixed Returns data which can be serialized by json_encode(), which is a value of any type other than a resource .
+     */
+    function jsonSerialize(): array
+    {
+        return get_object_vars($this);
     }
 }

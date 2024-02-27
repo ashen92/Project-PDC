@@ -314,22 +314,23 @@ class UserRepository implements IRepository
         return $stmt->execute();
     }
 
-    public function searchUsers(?int $numberOfResults, ?int $offsetBy): array
+    public function searchUsers(int $limit, int $offsetBy): array
     {
         $sql = "SELECT u.id AS user_id, u.*, s.*, p.* FROM users u
             LEFT JOIN students s ON u.id = s.id 
-            LEFT JOIN partners p ON u.id = p.id";
-        if ($numberOfResults !== null) {
-            $sql .= " LIMIT :numberOfResults";
+            LEFT JOIN partners p ON u.id = p.id
+            GROUP BY u.id";
+        if ($limit !== null) {
+            $sql .= " LIMIT :limit";
         }
-        if ($offsetBy !== null) {
+        if ($offsetBy !== 0) {
             $sql .= " OFFSET :offsetBy";
         }
         $stmt = $this->pdo->prepare($sql);
-        if ($numberOfResults !== null) {
-            $stmt->bindValue("numberOfResults", $numberOfResults, PDO::PARAM_INT);
+        if ($limit !== null) {
+            $stmt->bindValue("limit", $limit, PDO::PARAM_INT);
         }
-        if ($offsetBy !== null) {
+        if ($offsetBy !== 0) {
             $stmt->bindValue("offsetBy", $offsetBy, PDO::PARAM_INT);
         }
         $stmt->execute();

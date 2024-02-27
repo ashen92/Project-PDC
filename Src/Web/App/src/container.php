@@ -360,6 +360,15 @@ $container->register(
     ])
     ->setPublic(true);
 
+$container->register(
+    'App\Controllers\API\UserManagementAPIController',
+    \App\Controllers\API\UserManagementAPIController::class
+)
+    ->setArguments([
+        new Reference('service.user'),
+    ])
+    ->setPublic(true);
+
 #endregion
 
 #region Controllers

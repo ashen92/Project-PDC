@@ -71,7 +71,7 @@ class InternMonitoringRepository implements IRepository
                 GROUP BY ur.id
                 LIMIT :limit";
 
-        if ($offset != 0) {
+        if ($offset !== 0) {
             $sql .= " OFFSET :offset";
         }
 
@@ -81,7 +81,7 @@ class InternMonitoringRepository implements IRepository
         $stmt->bindParam(':requirementId', $requirementId, PDO::PARAM_INT);
         $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
 
-        if ($offset != 0) {
+        if ($offset !== 0) {
             $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
         }
 

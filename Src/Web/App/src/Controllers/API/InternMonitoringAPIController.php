@@ -31,12 +31,13 @@ readonly class InternMonitoringAPIController
     public function userRequirements(Request $request, ?InternshipCycle $cycle, int $id): Response
     {
         $page = $request->query->getInt('page', 0);
+        // TODO: Validate
 
         $ur = $this->internMonitoringService->getUserRequirements(
             $cycle->getId(),
             $id,
-            InternMonitoringAPIController::MAX_PAGE_SIZE,
-            $page * InternMonitoringAPIController::MAX_PAGE_SIZE
+            self::MAX_PAGE_SIZE,
+            $page * self::MAX_PAGE_SIZE
         );
         return new Response(json_encode($ur), 200, ['Content-Type' => 'application/json']);
     }
