@@ -103,7 +103,19 @@ class RequirementsController extends PageControllerBase
     #[Route('/create', methods: ['GET'])]
     public function requirementAddGET(): Response
     {
-        return $this->render('internship-program/requirements/create.html', ['section' => 'requirements']);
+        return $this->render(
+            'internship-program/requirements/create.html',
+            ['section' => 'requirements']
+        );
+    }
+
+    #[Route('/create/users', methods: ['GET'])]
+    public function createRequirementSelectUsersGET(): Response
+    {
+        return $this->render(
+            'internship-program/requirements/select-users.html',
+            ['section' => 'requirements']
+        );
     }
 
     #[Route('/create', methods: ['POST'])]

@@ -31,6 +31,57 @@ class InternshipProgramRepository implements IRepository
         $this->pdo->rollBack();
     }
 
+    public function findParticipants(int $cycleId, int $limit, int $offsetBy): array
+    {
+        $sql = 'SELECT u.id, u.firstName, u.email, u.type, s.fullName, s.studentEmail
+                FROM users u
+                INNER JOIN user_group_membership ugm ON u.id = ugm.user_id
+                LEFT JOIN students s ON u.id = s.id 
+                LEFT JOIN partners p ON u.id = p.id
+                WHERE ugm.usergroup_id IN (
+                    SELECT ic.student_group_id
+                    FROM internship_cycles ic
+                    WHERE ic.id = :cycleId
+                )
+                GROUP BY u.id';
+        if ($limit !== null) {
+            $sql .= " LIMIT :limit";
+        }
+        if ($offsetBy !== 0) {
+            $sql .= " OFFSET :offsetBy";
+        }
+        $stmt = $this->pdo->prepare($sql);
+        if ($limit !== null) {
+            $stmt->bindValue("limit", $limit, PDO::PARAM_INT);
+        }
+        if ($offsetBy !== 0) {
+            $stmt->bindValue("offsetBy", $offsetBy, PDO::PARAM_INT);
+        }
+        $stmt->bindValue(':cycleId', $cycleId, PDO::PARAM_INT);
+        $stmt->execute();
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        if ($data === false) {
+            return [];
+        }
+        return $data;
+    }
+
+    public function countParticipants(int $cycleId): int
+    {
+        $stmt = $this->pdo->prepare(
+            'SELECT COUNT(*) FROM users u
+            INNER JOIN user_group_membership ugm ON u.id = ugm.user_id
+            WHERE ugm.usergroup_id IN (
+                SELECT ic.student_group_id
+                FROM internship_cycles ic
+                WHERE ic.id = :cycleId
+            )'
+        );
+        $stmt->bindValue(':cycleId', $cycleId, PDO::PARAM_INT);
+        $stmt->execute();
+        return (int) $stmt->fetchColumn();
+    }
+
     public function findLatestCycle(): ?InternshipCycle
     {
         $sql = "SELECT ic.*, GROUP_CONCAT(icpg.usergroup_id SEPARATOR ',') AS partner_group_ids

@@ -71,6 +71,17 @@ readonly class InternshipProgramService
         return $eligibleGroups;
     }
 
+    public function getParticipants(int $cycleId, int $limit, int $offsetBy): array
+    {
+        $result['totalCount'] = $this->internshipProgramRepository->countParticipants($cycleId);
+        $result['data'] = $this->internshipProgramRepository->findParticipants(
+            $cycleId,
+            $limit,
+            $offsetBy
+        );
+        return $result;
+    }
+
     public function getLatestInternshipCycleId(): ?int
     {
         return $this->getLatestCycle()?->getId();

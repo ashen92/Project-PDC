@@ -5,12 +5,15 @@ namespace App\Controllers\API;
 
 use App\Models\InternshipCycle;
 use App\Services\InternshipProgramService;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/api/internship-program')]
 readonly class InternshipProgramAPIController
 {
+    private const MAX_PAGE_SIZE = 50;
+
     public function __construct(
         private InternshipProgramService $internshipProgramService
     ) {
@@ -98,5 +101,24 @@ readonly class InternshipProgramAPIController
     {
         $this->internshipProgramService->undoEndInterning($cycle->getId());
         return new Response('', 204);
+    }
+
+    #[Route('/participants', methods: ['GET'])]
+    public function users(Request $request, ?InternshipCycle $cycle): Response
+    {
+        $page = $request->query->getInt('page', 0);
+        // TODO: Validate
+
+        return new Response(
+            json_encode(
+                $this->internshipProgramService->getParticipants(
+                    $cycle->getId(),
+                    self::MAX_PAGE_SIZE,
+                    $page * self::MAX_PAGE_SIZE
+                )
+            ),
+            Response::HTTP_OK,
+            ['content-type' => 'application/json']
+        );
     }
 }
