@@ -3,8 +3,10 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\DTOs\createInternshipDTO;
 use App\Interfaces\IFileStorageService;
 use App\Models\Internship;
+use App\Models\Internship\Status;
 use App\Models\InternshipSearchResult;
 use App\Models\Organization;
 use App\Models\Student;
@@ -47,9 +49,11 @@ readonly class InternshipService
     public function searchInternships(
         int $cycleId,
         ?string $searchQuery,
-        ?int $ownerUserId,
+        ?array $filterByOrgIds,
+        ?array $filterByStatuses,
         ?int $numberOfResults,
         ?int $offsetBy,
+        ?int $filterByCreatorUserId = null,
     ): array {
 
         // TODO: Check if internship cycle exists
@@ -57,10 +61,12 @@ readonly class InternshipService
 
         $result = $this->internshipRepository->searchInternships(
             $cycleId,
-            $ownerUserId,
             $searchQuery,
+            $filterByOrgIds,
+            $filterByStatuses,
             $numberOfResults,
             $offsetBy,
+            $filterByCreatorUserId,
         );
 
         return $this->setOrgLogos($result);
@@ -103,6 +109,10 @@ readonly class InternshipService
         $applications = $this->internshipRepository->findAllApplications($internshipId);
         $internship = $this->internshipRepository->findInternship($internshipId);
 
+        foreach ($applications as &$application) {
+            $application["isApplicantAvailable"] = $application["isApplicantAvailable"] === 1;
+        }
+
         $res['id'] = $internship->getId();
         $res['title'] = $internship->getTitle();
         $res['applications'] = $applications;
@@ -117,24 +127,13 @@ readonly class InternshipService
 
     public function createInternship(
         int $cycleId,
-        string $title,
-        string $description,
-        int $ownerId,
-        int $organizationId,
-        bool $isPublished,
+        createInternshipDTO $dto,
     ): void {
         // TODO: Check if organization exists
         // TODO: Check if owner exists
         // TODO: Check if active internship cycle exists
 
-        $this->internshipRepository->createInternship(
-            $title,
-            $description,
-            $ownerId,
-            $organizationId,
-            $cycleId,
-            $isPublished
-        );
+        $this->internshipRepository->createInternship($cycleId, $dto);
     }
 
     public function updateInternship(
@@ -170,5 +169,10 @@ readonly class InternshipService
         // TODO: Check if user exists and is a student
 
         return $this->internshipRepository->hasApplied($internshipId, $userId);
+    }
+
+    public function getOrganizations(): array
+    {
+        return $this->internshipRepository->findOrganizations();
     }
 }

@@ -61,7 +61,6 @@ class ApplicationsController extends PageControllerBase
                 [
                     'section' => 'applicants',
                     'internship' => null,
-                    'apiEndpoint' => 'http://localhost:80/api/applications',
                 ]
             );
         }
@@ -72,7 +71,6 @@ class ApplicationsController extends PageControllerBase
                 'section' => 'applicants',
                 'internship' => $this->internshipService
                     ->getInternship($internshipId),
-                'apiEndpoint' => 'http://localhost:80/api/internships/' . $internshipId . '/applications',
             ]
         );
     }

@@ -1,0 +1,63 @@
+{% extends "shared/layout-left-nav.html" %}
+
+{% set student = summary.student %}
+{% block title %}{{ student.fullName }}{% endblock %}
+
+{% block left_nav %}
+{% include "internship-program/left-nav.html" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="title">
+    <h4>{{ student.fullName }}</h4>
+</div>
+<section>
+    <div class="grid-details">
+        <label for="indexNumber">Index number</label>
+        <p>:</p>
+        <p>{{ student.indexNumber }}</p>
+
+        <label for="registration number">Registration number</label>
+        <p>:</p>
+        <p>{{ student.registrationNumber }}</p>
+
+        <label for="email">Student email</label>
+        <p>:</p>
+        <p>{{ student.studentEmail }}</p>
+    </div>
+</section>
+
+<section>
+    <table class="table table-hover">
+        <colgroup>
+            <col class="w-2/6">
+            <col class="w-1/6">
+            <col class="w-1/6">
+            <col class="w-1/6">
+            <col class="w-1/6">
+        </colgroup>
+        <thead>
+            <tr>
+                <th>Requirement name</th>
+                <th>Status</th>
+                <th>Completed on</th>
+                <th>Start date</th>
+                <th>End date</th>
+            </tr>
+        </thead>
+        <tbody class="table-rows-clickable">
+            {% for i in summary.userRequirements %}
+            <tr data-href="/internship-program/requirements/{{ i.id }}">
+                <td>{{ i.requirementName }}</td>
+                <td class="capitalize">{{ i.status }}</td>
+                <td>{{ i.completedAt.format("Y-m-d") }}</td>
+                <td>{{ i.startDate.format("Y-m-d") }}</td>
+                <td>{{ i.endDate.format("Y-m-d") }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+
+{% endblock %}

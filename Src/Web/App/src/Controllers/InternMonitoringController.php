@@ -6,6 +6,7 @@ namespace App\Controllers;
 use App\Attributes\RequiredRole;
 use App\Models\InternshipCycle;
 use App\Security\Role;
+use App\Services\InternMonitoringService;
 use App\Services\RequirementService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,6 +20,7 @@ class InternMonitoringController extends PageControllerBase
 {
     public function __construct(
         Environment $twig,
+        private readonly InternMonitoringService $internMonitoringService,
         private readonly RequirementService $requirementService,
     ) {
         parent::__construct($twig);
@@ -43,7 +45,19 @@ class InternMonitoringController extends PageControllerBase
             'internship-program/monitoring/students.html',
             [
                 'section' => 'monitoring',
-                'apiEndpoint' => 'http://localhost:80/api/intern-monitoring/students'
+            ]
+        );
+    }
+
+    #[Route('/students/{studentId}', requirements: ['studentId' => '\d+'], methods: ['GET'])]
+    public function monitoringStudentUser(?InternshipCycle $cycle, int $studentId): Response
+    {
+        return $this->render(
+            'internship-program/monitoring/student.html',
+            [
+                'section' => 'monitoring',
+                'studentId' => $studentId,
+                'summary' => $this->internMonitoringService->getStudentSummary($cycle->getId(), $studentId),
             ]
         );
     }
@@ -65,9 +79,17 @@ class InternMonitoringController extends PageControllerBase
             [
                 'section' => 'monitoring',
                 'requirement' => $requirement,
-                'apiEndpoint' => 'http://localhost:80/api/intern-monitoring/requirements/'
-                    . $requirementId .
-                    '/user-requirements',
+            ]
+        );
+    }
+
+    #[Route('/interns', methods: ['GET'])]
+    public function interns(): Response
+    {
+        return $this->render(
+            'internship-program/monitoring/interns.html',
+            [
+                'section' => 'monitoring',
             ]
         );
     }

@@ -88,13 +88,11 @@
         <form action="/internship-program/requirements/complete" method="POST">
             <input type="hidden" name="user-requirement-id" value="{{ userRequirement.id }}" />
             <div class="field">
-                <label class="fw-medium" for="description">Your response</label>
-                <div>
-                    {% include "shared/text-editor.html" with {
-                    "name": "text-response",
-                    "maxlength": "2000",
-                    "placeholder": "Put your description here."
-                    } %}
+                <label class="fw-medium" for="text-response">Your response</label>
+                <div class="text-editor-container">
+                    <input type="hidden" name="text-response" id="text-response"
+                        placeholder="Put your description here.">
+                    <div class="text-editor"></div>
                 </div>
             </div>
             <div class="divider"></div>
@@ -114,5 +112,5 @@
 
     {% endif %}
 </section>
-
+<script src="/js/internship-program/requirements/user-requirement.js" type="text/javascript"></script>
 {% endblock %}

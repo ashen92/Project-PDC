@@ -6,27 +6,6 @@ use App\Security\IdentityResolver;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
-\Doctrine\DBAL\Types\Type::addType(
-    'requirement_type',
-    'App\DoctrineTypes\Requirement\TypeType'
-);
-\Doctrine\DBAL\Types\Type::addType(
-    'requirement_repeat_interval',
-    'App\DoctrineTypes\Requirement\RepeatIntervalType'
-);
-\Doctrine\DBAL\Types\Type::addType(
-    'requirement_fulfill_method',
-    'App\DoctrineTypes\Requirement\FulFillMethodType'
-);
-\Doctrine\DBAL\Types\Type::addType(
-    'user_requirement_status',
-    'App\DoctrineTypes\UserRequirement\StatusType'
-);
-\Doctrine\DBAL\Types\Type::addType(
-    'application_status',
-    'App\DoctrineTypes\Application\StatusType'
-);
-
 $cachedContainerFile = __DIR__ . '/../cache/container.php';
 
 if (getenv('IS_PRODUCTION') && file_exists($cachedContainerFile)) {
@@ -80,37 +59,6 @@ $container->register(
         '%pdo_mysql.password%'
     ]);
 
-$container->setParameter('doctrine.params', require_once 'doctrine-config.php');
-
-$container->register(
-    'doctrine.config',
-    Doctrine\ORM\ORMSetup::class
-)
-    ->setFactory([Doctrine\ORM\ORMSetup::class, 'createAttributeMetadataConfiguration'])
-    ->setArguments([
-        array(__DIR__ . '/Entities'),
-        true,
-    ]);
-
-$container->register(
-    'doctrine.connection',
-    Doctrine\DBAL\DriverManager::class
-)
-    ->setFactory([Doctrine\DBAL\DriverManager::class, 'getConnection'])
-    ->setArguments([
-        '%doctrine.params%',
-        new Reference('doctrine.config')
-    ]);
-
-$container->register(
-    'doctrine.entity_manager',
-    Doctrine\ORM\EntityManager::class
-)
-    ->setArguments([
-        new Reference('doctrine.connection'),
-        new Reference('doctrine.config')
-    ]);
-
 #endregion
 
 #region Repositories ---------------------------------------------------------------
@@ -145,7 +93,6 @@ $container->register(
 )
     ->setArguments([
         new Reference('pdo_mysql_connection'),
-        new Reference('doctrine.entity_manager'),
     ]);
 
 $container->register(
@@ -157,6 +104,12 @@ $container->register(
 $container->register(
     'repository.intern_monitoring',
     App\Repositories\InternMonitoringRepository::class
+)
+    ->setArguments([new Reference('pdo_mysql_connection'),]);
+
+$container->register(
+    'repository.application',
+    App\Repositories\ApplicationRepository::class
 )
     ->setArguments([new Reference('pdo_mysql_connection'),]);
 
@@ -217,7 +170,7 @@ $container->register(
     App\Services\AuthenticationService::class
 )
     ->setArguments([
-        new Reference('service.user'),
+        new Reference('repository.user'),
         new Reference('password_hasher')
     ]);
 
@@ -280,11 +233,18 @@ $container->register(
     ]);
 
 $container->register(
+    'service.application',
+    App\Services\ApplicationService::class
+)
+    ->setArguments([
+        new Reference('repository.application'),
+    ]);
+
+$container->register(
     'service.event',
     App\Services\EventService::class
 )
     ->setArguments([
-        new Reference('doctrine.entity_manager')
     ]);
 
 $container->register(
@@ -348,11 +308,29 @@ $container->register(
 #region API Controllers
 
 $container->register(
+    'App\Controllers\API\InternshipProgramAPIController',
+    \App\Controllers\API\InternshipProgramAPIController::class
+)
+    ->setArguments([
+        new Reference('service.internship_program'),
+    ])
+    ->setPublic(true);
+
+$container->register(
     'App\Controllers\API\InternshipsAPIController',
     \App\Controllers\API\InternshipsAPIController::class
 )
     ->setArguments([
         new Reference('service.internship'),
+    ])
+    ->setPublic(true);
+
+$container->register(
+    'App\Controllers\API\ApplicationsAPIController',
+    \App\Controllers\API\ApplicationsAPIController::class
+)
+    ->setArguments([
+        new Reference('service.application'),
     ])
     ->setPublic(true);
 
@@ -400,7 +378,6 @@ $container->register(
     ->setArguments([
         new Reference('twig'),
         new Reference('service.authentication'),
-        new Reference('service.user'),
         new Reference('service.email')
     ])
     ->setPublic(true);
@@ -437,6 +414,7 @@ $container->register(
 )
     ->setArguments([
         new Reference('twig'),
+        new Reference('service.intern_monitoring'),
         new Reference('service.requirement'),
     ])
     ->setPublic(true);

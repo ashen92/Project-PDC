@@ -3,11 +3,10 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
-use App\DTOs\CreateStudentUserDTO;
+use App\DTOs\UpdateStudentUserDTO;
 use App\Interfaces\IEmailService;
 use App\Models\SignupEmail;
 use App\Services\AuthenticationService;
-use App\Services\UserService;
 use DateTime;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,7 +19,6 @@ class AuthenticationController extends PageControllerBase
     public function __construct(
         Environment $twig,
         private readonly AuthenticationService $authn,
-        private readonly UserService $userService,
         private readonly IEmailService $emailService
     ) {
         parent::__construct($twig);
@@ -79,10 +77,10 @@ class AuthenticationController extends PageControllerBase
 
         if ($email) {
             $email = $email . '@stu.ucsc.cmb.ac.lk';
-            $user = $this->userService->getStudentByStudentEmail($email);
+            $user = $this->authn->getStudentByStudentEmail($email);
             if ($user) {
                 if (!$user->isActive()) {
-                    $token = $this->userService->generateActivationToken($user);
+                    $token = $this->authn->generateActivationToken($user);
                     $email = new SignupEmail($email, $user->getFullName(), $token);
                     $this->emailService->sendEmail($email);
 
@@ -102,7 +100,7 @@ class AuthenticationController extends PageControllerBase
         // TODO: Validate token
 
         if ($token) {
-            $user = $this->userService->getUserByActivationToken($token);
+            $user = $this->authn->getUserByActivationToken($token);
             if ($user) {
                 if ($user->getActivationTokenExpiresAt() > new DateTime('now')) {
                     return $this->render(
@@ -113,8 +111,7 @@ class AuthenticationController extends PageControllerBase
 
                 // token is expired. Show error message
 
-                $user->resetActivationToken();
-                $this->userService->updateUser($user);
+                $this->authn->resetActivationToken($user);
             }
         }
         return $this->redirect('/login');
@@ -129,12 +126,11 @@ class AuthenticationController extends PageControllerBase
         // TODO: Validate token
 
         if ($token) {
-            $user = $this->userService->getUserByActivationToken($token);
+            $user = $this->authn->getUserByActivationToken($token);
             if ($user) {
                 if ($user->getActivationTokenExpiresAt() > new DateTime('now')) {
 
-                    $createStudentDTO = new CreateStudentUserDTO(
-                        $user->getId(),
+                    $dto = new UpdateStudentUserDTO(
                         $request->get('first-name'),
                         $request->get('last-name'),
                         $request->get('email'),
@@ -142,15 +138,15 @@ class AuthenticationController extends PageControllerBase
                         $request->get('confirm-password'),
                     );
 
-                    // Validate createStudentDTO
-                    // todo
+                    // TODO: Validate
 
-                    $this->userService->createStudentUser($createStudentDTO);
+                    $this->authn->updateStudentUser($user, $dto);
 
                     return $this->redirect('/login');
                 }
 
                 // token is expired. Handle error
+                // TODO
             }
         }
         return $this->redirect('/login');

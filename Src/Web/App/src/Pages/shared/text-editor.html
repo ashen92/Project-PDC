@@ -1,8 +1,0 @@
-<div id="text-editor-container">
-    <input type="hidden" name="{{ name }}" id="{{ name }}" value="{{ value }}">
-    <div id="text-editor">
-    </div>
-</div>
-<script>
-    textEditor("#text-editor", "{{ value|e('js') }}", "{{ placeholder|e('js') }}", "#{{ name|e('js') }}");
-</script>

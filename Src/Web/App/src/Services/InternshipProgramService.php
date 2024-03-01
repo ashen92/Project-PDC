@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use App\Constant\Constants;
 use App\DTOs\CreateUserDTO;
 use App\Exceptions\UserExistsException;
 use App\Models\InternshipCycle;
@@ -39,7 +38,7 @@ readonly class InternshipProgramService
             if (str_contains(strtolower($group->getName()), 'partner')) {
                 continue;
             }
-            if (str_starts_with($group->getName(), Constants::AUTO_GENERATED_USER_GROUP_PREFIX->value)) {
+            if (str_starts_with($group->getName(), UserGroup::AUTO_GENERATED_USER_GROUP_PREFIX)) {
                 continue;
             }
             $eligibleGroups[] = $group;
@@ -64,7 +63,7 @@ readonly class InternshipProgramService
             if (str_contains(strtolower($group->getName()), 'student')) {
                 continue;
             }
-            if (str_starts_with($group->getName(), Constants::AUTO_GENERATED_USER_GROUP_PREFIX->value)) {
+            if (str_starts_with($group->getName(), UserGroup::AUTO_GENERATED_USER_GROUP_PREFIX)) {
                 continue;
             }
             $eligibleGroups[] = $group;
@@ -90,12 +89,12 @@ readonly class InternshipProgramService
 
             $partnerGroup = $this->userRepository
                 ->createUserGroup(
-                    Constants::AUTO_GENERATED_USER_GROUP_PREFIX->value .
+                    UserGroup::AUTO_GENERATED_USER_GROUP_PREFIX .
                     "InternshipCycle-{$cycleId}-Partners"
                 );
             $studentGroup = $this->userRepository
                 ->createUserGroup(
-                    Constants::AUTO_GENERATED_USER_GROUP_PREFIX->value .
+                    UserGroup::AUTO_GENERATED_USER_GROUP_PREFIX .
                     "InternshipCycle-{$cycleId}-Students"
                 );
 
@@ -155,6 +154,66 @@ readonly class InternshipProgramService
         }
     }
 
+    public function startJobCollection(int $cycleId): void
+    {
+        $this->internshipProgramRepository->startJobCollection($cycleId);
+    }
+
+    public function undoStartJobCollection(int $cycleId): void
+    {
+        $this->internshipProgramRepository->undoStartJobCollection($cycleId);
+    }
+
+    public function endJobCollection(int $cycleId): void
+    {
+        $this->internshipProgramRepository->endJobCollection($cycleId);
+    }
+
+    public function undoEndJobCollection(int $cycleId): void
+    {
+        $this->internshipProgramRepository->undoEndJobCollection($cycleId);
+    }
+
+    public function startApplying(int $cycleId): void
+    {
+        $this->internshipProgramRepository->startApplying($cycleId);
+    }
+
+    public function undoStartApplying(int $cycleId): void
+    {
+        $this->internshipProgramRepository->undoStartApplying($cycleId);
+    }
+
+    public function endApplying(int $cycleId): void
+    {
+        $this->internshipProgramRepository->endApplying($cycleId);
+    }
+
+    public function undoEndApplying(int $cycleId): void
+    {
+        $this->internshipProgramRepository->undoEndApplying($cycleId);
+    }
+
+    public function startInterning(int $cycleId): void
+    {
+        $this->internshipProgramRepository->startInterning($cycleId);
+    }
+
+    public function undoStartInterning(int $cycleId): void
+    {
+        $this->internshipProgramRepository->undoStartInterning($cycleId);
+    }
+
+    public function endInterning(int $cycleId): void
+    {
+        $this->internshipProgramRepository->endInterning($cycleId);
+    }
+
+    public function undoEndInterning(int $cycleId): void
+    {
+        $this->internshipProgramRepository->undoEndInterning($cycleId);
+    }
+
     /**
      * @throws UserExistsException If a user with the same email already exists
      */
@@ -164,7 +223,7 @@ readonly class InternshipProgramService
 
         $this->userService->managePartner($managedBy, $userId);
 
-        $groupName = Constants::AUTO_GENERATED_USER_GROUP_PREFIX->value . "Users-Managed-By-$managedBy";
+        $groupName = UserGroup::AUTO_GENERATED_USER_GROUP_PREFIX . "Users-Managed-By-$managedBy";
         $group = $this->userRepository->findUserGroupByName($groupName);
 
         if (!$group) {

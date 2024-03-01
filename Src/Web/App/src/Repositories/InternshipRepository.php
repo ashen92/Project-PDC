@@ -3,15 +3,14 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
+use App\DTOs\createInternshipDTO;
 use App\Interfaces\IRepository;
 use App\Mappers\InternshipMapper;
 use App\Mappers\InternshipSearchResultMapper;
 use App\Mappers\OrganizationMapper;
-use App\Mappers\StudentMapper;
 use App\Models\Internship;
 use App\Models\InternshipSearchResult;
 use App\Models\Organization;
-use App\Models\Student;
 use PDO;
 
 class InternshipRepository implements IRepository
@@ -52,7 +51,7 @@ class InternshipRepository implements IRepository
      */
     public function findInternships(int $cycleId, int $ownerId): array
     {
-        $sql = 'SELECT * FROM internships WHERE internship_cycle_id = :cycleId AND owner_user_id = :ownerId';
+        $sql = 'SELECT * FROM internships WHERE internship_cycle_id = :cycleId AND created_by_user_id = :ownerId';
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([
             'cycleId' => $cycleId,
@@ -67,23 +66,32 @@ class InternshipRepository implements IRepository
      */
     public function searchInternships(
         ?int $cycleId,
-        ?int $ownerUserId,
         ?string $searchQuery,
+        ?array $filterByOrgIds,
+        ?array $filterByStatuses,
         ?int $numberOfResults,
         ?int $offsetBy,
+        ?int $filterByCreatorUserId,
     ): array {
         $sql = 'SELECT i.*, o.name AS orgName, o.logoFilePath AS orgLogoFilePath
                 FROM internships i
-                JOIN organizations o ON i.organization_id = o.id
-                WHERE i.isPublished = 1';
+                JOIN organizations o ON i.organization_id = o.id';
         $params = [];
         if ($cycleId) {
             $sql .= ' AND i.internship_cycle_id = :cycleId';
             $params['cycleId'] = $cycleId;
         }
-        if ($ownerUserId) {
-            $sql .= ' AND i.owner_user_id = :ownerUserId';
-            $params['ownerUserId'] = $ownerUserId;
+        if ($filterByOrgIds) {
+            $val = implode(',', $filterByOrgIds);
+            $sql .= " AND i.organization_id in ($val)";
+        }
+        if ($filterByStatuses) {
+            $val = implode(',', $filterByStatuses);
+            $sql .= " AND i.status in ($val)";
+        }
+        if ($filterByCreatorUserId) {
+            $sql .= ' AND i.created_by_user_id = :creatorUserId';
+            $params['creatorUserId'] = $filterByCreatorUserId;
         }
         if ($searchQuery) {
             $sql .= ' AND i.title LIKE :searchQuery';
@@ -106,7 +114,7 @@ class InternshipRepository implements IRepository
         $sql = 'SELECT DISTINCT o.*
                 FROM internships i
                 JOIN organizations o ON i.organization_id = o.id
-                WHERE i.isPublished = 1 AND i.internship_cycle_id = :cycleId';
+                WHERE i.internship_cycle_id = :cycleId';
         $params = ['cycleId' => $cycleId];
         if ($searchQuery) {
             $sql .= ' AND i.title LIKE :searchQuery';
@@ -122,9 +130,9 @@ class InternshipRepository implements IRepository
      * @param array<int> $ids
      * @return array<Organization>
      */
-    public function findOrganizations(array $ids): array
+    public function findOrganizations(): array
     {
-        $sql = 'SELECT * FROM organizations WHERE id IN (' . implode(',', $ids) . ')';
+        $sql = 'SELECT * FROM organizations';
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -140,7 +148,7 @@ class InternshipRepository implements IRepository
             $params['searchQuery'] = '%' . $searchQuery . '%';
         }
         if ($ownerUserId) {
-            $sql .= ' AND owner_user_id = :ownerId';
+            $sql .= ' AND created_by_user_id = :ownerId';
             $params['ownerId'] = $ownerUserId;
         }
         $stmt = $this->pdo->prepare($sql);
@@ -153,13 +161,18 @@ class InternshipRepository implements IRepository
      */
     public function findAllApplications(int $internshipId): array
     {
-        $sql = 'SELECT a.id, a.user_id, a.status, 
-                        s.fullName AS studentFullName, 
-                        u.firstName AS userFirstName,
-                        u.email AS userEmail
+        $sql = 'SELECT a.id, a.user_id AS userId, a.status, 
+                    s.fullName AS studentFullName,
+                    u.firstName AS userFirstName,
+                    u.email AS userEmail,
+                    CASE
+                        WHEN interns.student_id IS NOT NULL THEN 0
+                        ELSE 1
+                    END AS isApplicantAvailable
                 FROM applications a
                 INNER JOIN students s ON a.user_id = s.id
                 INNER JOIN users u ON a.user_id = u.id
+                LEFT JOIN interns ON a.user_id = interns.student_id
                 WHERE a.internship_id = :internshipId';
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['internshipId' => $internshipId]);
@@ -208,26 +221,53 @@ class InternshipRepository implements IRepository
     }
 
     public function createInternship(
-        string $title,
-        string $description,
-        int $ownerId,
-        int $organizationId,
         int $internshipCycleId,
-        bool $isPublished,
-    ): Internship {
-        $sql = 'INSERT INTO internships (title, description, owner_user_id, organization_id, internship_cycle_id, createdAt, isPublished)
-                VALUES (:title, :description, :ownerId, :organizationId, :internshipCycleId, NOW(), :isPublished)';
+        createInternshipDTO $dto,
+    ): bool {
+        if ($dto->organizationId === null) {
+            $sql = 'INSERT INTO internships (
+                title, description, 
+                status,internship_cycle_id,
+                created_by_user_id, organization_id, createdAt,
+                applyOnExternalWebsite, externalWebsite)
+            VALUES (
+                :title, :description, 
+                :status, :internshipCycleId, 
+                :createdByUserId, 
+                (SELECT organization_id FROM partners WHERE id = :createdByUserId),
+                NOW(), :applyOnExternalWebsite, :externalWebsite)';
+            $stmt = $this->pdo->prepare($sql);
+            return $stmt->execute([
+                'title' => $dto->title,
+                'description' => $dto->description,
+                'status' => $dto->status->value,
+                'internshipCycleId' => $internshipCycleId,
+                'createdByUserId' => $dto->createdByUserId,
+                'applyOnExternalWebsite' => $dto->applyOnExternalWebsite === true ? 1 : 0,
+                'externalWebsite' => $dto->externalWebsite,
+            ]);
+        }
+        $sql = 'INSERT INTO internships (
+                    title, description, 
+                    status,internship_cycle_id,
+                    created_by_user_id, organization_id, createdAt,
+                    applyOnExternalWebsite, externalWebsite)
+                VALUES (
+                    :title, :description, 
+                    :status, :internshipCycleId, 
+                    :createdByUserId, :organizationId, NOW(),
+                    :applyOnExternalWebsite, :externalWebsite)';
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([
-            'title' => $title,
-            'description' => $description,
-            'ownerId' => $ownerId,
-            'organizationId' => $organizationId,
+        return $stmt->execute([
+            'title' => $dto->title,
+            'description' => $dto->description,
+            'status' => $dto->status->value,
             'internshipCycleId' => $internshipCycleId,
-            'isPublished' => $isPublished,
+            'createdByUserId' => $dto->createdByUserId,
+            'organizationId' => $dto->organizationId,
+            'applyOnExternalWebsite' => $dto->applyOnExternalWebsite === true ? 1 : 0,
+            'externalWebsite' => $dto->externalWebsite,
         ]);
-        $internshipId = (int) $this->pdo->lastInsertId();
-        return $this->findInternship($internshipId);
     }
 
     public function updateInternship(

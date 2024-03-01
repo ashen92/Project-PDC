@@ -26,15 +26,19 @@ class InternshipCycle
     public function getActiveState(): State
     {
         $now = new DateTimeImmutable();
-        if ($this->jobCollectionStart <= $now && $now <= $this->jobCollectionEnd) {
+        if ($this->jobCollectionStart && $this->jobCollectionStart <= $now && (!$this->jobCollectionEnd || $now <= $this->jobCollectionEnd)) {
             return State::JobCollection;
         }
-        if ($this->applyingStart <= $now && $now <= $this->applyingEnd) {
+        if ($this->applyingStart && $this->applyingStart <= $now && (!$this->applyingEnd || $now <= $this->applyingEnd)) {
             return State::Applying;
         }
-        if ($this->interningStart <= $now && $now <= $this->interningEnd) {
+        if ($this->interningStart && $this->interningStart <= $now && (!$this->interningEnd || $now <= $this->interningEnd)) {
             return State::Interning;
         }
+        if ($this->endedAt) {
+            return State::Ended;
+        }
+
         return State::None;
     }
 
@@ -62,6 +66,16 @@ class InternshipCycle
             return State::Interning;
         }
         return State::None;
+    }
+
+    public function isState(State $state): bool
+    {
+        $activeState = $this->getActiveState();
+        if ($state === $activeState) {
+            return true;
+        }
+
+        return $state === State::Ended;
     }
 
     public function getId(): int
@@ -97,6 +111,16 @@ class InternshipCycle
     public function getApplyingEnd(): ?DateTimeImmutable
     {
         return $this->applyingEnd;
+    }
+
+    public function getInterningStart(): ?DateTimeImmutable
+    {
+        return $this->interningStart;
+    }
+
+    public function getInterningEnd(): ?DateTimeImmutable
+    {
+        return $this->interningEnd;
     }
 
     public function getPartnerGroupIds(): array

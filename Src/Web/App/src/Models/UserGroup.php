@@ -5,6 +5,8 @@ namespace App\Models;
 
 class UserGroup
 {
+    public const AUTO_GENERATED_USER_GROUP_PREFIX = 'SystemGenerated-';
+
     public function __construct(
         private int $id,
         private string $name,

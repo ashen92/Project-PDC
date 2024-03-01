@@ -3,17 +3,21 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Models\Internship\Status;
+
 class Internship
 {
     public function __construct(
         private int $id,
         private string $title,
         private string $description,
-        private int $ownerUserId,
+        private Status $status,
+        private int $createdByUserId,
         private int $organizationId,
         private int $internshipCycleId,
         private \DateTimeImmutable $createdAt,
-        private bool $isPublished,
+        private bool $applyOnExternalWebsite,
+        private ?string $externalWebsite,
     ) {
     }
 
@@ -32,9 +36,9 @@ class Internship
         return $this->description;
     }
 
-    public function getOwnerUserId(): int
+    public function getCreatedByUserId(): int
     {
-        return $this->ownerUserId;
+        return $this->createdByUserId;
     }
 
     public function getOrganizationId(): int
@@ -52,9 +56,14 @@ class Internship
         return $this->createdAt;
     }
 
-    public function isPublished(): bool
+    public function getApplyOnExternalWebsite(): bool
     {
-        return $this->isPublished;
+        return $this->applyOnExternalWebsite;
+    }
+
+    public function getExternalWebsite(): ?string
+    {
+        return $this->externalWebsite;
     }
 
     public function setTitle(string $title): void
@@ -65,10 +74,5 @@ class Internship
     public function setDescription(string $description): void
     {
         $this->description = $description;
-    }
-
-    public function publish(): void
-    {
-        $this->isPublished = true;
     }
 }

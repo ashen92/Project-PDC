@@ -1,10 +1,12 @@
-const gulp = require("gulp");
-const esbuild = require("esbuild");
-const sass = require("gulp-sass")(require("sass"));
-const autoprefixer = require("gulp-autoprefixer");
-const sourcemaps = require('gulp-sourcemaps');
-const cleanCSS = require("gulp-clean-css");
-const rename = require("gulp-rename");
+import gulp from "gulp";
+import esbuild from "esbuild";
+import autoprefixer from "gulp-autoprefixer";
+import sourcemaps from "gulp-sourcemaps";
+import cleanCSS from "gulp-clean-css";
+import rename from "gulp-rename";
+import dartSass from "sass";
+import gulpSass from "gulp-sass";
+const sass = gulpSass(dartSass);
 
 // JavaScript tasks
 

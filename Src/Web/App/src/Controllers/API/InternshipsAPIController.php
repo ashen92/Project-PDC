@@ -27,7 +27,12 @@ readonly class InternshipsAPIController
             $data = [
                 'title' => $internship->getTitle(),
                 'description' => $internship->getDescription(),
+                'applyOnExternalWebsite' => $internship->getApplyOnExternalWebsite(),
             ];
+
+            if ($internship->getApplyOnExternalWebsite()) {
+                $data['externalWebsite'] = $internship->getExternalWebsite();
+            }
 
             if ($identity->hasRole(Role::InternshipProgram_Student)) {
                 $userId = $request->getSession()->get('user_id');

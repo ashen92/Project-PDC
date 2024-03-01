@@ -7,6 +7,10 @@
         align-items: center;
     }
 
+    &-start {
+        align-items: flex-start;
+    }
+
     &-end {
         align-items: flex-end;
     }
@@ -15,5 +19,9 @@
 .justify {
     &-between {
         justify-content: space-between;
+    }
+
+    &-center {
+        justify-content: center;
     }
 }

@@ -36,6 +36,13 @@ class User
         $this->activationTokenExpiresAt = null;
     }
 
+    public function activate(): void
+    {
+        $this->isActive = true;
+        $this->activationToken = null;
+        $this->activationTokenExpiresAt = null;
+    }
+
     public function getId(): int
     {
         return $this->id;
@@ -99,10 +106,5 @@ class User
     public function setPasswordHash(string $passwordHash): void
     {
         $this->passwordHash = $passwordHash;
-    }
-
-    public function setIsActive(bool $isActive): void
-    {
-        $this->isActive = $isActive;
     }
 }

@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+use App\Attributes\RequiredPolicy;
 use App\Attributes\RequiredRole;
+use App\DTOs\createInternshipDTO;
 use App\Models\InternshipCycle;
 use App\Security\Identity;
 use App\Security\Role;
@@ -43,6 +45,12 @@ class InternshipsController extends PageControllerBase
         $searchQuery = $queryParams['q'] ?? null;
         $pageNumber = $queryParams['p'] ?? 1;
 
+        $orgIds = $queryParams['c'] ?? null;
+        if ($orgIds) {
+            $orgIds = explode(',', $orgIds);
+            $orgIds = array_map('intval', $orgIds);
+        }
+
         // TODO: Validate query params
 
         $cycleId = $cycle->getId();
@@ -54,9 +62,11 @@ class InternshipsController extends PageControllerBase
                 ->searchInternships(
                     $cycleId,
                     $searchQuery,
-                    $userId,
+                    null,
+                    null,
                     self::MAX_INTERNSHIP_RESULTS_PER_PAGE,
-                    (int) (($pageNumber - 1) * self::MAX_INTERNSHIP_RESULTS_PER_PAGE)
+                    (int) (($pageNumber - 1) * self::MAX_INTERNSHIP_RESULTS_PER_PAGE),
+                    $userId
                 );
 
             $numberOfResults = $this->internshipService->getInternshipCount(
@@ -69,6 +79,7 @@ class InternshipsController extends PageControllerBase
                 ->searchInternships(
                     $cycleId,
                     $searchQuery,
+                    $orgIds,
                     null,
                     self::MAX_INTERNSHIP_RESULTS_PER_PAGE,
                     (int) (($pageNumber - 1) * self::MAX_INTERNSHIP_RESULTS_PER_PAGE)
@@ -144,33 +155,41 @@ class InternshipsController extends PageControllerBase
         );
     }
 
+    #[RequiredPolicy(InternshipCycle\State::JobCollection)]
     #[Route('/create', methods: ['GET'])]
-    public function createGET(): Response
+    public function createGET(Identity $identity): Response
     {
-        return $this->render('internship-program/internship/create.html', ['section' => 'internships']);
+        return $this->render(
+            'internship-program/internship/create.html',
+            [
+                'section' => 'internships',
+                'organizations' => $identity->hasRole(Role::InternshipProgram_Admin) ? $this->internshipService->getOrganizations() : null,
+            ]
+        );
     }
 
+    #[RequiredPolicy(InternshipCycle\State::JobCollection)]
     #[Route('/create', methods: ['POST'])]
-    public function createPOST(Request $request, InternshipCycle $cycle): RedirectResponse
+    public function createPOST(Request $request, Identity $identity, InternshipCycle $cycle): RedirectResponse
     {
-        $title = $request->get('title');
-        $description = $request->get('description');
-        $ownerId = (int) $request->getSession()->get('user_id');
-        $organizationId = (int) $request->get('organization_id');
-        $isPublished = (bool) $request->get('is_published');
+        $orgId = $identity->hasRole(Role::InternshipProgram_Admin) ?
+            (int) $request->get('organization') : null;
+
+        $applyOnExternalWebsite = (bool) $request->get('apply-method');
+        $externalWebsite = $applyOnExternalWebsite ? $request->get('external-website') : null;
+
+        $dto = new createInternshipDTO(
+            $request->get('title'),
+            $request->get('description'),
+            (int) $request->getSession()->get('user_id'),
+            $orgId,
+            $applyOnExternalWebsite,
+            $externalWebsite,
+        );
 
         // TODO: Validate data
 
-        $this->internshipService->createInternship(
-            $cycle->getId(),
-            $title,
-            $description,
-            $ownerId,
-            // $organizationId,
-            // $isPublished,
-            1,
-            true,
-        );
+        $this->internshipService->createInternship($cycle->getId(), $dto);
         return $this->redirect('/internship-program/internships');
     }
 }

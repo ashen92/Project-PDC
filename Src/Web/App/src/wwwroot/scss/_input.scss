@@ -1,6 +1,10 @@
 @use 'variables' as *;
 @use 'mixins';
 
+$text-field-padding: 0.45rem 0.75rem;
+$date-field-padding: 0.45rem 0.75rem;
+$select-field-padding: 0.45rem 0.75rem;
+
 %checkbox-dimensions {
     width: 20px;
     height: 20px;
@@ -8,7 +12,7 @@
 
 %text-field-border {
     border: 2px solid #a7a9ad;
-    border-radius: $rounded-1;
+    border-radius: 4px;
 
     &:active,
     &:focus,
@@ -225,7 +229,7 @@ select {
     cursor: pointer;
 }
 
-#text-editor-container {
+.text-editor-container {
     @extend %text-field-outline;
     @extend %text-field-border;
 
@@ -253,24 +257,25 @@ select {
             width: 18px;
         }
     }
+
+    .text-editor {
+        font-size: $text-field-font-size;
+        font-family: inherit;
+        border: none;
+        overflow-wrap: break-word;
+        word-break: break-word;
+
+        >* {
+            line-height: inherit;
+        }
+
+        .ql-editor.ql-blank::before {
+            font-style: normal;
+            padding-top: 4px;
+        }
+    }
 }
 
-#text-editor {
-    font-size: $text-field-font-size;
-    font-family: inherit;
-    border: none;
-    overflow-wrap: break-word;
-    word-break: break-word;
-
-    >* {
-        line-height: inherit;
-    }
-
-    .ql-editor.ql-blank::before {
-        font-style: normal;
-        padding-top: 4px;
-    }
-}
 
 .formatted-text-area {
     text-align: left;
