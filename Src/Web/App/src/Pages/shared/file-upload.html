@@ -1,7 +1,7 @@
 <div class="field-file-upload">
-    <label class="btn btn-secondary btn-icon" for="{{ id }}">
+    <label class="btn btn-secondary" for="{{ id }}">
         <i class="i i-cloud-arrow-up"></i>
-        {{ button_text }}
+        <span>{{ button_text }}</span>
     </label>
     <input type="file" name="{{ name }}" id="{{ id }}" accept="{{ accept }}" {% if multiple %} multiple {% endif %} {%
         if required %} required {% endif %}>

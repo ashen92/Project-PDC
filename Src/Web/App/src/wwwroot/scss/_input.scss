@@ -225,7 +225,7 @@ button {
 select {
     @extend %text-field-styles;
     padding: $select-field-padding;
-    font-size: $btn-font-size;
+    font-size: $text-field-font-size;
     cursor: pointer;
 }
 

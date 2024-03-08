@@ -1,20 +1,14 @@
-@use '../variables' as *;
-
 .command-bar {
     display: flex;
     border-bottom: 1px solid #3f3f3f;
 
     .btn {
-        padding: $btn-padding-top + 2 $btn-padding-left + -10;
-    }
-
-    .btn-icon {
-        padding-left: $btn-padding-left + -13;
+        padding: 10px 18px;
     }
 
     .spacer {
         width: 1px;
-        margin: $btn-padding-top + 2;
+        margin: 10px;
         background-color: #a2a2a2;
     }
 }

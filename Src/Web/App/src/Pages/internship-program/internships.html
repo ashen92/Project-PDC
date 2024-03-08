@@ -63,16 +63,16 @@
                     Page {{ page }} of {{ pages }}
                 </div>
                 <div class="flex actions">
-                    <button id="btn-previous-page" type="button" class="btn btn-icon btn-regular" {% if page==1
-                        %}disabled{% endif %}>
+                    <button id="btn-previous-page" type="button" class="btn btn-regular" {% if page==1 %}disabled{%
+                        endif %}>
                         <i class="i i-chevron-left"></i>
                         <span>
                             Prev
                         </span>
                     </button>
 
-                    <button id="btn-next-page" type="button" class="btn btn-icon btn-regular" {% if page==pages
-                        %}disabled{% endif %}>
+                    <button id="btn-next-page" type="button" class="btn btn-regular" {% if page==pages %}disabled{%
+                        endif %}>
                         <span>Next</span>
                         <i class="i i-chevron-right"></i>
                     </button>
