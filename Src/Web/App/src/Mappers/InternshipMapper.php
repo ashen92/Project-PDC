@@ -26,8 +26,6 @@ class InternshipMapper implements IMapper
             $row['organization_id'],
             $row['internship_cycle_id'],
             new DateTimeImmutable($row['createdAt']),
-            $row['applyOnExternalWebsite'] == 1,
-            $row['externalWebsite'] ?? null,
         );
     }
 }

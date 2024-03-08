@@ -228,14 +228,13 @@ class InternshipRepository implements IRepository
             $sql = 'INSERT INTO internships (
                 title, description, 
                 status,internship_cycle_id,
-                created_by_user_id, organization_id, createdAt,
-                applyOnExternalWebsite, externalWebsite)
+                created_by_user_id, organization_id, createdAt)
             VALUES (
                 :title, :description, 
                 :status, :internshipCycleId, 
                 :createdByUserId, 
                 (SELECT organization_id FROM partners WHERE id = :createdByUserId),
-                NOW(), :applyOnExternalWebsite, :externalWebsite)';
+                NOW())';
             $stmt = $this->pdo->prepare($sql);
             return $stmt->execute([
                 'title' => $dto->title,
@@ -243,20 +242,16 @@ class InternshipRepository implements IRepository
                 'status' => $dto->status->value,
                 'internshipCycleId' => $internshipCycleId,
                 'createdByUserId' => $dto->createdByUserId,
-                'applyOnExternalWebsite' => $dto->applyOnExternalWebsite === true ? 1 : 0,
-                'externalWebsite' => $dto->externalWebsite,
             ]);
         }
         $sql = 'INSERT INTO internships (
                     title, description, 
                     status,internship_cycle_id,
-                    created_by_user_id, organization_id, createdAt,
-                    applyOnExternalWebsite, externalWebsite)
+                    created_by_user_id, organization_id, createdAt)
                 VALUES (
                     :title, :description, 
                     :status, :internshipCycleId, 
-                    :createdByUserId, :organizationId, NOW(),
-                    :applyOnExternalWebsite, :externalWebsite)';
+                    :createdByUserId, :organizationId, NOW())';
         $stmt = $this->pdo->prepare($sql);
         return $stmt->execute([
             'title' => $dto->title,
@@ -265,8 +260,6 @@ class InternshipRepository implements IRepository
             'internshipCycleId' => $internshipCycleId,
             'createdByUserId' => $dto->createdByUserId,
             'organizationId' => $dto->organizationId,
-            'applyOnExternalWebsite' => $dto->applyOnExternalWebsite === true ? 1 : 0,
-            'externalWebsite' => $dto->externalWebsite,
         ]);
     }
 
