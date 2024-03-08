@@ -294,15 +294,6 @@ $container->register(
     ])
     ->setPublic(true);
 
-$container->register(
-    'listener.internship_program',
-    App\EventListeners\InternshipProgramListener::class
-)
-    ->setArguments([
-        new Reference('repository.internship_program'),
-    ])
-    ->setPublic(true);
-
 #endregion
 
 #region API Controllers

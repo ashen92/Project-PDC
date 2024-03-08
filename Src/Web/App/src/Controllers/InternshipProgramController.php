@@ -103,7 +103,6 @@ class InternshipProgramController extends PageControllerBase
     }
 
     #[RequiredRole(Role::InternshipProgram_Admin)]
-    #[RequiredPolicy(InternshipCycle\State::Ended)]
     #[Route('/cycle/create', methods: ['GET'])]
     public function cycleCreateGET(): Response
     {
@@ -120,7 +119,6 @@ class InternshipProgramController extends PageControllerBase
     }
 
     #[RequiredRole(Role::InternshipProgram_Admin)]
-    #[RequiredPolicy(InternshipCycle\State::Ended)]
     #[Route('/cycle/create', methods: ['POST'])]
     public function cycleCreatePOST(Request $request): RedirectResponse
     {
@@ -136,7 +134,6 @@ class InternshipProgramController extends PageControllerBase
     }
 
     #[RequiredRole(Role::InternshipProgram_Admin)]
-    #[RequiredPolicy(InternshipCycle\State::Active)]
     #[Route('/cycle/end')]
     public function cycleEnd(): RedirectResponse
     {

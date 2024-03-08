@@ -155,7 +155,6 @@ class InternshipsController extends PageControllerBase
         );
     }
 
-    #[RequiredPolicy(InternshipCycle\State::JobCollection)]
     #[Route('/create', methods: ['GET'])]
     public function createGET(Identity $identity): Response
     {
@@ -168,7 +167,6 @@ class InternshipsController extends PageControllerBase
         );
     }
 
-    #[RequiredPolicy(InternshipCycle\State::JobCollection)]
     #[Route('/create', methods: ['POST'])]
     public function createPOST(Request $request, Identity $identity, InternshipCycle $cycle): RedirectResponse
     {
