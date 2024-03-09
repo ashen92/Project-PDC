@@ -172,7 +172,7 @@ label {
 
 input {
     font-family: inherit;
-    font-size: $text-field-font-size;
+    font-size: $input-element-font-size;
 
     &[type="text"],
     &[type="email"],
@@ -225,7 +225,7 @@ button {
 select {
     @extend %text-field-styles;
     padding: $select-field-padding;
-    font-size: $text-field-font-size;
+    font-size: $input-element-font-size;
     cursor: pointer;
 }
 
@@ -259,7 +259,7 @@ select {
     }
 
     .text-editor {
-        font-size: $text-field-font-size;
+        font-size: $input-element-font-size;
         font-family: inherit;
         border: none;
         overflow-wrap: break-word;
