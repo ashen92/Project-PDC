@@ -192,7 +192,28 @@ class InternshipSearchController extends PageControllerBase
         if ($identity->hasRole(Role::InternshipProgram_Student)) {
             return $this->render(
                 'internship-program/round-2/home-student.html',
-                ['section' => 'round-2']
+                [
+                    'section' => 'round-2',
+                    'jobRoles' => [
+                        'Job role or position',
+                        'Lorem ipsum dolor sit.',
+                        'Lorem, ipsum.',
+                        'Lorem ipsum dolor sit amet consectetur.',
+                        'Lorem ipsum dolor sit.',
+                        'Lorem, ipsum.',
+                        'Lorem, ipsum.',
+                        'Lorem, ipsum.fsdafdafasdfasfasdfasdfasdfsafasfasfasfsafasfs',
+                        'Lorem, ipsum.',
+                        'Lorem, ipsum.',
+                        'Lorem, ipsum.',
+                        'Lorem, ipsum.',
+                        'Lorem, ipsum.',
+                        'Lorem ipsum dolor sit amet consectetur.',
+                        'Lorem ipsum dolor sit.',
+                        'Lorem ipsum dolor sit amet.',
+                        'Lorem ipsum dolor sit amet.',
+                    ]
+                ]
             );
         }
 
