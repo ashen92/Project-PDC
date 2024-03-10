@@ -9,19 +9,7 @@
         padding: 3rem 0 1rem 0;
         background-color: #f2f7ff;
 
-        .list-view-group {
-            margin-bottom: 1rem;
-
-            &-header {
-                line-height: 2.5;
-                padding: 0 0.7525rem;
-                font-weight: 600;
-                border-bottom: $border-1;
-                margin: 0 0.8125rem;
-            }
-        }
-
-        a {
+        >a {
             display: inline-flex;
             align-items: center;
             width: 100%;
@@ -49,6 +37,12 @@
                 font-size: 1.1rem;
                 color: #00589b;
             }
+        }
+
+        >.separator {
+            border-bottom: $border-1;
+            margin: 0.5rem 0.8125rem 0.5rem 0.8125rem;
+            padding: 0;
         }
     }
 

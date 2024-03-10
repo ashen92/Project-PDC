@@ -1,31 +1,22 @@
+<a class="{% if section == 'home' %} active{% endif %}" href="/internship-program">
+    <i class="i i-list-task"></i>
+    Internship Program
+</a>
+
 {% if has_role(InternshipProgram_Admin) %}
 
-<div class="list-view-group">
-    <a class="{% if section == 'home' %} active{% endif %}" href="/internship-program">
-        <i class="i i-list-task"></i>
-        Internship Program
-    </a>
-    <a class="{% if section == 'monitoring' %} active{% endif %}" href="/internship-program/monitoring">
-        <i class="i i-clipboard-pulse"></i>
-        Monitoring
-    </a>
-</div>
+<a class="{% if section == 'monitoring' %} active{% endif %}" href="/internship-program/monitoring">
+    <i class="i i-clipboard-pulse"></i>
+    Monitoring
+</a>
+<div class="separator"></div>
 
 <a class="{% if section == 'internships' %} active{% endif %}" href="/internship-program/internships">
     <i class="i i-briefcase"></i>
     Internships
 </a>
-<a class="{% if section == 'requirements' %} active{% endif %}" href="/internship-program/requirements">
-    <i class="i i-clipboard-check"></i>
-    Requirements
-</a>
 
 {% elseif has_role(InternshipProgram_Partner) and has_permission('internship', 'create') %}
-
-<a class="{% if section == 'home' %} active{% endif %}" href="/internship-program">
-    <i class="i i-list-task"></i>
-    Internship Program
-</a>
 
 <a class="{% if section == 'internships' %} active{% endif %}" href="/internship-program/internships">
     <i class="i i-briefcase"></i>
@@ -43,38 +34,24 @@
 
 {% elseif has_role(InternshipProgram_Student) %}
 
-<div class="list-view-group">
-    <a class="{% if section == 'home' %} active{% endif %}" href="/internship-program">
-        <i class="i i-list-task"></i>
-        Internship Program
-    </a>
-    <a class="{% if section == 'profile' %} active{% endif %}" href="/internship-program/profile">
-        <i class="i i-person-square"></i>
-        Your Profile
-    </a>
-</div>
+<div class="separator"></div>
+<a class="{% if section == 'profile' %} active{% endif %}" href="/internship-program/profile">
+    <i class="i i-person-square"></i>
+    Your Profile
+</a>
+<div class="separator"></div>
+<a class="{% if section == 'internships' %} active{% endif %}" href="/internship-program/internships">
+    <i class="i i-briefcase"></i>
+    Apply for Internships
+</a>
+<a class="{% if section == 'applications' %} active{% endif %}" href="/internship-program/applications">
+    <i class="i i-journal-text"></i>
+    Your Applications
+</a>
 
-<div class="list-view-group">
-    <div class="list-view-group-header">Job Searching</div>
-    <a class="{% if section == 'internships' %} active{% endif %}" href="/internship-program/internships">
-        <i class="i i-briefcase"></i>
-        Apply for Internships
-    </a>
-    <a class="{% if section == 'round2' %} active{% endif %}" href="/internship-program/round-2">
-        <i class="i i-briefcase"></i>
-        Round 2
-    </a>
-</div>
-
-<div class="list-view-group">
-    <a class="{% if section == 'applications' %} active{% endif %}" href="/internship-program/applications">
-        <i class="i i-journal-text"></i>
-        Your Applications
-    </a>
-
-    <a class="{% if section == 'requirements' %} active{% endif %}" href="/internship-program/requirements">
-        <i class="i i-clipboard-check"></i>
-        Requirements
-    </a>
-</div>
 {% endif %}
+
+<a class="{% if section == 'requirements' %} active{% endif %}" href="/internship-program/requirements">
+    <i class="i i-clipboard-check"></i>
+    Requirements
+</a>
