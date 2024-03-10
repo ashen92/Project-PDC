@@ -21,8 +21,8 @@ use Twig\Environment;
     Role::InternshipProgram_Partner_Admin,
     Role::InternshipProgram_Student,
 ])]
-#[Route('/internship-program/internships')]
-class InternshipsController extends PageControllerBase
+#[Route('/internship-program')]
+class InternshipSearchController extends PageControllerBase
 {
     const int MAX_INTERNSHIP_RESULTS_PER_PAGE = 25;
 
@@ -33,7 +33,7 @@ class InternshipsController extends PageControllerBase
         parent::__construct($twig);
     }
 
-    #[Route([''])]
+    #[Route(['/internships'])]
     public function internships(Request $request, Identity $identity, ?InternshipCycle $cycle): Response
     {
         if ($cycle === null) {
@@ -111,7 +111,7 @@ class InternshipsController extends PageControllerBase
         );
     }
 
-    #[Route('/{id}', requirements: ['id' => '\d+'], methods: ['DELETE'])]
+    #[Route('/internships/{id}', requirements: ['id' => '\d+'], methods: ['DELETE'])]
     public function delete(int $id): Response
     {
         $this->internshipService->deleteInternship($id);
@@ -130,7 +130,7 @@ class InternshipsController extends PageControllerBase
         );
     }
 
-    #[Route('/{id}/modify', methods: ['POST'])]
+    #[Route('/internships/{id}/modify', methods: ['POST'])]
     public function updatePOST(Request $request): Response|RedirectResponse
     {
         $id = (int) $request->get('id');
@@ -155,7 +155,7 @@ class InternshipsController extends PageControllerBase
         );
     }
 
-    #[Route('/create', methods: ['GET'])]
+    #[Route('/internships/create', methods: ['GET'])]
     public function createGET(Identity $identity): Response
     {
         return $this->render(
@@ -167,7 +167,7 @@ class InternshipsController extends PageControllerBase
         );
     }
 
-    #[Route('/create', methods: ['POST'])]
+    #[Route('/internships/create', methods: ['POST'])]
     public function createPOST(Request $request, Identity $identity, InternshipCycle $cycle): RedirectResponse
     {
         $orgId = $identity->hasRole(Role::InternshipProgram_Admin) ?
@@ -184,5 +184,28 @@ class InternshipsController extends PageControllerBase
 
         $this->internshipService->createInternship($cycle->getId(), $dto);
         return $this->redirect('/internship-program/internships');
+    }
+
+    #[Route('/round-2', methods: ['GET'])]
+    public function round2GET(Identity $identity): Response
+    {
+        if ($identity->hasRole(Role::InternshipProgram_Student)) {
+            return $this->render(
+                'internship-program/round-2/home-student.html',
+                ['section' => 'round-2']
+            );
+        }
+
+        if ($identity->hasRole(Role::InternshipProgram_Partner)) {
+            return $this->render(
+                'internship-program/round-2/home-partner.html',
+                ['section' => 'round-2']
+            );
+        }
+
+        return $this->render(
+            'internship-program/round-2/home-admin.html',
+            ['section' => 'round-2']
+        );
     }
 }

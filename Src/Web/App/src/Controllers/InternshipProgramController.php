@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
-use App\Attributes\RequiredPolicy;
 use App\Attributes\RequiredRole;
 use App\DTOs\CreateUserDTO;
 use App\Exceptions\UserExistsException;
@@ -21,7 +20,6 @@ use Twig\Environment;
 
 #[RequiredRole([
     Role::InternshipProgram_Admin,
-    Role::InternshipProgram_Partner_Admin,
     Role::InternshipProgram_Partner,
     Role::InternshipProgram_Student,
 ])]

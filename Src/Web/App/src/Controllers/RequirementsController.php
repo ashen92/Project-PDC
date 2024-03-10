@@ -23,7 +23,6 @@ use Twig\Environment;
 
 #[RequiredRole([
     Role::InternshipProgram_Admin,
-    Role::InternshipProgram_Partner_Admin,
     Role::InternshipProgram_Partner,
     Role::InternshipProgram_Student,
 ])]
