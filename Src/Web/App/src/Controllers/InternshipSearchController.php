@@ -189,30 +189,31 @@ class InternshipSearchController extends PageControllerBase
     #[Route('/round-2', methods: ['GET'])]
     public function round2GET(Identity $identity): Response
     {
+        $jobRoles = [
+            ['id' => 1, 'name' => 'Job role or position',],
+            ['id' => 1, 'name' => 'Lorem ipsum dolor sit.',],
+            ['id' => 1, 'name' => 'Lorem, ipsum.',],
+            ['id' => 1, 'name' => 'Lorem ipsum dolor sit amet consectetur.',],
+            ['id' => 1, 'name' => 'Lorem ipsum dolor sit.',],
+            ['id' => 1, 'name' => 'Lorem, ipsum.',],
+            ['id' => 1, 'name' => 'Lorem, ipsum.',],
+            ['id' => 1, 'name' => 'Lorem, ipsum.fsdafdafasdfasfasdfasdfasdfsafasfasfasfsafasfs',],
+            ['id' => 1, 'name' => 'Lorem, ipsum.',],
+            ['id' => 1, 'name' => 'Lorem, ipsum.',],
+            ['id' => 1, 'name' => 'Lorem, ipsum.',],
+            ['id' => 1, 'name' => 'Lorem, ipsum.',],
+            ['id' => 1, 'name' => 'Lorem, ipsum.',],
+            ['id' => 1, 'name' => 'Lorem ipsum dolor sit amet consectetur.',],
+            ['id' => 1, 'name' => 'Lorem ipsum dolor sit.',],
+            ['id' => 1, 'name' => 'Lorem ipsum dolor sit amet.',],
+            ['id' => 1, 'name' => 'Lorem ipsum dolor sit amet.',],
+        ];
         if ($identity->hasRole(Role::InternshipProgram_Student)) {
             return $this->render(
                 'internship-program/round-2/home-student.html',
                 [
                     'section' => 'round-2',
-                    'jobRoles' => [
-                        'Job role or position',
-                        'Lorem ipsum dolor sit.',
-                        'Lorem, ipsum.',
-                        'Lorem ipsum dolor sit amet consectetur.',
-                        'Lorem ipsum dolor sit.',
-                        'Lorem, ipsum.',
-                        'Lorem, ipsum.',
-                        'Lorem, ipsum.fsdafdafasdfasfasdfasdfasdfsafasfasfasfsafasfs',
-                        'Lorem, ipsum.',
-                        'Lorem, ipsum.',
-                        'Lorem, ipsum.',
-                        'Lorem, ipsum.',
-                        'Lorem, ipsum.',
-                        'Lorem ipsum dolor sit amet consectetur.',
-                        'Lorem ipsum dolor sit.',
-                        'Lorem ipsum dolor sit amet.',
-                        'Lorem ipsum dolor sit amet.',
-                    ]
+                    'jobRoles' => $jobRoles,
                 ]
             );
         }
@@ -220,7 +221,10 @@ class InternshipSearchController extends PageControllerBase
         if ($identity->hasRole(Role::InternshipProgram_Partner)) {
             return $this->render(
                 'internship-program/round-2/home-partner.html',
-                ['section' => 'round-2']
+                [
+                    'section' => 'round-2',
+                    'jobRoles' => $jobRoles,
+                ]
             );
         }
 

@@ -73,68 +73,39 @@
         </div>
 
         <div class="card">
-            <div class="flex items-center justify-between col-gap-30 mb-5">
-                <h5 class="header">Application Collection</h5>
-                <div class="flex items-start col-gap-5" id="applying-btn-container">
-                    {% if internshipCycle.nextState == InternshipCycleState_Applying %}
+            <h5 class="header mb-3">Job Searching - Round 1</h5>
+            <div class="flex items-start col-gap-5 mb-3" id="js-r1-btn-container">
+                <button type="button" class="btn btn-outline-primary" id="start-js-r1-btn">Start</button>
 
-                    <button type="button" class="btn btn-primary" id="start-applying-btn">Start</button>
+                <button type="button" class="btn btn-secondary" id="undo-js-r1-btn">Undo</button>
+                <button type="button" class="btn btn-outline-danger" id="end-js-r1-btn">End</button>
 
-                    {% elseif internshipCycle.activeState == InternshipCycleState_Applying %}
-
-                    <button type="button" class="btn btn-secondary" id="undo-applying-btn">Undo</button>
-                    <button type="button" class="btn btn-danger" id="end-applying-btn">End</button>
-
-                    {% elseif internshipCycle.nextState == InternshipCycleState_Interning or
-                    internshipCycle.activeState == InternshipCycleState_Interning %}
-
-                    <button type="button" class="btn btn-outline-primary" id="restart-applying-btn">Restart</button>
-
-                    {% endif %}
-                </div>
+                <button type="button" class="btn btn-outline-primary" id="restart-js-r1-btn">Restart</button>
             </div>
-            {% if internshipCycle.applyingStart %}
-            <p>
-                Started on <span class="fw-semibold">{{ internshipCycle.applyingStart.format('Y-m-d') }}</span>
-            </p>
-            {% endif %}
-            {% if internshipCycle.applyingEnd %}
-            <p>
-                Ended on <span class="fw-semibold">{{ internshipCycle.applyingEnd.format('Y-m-d') }}</span>
-            </p>
-            {% endif %}
-        </div>
-
-        <div class="card">
-            <div class="flex items-center justify-between col-gap-30 mb-5">
-                <h5 class="header">Interning</h5>
-                <div class="flex items-start col-gap-5" id="interning-btn-container">
-                    {% if internshipCycle.nextState == InternshipCycleState_Interning %}
-
-                    <button type="button" class="btn btn-primary" id="start-interning-btn">Start</button>
-
-                    {% elseif internshipCycle.activeState == InternshipCycleState_Interning %}
-
-                    <button type="button" class="btn btn-secondary" id="undo-interning-btn">Undo</button>
-                    <button type="button" class="btn btn-danger" id="end-interning-btn">End</button>
-
-                    {% elseif internshipCycle.interningEnd %}
-
-                    <button type="button" class="btn btn-outline-primary" id="restart-interning-btn">Restart</button>
-
-                    {% endif %}
-                </div>
-            </div>
-            {% if internshipCycle.interningStart %}
             <p>
                 Started on <span class="fw-semibold">{{ internshipCycle.interningStart.format('Y-m-d') }}</span>
             </p>
-            {% endif %}
-            {% if internshipCycle.interningEnd %}
             <p>
                 Ended on <span class="fw-semibold">{{ internshipCycle.interningEnd.format('Y-m-d') }}</span>
             </p>
-            {% endif %}
+        </div>
+
+        <div class="card">
+            <h5 class="header mb-3">Job Searching - Round 2</h5>
+            <div class="flex items-start col-gap-5 mb-3" id="js-r2-btn-container">
+                <button type="button" class="btn btn-outline-primary" id="start-js-r2-btn">Start</button>
+
+                <button type="button" class="btn btn-secondary" id="undo-js-r2-btn">Undo</button>
+                <button type="button" class="btn btn-outline-danger" id="end-js-r2-btn">End</button>
+
+                <button type="button" class="btn btn-outline-primary" id="restart-js-r2-btn">Restart</button>
+            </div>
+            <p>
+                Started on <span class="fw-semibold">{{ internshipCycle.interningStart.format('Y-m-d') }}</span>
+            </p>
+            <p>
+                Ended on <span class="fw-semibold">{{ internshipCycle.interningEnd.format('Y-m-d') }}</span>
+            </p>
         </div>
     </div>
 
