@@ -285,11 +285,16 @@ $container->register(
     ->setPublic(true);
 
 $container->register(
+    'listener.authentication',
+    App\EventListeners\AuthenticationListener::class
+)
+    ->setPublic(true);
+
+$container->register(
     'listener.authorization',
     App\EventListeners\AuthorizationListener::class
 )
     ->setArguments([
-        new Reference('twig'),
         new Reference('service.authorization'),
     ])
     ->setPublic(true);
