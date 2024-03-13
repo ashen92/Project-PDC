@@ -1,0 +1,24 @@
+version: '3.8'
+services:
+  api:
+    build:
+      context: ./API
+      dockerfile: Dockerfile
+    env_file:
+      - ./.env
+    environment:
+      - REDIS_URL=redis://redis:6379
+    ports:
+      - 3000:3000
+
+  worker:
+    build:
+      context: ./Worker
+      dockerfile: Dockerfile
+    env_file:
+      - ./.env
+    environment:
+      - REDIS_URL=redis://redis:6379
+  
+  redis:
+    image: redis
