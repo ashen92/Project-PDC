@@ -3,13 +3,13 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
-use App\Attributes\RequiredRole;
 use App\DTOs\CreateRequirementDTO;
 use App\DTOs\UserRequirementFulfillmentDTO;
 use App\Models\InternshipCycle;
 use App\Models\Requirement\FulFillMethod;
 use App\Models\Requirement\RepeatInterval;
 use App\Models\Requirement\Type;
+use App\Security\Attributes\RequiredRole;
 use App\Security\Identity;
 use App\Security\Role;
 use App\Services\RequirementService;

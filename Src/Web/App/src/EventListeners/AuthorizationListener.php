@@ -3,7 +3,8 @@ declare(strict_types=1);
 
 namespace App\EventListeners;
 
-use App\Attributes\RequiredRole;
+use App\Security\Attributes\RequiredPolicy;
+use App\Security\Attributes\RequiredRole;
 use App\Security\AuthorizationService;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
@@ -20,26 +21,23 @@ readonly class AuthorizationListener implements EventSubscriberInterface
     public function onKernelController(ControllerEvent $event): void
     {
         $reflector = $event->getControllerReflector();
-
         $controllerReflection = $reflector->getDeclaringClass();
         $controllerAttributes = $controllerReflection->getAttributes(RequiredRole::class);
         $controllerRequiredRole = "";
 
-        $hasControllerAccess = false;
-
         if (!empty($controllerAttributes)) {
             $controllerRequiredRole = $controllerAttributes[0]->newInstance()->role;
+            $hasControllerAccess = false;
 
             if (is_array($controllerRequiredRole)) {
                 foreach ($controllerRequiredRole as $role) {
                     if ($this->authzService->hasRole($role)) {
                         $hasControllerAccess = true;
+                        break;
                     }
                 }
             } else {
-                if ($this->authzService->hasRole($controllerRequiredRole)) {
-                    $hasControllerAccess = true;
-                }
+                $hasControllerAccess = $this->authzService->hasRole($controllerRequiredRole);
             }
 
             if (!$hasControllerAccess) {
@@ -47,26 +45,37 @@ readonly class AuthorizationListener implements EventSubscriberInterface
             }
         }
 
-        $attributes = $reflector->getAttributes(RequiredRole::class);
+        $requiredRoleAttributes = $reflector->getAttributes(RequiredRole::class);
 
-        if (empty($attributes))
-            return;
+        if (!empty($requiredRoleAttributes)) {
+            $requiredRole = $requiredRoleAttributes[0]->newInstance()->role;
+            $hasRole = false;
 
-        $requiredRole = $attributes[0]->newInstance()->role;
-
-        if (is_array($requiredRole)) {
-            foreach ($requiredRole as $role) {
-                if ($this->authzService->hasRole($role)) {
-                    return;
+            if (is_array($requiredRole)) {
+                foreach ($requiredRole as $role) {
+                    if ($this->authzService->hasRole($role)) {
+                        $hasRole = true;
+                        break;
+                    }
                 }
+            } else {
+                $hasRole = $this->authzService->hasRole($requiredRole);
             }
-        } else {
-            if ($this->authzService->hasRole($requiredRole)) {
-                return;
+
+            if (!$hasRole) {
+                throw new AccessDeniedHttpException();
             }
         }
 
-        throw new AccessDeniedHttpException();
+        $requiredPolicyAttributes = $reflector->getAttributes(RequiredPolicy::class);
+
+        if (!empty($requiredPolicyAttributes)) {
+            $policyName = $requiredPolicyAttributes[0]->newInstance()->policyName;
+
+            if (!$this->authzService->authorize($policyName)) {
+                throw new AccessDeniedHttpException();
+            }
+        }
     }
 
     public static function getSubscribedEvents(): array

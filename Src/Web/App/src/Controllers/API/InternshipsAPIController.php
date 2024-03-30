@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controllers\API;
 
-use App\Attributes\RequiredRole;
+use App\Security\Attributes\RequiredRole;
 use App\Security\Identity;
 use App\Security\Role;
 use App\Services\InternshipService;

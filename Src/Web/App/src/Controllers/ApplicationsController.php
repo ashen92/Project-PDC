@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
-use App\Attributes\RequiredRole;
 use App\Models\InternshipCycle;
+use App\Security\Attributes\RequiredRole;
 use App\Security\Role;
 use App\Services\InternshipService;
 use Symfony\Component\HttpFoundation\Request;

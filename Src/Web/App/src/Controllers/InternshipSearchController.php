@@ -3,10 +3,9 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
-use App\Attributes\RequiredPolicy;
-use App\Attributes\RequiredRole;
 use App\DTOs\createInternshipDTO;
 use App\Models\InternshipCycle;
+use App\Security\Attributes\RequiredRole;
 use App\Security\Identity;
 use App\Security\Role;
 use App\Services\InternshipService;
