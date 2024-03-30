@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\TwigExtension;
+namespace App\Security\TwigExtension;
 
 use App\Security\AuthorizationService;
 use App\Security\Role;

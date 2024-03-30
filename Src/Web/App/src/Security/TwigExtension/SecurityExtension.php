@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\TwigExtension;
+namespace App\Security\TwigExtension;
 
 use Twig\Extension\AbstractExtension;
 use Twig\Extension\GlobalsInterface;
@@ -13,11 +13,11 @@ class SecurityExtension extends AbstractExtension implements GlobalsInterface
         return [
             new \Twig\TwigFunction(
                 'has_permission',
-                ['App\TwigExtension\SecurityRuntimeExtension', 'hasPermission']
+                ['App\Security\TwigExtension\SecurityRuntimeExtension', 'hasPermission']
             ),
             new \Twig\TwigFunction(
                 'has_role',
-                ['App\TwigExtension\SecurityRuntimeExtension', 'hasRole']
+                ['App\Security\TwigExtension\SecurityRuntimeExtension', 'hasRole']
             ),
         ];
     }
