@@ -19,6 +19,10 @@ class SecurityExtension extends AbstractExtension implements GlobalsInterface
                 'has_role',
                 ['App\Security\TwigExtension\SecurityRuntimeExtension', 'hasRole']
             ),
+            new \Twig\TwigFunction(
+                'IsAuthorized',
+                ['App\Security\TwigExtension\SecurityRuntimeExtension', 'isAuthorized']
+            ),
         ];
     }
 

@@ -22,4 +22,9 @@ class SecurityRuntimeExtension extends \Twig\Extension\AbstractExtension
     {
         return $this->authorizationService->hasRole($role);
     }
+
+    public function isAuthorized(string $policyName): bool
+    {
+        return $this->authorizationService->authorize($policyName);
+    }
 }
