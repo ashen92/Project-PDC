@@ -146,4 +146,15 @@ class InternMonitoringRepository implements IRepository
             $stmt->fetchAll(PDO::FETCH_ASSOC)
         );
     }
+
+    public function isEmployed(int $studentId): bool
+    {
+        $stmt = $this->pdo->prepare(
+            'SELECT COUNT(*)
+            FROM interns
+            WHERE student_id = :studentId');
+        $stmt->execute(["studentId" => $studentId]);
+        $data = $stmt->fetch(PDO::FETCH_COLUMN);
+        return $data > 0;
+    }
 }

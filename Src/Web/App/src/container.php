@@ -174,6 +174,47 @@ $container->register(
         new Reference('password_hasher')
     ]);
 
+// Policies
+
+$container->register(
+    'security.policy.employed',
+    App\Security\Policies\EmploymentStatusPolicy::class
+)
+    ->setArguments(['employed']);
+
+$container->register(
+    'security.policy.unemployed',
+    App\Security\Policies\EmploymentStatusPolicy::class
+)
+    ->setArguments(['unemployed']);
+
+$container->register(
+    'security.policy.job_hunt_round_1',
+    App\Security\Policies\JobHuntRoundPolicy::class
+)
+    ->setArguments([1]);
+
+$container->register(
+    'security.policy.job_hunt_round_2',
+    App\Security\Policies\JobHuntRoundPolicy::class
+)
+    ->setArguments([2]);
+
+// Policy handlers
+
+$container->register(
+    'security.policy_handler.employment_status',
+    App\Security\PolicyHandlers\EmploymentStatusPolicyHandler::class
+)
+    ->setArguments([
+        new Reference('repository.intern_monitoring'),
+    ]);
+
+$container->register(
+    'security.policy_handler.job_hunt_round',
+    App\Security\PolicyHandlers\JobHuntRoundPolicyHandler::class
+);
+
 $container->register(
     'service.authorization',
     App\Security\AuthorizationService::class
@@ -181,7 +222,39 @@ $container->register(
     ->setArguments([
         new Reference('repository.authorization'),
         new Reference('session'),
-    ]);
+    ])
+    ->addMethodCall(
+        'addPolicyHandler',
+        [
+            'Employed',
+            new Reference('security.policy.employed'),
+            new Reference('security.policy_handler.employment_status')
+        ]
+    )
+    ->addMethodCall(
+        'addPolicyHandler',
+        [
+            'Unemployed',
+            new Reference('security.policy.unemployed'),
+            new Reference('security.policy_handler.employment_status')
+        ]
+    )
+    ->addMethodCall(
+        'addPolicyHandler',
+        [
+            'JobHuntRound1',
+            new Reference('security.policy.job_hunt_round_1'),
+            new Reference('security.policy_handler.job_hunt_round')
+        ]
+    )
+    ->addMethodCall(
+        'addPolicyHandler',
+        [
+            'JobHuntRound2',
+            new Reference('security.policy.job_hunt_round_2'),
+            new Reference('security.policy_handler.job_hunt_round')
+        ]
+    );
 
 $container->register(
     'service.user',
