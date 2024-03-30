@@ -47,57 +47,57 @@ readonly class InternshipProgramAPIController
         return new Response('', 204);
     }
 
-    #[Route('/applying/start', methods: ['PATCH'])]
-    public function startApplying(?InternshipCycle $cycle): Response
+    #[Route('/job-hunt/round/1/start', methods: ['PATCH'])]
+    public function startJobHuntRound1(?InternshipCycle $cycle): Response
     {
         $this->internshipProgramService->startApplying($cycle->getId());
         return new Response('', 204);
     }
 
-    #[Route('/applying/undo', methods: ['PATCH'])]
-    public function undoStartApplying(?InternshipCycle $cycle): Response
+    #[Route('/job-hunt/round/1/undo', methods: ['PATCH'])]
+    public function undoStartJobHuntRound1(?InternshipCycle $cycle): Response
     {
         $this->internshipProgramService->undoStartApplying($cycle->getId());
         return new Response('', 204);
     }
 
-    #[Route('/applying/end', methods: ['PATCH'])]
-    public function endApplying(?InternshipCycle $cycle): Response
+    #[Route('/job-hunt/round/1/end', methods: ['PATCH'])]
+    public function endJobHuntRound1(?InternshipCycle $cycle): Response
     {
         $this->internshipProgramService->endApplying($cycle->getId());
         return new Response('', 204);
     }
 
-    #[Route('/applying/restart', methods: ['PATCH'])]
-    public function undoEndApplying(?InternshipCycle $cycle): Response
+    #[Route('/job-hunt/round/1/restart', methods: ['PATCH'])]
+    public function undoEndJobHuntRound1(?InternshipCycle $cycle): Response
     {
         $this->internshipProgramService->undoEndApplying($cycle->getId());
         return new Response('', 204);
     }
 
-    #[Route('/interning/start', methods: ['PATCH'])]
-    public function startInterning(?InternshipCycle $cycle): Response
+    #[Route('/job-hunt/round/2/start', methods: ['PATCH'])]
+    public function startJobHuntRound2(?InternshipCycle $cycle): Response
     {
         $this->internshipProgramService->startInterning($cycle->getId());
         return new Response('', 204);
     }
 
-    #[Route('/interning/undo', methods: ['PATCH'])]
-    public function undoStartInterning(?InternshipCycle $cycle): Response
+    #[Route('/job-hunt/round/2/undo', methods: ['PATCH'])]
+    public function undoStartJobHuntRound2(?InternshipCycle $cycle): Response
     {
         $this->internshipProgramService->undoStartInterning($cycle->getId());
         return new Response('', 204);
     }
 
-    #[Route('/interning/end', methods: ['PATCH'])]
-    public function endInterning(?InternshipCycle $cycle): Response
+    #[Route('/job-hunt/round/2/end', methods: ['PATCH'])]
+    public function endJobHuntRound2(?InternshipCycle $cycle): Response
     {
         $this->internshipProgramService->endInterning($cycle->getId());
         return new Response('', 204);
     }
 
-    #[Route('/interning/restart', methods: ['PATCH'])]
-    public function undoEndInterning(?InternshipCycle $cycle): Response
+    #[Route('/job-hunt/2/restart', methods: ['PATCH'])]
+    public function undoEndJobHuntRound2(?InternshipCycle $cycle): Response
     {
         $this->internshipProgramService->undoEndInterning($cycle->getId());
         return new Response('', 204);
