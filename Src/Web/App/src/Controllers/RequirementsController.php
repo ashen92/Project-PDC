@@ -22,9 +22,9 @@ use Throwable;
 use Twig\Environment;
 
 #[RequiredRole([
-    Role::InternshipProgram_Admin,
-    Role::InternshipProgram_Partner,
-    Role::InternshipProgram_Student,
+    Role::InternshipProgramAdmin,
+    Role::InternshipProgramPartner,
+    Role::InternshipProgramStudent,
 ])]
 #[Route('/internship-program/requirements')]
 class RequirementsController extends PageControllerBase
@@ -39,7 +39,7 @@ class RequirementsController extends PageControllerBase
     #[Route([''], methods: ['GET'])]
     public function requirements(Request $request, Identity $identity, ?InternshipCycle $cycle): Response
     {
-        if ($identity->hasRole(Role::InternshipProgram_Admin)) {
+        if ($identity->hasRole(Role::InternshipProgramAdmin)) {
             return $this->render(
                 'internship-program/requirements/home-admin.html',
                 [
@@ -71,7 +71,7 @@ class RequirementsController extends PageControllerBase
     #[Route('/{id}', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function requirement(Identity $identity, int $id): Response|RedirectResponse
     {
-        if ($identity->hasRole(Role::InternshipProgram_Admin)) {
+        if ($identity->hasRole(Role::InternshipProgramAdmin)) {
             $requirement = $this->requirementService->getRequirement($id);
             if ($requirement) {
                 return $this->render(

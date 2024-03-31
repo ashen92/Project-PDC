@@ -29,10 +29,10 @@ class SecurityExtension extends AbstractExtension implements GlobalsInterface
     public function getGlobals(): array
     {
         return [
-            'InternshipProgram_Admin' => \App\Security\Role::InternshipProgram_Admin,
-            'InternshipProgram_Partner_Admin' => \App\Security\Role::InternshipProgram_Partner_Admin,
-            'InternshipProgram_Partner' => \App\Security\Role::InternshipProgram_Partner,
-            'InternshipProgram_Student' => \App\Security\Role::InternshipProgram_Student,
+            'InternshipProgramAdmin' => \App\Security\Role::InternshipProgramAdmin,
+            'InternshipProgramPartnerAdmin' => \App\Security\Role::InternshipProgramPartnerAdmin,
+            'InternshipProgramPartner' => \App\Security\Role::InternshipProgramPartner,
+            'InternshipProgramStudent' => \App\Security\Role::InternshipProgramStudent,
             'Admin' => \App\Security\Role::Admin,
         ];
     }

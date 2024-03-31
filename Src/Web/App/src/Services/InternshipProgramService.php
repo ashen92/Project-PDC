@@ -110,9 +110,9 @@ readonly class InternshipProgramService
                 );
 
             $this->userRepository
-                ->addRoleToUserGroup($partnerGroup->getId(), Role::InternshipProgram_Partner_Admin);
+                ->addRoleToUserGroup($partnerGroup->getId(), Role::InternshipProgramPartnerAdmin);
             $this->userRepository
-                ->addRoleToUserGroup($studentGroup->getId(), Role::InternshipProgram_Student);
+                ->addRoleToUserGroup($studentGroup->getId(), Role::InternshipProgramStudent);
 
             $this->userRepository
                 ->addUsersToUserGroup($partnerGroup->getId(), $partnerGroupId);
@@ -146,14 +146,14 @@ readonly class InternshipProgramService
 
             $this->internshipProgramRepository->removeRolesFromUserGroups(
                 [
-                    Role::InternshipProgram_Partner_Admin,
-                    Role::InternshipProgram_Partner
+                    Role::InternshipProgramPartnerAdmin,
+                    Role::InternshipProgramPartner
                 ],
                 $cycle->getPartnerGroupIds(),
             );
 
             $this->internshipProgramRepository->removeRolesFromUserGroups(
-                [Role::InternshipProgram_Student],
+                [Role::InternshipProgramStudent],
                 [$cycle->getStudentGroupId()],
             );
 
@@ -239,7 +239,7 @@ readonly class InternshipProgramService
 
         if (!$group) {
             $group = $this->userRepository->createUserGroup($groupName);
-            $this->userRepository->addRoleToUserGroup($group->getId(), Role::InternshipProgram_Partner);
+            $this->userRepository->addRoleToUserGroup($group->getId(), Role::InternshipProgramPartner);
         }
 
         $this->userRepository->addToUserGroup($userId, $group->getId());

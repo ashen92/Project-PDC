@@ -31,7 +31,7 @@ class ApplicationsController extends PageControllerBase
         );
     }
 
-    #[RequiredRole(Role::InternshipProgram_Partner_Admin)]
+    #[RequiredRole(Role::InternshipProgramPartnerAdmin)]
     #[Route('/applicants', methods: ['GET'])]
     public function applicants(Request $request, ?InternshipCycle $cycle): Response
     {
@@ -46,8 +46,8 @@ class ApplicationsController extends PageControllerBase
     }
 
     #[RequiredRole([
-        Role::InternshipProgram_Admin,
-        Role::InternshipProgram_Partner_Admin
+        Role::InternshipProgramAdmin,
+        Role::InternshipProgramPartnerAdmin
     ])]
     #[Route('/applicants/applications', methods: ['GET'])]
     public function applicantsApplications(Request $request): Response

@@ -29,7 +29,7 @@ readonly class InternshipsAPIController
                 'description' => $internship->getDescription(),
             ];
 
-            if ($identity->hasRole(Role::InternshipProgram_Student)) {
+            if ($identity->hasRole(Role::InternshipProgramStudent)) {
                 $userId = $request->getSession()->get('user_id');
                 $data['hasApplied'] = $this->internshipService->hasAppliedToInternship($id, $userId);
             }
@@ -60,8 +60,8 @@ readonly class InternshipsAPIController
     }
 
     #[RequiredRole([
-        Role::InternshipProgram_Admin,
-        Role::InternshipProgram_Partner_Admin
+        Role::InternshipProgramAdmin,
+        Role::InternshipProgramPartnerAdmin
     ])]
     #[Route('/{id}/applications', methods: ['GET'])]
     public function internshipApplications(int $id): Response

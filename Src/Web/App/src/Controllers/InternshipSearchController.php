@@ -16,9 +16,9 @@ use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
 
 #[RequiredRole([
-    Role::InternshipProgram_Admin,
-    Role::InternshipProgram_Partner_Admin,
-    Role::InternshipProgram_Student,
+    Role::InternshipProgramAdmin,
+    Role::InternshipProgramPartnerAdmin,
+    Role::InternshipProgramStudent,
 ])]
 #[Route('/internship-program')]
 class InternshipSearchController extends PageControllerBase
@@ -55,7 +55,7 @@ class InternshipSearchController extends PageControllerBase
         $cycleId = $cycle->getId();
         $orgs = null;
 
-        if ($identity->hasRole(Role::InternshipProgram_Partner)) {
+        if ($identity->hasRole(Role::InternshipProgramPartner)) {
             $userId = $request->getSession()->get('user_id');
             $internships = $this->internshipService
                 ->searchInternships(
@@ -161,7 +161,7 @@ class InternshipSearchController extends PageControllerBase
             'internship-program/internship/create.html',
             [
                 'section' => 'internships',
-                'organizations' => $identity->hasRole(Role::InternshipProgram_Admin) ? $this->internshipService->getOrganizations() : null,
+                'organizations' => $identity->hasRole(Role::InternshipProgramAdmin) ? $this->internshipService->getOrganizations() : null,
             ]
         );
     }
@@ -169,7 +169,7 @@ class InternshipSearchController extends PageControllerBase
     #[Route('/internships/create', methods: ['POST'])]
     public function createPOST(Request $request, Identity $identity, InternshipCycle $cycle): RedirectResponse
     {
-        $orgId = $identity->hasRole(Role::InternshipProgram_Admin) ?
+        $orgId = $identity->hasRole(Role::InternshipProgramAdmin) ?
             (int) $request->get('organization') : null;
 
         $dto = new createInternshipDTO(
@@ -207,7 +207,7 @@ class InternshipSearchController extends PageControllerBase
             ['id' => 1, 'name' => 'Lorem ipsum dolor sit amet.',],
             ['id' => 1, 'name' => 'Lorem ipsum dolor sit amet.',],
         ];
-        if ($identity->hasRole(Role::InternshipProgram_Student)) {
+        if ($identity->hasRole(Role::InternshipProgramStudent)) {
             return $this->render(
                 'internship-program/round-2/home-student.html',
                 [
@@ -217,7 +217,7 @@ class InternshipSearchController extends PageControllerBase
             );
         }
 
-        if ($identity->hasRole(Role::InternshipProgram_Partner)) {
+        if ($identity->hasRole(Role::InternshipProgramPartner)) {
             return $this->render(
                 'internship-program/round-2/home-partner.html',
                 [

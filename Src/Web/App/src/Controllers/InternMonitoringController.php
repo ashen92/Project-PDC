@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
 
-#[RequiredRole(Role::InternshipProgram_Admin)]
+#[RequiredRole(Role::InternshipProgramAdmin)]
 #[Route('/internship-program/monitoring')]
 class InternMonitoringController extends PageControllerBase
 {
