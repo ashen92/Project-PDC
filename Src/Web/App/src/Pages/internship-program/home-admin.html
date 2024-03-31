@@ -39,26 +39,15 @@
     <div class="grid max-w-max grid-cols-3 xl-grid-cols-2 lg-grid-cols-1 col-gap-25 row-gap-25">
 
         <div class="card">
-            <div class="flex items-center justify-between col-gap-30 mb-5">
-                <h5 class="header">Job Collection</h5>
-                <div class="flex items-start col-gap-5" id="job-collection-btn-container">
-                    {% if internshipCycle.nextState == InternshipCycleState_JobCollection %}
-
-                    <button type="button" class="btn btn-primary" id="start-job-collection-btn">Start</button>
-
-                    {% elseif internshipCycle.activeState == InternshipCycleState_JobCollection %}
-
-                    <button type="button" class="btn btn-secondary" id="undo-job-collection-btn">Undo</button>
-                    <button type="button" class="btn btn-danger" id="end-job-collection-btn">End</button>
-
-                    {% elseif internshipCycle.nextState == InternshipCycleState_Applying or
-                    internshipCycle.activeState == InternshipCycleState_Applying %}
-
-                    <button type="button" class="btn btn-outline-primary"
-                        id="restart-job-collection-btn">Restart</button>
-
-                    {% endif %}
-                </div>
+            <h5 class="header mb-3">Job Collection</h5>
+            <div class="flex items-start col-gap-5 mb-3" id="job-collection-btn-container">
+                {% if internshipCycle.jobCollectionStart is null %}
+                <button type="button" class="btn btn-outline-primary" id="start-job-collection-btn">Start</button>
+                {% elseif internshipCycle.jobCollectionEnd is null %}
+                <button type="button" class="btn btn-outline-danger" id="end-job-collection-btn">End</button>
+                {% else %}
+                <button type="button" class="btn btn-outline-primary" id="restart-job-collection-btn">Restart</button>
+                {% endif %}
             </div>
             {% if internshipCycle.jobCollectionStart %}
             <p>
@@ -75,37 +64,47 @@
         <div class="card">
             <h5 class="header mb-3">Job Searching - Round 1</h5>
             <div class="flex items-start col-gap-5 mb-3" id="js-r1-btn-container">
+                {% if internshipCycle.jobHuntRound1Start is null %}
                 <button type="button" class="btn btn-outline-primary" id="start-js-r1-btn">Start</button>
-
-                <button type="button" class="btn btn-secondary" id="undo-js-r1-btn">Undo</button>
+                {% elseif internshipCycle.jobHuntRound1End is null %}
                 <button type="button" class="btn btn-outline-danger" id="end-js-r1-btn">End</button>
-
+                {% else %}
                 <button type="button" class="btn btn-outline-primary" id="restart-js-r1-btn">Restart</button>
+                {% endif %}
             </div>
+            {% if internshipCycle.jobHuntRound1Start %}
             <p>
-                Started on <span class="fw-semibold">{{ internshipCycle.interningStart.format('Y-m-d') }}</span>
+                Started on <span class="fw-semibold">{{ internshipCycle.jobHuntRound1Start.format('Y-m-d') }}</span>
             </p>
+            {% endif %}
+            {% if internshipCycle.jobHuntRound1End %}
             <p>
-                Ended on <span class="fw-semibold">{{ internshipCycle.interningEnd.format('Y-m-d') }}</span>
+                Ended on <span class="fw-semibold">{{ internshipCycle.jobHuntRound1End.format('Y-m-d') }}</span>
             </p>
+            {% endif %}
         </div>
 
         <div class="card">
             <h5 class="header mb-3">Job Searching - Round 2</h5>
             <div class="flex items-start col-gap-5 mb-3" id="js-r2-btn-container">
+                {% if internshipCycle.jobHuntRound2Start is null %}
                 <button type="button" class="btn btn-outline-primary" id="start-js-r2-btn">Start</button>
-
-                <button type="button" class="btn btn-secondary" id="undo-js-r2-btn">Undo</button>
+                {% elseif internshipCycle.jobHuntRound2End is null %}
                 <button type="button" class="btn btn-outline-danger" id="end-js-r2-btn">End</button>
-
+                {% else %}
                 <button type="button" class="btn btn-outline-primary" id="restart-js-r2-btn">Restart</button>
+                {% endif %}
             </div>
+            {% if internshipCycle.jobHuntRound2Start %}
             <p>
-                Started on <span class="fw-semibold">{{ internshipCycle.interningStart.format('Y-m-d') }}</span>
+                Started on <span class="fw-semibold">{{ internshipCycle.jobHuntRound2Start.format('Y-m-d') }}</span>
             </p>
+            {% endif %}
+            {% if internshipCycle.jobHuntRound2End %}
             <p>
-                Ended on <span class="fw-semibold">{{ internshipCycle.interningEnd.format('Y-m-d') }}</span>
+                Ended on <span class="fw-semibold">{{ internshipCycle.jobHuntRound2End.format('Y-m-d') }}</span>
             </p>
+            {% endif %}
         </div>
     </div>
 

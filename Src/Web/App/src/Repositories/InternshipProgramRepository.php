@@ -7,6 +7,7 @@ use App\Interfaces\IRepository;
 use App\Mappers\InternshipCycleMapper;
 use App\Models\InternshipCycle;
 use App\Security\Role;
+use DateTimeImmutable;
 use PDO;
 
 class InternshipProgramRepository implements IRepository
@@ -183,135 +184,64 @@ class InternshipProgramRepository implements IRepository
         return $stmt->rowCount() > 0;
     }
 
-    public function startJobCollection(int $cycleId): bool
-    {
-        $stmt = $this->pdo->prepare(
-            'UPDATE internship_cycles
-            SET jobCollectionStart = NOW()
-            WHERE id = :id'
-        );
-        $stmt->execute([':id' => $cycleId]);
+    public function modifyInternshipCycleDates(
+        int $cycleId,
+        ?DateTimeImmutable $jobCollectionStart,
+        ?DateTimeImmutable $jobCollectionEnd,
+        ?DateTimeImmutable $jobHuntRound1Start,
+        ?DateTimeImmutable $jobHuntRound1End,
+        ?DateTimeImmutable $jobHuntRound2Start,
+        ?DateTimeImmutable $jobHuntRound2End,
+    ): bool {
+        $columns = '';
+        $columns .= $jobCollectionStart ? "jobCollectionStart = '" . $jobCollectionStart->format($this::DATE_TIME_FORMAT) . "', " : '';
+        $columns .= $jobCollectionEnd ? "jobCollectionEnd = '" . $jobCollectionEnd->format($this::DATE_TIME_FORMAT) . "', " : '';
+        $columns .= $jobHuntRound1Start ? "jobHuntRound1Start = '" . $jobHuntRound1Start->format($this::DATE_TIME_FORMAT) . "', " : '';
+        $columns .= $jobHuntRound1End ? "jobHuntRound1End = '" . $jobHuntRound1End->format($this::DATE_TIME_FORMAT) . "', " : '';
+        $columns .= $jobHuntRound2Start ? "jobHuntRound2Start = '" . $jobHuntRound2Start->format($this::DATE_TIME_FORMAT) . "', " : '';
+        $columns .= $jobHuntRound2End ? "jobHuntRound2End = '" . $jobHuntRound2End->format($this::DATE_TIME_FORMAT) . "', " : '';
+
+        $commaPos = strrpos($columns, ',');
+        if ($commaPos !== false) {
+            $columns = substr_replace($columns, '', $commaPos, 1);
+        }
+
+        $sql = "UPDATE internship_cycles
+                SET $columns
+                WHERE id = :id";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['id' => $cycleId]);
         return $stmt->rowCount() > 0;
     }
 
-    public function undoStartJobCollection(int $cycleId): bool
+    public function resetInternshipCycleDates(
+        int $cycleId,
+        bool $resetJobCollectionStart,
+        bool $resetJobCollectionEnd,
+        bool $resetJobHuntRound1Start,
+        bool $resetJobHuntRound1End,
+        bool $resetJobHuntRound2Start,
+        bool $resetJobHuntRound2End,
+    ): bool
     {
-        $stmt = $this->pdo->prepare(
-            'UPDATE internship_cycles
-            SET jobCollectionStart = null
-            WHERE id = :id'
-        );
-        $stmt->execute([':id' => $cycleId]);
-        return $stmt->rowCount() > 0;
-    }
+        $columns = '';
+        $columns .= $resetJobCollectionStart ? "jobCollectionStart = NULL, " : '';
+        $columns .= $resetJobCollectionEnd ? "jobCollectionEnd = NULL, " : '';
+        $columns .= $resetJobHuntRound1Start ? "jobHuntRound1Start = NULL, " : '';
+        $columns .= $resetJobHuntRound1End ? "jobHuntRound1End = NULL, " : '';
+        $columns .= $resetJobHuntRound2Start ? "jobHuntRound2Start = NULL, " : '';
+        $columns .= $resetJobHuntRound2End ? "jobHuntRound2End = NULL, " : '';
 
-    public function endJobCollection(int $cycleId): bool
-    {
-        $stmt = $this->pdo->prepare(
-            'UPDATE internship_cycles
-            SET jobCollectionEnd = NOW()
-            WHERE id = :id'
-        );
-        $stmt->execute([':id' => $cycleId]);
-        return $stmt->rowCount() > 0;
-    }
+        $commaPos = strrpos($columns, ',');
+        if ($commaPos !== false) {
+            $columns = substr_replace($columns, '', $commaPos, 1);
+        }
 
-    public function undoEndJobCollection(int $cycleId): bool
-    {
-        $stmt = $this->pdo->prepare(
-            'UPDATE internship_cycles
-            SET jobCollectionEnd = null
-            WHERE id = :id'
-        );
-        $stmt->execute([':id' => $cycleId]);
-        return $stmt->rowCount() > 0;
-    }
-
-    public function startApplying(int $cycleId): bool
-    {
-        $stmt = $this->pdo->prepare(
-            'UPDATE internship_cycles
-            SET applyingStart = NOW()
-            WHERE id = :id'
-        );
-        $stmt->execute([':id' => $cycleId]);
-        return $stmt->rowCount() > 0;
-    }
-
-    public function undoStartApplying(int $cycleId)
-    {
-        $stmt = $this->pdo->prepare(
-            'UPDATE internship_cycles
-            SET applyingStart = null
-            WHERE id = :id'
-        );
-        $stmt->execute([':id' => $cycleId]);
-        return $stmt->rowCount() > 0;
-    }
-
-    public function endApplying(int $cycleId)
-    {
-        $stmt = $this->pdo->prepare(
-            'UPDATE internship_cycles
-            SET applyingEnd = NOW()
-            WHERE id = :id'
-        );
-        $stmt->execute([':id' => $cycleId]);
-        return $stmt->rowCount() > 0;
-    }
-
-    public function undoEndApplying(int $cycleId)
-    {
-        $stmt = $this->pdo->prepare(
-            'UPDATE internship_cycles
-            SET applyingEnd = null
-            WHERE id = :id'
-        );
-        $stmt->execute([':id' => $cycleId]);
-        return $stmt->rowCount() > 0;
-    }
-
-    public function startInterning(int $cycleId)
-    {
-        $stmt = $this->pdo->prepare(
-            'UPDATE internship_cycles
-            SET interningStart = NOW()
-            WHERE id = :id'
-        );
-        $stmt->execute([':id' => $cycleId]);
-        return $stmt->rowCount() > 0;
-    }
-
-    public function undoStartInterning(int $cycleId)
-    {
-        $stmt = $this->pdo->prepare(
-            'UPDATE internship_cycles
-            SET interningStart = null
-            WHERE id = :id'
-        );
-        $stmt->execute([':id' => $cycleId]);
-        return $stmt->rowCount() > 0;
-    }
-
-    public function endInterning(int $cycleId)
-    {
-        $stmt = $this->pdo->prepare(
-            'UPDATE internship_cycles
-            SET interningEnd = NOW()
-            WHERE id = :id'
-        );
-        $stmt->execute([':id' => $cycleId]);
-        return $stmt->rowCount() > 0;
-    }
-
-    public function undoEndInterning(int $cycleId)
-    {
-        $stmt = $this->pdo->prepare(
-            'UPDATE internship_cycles
-            SET interningEnd = null
-            WHERE id = :id'
-        );
-        $stmt->execute([':id' => $cycleId]);
+        $sql = "UPDATE internship_cycles
+                SET $columns
+                WHERE id = :id";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['id' => $cycleId]);
         return $stmt->rowCount() > 0;
     }
 }

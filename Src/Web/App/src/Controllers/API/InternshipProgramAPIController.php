@@ -22,84 +22,90 @@ readonly class InternshipProgramAPIController
     #[Route('/job-collection/start', methods: ['PATCH'])]
     public function startJobCollection(?InternshipCycle $cycle): Response
     {
-        $this->internshipProgramService->startJobCollection($cycle->getId());
-        return new Response('', 204);
-    }
-
-    #[Route('/job-collection/undo', methods: ['PATCH'])]
-    public function undoStartJobCollection(?InternshipCycle $cycle): Response
-    {
-        $this->internshipProgramService->undoStartJobCollection($cycle->getId());
+        $this->internshipProgramService->modifyInternshipCycleDates(
+            $cycle->getId(),
+            jobCollectionStart: new \DateTimeImmutable()
+        );
         return new Response('', 204);
     }
 
     #[Route('/job-collection/end', methods: ['PATCH'])]
     public function endJobCollection(?InternshipCycle $cycle): Response
     {
-        $this->internshipProgramService->endJobCollection($cycle->getId());
+        $this->internshipProgramService->modifyInternshipCycleDates(
+            $cycle->getId(),
+            jobCollectionEnd: new \DateTimeImmutable()
+        );
         return new Response('', 204);
     }
 
     #[Route('/job-collection/restart', methods: ['PATCH'])]
     public function undoEndJobCollection(?InternshipCycle $cycle): Response
     {
-        $this->internshipProgramService->undoEndJobCollection($cycle->getId());
+        $this->internshipProgramService->resetInternshipCycleDates(
+            $cycle->getId(),
+            resetJobCollectionEnd: true
+        );
         return new Response('', 204);
     }
 
     #[Route('/job-hunt/round/1/start', methods: ['PATCH'])]
     public function startJobHuntRound1(?InternshipCycle $cycle): Response
     {
-        $this->internshipProgramService->startApplying($cycle->getId());
-        return new Response('', 204);
-    }
-
-    #[Route('/job-hunt/round/1/undo', methods: ['PATCH'])]
-    public function undoStartJobHuntRound1(?InternshipCycle $cycle): Response
-    {
-        $this->internshipProgramService->undoStartApplying($cycle->getId());
+        $this->internshipProgramService->modifyInternshipCycleDates(
+            $cycle->getId(),
+            jobHuntRound1Start: new \DateTimeImmutable()
+        );
         return new Response('', 204);
     }
 
     #[Route('/job-hunt/round/1/end', methods: ['PATCH'])]
     public function endJobHuntRound1(?InternshipCycle $cycle): Response
     {
-        $this->internshipProgramService->endApplying($cycle->getId());
+        $this->internshipProgramService->modifyInternshipCycleDates(
+            $cycle->getId(),
+            jobHuntRound1End: new \DateTimeImmutable()
+        );
         return new Response('', 204);
     }
 
     #[Route('/job-hunt/round/1/restart', methods: ['PATCH'])]
     public function undoEndJobHuntRound1(?InternshipCycle $cycle): Response
     {
-        $this->internshipProgramService->undoEndApplying($cycle->getId());
+        $this->internshipProgramService->resetInternshipCycleDates(
+            $cycle->getId(),
+            resetJobHuntRound1End: true
+        );
         return new Response('', 204);
     }
 
     #[Route('/job-hunt/round/2/start', methods: ['PATCH'])]
     public function startJobHuntRound2(?InternshipCycle $cycle): Response
     {
-        $this->internshipProgramService->startInterning($cycle->getId());
-        return new Response('', 204);
-    }
-
-    #[Route('/job-hunt/round/2/undo', methods: ['PATCH'])]
-    public function undoStartJobHuntRound2(?InternshipCycle $cycle): Response
-    {
-        $this->internshipProgramService->undoStartInterning($cycle->getId());
+        $this->internshipProgramService->modifyInternshipCycleDates(
+            $cycle->getId(),
+            jobHuntRound2Start: new \DateTimeImmutable()
+        );
         return new Response('', 204);
     }
 
     #[Route('/job-hunt/round/2/end', methods: ['PATCH'])]
     public function endJobHuntRound2(?InternshipCycle $cycle): Response
     {
-        $this->internshipProgramService->endInterning($cycle->getId());
+        $this->internshipProgramService->modifyInternshipCycleDates(
+            $cycle->getId(),
+            jobHuntRound2End: new \DateTimeImmutable()
+        );
         return new Response('', 204);
     }
 
-    #[Route('/job-hunt/2/restart', methods: ['PATCH'])]
+    #[Route('/job-hunt/round/2/restart', methods: ['PATCH'])]
     public function undoEndJobHuntRound2(?InternshipCycle $cycle): Response
     {
-        $this->internshipProgramService->undoEndInterning($cycle->getId());
+        $this->internshipProgramService->resetInternshipCycleDates(
+            $cycle->getId(),
+            resetJobHuntRound2End: true
+        );
         return new Response('', 204);
     }
 

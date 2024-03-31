@@ -22,21 +22,6 @@ on($("#job-collection-btn-container"), "click", function (e) {
             return;
         }
 
-        if (id === "undo-job-collection-btn") {
-            fetch("/api/internship-program/job-collection/undo", { method: "PATCH" })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(response);
-                    }
-                    location.reload();
-                })
-                .catch(error => {
-                    console.error(error);
-                    btn.disabled = false;
-                });
-            return;
-        }
-
         if (id === "end-job-collection-btn") {
             fetch("/api/internship-program/job-collection/end", { method: "PATCH" })
                 .then(response => {
@@ -69,14 +54,14 @@ on($("#job-collection-btn-container"), "click", function (e) {
     }
 });
 
-on($("#applying-btn-container"), "click", function (e) {
+on($("#js-r1-btn-container"), "click", function (e) {
     const btn = e.target;
     if (btn.tagName === "BUTTON") {
         btn.disabled = true;
         const id = btn.id;
 
-        if (id === "start-applying-btn") {
-            fetch("/api/internship-program/applying/start", { method: "PATCH" })
+        if (id === "start-js-r1-btn") {
+            fetch("/api/internship-program/job-hunt/round/1/start", { method: "PATCH" })
                 .then(response => {
                     if (!response.ok) {
                         throw new Error(response);
@@ -90,8 +75,8 @@ on($("#applying-btn-container"), "click", function (e) {
             return;
         }
 
-        if (id === "undo-applying-btn") {
-            fetch("/api/internship-program/applying/undo", { method: "PATCH" })
+        if (id === "end-js-r1-btn") {
+            fetch("/api/internship-program/job-hunt/round/1/end", { method: "PATCH" })
                 .then(response => {
                     if (!response.ok) {
                         throw new Error(response);
@@ -105,23 +90,8 @@ on($("#applying-btn-container"), "click", function (e) {
             return;
         }
 
-        if (id === "end-applying-btn") {
-            fetch("/api/internship-program/applying/end", { method: "PATCH" })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(response);
-                    }
-                    location.reload();
-                })
-                .catch(error => {
-                    console.error(error);
-                    btn.disabled = false;
-                });
-            return;
-        }
-
-        if (id === "restart-applying-btn") {
-            fetch("/api/internship-program/applying/restart", { method: "PATCH" })
+        if (id === "restart-js-r1-btn") {
+            fetch("/api/internship-program/job-hunt/round/1/restart", { method: "PATCH" })
                 .then(response => {
                     if (!response.ok) {
                         throw new Error(response);
@@ -137,14 +107,14 @@ on($("#applying-btn-container"), "click", function (e) {
     }
 });
 
-on($("#interning-btn-container"), "click", function (e) {
+on($("#js-r2-btn-container"), "click", function (e) {
     const btn = e.target;
     if (btn.tagName === "BUTTON") {
         btn.disabled = true;
         const id = btn.id;
 
-        if (id === "start-interning-btn") {
-            fetch("/api/internship-program/interning/start", { method: "PATCH" })
+        if (id === "start-js-r2-btn") {
+            fetch("/api/internship-program/job-hunt/round/2/start", { method: "PATCH" })
                 .then(response => {
                     if (!response.ok) {
                         throw new Error(response);
@@ -158,8 +128,8 @@ on($("#interning-btn-container"), "click", function (e) {
             return;
         }
 
-        if (id === "undo-interning-btn") {
-            fetch("/api/internship-program/interning/undo", { method: "PATCH" })
+        if (id === "end-js-r2-btn") {
+            fetch("/api/internship-program/job-hunt/round/2/end", { method: "PATCH" })
                 .then(response => {
                     if (!response.ok) {
                         throw new Error(response);
@@ -173,23 +143,8 @@ on($("#interning-btn-container"), "click", function (e) {
             return;
         }
 
-        if (id === "end-interning-btn") {
-            fetch("/api/internship-program/interning/end", { method: "PATCH" })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(response);
-                    }
-                    location.reload();
-                })
-                .catch(error => {
-                    console.error(error);
-                    btn.disabled = false;
-                });
-            return;
-        }
-
-        if (id === "restart-interning-btn") {
-            fetch("/api/internship-program/interning/restart", { method: "PATCH" })
+        if (id === "restart-js-r2-btn") {
+            fetch("/api/internship-program/job-hunt/round/2/restart", { method: "PATCH" })
                 .then(response => {
                     if (!response.ok) {
                         throw new Error(response);
