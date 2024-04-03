@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Models\Internship\Status;
+use App\Models\Internship\Visibility;
 
 class Internship
 {
@@ -11,7 +11,7 @@ class Internship
         private int $id,
         private string $title,
         private string $description,
-        private Status $status,
+        private Visibility $visibility,
         private int $createdByUserId,
         private int $organizationId,
         private int $internshipCycleId,

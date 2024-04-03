@@ -1,6 +1,7 @@
 <?php
 
 use App\DTOs\CreateRequirementDTO;
+use App\Models\Internship\Visibility;
 use DB\Entities\Event;
 use DB\Entities\Internship;
 use DB\Entities\InternshipCycle;
@@ -566,7 +567,8 @@ $counter = 0;
 $i = new Internship(
     $internData[0][0],
     $internData[0][1],
-    \App\Models\Internship\Status::Public ,
+    Visibility::Public ,
+    true,
     $internshipCycle,
     $user4,
     $user4->getOrganization(),
@@ -578,7 +580,8 @@ for ($x = 1; $x < count($internData); $x++) {
     $i = new Internship(
         $data[0],
         $data[1],
-        \App\Models\Internship\Status::Draft,
+        Visibility::Private ,
+        true,
         $internshipCycle,
         $data[2],
         $data[2]->getOrganization(),

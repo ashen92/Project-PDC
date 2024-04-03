@@ -6,7 +6,6 @@ namespace App\Services;
 use App\DTOs\createInternshipDTO;
 use App\Interfaces\IFileStorageService;
 use App\Models\Internship;
-use App\Models\Internship\Status;
 use App\Models\InternshipSearchResult;
 use App\Models\Organization;
 use App\Models\Student;

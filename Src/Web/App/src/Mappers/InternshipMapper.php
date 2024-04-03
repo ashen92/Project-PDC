@@ -5,7 +5,7 @@ namespace App\Mappers;
 
 use App\Interfaces\IMapper;
 use App\Models\Internship;
-use App\Models\Internship\Status;
+use App\Models\Internship\Visibility;
 use DateTimeImmutable;
 use Exception;
 use Override;
@@ -21,7 +21,7 @@ class InternshipMapper implements IMapper
             $row['id'],
             $row['title'],
             $row['description'],
-            Status::tryFrom($row['status']),
+            Visibility::tryFrom($row['visibility']),
             $row['created_by_user_id'],
             $row['organization_id'],
             $row['internship_cycle_id'],

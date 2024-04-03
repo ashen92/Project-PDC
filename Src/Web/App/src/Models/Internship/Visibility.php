@@ -3,9 +3,8 @@ declare(strict_types=1);
 
 namespace App\Models\Internship;
 
-enum Status: string
+enum Visibility: string
 {
-    case Draft = 'draft';
     case Private = 'private';
     case Public = 'public';
 }
