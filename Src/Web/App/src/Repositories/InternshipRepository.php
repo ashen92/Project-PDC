@@ -239,7 +239,7 @@ class InternshipRepository implements IRepository
             return $stmt->execute([
                 'title' => $dto->title,
                 'description' => $dto->description,
-                'status' => $dto->status->value,
+                'status' => $dto->visibility->value,
                 'internshipCycleId' => $internshipCycleId,
                 'createdByUserId' => $dto->createdByUserId,
             ]);
@@ -256,7 +256,7 @@ class InternshipRepository implements IRepository
         return $stmt->execute([
             'title' => $dto->title,
             'description' => $dto->description,
-            'status' => $dto->status->value,
+            'status' => $dto->visibility->value,
             'internshipCycleId' => $internshipCycleId,
             'createdByUserId' => $dto->createdByUserId,
             'organizationId' => $dto->organizationId,
