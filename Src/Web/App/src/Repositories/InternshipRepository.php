@@ -68,7 +68,8 @@ class InternshipRepository implements IRepository
         ?int $cycleId,
         ?string $searchQuery,
         ?array $filterByOrgIds,
-        ?array $filterByStatuses,
+        ?Internship\Visibility $filterByVisibility,
+        ?bool $isApproved,
         ?int $numberOfResults,
         ?int $offsetBy,
         ?int $filterByCreatorUserId,
@@ -85,9 +86,17 @@ class InternshipRepository implements IRepository
             $val = implode(',', $filterByOrgIds);
             $sql .= " AND i.organization_id in ($val)";
         }
-        if ($filterByStatuses) {
-            $val = implode(',', $filterByStatuses);
-            $sql .= " AND i.status in ($val)";
+        if ($filterByVisibility) {
+            $sql .= " AND i.visibility = :visibility";
+            $params['visibility'] = $filterByVisibility->value;
+        }
+        if ($isApproved !== null) {
+            if ($isApproved === true) {
+                $sql .= ' AND i.isApproved = :isApproved';
+            } else {
+                $sql .= ' AND i.isApproved != :isApproved';
+            }
+            $params['isApproved'] = true;
         }
         if ($filterByCreatorUserId) {
             $sql .= ' AND i.created_by_user_id = :creatorUserId';
@@ -139,13 +148,35 @@ class InternshipRepository implements IRepository
         return array_map(fn(array $result) => OrganizationMapper::map($result), $results);
     }
 
-    public function count(int $cycleId, ?string $searchQuery, ?int $ownerUserId): int
-    {
+    public function count(
+        int $cycleId,
+        ?string $searchQuery,
+        ?array $filterByOrgIds,
+        ?Internship\Visibility $filterByVisibility,
+        ?bool $isApproved,
+        ?int $ownerUserId
+    ): int {
         $sql = 'SELECT COUNT(*) FROM internships WHERE internship_cycle_id = :cycleId';
         $params = ['cycleId' => $cycleId];
         if ($searchQuery) {
             $sql .= ' AND title LIKE :searchQuery';
             $params['searchQuery'] = '%' . $searchQuery . '%';
+        }
+        if ($filterByOrgIds) {
+            $val = implode(',', $filterByOrgIds);
+            $sql .= " AND organization_id in ($val)";
+        }
+        if ($filterByVisibility) {
+            $sql .= ' AND visibility = :visibility';
+            $params['visibility'] = $filterByVisibility->value;
+        }
+        if ($isApproved !== null) {
+            if ($isApproved === true) {
+                $sql .= ' AND isApproved = :isApproved';
+            } else {
+                $sql .= ' AND isApproved != :isApproved';
+            }
+            $params['isApproved'] = true;
         }
         if ($ownerUserId) {
             $sql .= ' AND created_by_user_id = :ownerId';

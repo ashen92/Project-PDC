@@ -48,8 +48,9 @@ readonly class InternshipService
     public function searchInternships(
         int $cycleId,
         ?string $searchQuery,
-        ?array $filterByOrgIds,
-        ?array $filterByStatuses,
+        ?array $filterByOrg,
+        ?Internship\Visibility $filterByVisibility,
+        ?bool $isApproved,
         ?int $numberOfResults,
         ?int $offsetBy,
         ?int $filterByCreatorUserId = null,
@@ -61,8 +62,9 @@ readonly class InternshipService
         $result = $this->internshipRepository->searchInternships(
             $cycleId,
             $searchQuery,
-            $filterByOrgIds,
-            $filterByStatuses,
+            $filterByOrg,
+            $filterByVisibility,
+            $isApproved,
             $numberOfResults,
             $offsetBy,
             $filterByCreatorUserId,
@@ -92,12 +94,25 @@ readonly class InternshipService
         return $this->internshipRepository->findInternships($cycleId, $ownerId);
     }
 
-    public function getInternshipCount(int $cycleId, ?string $searchQuery, ?int $ownerUserId): int
-    {
+    public function countInternships(
+        int $cycleId,
+        ?string $searchQuery,
+        ?array $filterByOrg,
+        ?Internship\Visibility $filterByVisibility,
+        ?bool $isApproved,
+        ?int $creatorUserId = null
+    ): int {
 
         // TODO: Check if internship cycle exists
 
-        return $this->internshipRepository->count($cycleId, $searchQuery, $ownerUserId);
+        return $this->internshipRepository->count(
+            $cycleId,
+            $searchQuery,
+            $filterByOrg,
+            $filterByVisibility,
+            $isApproved,
+            $creatorUserId
+        );
     }
 
     /**

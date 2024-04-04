@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\DTOs\createInternshipDTO;
+use App\Models\Internship;
 use App\Models\InternshipCycle;
 use App\Security\Attributes\RequiredRole;
 use App\Security\Identity;
@@ -50,6 +51,20 @@ class InternshipSearchController extends PageControllerBase
             $orgIds = array_map('intval', $orgIds);
         }
 
+        $visibility = $queryParams['v'] ?? null;
+        $visibility = $visibility ? Internship\Visibility::tryFrom($visibility) : null;
+
+        $isApproved = $queryParams['a'] ?? null;
+        if ($isApproved) {
+            if ($isApproved === 'approved') {
+                $isApproved = true;
+            } elseif ($isApproved === 'pending') {
+                $isApproved = false;
+            } else {
+                $isApproved = null;
+            }
+        }
+
         // TODO: Validate query params
 
         $cycleId = $cycle->getId();
@@ -62,37 +77,67 @@ class InternshipSearchController extends PageControllerBase
                     $cycleId,
                     $searchQuery,
                     null,
-                    null,
+                    $visibility,
+                    $isApproved,
                     self::MAX_INTERNSHIP_RESULTS_PER_PAGE,
                     (int) (($pageNumber - 1) * self::MAX_INTERNSHIP_RESULTS_PER_PAGE),
                     $userId
                 );
 
-            $numberOfResults = $this->internshipService->getInternshipCount(
+            $numberOfResults = $this->internshipService->countInternships(
                 $cycleId,
                 $searchQuery,
+                null,
+                $visibility,
+                $isApproved,
                 $userId
             );
         } else {
-            $internships = $this->internshipService
-                ->searchInternships(
+            if ($identity->hasRole(Role::InternshipProgramStudent)) {
+                $internships = $this->internshipService
+                    ->searchInternships(
+                        $cycleId,
+                        $searchQuery,
+                        $orgIds,
+                        Internship\Visibility::Public ,
+                        true,
+                        self::MAX_INTERNSHIP_RESULTS_PER_PAGE,
+                        (int) (($pageNumber - 1) * self::MAX_INTERNSHIP_RESULTS_PER_PAGE)
+                    );
+
+                $numberOfResults = $this->internshipService->countInternships(
                     $cycleId,
                     $searchQuery,
                     $orgIds,
-                    null,
-                    self::MAX_INTERNSHIP_RESULTS_PER_PAGE,
-                    (int) (($pageNumber - 1) * self::MAX_INTERNSHIP_RESULTS_PER_PAGE)
+                    $visibility,
+                    true,
+                    null
                 );
+            } else {
+                $internships = $this->internshipService
+                    ->searchInternships(
+                        $cycleId,
+                        $searchQuery,
+                        $orgIds,
+                        $visibility,
+                        $isApproved,
+                        self::MAX_INTERNSHIP_RESULTS_PER_PAGE,
+                        (int) (($pageNumber - 1) * self::MAX_INTERNSHIP_RESULTS_PER_PAGE)
+                    );
+
+                $numberOfResults = $this->internshipService->countInternships(
+                    $cycleId,
+                    $searchQuery,
+                    $orgIds,
+                    $visibility,
+                    $isApproved,
+                    null
+                );
+            }
 
             $orgs = $this->internshipService->searchInternshipsGetOrganizations(
                 $cycleId,
                 $searchQuery,
-            );
-
-            $numberOfResults = $this->internshipService->getInternshipCount(
-                $cycleId,
-                $searchQuery,
-                null
             );
         }
 

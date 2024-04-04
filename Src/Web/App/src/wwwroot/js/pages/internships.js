@@ -164,6 +164,7 @@ on(undoApplyBtn, "click", function () {
 //#region 
 // This section handles the filtering of the job list
 
+// Filter by company
 const filterByCompany = $("#filter-by-company");
 const companyMultiSelectList = $("#company-multi-select-list");
 
@@ -176,27 +177,6 @@ const companyMultiSelectResetBtn = $("#company-multi-select-list-reset-btn");
 const companyMultiSelectHideBtn = $("#company-multi-select-list-hide-btn");
 
 let companyCheckboxes = $all("#company-multi-select-list input[type=checkbox]");
-
-let filterByCompanyParam = params.get("c");
-if (filterByCompanyParam) {
-    filterByCompanyParam.split(",").map(function (i) {
-        const parsed = parseInt(i, 10);
-        if (isNaN(parsed)) {
-            return null;
-        }
-        return parsed;
-    });
-}
-
-on(document, "DOMContentLoaded", function () {
-    if (filterByCompanyParam) {
-        companyCheckboxes.forEach(checkbox => {
-            if (filterByCompanyParam.includes(parseInt(checkbox.getAttribute("id")))) {
-                checkbox.checked = true;
-            }
-        });
-    }
-});
 
 on(companyMultiSelectResetBtn, "click", function () {
     companyCheckboxes.forEach(checkbox => {
@@ -223,6 +203,118 @@ on(companyMultiSelectApplyBtn, "click", function () {
     }
 
     window.location.href = `${window.location.pathname}?${params.toString()}`;
+});
+
+// Filter by visibility
+const filterByVisibility = $("#filter-by-visibility");
+const visibilityPopup = $("#visibility-popup");
+const visibilityRadioButtons = $all("#visibility-popup input[type=radio]");
+
+on(filterByVisibility, "click", function () {
+    visibilityPopup.classList.toggle("hidden");
+});
+
+
+on($("#visibility-popup #action-btn-container"), "click", function (e) {
+    if (e.target.tagName !== "BUTTON") {
+        return;
+    }
+
+    let target = e.target;
+
+    if (target.id === "visibility-popup-apply-btn") {
+        let visibility = $("#visibility-popup input[type=radio]:checked").value;
+        if (visibility === "all") {
+            params.delete("v");
+        } else {
+            params.set("v", visibility);
+        }
+
+        window.location.href = `${window.location.pathname}?${params.toString()}`;
+    }
+
+    if (target.id === "visibility-popup-hide-btn") {
+        visibilityPopup.classList.toggle("hidden");
+    }
+});
+
+// Filter by approval
+const filterByApproval = $("#filter-by-approval");
+const approvalPopup = $("#approval-popup");
+const approvalRadioButtons = $all("#approval-popup input[type=radio]");
+
+on(filterByApproval, "click", function () {
+    approvalPopup.classList.toggle("hidden");
+});
+
+on($("#approval-popup #action-btn-container"), "click", function (e) {
+
+    if (e.target.tagName !== "BUTTON") {
+        return;
+    }
+
+    let target = e.target;
+
+    if (target.id === "approval-popup-apply-btn") {
+        let approval = $("#approval-popup input[type=radio]:checked").value;
+        if (approval === "all") {
+            params.delete("a");
+        } else {
+            params.set("a", approval);
+        }
+
+        window.location.href = `${window.location.pathname}?${params.toString()}`;
+    }
+
+    if (target.id === "approval-popup-hide-btn") {
+        approvalPopup.classList.toggle("hidden");
+    }
+});
+
+// Default behavior on page load
+
+let filterByCompanyParam = params.get("c");
+if (filterByCompanyParam) {
+    filterByCompanyParam.split(",").map(function (i) {
+        const parsed = parseInt(i, 10);
+        if (isNaN(parsed)) {
+            return null;
+        }
+        return parsed;
+    });
+}
+
+let filterByVisibilityParam = params.get("v");
+
+let filterByApprovalParam = params.get("a");
+
+on(document, "DOMContentLoaded", function () {
+    if (filterByCompanyParam) {
+        filterByCompany.classList.add("selected");
+        companyCheckboxes.forEach(checkbox => {
+            if (filterByCompanyParam.includes(parseInt(checkbox.getAttribute("id")))) {
+                checkbox.checked = true;
+            }
+        });
+    }
+
+    if (filterByVisibilityParam) {
+        filterByVisibility.classList.add("selected");
+        visibilityRadioButtons.forEach(radio => {
+            if (radio.value === filterByVisibilityParam) {
+                radio.checked = true;
+            }
+        });
+    }
+
+    if (filterByApprovalParam) {
+        filterByApproval.classList.add("selected");
+        approvalRadioButtons.forEach(radio => {
+            if (radio.value === filterByApprovalParam) {
+                radio.checked = true;
+            }
+        });
+    }
 });
 
 //#endregion

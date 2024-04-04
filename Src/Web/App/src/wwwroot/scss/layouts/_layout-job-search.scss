@@ -38,34 +38,31 @@
 
             background-color: #fdfdfd;
             border-radius: $rounded-1;
-            border: 1px solid #f0f0f0;
+            border: 1px solid #d1d1d1;
 
             &:hover {
-                border-color: #d2d3d4;
+                border-color: #a0a2a4;
             }
 
             >input[type="text"] {
-                outline: none;
+                background-color: #fff;
                 border: none;
                 width: 100%;
             }
 
             >.btn {
                 align-self: stretch;
-                border-radius: 0 $rounded-1 $rounded-1 0;
-
-                &:hover {
-                    border-radius: 0 ($rounded-1 - 2) ($rounded-1 - 2) 0;
-                }
+                border-radius: 0 ($rounded-1 - 1) ($rounded-1 - 1) 0;
             }
         }
 
-        >.item {
+        >.filter {
+            border: 1px solid transparent;
             border-radius: $rounded-1;
             -webkit-user-select: none;
             user-select: none;
             transition: background 80ms linear;
-            padding: 0.45rem 0.75rem 0.4rem 1.1rem;
+            padding: 0.35rem 0.75rem 0.3rem 1.1rem;
 
             &:hover {
                 cursor: pointer;
@@ -74,6 +71,15 @@
 
             &:active {
                 background-color: #c8c6c6;
+            }
+
+            &.selected {
+                border: 1px solid #0078b4;
+                background-color: #cce3f5;
+
+                &:hover {
+                    background-color: #cce4f6;
+                }
             }
         }
     }
@@ -152,7 +158,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0.8rem 1.2rem 1rem 1.2rem;
+            padding: 0 1.2rem 1rem 1.2rem;
 
             .btn {
                 border: $border-0;
@@ -247,9 +253,9 @@
 
     .pop-up-multi-select-list {
         position: fixed;
-        top: 10%;
+        top: 50%;
         left: 50%;
-        transform: translateX(-50%);
+        transform: translate(-50%, -50%);
         z-index: 1;
 
         width: 30rem;
@@ -258,6 +264,7 @@
         box-shadow: $popup-dialog-box-shadow;
         background-color: #fff;
         padding: 2rem 2rem 1.5rem 2.5rem;
+        border: 1px rgb(205, 205, 205) solid;
         border-radius: $rounded-2;
         display: flex;
         flex-direction: column;
@@ -290,6 +297,10 @@
                     user-select: none;
                 }
             }
+        }
+
+        input[type="radio"] {
+            margin-right: 0.5rem;
         }
 
         .actions {
