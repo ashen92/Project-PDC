@@ -274,7 +274,10 @@ class InternshipSearchController extends PageControllerBase
 
         return $this->render(
             'internship-program/round-2/home-admin.html',
-            ['section' => 'round-2']
+            [
+                'section' => 'round-2',
+                'jobRoles' => $jobRoles,
+            ]
         );
     }
 }
