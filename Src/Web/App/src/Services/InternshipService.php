@@ -189,4 +189,9 @@ readonly class InternshipService
     {
         return $this->internshipRepository->findOrganizations();
     }
+
+    public function getJobRoles(int $cycleId): array
+    {
+        return $this->internshipRepository->findJobRoles($cycleId);
+    }
 }

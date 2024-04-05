@@ -2,6 +2,7 @@
 
 use App\DTOs\CreateRequirementDTO;
 use App\Models\Internship\Visibility;
+use Database\Entities\JobRole;
 use DB\Entities\Event;
 use DB\Entities\Internship;
 use DB\Entities\InternshipCycle;
@@ -603,6 +604,39 @@ for ($x = 1; $x < count($internData); $x++) {
 }
 
 $entityManager->persist($internshipCycle);
+$entityManager->flush();
+
+#endregion
+
+#region Job Roles
+
+echo "Done.\nAdding job roles...";
+
+$jobRoleData = [
+    'Software Engineer',
+    'Data Analyst',
+    'Network Engineer',
+    'Cybersecurity Specialist',
+    'Web Developer',
+    'Systems Administrator',
+    'IT Project Manager',
+    'Database Administrator',
+    'UX/UI Designer',
+    'Cloud Solutions Architect',
+    'DevOps Engineer',
+    'AI/ML Engineer',
+    'IT Support Specialist',
+    'Business Analyst',
+    'Digital Marketing Specialist',
+    'Quality Assurance Analyst',
+    'IT Security Analyst',
+    'Technical Writer',
+];
+
+foreach ($jobRoleData as $jobRole) {
+    $jr = new JobRole($jobRole, $internshipCycle);
+    $entityManager->persist($jr);
+}
 $entityManager->flush();
 
 #endregion

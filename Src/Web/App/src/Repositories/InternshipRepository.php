@@ -329,4 +329,15 @@ class InternshipRepository implements IRepository
         $stmt = $this->pdo->prepare($sql);
         return $stmt->execute($params);
     }
+
+    public function findJobRoles(int $cycleId): array
+    {
+        $sql = 'SELECT jr.id, jr.name
+                FROM job_roles jr
+                WHERE jr.internship_cycle_id = :cycleId';
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['cycleId' => $cycleId]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 }

@@ -231,33 +231,14 @@ class InternshipSearchController extends PageControllerBase
     }
 
     #[Route('/round-2', methods: ['GET'])]
-    public function round2GET(Identity $identity): Response
+    public function round2GET(Identity $identity, InternshipCycle $cycle): Response
     {
-        $jobRoles = [
-            ['id' => 1, 'name' => 'Job role or position',],
-            ['id' => 1, 'name' => 'Lorem ipsum dolor sit.',],
-            ['id' => 1, 'name' => 'Lorem, ipsum.',],
-            ['id' => 1, 'name' => 'Lorem ipsum dolor sit amet consectetur.',],
-            ['id' => 1, 'name' => 'Lorem ipsum dolor sit.',],
-            ['id' => 1, 'name' => 'Lorem, ipsum.',],
-            ['id' => 1, 'name' => 'Lorem, ipsum.',],
-            ['id' => 1, 'name' => 'Lorem, ipsum.fsdafdafasdfasfasdfasdfasdfsafasfasfasfsafasfs',],
-            ['id' => 1, 'name' => 'Lorem, ipsum.',],
-            ['id' => 1, 'name' => 'Lorem, ipsum.',],
-            ['id' => 1, 'name' => 'Lorem, ipsum.',],
-            ['id' => 1, 'name' => 'Lorem, ipsum.',],
-            ['id' => 1, 'name' => 'Lorem, ipsum.',],
-            ['id' => 1, 'name' => 'Lorem ipsum dolor sit amet consectetur.',],
-            ['id' => 1, 'name' => 'Lorem ipsum dolor sit.',],
-            ['id' => 1, 'name' => 'Lorem ipsum dolor sit amet.',],
-            ['id' => 1, 'name' => 'Lorem ipsum dolor sit amet.',],
-        ];
         if ($identity->hasRole(Role::InternshipProgramStudent)) {
             return $this->render(
                 'internship-program/round-2/home-student.html',
                 [
                     'section' => 'round-2',
-                    'jobRoles' => $jobRoles,
+                    'jobRoles' => $this->internshipService->getJobRoles($cycle->getId()),
                 ]
             );
         }
@@ -267,7 +248,7 @@ class InternshipSearchController extends PageControllerBase
                 'internship-program/round-2/home-partner.html',
                 [
                     'section' => 'round-2',
-                    'jobRoles' => $jobRoles,
+                    'jobRoles' => $this->internshipService->getJobRoles($cycle->getId()),
                 ]
             );
         }
@@ -276,7 +257,7 @@ class InternshipSearchController extends PageControllerBase
             'internship-program/round-2/home-admin.html',
             [
                 'section' => 'round-2',
-                'jobRoles' => $jobRoles,
+                'jobRoles' => $this->internshipService->getJobRoles($cycle->getId()),
             ]
         );
     }
