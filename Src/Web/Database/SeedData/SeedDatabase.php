@@ -27,44 +27,63 @@ echo "Adding users... ";
 
 $passwordHash = "$2y$10\$dLij/BtPMbPKtt/CxpzqVuSn1FBVq.es9spKQ87sdGVJmlu4J3zwq";
 
-$user1 = new User("2@mail.com", "Admin", $passwordHash);
-$user2 = new User("coordinator@mail.com", "Coordinator", $passwordHash);
-$user3 = new Student(
-    "student-email@mail.com",
-    "Default Student User",
-    "1900is001",
-    "19090111",
-    "student@mail.com",
-    "Student",
-    $passwordHash
-);
-$user4 = new Partner("partner@mail.com", "Partner", $passwordHash);
+$user1 = new User('2@mail.com', 'Admin', null, $passwordHash);
+$user2 = new User('coordinator@mail.com', 'Coordinator', null, $passwordHash);
+$user4 = new Partner('partner@mail.com', 'Partner', null, $passwordHash);
 
 $entityManager->persist($user1);
 $entityManager->persist($user2);
-$entityManager->persist($user3);
 $entityManager->persist($user4);
 
 // Add student users ----------------------------------------------
 
+$studentNames = require_once (__DIR__ . '/student_names.php');
+$studentNamesCount = count($studentNames);
+
 $studentUsers = [];
 
 $studentUsers[0] = new Student(
-    "2021is084@stu.ucsc.cmb.ac.lk",
-    "H.D.A.H. Sandaruwan",
-    "2000is001",
-    "21020841",
+    '2021is084@stu.ucsc.cmb.ac.lk',
+    'H.D.A.H. Sandaruwan',
+    '2000is001',
+    '21020888',
+    'ashen@mail.com',
+    'Ashen',
+    'Sandaruwan',
+    $passwordHash,
 );
 $entityManager->persist($studentUsers[0]);
 
-for ($i = 1; $i < 600; $i++) {
+$studentUser0 = $studentUsers[0];
+
+$i = 1;
+
+foreach ($studentNames as $name => $fullName) {
+
+    $r = random_int(100, 900);
+
+    if ($i < 300) {
+        $year = 1880;
+    } elseif ($i < 600) {
+        $year = 1890;
+    } elseif ($i < 900) {
+        $year = 1900;
+    } else {
+        $year = 1910;
+    }
+
     $studentUsers[$i] = new Student(
-        "2021is084+{$i}@stu.ucsc.cmb.ac.lk",
-        "Student User {$i}",
-        "2000is001+{$i}",
-        "21020841+{$i}",
+        "{$year}is$r@stu.ucsc.cmb.ac.lk",
+        $fullName,
+        "{$year}is{$r}",
+        "{$year}0{$r}",
+        (preg_replace('/\s+/', '', strtolower($name)) . "@mail.com"),
+        explode(' ', $name)[0],
+        explode(' ', $name)[1],
+        $passwordHash,
     );
     $entityManager->persist($studentUsers[$i]);
+    $i++;
 }
 
 // ----------------------------------------------------------------
@@ -73,116 +92,27 @@ for ($i = 1; $i < 600; $i++) {
 
 $partnerUsers = [];
 
-$partnerUsersData = [
-    "Kaylie Moss",
-    "Porter Stafford",
-    "Bridget Whitney",
-    "Jeffery Rangel",
-    "Gloria Pham",
-    "Russell Munoz",
-    "Kehlani Burton",
-    "Zander McKenzie",
-    "Briar Compton",
-    "Abner Elliott",
-    "Noelle Hill",
-    "Isaac Goodman",
-    "Carolina Rich",
-    "Miller Chambers",
-    "Makayla Nicholson",
-    "Rodrigo Swanson",
-    "Helen Chase",
-    "Otis McDaniel",
-    "Dahlia Ibarra",
-    "Asa Sampson",
-    "Meilani Yu",
-    "Bryant Sutton",
-    "Izabella Carey",
-    "Watson Wang",
-    "Kailani Carson",
-    "Ares Velazquez",
-    "Jaliyah O’Neal",
-    "Eddie Cochran",
-    "Alma Rivera",
-    "Charles Cantrell",
-    "Yamileth Hampton",
-    "Hank Andrade",
-    "Emmy Bowers",
-    "Dorian Hendricks",
-    "Dani Berry",
-    "Adonis Yu",
-    "Navy Felix",
-    "Rodney Valenzuela",
-    "Henley Lara",
-    "Caiden Hahn",
-    "Fallon Russell",
-    "Weston Montgomery",
-    "Evangeline Trujillo",
-    "Apollo Truong",
-    "Judith Hamilton",
-    "Jason Wall",
-    "Jayda Todd",
-    "Baylor Patrick",
-    "Lyra Perez",
-    "Owen Hurley",
-    "Rylan Ortiz",
-    "Landon Espinoza",
-    "Lucille Harvey",
-    "Cayden Harvey",
-    "Nicole Martin",
-    "Mateo Mays",
-    "Denisse Rose",
-    "Hayden Mayo",
-    "Aarya Ward",
-    "Jameson Anthony",
-    "Macy Osborne",
-    "Augustus Pope",
-    "Aurelia Copeland",
-    "Axton Watson",
-    "Hailey Tang",
-    "Rogelio Boyer",
-    "Chaya Wilkinson",
-    "Leonard Kemp",
-    "Anika Johnston",
-    "Felix Hickman",
-    "Scarlette Ruiz",
-    "Austin Hebert",
-    "Kyleigh Snow",
-    "Houston Barrera",
-    "Beatrice Waters",
-    "Maximilian Travis",
-    "Mazikee Crawford",
-    "Kevin Zhang",
-    "Sarai Hendrix",
-    "Korbyn Alvarez",
-    "Leilani Nielsen",
-    "Tru Gillespie",
-    "Alianna Harrington",
-    "Omari Byrd",
-    "Giselle Navarro",
-    "Reid Barker",
-    "Remington Andrews",
-    "Lukas Conley",
-    "Salem Vaughn",
-    "Remy O’Neal",
-    "Treasure Blake",
-    "Zyaire Kemp",
-    "Anika Fowler",
-    "Kameron Harris",
-    "Penelope Powers",
-    "Sean Bradford",
-    "Rhea Sierra",
-    "Dayton Bowen",
-    "Dream Blair",
-    "Troy Jensen",
-];
+$partnerNames = require_once (__DIR__ . '/partner_names.php');
 
-for ($i = 0; $i < 100; $i++) {
-    $partnerUsers[$i] = new Partner(
-        "partner{$i}@mail.com",
-        $partnerUsersData[$i],
+// for ($i = 0; $i < 100; $i++) {
+//     $partnerUsers[$i] = new Partner(
+//         "partner{$i}@mail.com",
+//         $partnerNames[$i],
+//         null,
+//         $passwordHash
+//     );
+//     $entityManager->persist($partnerUsers[$i]);
+// }
+// $entityManager->flush();
+
+foreach ($partnerNames as $name) {
+    $partnerUsers[] = new Partner(
+        str_replace(' ', '.', strtolower($name)) . "@mail.com",
+        explode(' ', $name)[0],
+        explode(' ', $name)[1],
         $passwordHash
     );
-    $entityManager->persist($partnerUsers[$i]);
+    $entityManager->persist(end($partnerUsers));
 }
 $entityManager->flush();
 
@@ -343,7 +273,7 @@ foreach ($partnerUsers as $user) {
     $groupPartners->addUser($user);
 }
 
-$groupStudents->addUser($user3);
+$groupStudents->addUser($studentUser0);
 $groupPartners->addUser($user4);
 
 $groupCoordinators->addUser($user1);
@@ -353,7 +283,7 @@ $groupCycleStudents = new UserGroup(
     \App\Models\UserGroup::AUTO_GENERATED_USER_GROUP_PREFIX . 'InternshipCycle-Students'
 );
 $entityManager->persist($groupCycleStudents);
-$groupCycleStudents->addUser($user3);
+$groupCycleStudents->addUser($studentUser0);
 
 for ($i = 1; $i < 200; $i++) {
     $groupCycleStudents->addUser($studentUsers[$i]);
@@ -776,22 +706,22 @@ $entityManager->flush();
 echo "Done.\nAdding user requirements...";
 
 $ur = new UserRequirement(
-    $user3,
+    $studentUser0,
     $requirements[0],
     $requirements[0]->getStartDate(),
     $requirements[0]->getEndBeforeDate()
 );
 $entityManager->persist($ur);
 $ur = new UserRequirement(
-    $user3,
+    $studentUser0,
     $requirements[3],
     $requirements[3]->getStartDate(),
     $requirements[3]->getEndBeforeDate()
 );
 $entityManager->persist($ur);
 
-$requirements[1]->createUserRequirements($user3, $entityManager);
-$requirements[2]->createUserRequirements($user3, $entityManager);
+$requirements[1]->createUserRequirements($studentUser0, $entityManager);
+$requirements[2]->createUserRequirements($studentUser0, $entityManager);
 
 $entityManager->flush();
 

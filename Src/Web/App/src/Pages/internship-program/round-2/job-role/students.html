@@ -1,0 +1,42 @@
+{% extends "shared/layout-left-nav.html" %}
+
+{% block title %}Students{% endblock %}
+
+{% block left_nav %}
+{% include "internship-program/left-nav.html" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="title">
+    <h4>
+        {{ jobRole.name }}
+    </h4>
+    <p>
+        Undergraduates who are interested in this job role
+    </p>
+</div>
+
+<section>
+    <table id="students-table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in students %}
+            <tr data-href="round-2/job-roles/{{ i.id }}">
+                <td>{{ i.firstName }} {{ i.lastName }}</td>
+                <td>{{ i.email }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div id="students-grid"></div>
+</section>
+
+<script src="/js/internship-program/round-2/job-role/students.js"></script>
+
+{% endblock %}

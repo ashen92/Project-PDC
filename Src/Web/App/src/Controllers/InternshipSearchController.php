@@ -261,4 +261,17 @@ class InternshipSearchController extends PageControllerBase
             ]
         );
     }
+
+    #[Route('/round-2/job-roles/{id}', methods: ['GET'])]
+    public function jobRoleStudentsGET(int $id): Response
+    {
+        return $this->render(
+            'internship-program/round-2/job-role/students.html',
+            [
+                'section' => 'round-2',
+                'jobRole' => $this->internshipService->getJobRole($id),
+                'students' => $this->internshipService->getStudentsByJobRole($id),
+            ]
+        );
+    }
 }

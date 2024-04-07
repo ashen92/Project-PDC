@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DB\Entities;
 
+use Database\Entities\JobRole;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -22,8 +23,11 @@ class Student extends User
     #[ORM\Column]
     private string $indexNumber;
 
-    #[ORM\OneToMany(targetEntity: UserRequirement::class, mappedBy: "user")]
+    #[ORM\OneToMany(targetEntity: UserRequirement::class, mappedBy: 'user')]
     private Collection $assignedRequirements;
+
+    #[ORM\ManyToMany(targetEntity: JobRole::class, mappedBy: 'students')]
+    private Collection $jobRoles;
 
     public function __construct(
         string $studentEmail,
@@ -32,9 +36,10 @@ class Student extends User
         string $indexNumber,
         ?string $email = null,
         ?string $firstName = null,
+        ?string $lastName = null,
         ?string $passwordHash = null,
     ) {
-        parent::__construct($email, $firstName, $passwordHash);
+        parent::__construct($email, $firstName, $lastName, $passwordHash);
         $this->studentEmail = $studentEmail;
         $this->fullName = $fullName;
         $this->registrationNumber = $registrationNumber;

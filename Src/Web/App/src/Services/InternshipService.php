@@ -190,8 +190,18 @@ readonly class InternshipService
         return $this->internshipRepository->findOrganizations();
     }
 
+    public function getJobRole(int $jobRoleId): array
+    {
+        return $this->internshipRepository->findJobRole($jobRoleId);
+    }
+
     public function getJobRoles(int $cycleId): array
     {
         return $this->internshipRepository->findJobRoles($cycleId);
+    }
+
+    public function getStudentsByJobRole(int $jobRoleId): array
+    {
+        return $this->internshipRepository->findStudentsByJobRole($jobRoleId);
     }
 }
