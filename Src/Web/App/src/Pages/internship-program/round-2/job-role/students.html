@@ -18,23 +18,26 @@
 </div>
 
 <section>
-    <table id="students-table">
+    <table class="hover" id="students-table">
         <thead>
             <tr>
                 <th>Name</th>
                 <th>Email</th>
+                <th>View Candidate</th>
             </tr>
         </thead>
         <tbody>
             {% for i in students %}
-            <tr data-href="round-2/job-roles/{{ i.id }}">
+            <tr>
                 <td>{{ i.firstName }} {{ i.lastName }}</td>
                 <td>{{ i.email }}</td>
+                <td>
+                    <a class="link" href="/internship-program/candidates/{{ i.id }}" title="View Candidate">View</a>
+                </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
-    <div id="students-grid"></div>
 </section>
 
 <script src="/js/internship-program/round-2/job-role/students.js"></script>
