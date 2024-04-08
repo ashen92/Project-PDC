@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
-use App\Attributes\RequiredRole;
 use App\DTOs\CreateUserDTO;
 use App\Exceptions\UserExistsException;
+use App\Security\Attributes\RequiredRole;
 use App\Security\Role;
 use App\Services\UserService;
 use Symfony\Component\HttpFoundation\RedirectResponse;

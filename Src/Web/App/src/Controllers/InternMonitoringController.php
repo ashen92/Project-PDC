@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
-use App\Attributes\RequiredRole;
 use App\Models\InternshipCycle;
+use App\Security\Attributes\RequiredRole;
 use App\Security\Role;
 use App\Services\InternMonitoringService;
 use App\Services\RequirementService;
@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
 
-#[RequiredRole(Role::InternshipProgram_Admin)]
+#[RequiredRole(Role::InternshipProgramAdmin)]
 #[Route('/internship-program/monitoring')]
 class InternMonitoringController extends PageControllerBase
 {

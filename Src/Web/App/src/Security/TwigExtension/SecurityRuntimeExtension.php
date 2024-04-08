@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\TwigExtension;
+namespace App\Security\TwigExtension;
 
 use App\Security\AuthorizationService;
 use App\Security\Role;
@@ -21,5 +21,10 @@ class SecurityRuntimeExtension extends \Twig\Extension\AbstractExtension
     public function hasRole(Role $role): bool
     {
         return $this->authorizationService->hasRole($role);
+    }
+
+    public function isAuthorized(string $policyName): bool
+    {
+        return $this->authorizationService->authorize($policyName);
     }
 }

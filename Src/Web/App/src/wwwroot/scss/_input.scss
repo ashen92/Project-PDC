@@ -1,24 +1,15 @@
 @use 'variables' as *;
 @use 'mixins';
 
-$text-field-padding: 0.45rem 0.75rem;
-$date-field-padding: 0.45rem 0.75rem;
-$select-field-padding: 0.45rem 0.75rem;
-
-%checkbox-dimensions {
-    width: 20px;
-    height: 20px;
-}
-
 %text-field-border {
-    border: 2px solid #a7a9ad;
+    border: 1px solid #d1d1d1;
     border-radius: 4px;
 
     &:active,
     &:focus,
     &:hover,
     &:focus-within {
-        border: 2px solid #2f80ea;
+        border: 1px solid #a0a2a4;
     }
 }
 
@@ -34,136 +25,10 @@ $select-field-padding: 0.45rem 0.75rem;
 }
 
 %text-field-styles {
-    padding: $text-field-padding;
+    background-color: #f5f5f5;
+    padding: 0.45rem 0.75rem;
     @extend %text-field-border;
     @extend %text-field-outline;
-}
-
-form {
-    max-width: 50rem;
-
-    .field {
-        margin-bottom: 2rem;
-
-        &.row,
-        &-radio.row {
-            display: flex;
-            column-gap: 4%;
-            align-items: flex-start;
-            height: auto;
-            margin-bottom: 0.9rem;
-
-            .option {
-                margin-bottom: 0.7rem;
-            }
-
-            >label,
-            >.label {
-                flex-basis: 40%;
-                overflow-wrap: break-word;
-                padding-left: 0;
-                padding-bottom: 0.6rem;
-
-                &+* {
-                    flex: 1;
-                }
-
-                &+[type="checkbox"] {
-                    flex: unset;
-                }
-            }
-        }
-
-        &-group {
-            margin-bottom: 2rem;
-
-            >label {
-                font-size: $fs-6;
-                font-weight: 600;
-                margin-bottom: 1.75rem;
-            }
-        }
-
-        label {
-            padding-bottom: 0.9rem;
-            padding-left: 0.1rem;
-        }
-
-        input {
-            width: 100%;
-        }
-
-        &-radio {
-            margin-bottom: 2rem;
-
-            .label {
-                padding-bottom: 0.9rem;
-                padding-left: 0.1rem;
-            }
-
-            .option {
-                display: flex;
-                margin-bottom: 0.9rem;
-                padding-left: 0.6rem;
-
-                label {
-                    padding-left: 0.75rem;
-                    cursor: pointer;
-                }
-            }
-        }
-
-        .checkbox-container.cols-2 {
-            display: grid;
-            grid-template-columns: max-content max-content;
-            grid-template-rows: auto;
-            column-gap: 1rem;
-            padding-left: 0.6rem;
-
-            input[type="checkbox"] {
-                @extend %checkbox-dimensions;
-            }
-        }
-
-        &-file-upload {
-            margin-bottom: 2rem;
-
-            .preview {
-                border-radius: $rounded-1;
-                background-color: $grey-100;
-                padding: 1rem;
-                margin-top: 1rem;
-                font-size: 0.95rem;
-
-                ol {
-                    list-style: none;
-
-                    li {
-                        display: flex;
-                        column-gap: 1rem;
-                        align-items: center;
-
-                        &:not(:last-child) {
-                            padding-bottom: 0.25rem;
-                            margin-bottom: 0.5rem;
-                        }
-                    }
-                }
-
-                img {
-                    width: 75px;
-                    height: auto;
-                }
-            }
-        }
-    }
-
-    .actions {
-        display: flex;
-        column-gap: 0.5rem;
-        padding-top: 0.95rem;
-        margin-top: 1.5rem;
-    }
 }
 
 label {
@@ -172,7 +37,7 @@ label {
 
 input {
     font-family: inherit;
-    font-size: $text-field-font-size;
+    font-size: $input-element-font-size;
 
     &[type="text"],
     &[type="email"],
@@ -185,7 +50,7 @@ input {
     &[type="date"] {
         cursor: pointer;
         @extend %text-field-styles;
-        padding: $date-field-padding;
+        padding: 0.45rem 0.75rem;
     }
 
     &[type="time"] {
@@ -200,7 +65,8 @@ input {
     }
 
     &[type="checkbox"] {
-        @extend %checkbox-dimensions;
+        width: 20px;
+        height: 20px;
         cursor: pointer;
 
         +label {
@@ -224,42 +90,41 @@ button {
 
 select {
     @extend %text-field-styles;
-    padding: $select-field-padding;
-    font-size: $btn-font-size;
+    padding: 0.45rem 0.75rem;
+    font-size: $input-element-font-size;
     cursor: pointer;
 }
 
 .text-editor-container {
-    @extend %text-field-outline;
-    @extend %text-field-border;
+    @extend %text-field-styles;
 
     .ql-toolbar {
-        padding: 0.25rem 1rem;
+        padding: 0.25rem 0 0.5rem 0;
         border-left: none;
         border-right: none;
         border-top: none;
     }
 
     .ql-formats {
-        :hover {
-            background-color: #f2f2f2;
-        }
-
         button {
             width: auto;
             height: auto;
-            padding: .7rem;
+            padding: .5rem;
             border-radius: $rounded-1;
+
+            &:hover {
+                background-color: #c5c5c55c;
+            }
         }
 
         svg {
-            height: 18px;
-            width: 18px;
+            height: 20px;
+            width: 20px;
         }
     }
 
     .text-editor {
-        font-size: $text-field-font-size;
+        font-size: $input-element-font-size;
         font-family: inherit;
         border: none;
         overflow-wrap: break-word;
@@ -267,6 +132,10 @@ select {
 
         >* {
             line-height: inherit;
+        }
+
+        .ql-editor {
+            padding-top: 1rem;
         }
 
         .ql-editor.ql-blank::before {

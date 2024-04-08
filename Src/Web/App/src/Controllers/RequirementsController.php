@@ -3,13 +3,13 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
-use App\Attributes\RequiredRole;
 use App\DTOs\CreateRequirementDTO;
 use App\DTOs\UserRequirementFulfillmentDTO;
 use App\Models\InternshipCycle;
 use App\Models\Requirement\FulFillMethod;
 use App\Models\Requirement\RepeatInterval;
 use App\Models\Requirement\Type;
+use App\Security\Attributes\RequiredRole;
 use App\Security\Identity;
 use App\Security\Role;
 use App\Services\RequirementService;
@@ -22,10 +22,9 @@ use Throwable;
 use Twig\Environment;
 
 #[RequiredRole([
-    Role::InternshipProgram_Admin,
-    Role::InternshipProgram_Partner_Admin,
-    Role::InternshipProgram_Partner,
-    Role::InternshipProgram_Student,
+    Role::InternshipProgramAdmin,
+    Role::InternshipProgramPartner,
+    Role::InternshipProgramStudent,
 ])]
 #[Route('/internship-program/requirements')]
 class RequirementsController extends PageControllerBase
@@ -40,7 +39,7 @@ class RequirementsController extends PageControllerBase
     #[Route([''], methods: ['GET'])]
     public function requirements(Request $request, Identity $identity, ?InternshipCycle $cycle): Response
     {
-        if ($identity->hasRole(Role::InternshipProgram_Admin)) {
+        if ($identity->hasRole(Role::InternshipProgramAdmin)) {
             return $this->render(
                 'internship-program/requirements/home-admin.html',
                 [
@@ -72,7 +71,7 @@ class RequirementsController extends PageControllerBase
     #[Route('/{id}', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function requirement(Identity $identity, int $id): Response|RedirectResponse
     {
-        if ($identity->hasRole(Role::InternshipProgram_Admin)) {
+        if ($identity->hasRole(Role::InternshipProgramAdmin)) {
             $requirement = $this->requirementService->getRequirement($id);
             if ($requirement) {
                 return $this->render(
@@ -103,7 +102,19 @@ class RequirementsController extends PageControllerBase
     #[Route('/create', methods: ['GET'])]
     public function requirementAddGET(): Response
     {
-        return $this->render('internship-program/requirements/create.html', ['section' => 'requirements']);
+        return $this->render(
+            'internship-program/requirements/create.html',
+            ['section' => 'requirements']
+        );
+    }
+
+    #[Route('/create/users', methods: ['GET'])]
+    public function createRequirementSelectUsersGET(): Response
+    {
+        return $this->render(
+            'internship-program/requirements/select-users.html',
+            ['section' => 'requirements']
+        );
     }
 
     #[Route('/create', methods: ['POST'])]

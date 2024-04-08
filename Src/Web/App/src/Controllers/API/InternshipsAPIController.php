@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controllers\API;
 
-use App\Attributes\RequiredRole;
+use App\Security\Attributes\RequiredRole;
 use App\Security\Identity;
 use App\Security\Role;
 use App\Services\InternshipService;
@@ -27,14 +27,9 @@ readonly class InternshipsAPIController
             $data = [
                 'title' => $internship->getTitle(),
                 'description' => $internship->getDescription(),
-                'applyOnExternalWebsite' => $internship->getApplyOnExternalWebsite(),
             ];
 
-            if ($internship->getApplyOnExternalWebsite()) {
-                $data['externalWebsite'] = $internship->getExternalWebsite();
-            }
-
-            if ($identity->hasRole(Role::InternshipProgram_Student)) {
+            if ($identity->hasRole(Role::InternshipProgramStudent)) {
                 $userId = $request->getSession()->get('user_id');
                 $data['hasApplied'] = $this->internshipService->hasAppliedToInternship($id, $userId);
             }
@@ -65,8 +60,8 @@ readonly class InternshipsAPIController
     }
 
     #[RequiredRole([
-        Role::InternshipProgram_Admin,
-        Role::InternshipProgram_Partner_Admin
+        Role::InternshipProgramAdmin,
+        Role::InternshipProgramPartnerAdmin
     ])]
     #[Route('/{id}/applications', methods: ['GET'])]
     public function internshipApplications(int $id): Response

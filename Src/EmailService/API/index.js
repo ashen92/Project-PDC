@@ -3,7 +3,9 @@ import http from "http";
 import { createClient } from "redis";
 import { StringDecoder } from "string_decoder";
 
-const redisClient = createClient();
+const redisClient = createClient({
+    url: process.env.REDIS_URL,
+});
 redisClient.on("error", err => console.log("Redis Client Error", err));
 
 async function connectClient() {

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\TwigExtension;
+namespace App\Security\TwigExtension;
 
 class SecurityRuntimeLoader implements \Twig\RuntimeLoader\RuntimeLoaderInterface
 {
@@ -12,7 +12,7 @@ class SecurityRuntimeLoader implements \Twig\RuntimeLoader\RuntimeLoaderInterfac
 
     public function load(string $class): ?object
     {
-        if ($class === 'App\TwigExtension\SecurityRuntimeExtension') {
+        if ($class === 'App\Security\TwigExtension\SecurityRuntimeExtension') {
             return $this->securityRuntimeExtension;
         }
         return null;

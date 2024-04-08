@@ -1,0 +1,48 @@
+{% extends "shared/layout-left-nav.html" %}
+
+{% block title %}Internship Searching - Round 2{% endblock %}
+
+{% block left_nav %}
+{% include "internship-program/left-nav.html" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="title">
+    <h2>
+        Internship Searching - Round 2
+    </h2>
+    <p>
+        Manage job roles for the second round of internship program.
+    </p>
+</div>
+
+<button type="button" class="btn btn-primary">
+    <i class="i i-plus-lg"></i>
+    <span>Add job role</span>
+</button>
+
+<section>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th class="margin-cell cell-checkbox">
+                    <input type="checkbox" name="select-all" id="select-all" title="Select">
+                </th>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody class="table-rows-clickable">
+            {% for i in jobRoles %}
+            <tr data-href="round-2/job-roles/{{ i.id }}">
+                <td class="margin-cell cell-checkbox">
+                    <input type="checkbox" name="{{ i.id }}" id="{{ i.id }}" title="Select">
+                </td>
+                <td>{{ i.name }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+
+{% endblock %}

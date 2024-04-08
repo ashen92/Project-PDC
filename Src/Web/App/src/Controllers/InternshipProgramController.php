@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
-use App\Attributes\RequiredPolicy;
-use App\Attributes\RequiredRole;
 use App\DTOs\CreateUserDTO;
 use App\Exceptions\UserExistsException;
 use App\Models\InternshipCycle;
+use App\Security\Attributes\RequiredPolicy;
+use App\Security\Attributes\RequiredRole;
 use App\Security\Identity;
 use App\Security\Role;
 use App\Services\InternshipProgramService;
@@ -20,10 +20,9 @@ use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
 
 #[RequiredRole([
-    Role::InternshipProgram_Admin,
-    Role::InternshipProgram_Partner_Admin,
-    Role::InternshipProgram_Partner,
-    Role::InternshipProgram_Student,
+    Role::InternshipProgramAdmin,
+    Role::InternshipProgramPartner,
+    Role::InternshipProgramStudent,
 ])]
 #[Route('/internship-program')]
 class InternshipProgramController extends PageControllerBase
@@ -42,7 +41,7 @@ class InternshipProgramController extends PageControllerBase
     {
         $userId = $request->getSession()->get('user_id');
 
-        if ($identity->hasRole(Role::InternshipProgram_Admin)) {
+        if ($identity->hasRole(Role::InternshipProgramAdmin)) {
             return $this->render(
                 'internship-program/home-admin.html',
                 [
@@ -51,7 +50,7 @@ class InternshipProgramController extends PageControllerBase
                 ]
             );
         }
-        if ($identity->hasRole(Role::InternshipProgram_Partner_Admin)) {
+        if ($identity->hasRole(Role::InternshipProgramPartnerAdmin)) {
             return $this->render(
                 'internship-program/home-partner.html',
                 [
@@ -102,8 +101,7 @@ class InternshipProgramController extends PageControllerBase
         return $this->redirect('/internship-program/users/create');
     }
 
-    #[RequiredRole(Role::InternshipProgram_Admin)]
-    #[RequiredPolicy(InternshipCycle\State::Ended)]
+    #[RequiredRole(Role::InternshipProgramAdmin)]
     #[Route('/cycle/create', methods: ['GET'])]
     public function cycleCreateGET(): Response
     {
@@ -119,8 +117,7 @@ class InternshipProgramController extends PageControllerBase
         );
     }
 
-    #[RequiredRole(Role::InternshipProgram_Admin)]
-    #[RequiredPolicy(InternshipCycle\State::Ended)]
+    #[RequiredRole(Role::InternshipProgramAdmin)]
     #[Route('/cycle/create', methods: ['POST'])]
     public function cycleCreatePOST(Request $request): RedirectResponse
     {
@@ -135,8 +132,7 @@ class InternshipProgramController extends PageControllerBase
         return $this->redirect('/internship-program');
     }
 
-    #[RequiredRole(Role::InternshipProgram_Admin)]
-    #[RequiredPolicy(InternshipCycle\State::Active)]
+    #[RequiredRole(Role::InternshipProgramAdmin)]
     #[Route('/cycle/end')]
     public function cycleEnd(): RedirectResponse
     {
@@ -144,7 +140,7 @@ class InternshipProgramController extends PageControllerBase
         return $this->redirect('/internship-program');
     }
 
-    #[RequiredRole(Role::InternshipProgram_Student)]
+    #[RequiredRole(Role::InternshipProgramStudent)]
     #[Route('/profile', methods: ['GET'])]
     public function profile(Request $request): Response
     {

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Models\Internship\Status;
+use App\Models\Internship\Visibility;
 
 class Internship
 {
@@ -11,13 +11,11 @@ class Internship
         private int $id,
         private string $title,
         private string $description,
-        private Status $status,
+        private Visibility $visibility,
         private int $createdByUserId,
         private int $organizationId,
         private int $internshipCycleId,
         private \DateTimeImmutable $createdAt,
-        private bool $applyOnExternalWebsite,
-        private ?string $externalWebsite,
     ) {
     }
 
@@ -54,16 +52,6 @@ class Internship
     public function getCreatedAt(): \DateTimeImmutable
     {
         return $this->createdAt;
-    }
-
-    public function getApplyOnExternalWebsite(): bool
-    {
-        return $this->applyOnExternalWebsite;
-    }
-
-    public function getExternalWebsite(): ?string
-    {
-        return $this->externalWebsite;
     }
 
     public function setTitle(string $title): void

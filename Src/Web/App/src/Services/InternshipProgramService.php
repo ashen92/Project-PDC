@@ -10,6 +10,7 @@ use App\Models\UserGroup;
 use App\Repositories\InternshipProgramRepository;
 use App\Repositories\UserRepository;
 use App\Security\Role;
+use DateTimeImmutable;
 use Throwable;
 
 readonly class InternshipProgramService
@@ -71,6 +72,17 @@ readonly class InternshipProgramService
         return $eligibleGroups;
     }
 
+    public function getParticipants(int $cycleId, int $limit, int $offsetBy): array
+    {
+        $result['totalCount'] = $this->internshipProgramRepository->countParticipants($cycleId);
+        $result['data'] = $this->internshipProgramRepository->findParticipants(
+            $cycleId,
+            $limit,
+            $offsetBy
+        );
+        return $result;
+    }
+
     public function getLatestInternshipCycleId(): ?int
     {
         return $this->getLatestCycle()?->getId();
@@ -99,9 +111,9 @@ readonly class InternshipProgramService
                 );
 
             $this->userRepository
-                ->addRoleToUserGroup($partnerGroup->getId(), Role::InternshipProgram_Partner_Admin);
+                ->addRoleToUserGroup($partnerGroup->getId(), Role::InternshipProgramPartnerAdmin);
             $this->userRepository
-                ->addRoleToUserGroup($studentGroup->getId(), Role::InternshipProgram_Student);
+                ->addRoleToUserGroup($studentGroup->getId(), Role::InternshipProgramStudent);
 
             $this->userRepository
                 ->addUsersToUserGroup($partnerGroup->getId(), $partnerGroupId);
@@ -135,14 +147,14 @@ readonly class InternshipProgramService
 
             $this->internshipProgramRepository->removeRolesFromUserGroups(
                 [
-                    Role::InternshipProgram_Partner_Admin,
-                    Role::InternshipProgram_Partner
+                    Role::InternshipProgramPartnerAdmin,
+                    Role::InternshipProgramPartner
                 ],
                 $cycle->getPartnerGroupIds(),
             );
 
             $this->internshipProgramRepository->removeRolesFromUserGroups(
-                [Role::InternshipProgram_Student],
+                [Role::InternshipProgramStudent],
                 [$cycle->getStudentGroupId()],
             );
 
@@ -154,64 +166,41 @@ readonly class InternshipProgramService
         }
     }
 
-    public function startJobCollection(int $cycleId): void
-    {
-        $this->internshipProgramRepository->startJobCollection($cycleId);
+    public function modifyInternshipCycleDates(
+        int $cycleId,
+        ?DateTimeImmutable $jobCollectionStart = null,
+        ?DateTimeImmutable $jobCollectionEnd = null,
+        ?DateTimeImmutable $jobHuntRound1Start = null,
+        ?DateTimeImmutable $jobHuntRound1End = null,
+        ?DateTimeImmutable $jobHuntRound2Start = null,
+        ?DateTimeImmutable $jobHuntRound2End = null,
+    ): void {
+        $this->internshipProgramRepository->modifyInternshipCycleDates(
+            $cycleId,
+            $jobCollectionStart,
+            $jobCollectionEnd,
+            $jobHuntRound1Start,
+            $jobHuntRound1End,
+            $jobHuntRound2Start,
+            $jobHuntRound2End,
+        );
     }
 
-    public function undoStartJobCollection(int $cycleId): void
-    {
-        $this->internshipProgramRepository->undoStartJobCollection($cycleId);
-    }
-
-    public function endJobCollection(int $cycleId): void
-    {
-        $this->internshipProgramRepository->endJobCollection($cycleId);
-    }
-
-    public function undoEndJobCollection(int $cycleId): void
-    {
-        $this->internshipProgramRepository->undoEndJobCollection($cycleId);
-    }
-
-    public function startApplying(int $cycleId): void
-    {
-        $this->internshipProgramRepository->startApplying($cycleId);
-    }
-
-    public function undoStartApplying(int $cycleId): void
-    {
-        $this->internshipProgramRepository->undoStartApplying($cycleId);
-    }
-
-    public function endApplying(int $cycleId): void
-    {
-        $this->internshipProgramRepository->endApplying($cycleId);
-    }
-
-    public function undoEndApplying(int $cycleId): void
-    {
-        $this->internshipProgramRepository->undoEndApplying($cycleId);
-    }
-
-    public function startInterning(int $cycleId): void
-    {
-        $this->internshipProgramRepository->startInterning($cycleId);
-    }
-
-    public function undoStartInterning(int $cycleId): void
-    {
-        $this->internshipProgramRepository->undoStartInterning($cycleId);
-    }
-
-    public function endInterning(int $cycleId): void
-    {
-        $this->internshipProgramRepository->endInterning($cycleId);
-    }
-
-    public function undoEndInterning(int $cycleId): void
-    {
-        $this->internshipProgramRepository->undoEndInterning($cycleId);
+    public function resetInternshipCycleDates(
+        int $cycleId,
+        bool $resetJobCollectionEnd = false,
+        bool $resetJobHuntRound1End = false,
+        bool $resetJobHuntRound2End = false,
+    ): void {
+        $this->internshipProgramRepository->resetInternshipCycleDates(
+            $cycleId,
+            false,
+            $resetJobCollectionEnd,
+            false,
+            $resetJobHuntRound1End,
+            false,
+            $resetJobHuntRound2End,
+        );
     }
 
     /**
@@ -228,7 +217,7 @@ readonly class InternshipProgramService
 
         if (!$group) {
             $group = $this->userRepository->createUserGroup($groupName);
-            $this->userRepository->addRoleToUserGroup($group->getId(), Role::InternshipProgram_Partner);
+            $this->userRepository->addRoleToUserGroup($group->getId(), Role::InternshipProgramPartner);
         }
 
         $this->userRepository->addToUserGroup($userId, $group->getId());

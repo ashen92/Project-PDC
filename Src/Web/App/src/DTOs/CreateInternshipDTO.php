@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\DTOs;
 
-use App\Models\Internship\Status;
+use App\Models\Internship\Visibility;
 
 readonly class createInternshipDTO
 {
@@ -12,9 +12,8 @@ readonly class createInternshipDTO
         public string $description,
         public int $createdByUserId,
         public ?int $organizationId,
-        public bool $applyOnExternalWebsite,
-        public ?string $externalWebsite = null,
-        public Status $status = Status::Draft,
+        public Visibility $visibility = Visibility::Private ,
+        public bool $isApproved = false,
     ) {
     }
 }

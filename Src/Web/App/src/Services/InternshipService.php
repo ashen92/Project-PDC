@@ -6,7 +6,6 @@ namespace App\Services;
 use App\DTOs\createInternshipDTO;
 use App\Interfaces\IFileStorageService;
 use App\Models\Internship;
-use App\Models\Internship\Status;
 use App\Models\InternshipSearchResult;
 use App\Models\Organization;
 use App\Models\Student;
@@ -49,8 +48,9 @@ readonly class InternshipService
     public function searchInternships(
         int $cycleId,
         ?string $searchQuery,
-        ?array $filterByOrgIds,
-        ?array $filterByStatuses,
+        ?array $filterByOrg,
+        ?Internship\Visibility $filterByVisibility,
+        ?bool $isApproved,
         ?int $numberOfResults,
         ?int $offsetBy,
         ?int $filterByCreatorUserId = null,
@@ -62,8 +62,9 @@ readonly class InternshipService
         $result = $this->internshipRepository->searchInternships(
             $cycleId,
             $searchQuery,
-            $filterByOrgIds,
-            $filterByStatuses,
+            $filterByOrg,
+            $filterByVisibility,
+            $isApproved,
             $numberOfResults,
             $offsetBy,
             $filterByCreatorUserId,
@@ -93,12 +94,25 @@ readonly class InternshipService
         return $this->internshipRepository->findInternships($cycleId, $ownerId);
     }
 
-    public function getInternshipCount(int $cycleId, ?string $searchQuery, ?int $ownerUserId): int
-    {
+    public function countInternships(
+        int $cycleId,
+        ?string $searchQuery,
+        ?array $filterByOrg,
+        ?Internship\Visibility $filterByVisibility,
+        ?bool $isApproved,
+        ?int $creatorUserId = null
+    ): int {
 
         // TODO: Check if internship cycle exists
 
-        return $this->internshipRepository->count($cycleId, $searchQuery, $ownerUserId);
+        return $this->internshipRepository->count(
+            $cycleId,
+            $searchQuery,
+            $filterByOrg,
+            $filterByVisibility,
+            $isApproved,
+            $creatorUserId
+        );
     }
 
     /**
@@ -174,5 +188,20 @@ readonly class InternshipService
     public function getOrganizations(): array
     {
         return $this->internshipRepository->findOrganizations();
+    }
+
+    public function getJobRole(int $jobRoleId): array
+    {
+        return $this->internshipRepository->findJobRole($jobRoleId);
+    }
+
+    public function getJobRoles(int $cycleId): array
+    {
+        return $this->internshipRepository->findJobRoles($cycleId);
+    }
+
+    public function getStudentsByJobRole(int $jobRoleId): array
+    {
+        return $this->internshipRepository->findStudentsByJobRole($jobRoleId);
     }
 }

@@ -6,7 +6,7 @@ $table-header-font-size: 0.9rem;
 $table-row-hover-bg: #f2f2f2;
 
 .table {
-    table-layout: fixed;
+    table-layout: auto;
     font-size: $table-font-size;
     text-align: left;
     width: 100%;
@@ -15,7 +15,6 @@ $table-row-hover-bg: #f2f2f2;
     border-spacing: 0;
 
     tr {
-        width: 100%;
 
         th,
         td {
@@ -25,11 +24,29 @@ $table-row-hover-bg: #f2f2f2;
             padding-left: 1.2rem;
             padding-right: 1rem;
         }
+
+        .cell-checkbox {
+            padding: 0.3rem 0 0 0;
+            margin: 0;
+            width: 3rem;
+            min-width: min-content;
+            text-align: center;
+        }
+
+        .margin-cell {
+            &:first-child {
+                padding-left: 0.6rem;
+            }
+
+            &:last-child {
+                padding-right: 0.6rem;
+            }
+        }
     }
 
     thead {
         tr {
-            height: 3rem;
+            height: 2.75rem;
             color: $table-header-color;
             font-size: $table-header-font-size;
             font-weight: $fw-medium;
@@ -41,7 +58,7 @@ $table-row-hover-bg: #f2f2f2;
     }
 
     tbody>tr {
-        height: 2.75rem;
+        height: 2.5rem;
 
         * {
             border-bottom: 1px solid rgb(237, 235, 233);
@@ -71,6 +88,7 @@ $table-row-hover-bg: #f2f2f2;
         tbody>tr:hover>* {
             background-color: $table-row-hover-bg;
             cursor: pointer;
+            -webkit-user-select: none;
             user-select: none;
         }
     }
@@ -94,6 +112,7 @@ $table-row-hover-bg: #f2f2f2;
 .gridjs-row-clickable {
     tr {
         cursor: pointer;
+        -webkit-user-select: none;
         user-select: none;
     }
 

@@ -3,19 +3,19 @@ declare(strict_types=1);
 
 namespace DB\DoctrineTypes\Internship;
 
-use App\Models\Internship\Status;
+use App\Models\Internship\Visibility;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 
-class StatusType extends \Doctrine\DBAL\Types\Type
+class VisibilityType extends \Doctrine\DBAL\Types\Type
 {
     public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform): string
     {
-        return "ENUM('draft', 'private', 'public')";
+        return "ENUM('private', 'public')";
     }
 
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
-        return $value !== null ? Status::tryFrom($value) : null;
+        return $value !== null ? Visibility::tryFrom($value) : null;
     }
 
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
@@ -25,6 +25,6 @@ class StatusType extends \Doctrine\DBAL\Types\Type
 
     public function getName(): string
     {
-        return 'internship_status';
+        return 'internship_visibility';
     }
 }

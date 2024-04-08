@@ -14,8 +14,8 @@
     </h4>
 </div>
 <section>
-    <form action="/internship-program/requirements/create" method="POST">
-        <div class="field-radio row">
+    <form id="create-requirement-form" action="/internship-program/requirements/create" method="POST">
+        <div class="field-radio row" id="user-group-radio">
             <div class="label">This requirement is for,</div>
             <div>
                 <div class="option">
@@ -28,7 +28,18 @@
                         required>
                     <label for="user-group-partners">Partners</label>
                 </div>
+                <div class="option">
+                    <input type="radio" name="user-group" id="user-group-select-users" value="select-users"
+                        autocomplete="off" required>
+                    <label for="user-group-select-users">Select Users</label>
+                </div>
             </div>
+        </div>
+
+        <div class="field row hidden" id="select-users-field">
+            <label for="name">Select users</label>
+            <a id="select-users-btn" href="/internship-program/requirements/create/users" class="btn btn-primary">Select
+                users</a>
         </div>
 
         <div class="field row">
@@ -112,25 +123,26 @@
             <div class="field row">
                 <div class="label">Select the file types that users can upload to fulfill this requirement.</div>
                 <div class="checkbox-container cols-2">
-                    <input type="checkbox" name="file-types" id="file-type-pdf" value="pdf" autocomplete="off" checked>
+                    <input type="checkbox" name="file-types[]" id="file-type-pdf" value="pdf" autocomplete="off"
+                        checked>
                     <label for="file-type-pdf">PDF</label>
 
-                    <input type="checkbox" name="file-types" id="file-type-doc" value="doc" autocomplete="off">
+                    <input type="checkbox" name="file-types[]" id="file-type-doc" value="doc" autocomplete="off">
                     <label for="file-type-doc">DOC</label>
 
-                    <input type="checkbox" name="file-types" id="file-type-docx" value="docx" autocomplete="off">
+                    <input type="checkbox" name="file-types[]" id="file-type-docx" value="docx" autocomplete="off">
                     <label for="file-type-docx">DOCX</label>
 
-                    <input type="checkbox" name="file-types" id="file-type-ppt" value="ppt" autocomplete="off">
+                    <input type="checkbox" name="file-types[]" id="file-type-ppt" value="ppt" autocomplete="off">
                     <label for="file-type-ppt">PPT</label>
 
-                    <input type="checkbox" name="file-types" id="file-type-pptx" value="pptx" autocomplete="off">
+                    <input type="checkbox" name="file-types[]" id="file-type-pptx" value="pptx" autocomplete="off">
                     <label for="file-type-pptx">PPTX</label>
 
-                    <input type="checkbox" name="file-types" id="file-type-jpg" value="jpg" autocomplete="off">
+                    <input type="checkbox" name="file-types[]" id="file-type-jpg" value="jpg" autocomplete="off">
                     <label for="file-type-jpg">JPG</label>
 
-                    <input type="checkbox" name="file-types" id="file-type-png" value="png" autocomplete="off">
+                    <input type="checkbox" name="file-types[]" id="file-type-png" value="png" autocomplete="off">
                     <label for="file-type-png">PNG</label>
                 </div>
             </div>

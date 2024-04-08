@@ -71,7 +71,7 @@ class InternMonitoringRepository implements IRepository
                 GROUP BY ur.id
                 LIMIT :limit";
 
-        if ($offset != 0) {
+        if ($offset !== 0) {
             $sql .= " OFFSET :offset";
         }
 
@@ -81,7 +81,7 @@ class InternMonitoringRepository implements IRepository
         $stmt->bindParam(':requirementId', $requirementId, PDO::PARAM_INT);
         $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
 
-        if ($offset != 0) {
+        if ($offset !== 0) {
             $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
         }
 
@@ -145,5 +145,16 @@ class InternMonitoringRepository implements IRepository
             fn($row) => UserRequirementTableViewDTOMapper::map($row),
             $stmt->fetchAll(PDO::FETCH_ASSOC)
         );
+    }
+
+    public function isEmployed(int $studentId): bool
+    {
+        $stmt = $this->pdo->prepare(
+            'SELECT COUNT(*)
+            FROM interns
+            WHERE student_id = :studentId');
+        $stmt->execute(["studentId" => $studentId]);
+        $data = $stmt->fetch(PDO::FETCH_COLUMN);
+        return $data > 0;
     }
 }

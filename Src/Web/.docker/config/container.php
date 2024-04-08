@@ -119,24 +119,24 @@ $container->register(
 
 $container->register(
     'twig.runtime_loader.security',
-    App\TwigExtension\SecurityRuntimeLoader::class
+    \App\Security\TwigExtension\SecurityRuntimeLoader::class
 )
     ->setArguments([new Reference('twig.runtime_extension.security')]);
 
 $container->register(
     'twig.runtime_extension.security',
-    App\TwigExtension\SecurityRuntimeExtension::class
+    \App\Security\TwigExtension\SecurityRuntimeExtension::class
 )
     ->setArguments([new Reference('service.authorization')]);
 
 $container->register(
     'twig.extension.security',
-    App\TwigExtension\SecurityExtension::class
+    \App\Security\TwigExtension\SecurityExtension::class
 );
 
 $container->register(
     'twig.extension',
-    App\TwigExtension\Extension::class
+    \App\TwigExtension\Extension::class
 );
 
 $container->register(
@@ -396,8 +396,8 @@ $container->register(
     ->setPublic(true);
 
 $container->register(
-    'App\Controllers\InternshipsController',
-    \App\Controllers\InternshipsController::class
+    'App\Controllers\InternshipSearchController',
+    \App\Controllers\InternshipSearchController::class
 )
     ->setArguments([
         new Reference('twig'),
