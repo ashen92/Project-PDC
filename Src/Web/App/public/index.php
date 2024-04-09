@@ -41,7 +41,6 @@ $argumentResolver = new ArgumentResolver(
         new RequestAttributeValueResolver(),
         new RequestValueResolver(),
         new SessionValueResolver(),
-        $container->get('security.identity_resolver'),
         $container->get('internship_cycle_resolver'),
         new DefaultValueResolver(),
         new VariadicValueResolver(),

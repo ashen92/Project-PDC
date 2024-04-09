@@ -1,8 +1,6 @@
 <?php
 declare(strict_types=1);
 
-use App\Security\IdentityProvider;
-use App\Security\IdentityResolver;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
@@ -19,20 +17,6 @@ $container->register(
     'session',
     Symfony\Component\HttpFoundation\Session\Session::class
 )
-    ->setPublic(true);
-
-$container->register(
-    'security.identity_provider',
-    IdentityProvider::class
-)
-    ->setArguments([new Reference('pdo_mysql_connection')])
-    ->setPublic(true);
-
-$container->register(
-    'security.identity_resolver',
-    IdentityResolver::class
-)
-    ->setArguments([new Reference('security.identity_provider')])
     ->setPublic(true);
 
 $container->register(
@@ -384,6 +368,8 @@ $container->register(
     \App\Controllers\API\InternshipsAPIController::class
 )
     ->setArguments([
+        new Reference('twig'),
+        new Reference('service.authorization'),
         new Reference('service.internship'),
     ])
     ->setPublic(true);
@@ -393,6 +379,8 @@ $container->register(
     \App\Controllers\API\ApplicationsAPIController::class
 )
     ->setArguments([
+        new Reference('twig'),
+        new Reference('service.authorization'),
         new Reference('service.application'),
     ])
     ->setPublic(true);
@@ -431,7 +419,10 @@ $container->register(
     'App\Controllers\ErrorController',
     \App\Controllers\ErrorController::class
 )
-    ->setArguments([new Reference('twig')])
+    ->setArguments([
+        new Reference('twig'),
+        new Reference('service.authorization'),
+    ])
     ->setPublic(true);
 
 $container->register(
@@ -440,6 +431,7 @@ $container->register(
 )
     ->setArguments([
         new Reference('twig'),
+        new Reference('service.authorization'),
         new Reference('service.authentication'),
         new Reference('service.email')
     ])
@@ -449,14 +441,20 @@ $container->register(
     'App\Controllers\HomeController',
     \App\Controllers\HomeController::class
 )
-    ->setArguments([new Reference('twig')])
+    ->setArguments([
+        new Reference('twig'),
+        new Reference('service.authorization'),
+    ])
     ->setPublic(true);
 
 $container->register(
     'App\Controllers\TechTalksController',
     \App\Controllers\TechTalksController::class
 )
-    ->setArguments([new Reference('twig')])
+    ->setArguments([
+        new Reference('twig'),
+        new Reference('service.authorization'),
+    ])
     ->setPublic(true);
 
 $container->register(
@@ -465,6 +463,7 @@ $container->register(
 )
     ->setArguments([
         new Reference('twig'),
+        new Reference('service.authorization'),
         new Reference('service.user'),
         new Reference('service.internship_program'),
         new Reference('service.requirement'),
@@ -477,6 +476,7 @@ $container->register(
 )
     ->setArguments([
         new Reference('twig'),
+        new Reference('service.authorization'),
         new Reference('service.intern_monitoring'),
         new Reference('service.requirement'),
     ])
@@ -488,6 +488,7 @@ $container->register(
 )
     ->setArguments([
         new Reference('twig'),
+        new Reference('service.authorization'),
         new Reference('service.internship'),
         new Reference('service.user')
     ])
@@ -499,6 +500,7 @@ $container->register(
 )
     ->setArguments([
         new Reference('twig'),
+        new Reference('service.authorization'),
         new Reference('service.internship'),
     ])
     ->setPublic(true);
@@ -509,6 +511,7 @@ $container->register(
 )
     ->setArguments([
         new Reference('twig'),
+        new Reference('service.authorization'),
         new Reference('service.requirement')
     ])
     ->setPublic(true);
@@ -519,6 +522,7 @@ $container->register(
 )
     ->setArguments([
         new Reference('twig'),
+        new Reference('service.authorization'),
         new Reference('service.user'),
     ])
     ->setPublic(true);
@@ -529,6 +533,7 @@ $container->register(
 )
     ->setArguments([
         new Reference('twig'),
+        new Reference('service.authorization'),
         new Reference('service.event')
     ])
     ->setPublic(true);

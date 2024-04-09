@@ -3,24 +3,29 @@ declare(strict_types=1);
 
 namespace App\Controllers\API;
 
+use App\Controllers\ControllerBase;
 use App\Security\Attributes\RequiredRole;
-use App\Security\Identity;
+use App\Security\AuthorizationService;
 use App\Security\Role;
 use App\Services\InternshipService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Twig\Environment;
 
 #[Route('/api/internships')]
-readonly class InternshipsAPIController
+class InternshipsAPIController extends ControllerBase
 {
     public function __construct(
+        Environment $twig,
+        AuthorizationService $authzService,
         private InternshipService $internshipService,
     ) {
+        parent::__construct($twig, $authzService);
     }
 
     #[Route('/{id}', requirements: ['id' => '\d+'], methods: ['GET'])]
-    public function internship(Request $request, Identity $identity, int $id): Response
+    public function internship(Request $request, int $id): Response
     {
         $internship = $this->internshipService->getInternship($id);
         if ($internship) {
@@ -29,7 +34,7 @@ readonly class InternshipsAPIController
                 'description' => $internship->getDescription(),
             ];
 
-            if ($identity->hasRole(Role::InternshipProgramStudent)) {
+            if ($this->hasRole(Role::InternshipProgramStudent)) {
                 $userId = $request->getSession()->get('user_id');
                 $data['hasApplied'] = $this->internshipService->hasAppliedToInternship($id, $userId);
             }

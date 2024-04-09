@@ -6,9 +6,8 @@ namespace App\Controllers;
 use App\DTOs\CreateUserDTO;
 use App\Exceptions\UserExistsException;
 use App\Models\InternshipCycle;
-use App\Security\Attributes\RequiredPolicy;
 use App\Security\Attributes\RequiredRole;
-use App\Security\Identity;
+use App\Security\AuthorizationService;
 use App\Security\Role;
 use App\Services\InternshipProgramService;
 use App\Services\RequirementService;
@@ -25,23 +24,24 @@ use Twig\Environment;
     Role::InternshipProgramStudent,
 ])]
 #[Route('/internship-program')]
-class InternshipProgramController extends PageControllerBase
+class InternshipProgramController extends ControllerBase
 {
     public function __construct(
         Environment $twig,
+        AuthorizationService $authzService,
         private readonly UserService $userService,
         private readonly InternshipProgramService $internshipCycleService,
         private readonly RequirementService $requirementService,
     ) {
-        parent::__construct($twig);
+        parent::__construct($twig, $authzService);
     }
 
     #[Route([''])]
-    public function home(Request $request, Identity $identity, ?InternshipCycle $cycle): Response
+    public function home(Request $request, ?InternshipCycle $cycle): Response
     {
         $userId = $request->getSession()->get('user_id');
 
-        if ($identity->hasRole(Role::InternshipProgramAdmin)) {
+        if ($this->hasRole(Role::InternshipProgramAdmin)) {
             return $this->render(
                 'internship-program/home-admin.html',
                 [
@@ -50,7 +50,7 @@ class InternshipProgramController extends PageControllerBase
                 ]
             );
         }
-        if ($identity->hasRole(Role::InternshipProgramPartnerAdmin)) {
+        if ($this->hasRole(Role::InternshipProgramPartnerAdmin)) {
             return $this->render(
                 'internship-program/home-partner.html',
                 [

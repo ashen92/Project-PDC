@@ -6,6 +6,7 @@ namespace App\Controllers;
 use App\DTOs\CreateUserDTO;
 use App\Exceptions\UserExistsException;
 use App\Security\Attributes\RequiredRole;
+use App\Security\AuthorizationService;
 use App\Security\Role;
 use App\Services\UserService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -16,13 +17,14 @@ use Twig\Environment;
 
 #[RequiredRole(Role::Admin)]
 #[Route('/portal')]
-class PortalController extends PageControllerBase
+class PortalController extends ControllerBase
 {
 	public function __construct(
 		Environment $twig,
+		AuthorizationService $authzService,
 		private readonly UserService $userService
 	) {
-		parent::__construct($twig);
+		parent::__construct($twig, $authzService);
 	}
 
 	#[Route('')]

@@ -5,6 +5,7 @@ namespace App\Controllers;
 
 use App\Models\InternshipCycle;
 use App\Security\Attributes\RequiredRole;
+use App\Security\AuthorizationService;
 use App\Security\Role;
 use App\Services\InternshipService;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,13 +14,14 @@ use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
 
 #[Route('/internship-program')]
-class ApplicationsController extends PageControllerBase
+class ApplicationsController extends ControllerBase
 {
     public function __construct(
         Environment $twig,
+        AuthorizationService $authzService,
         private readonly InternshipService $internshipService
     ) {
-        parent::__construct($twig);
+        parent::__construct($twig, $authzService);
     }
 
     #[Route(['/applications'])]

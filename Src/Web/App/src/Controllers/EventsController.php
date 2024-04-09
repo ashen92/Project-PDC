@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+use App\Security\AuthorizationService;
 use App\Services\EventService;
 use DateTime;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,13 +12,14 @@ use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
 
 #[Route('/events')]
-class EventsController extends PageControllerBase
+class EventsController extends ControllerBase
 {
     public function __construct(
         Environment $twig,
+        AuthorizationService $authzService,
         private readonly EventService $eventService
     ) {
-        parent::__construct($twig);
+        parent::__construct($twig, $authzService);
     }
 
     #[Route([''])]

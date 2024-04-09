@@ -10,7 +10,7 @@ use App\Models\Requirement\FulFillMethod;
 use App\Models\Requirement\RepeatInterval;
 use App\Models\Requirement\Type;
 use App\Security\Attributes\RequiredRole;
-use App\Security\Identity;
+use App\Security\AuthorizationService;
 use App\Security\Role;
 use App\Services\RequirementService;
 use DateTimeImmutable;
@@ -27,19 +27,20 @@ use Twig\Environment;
     Role::InternshipProgramStudent,
 ])]
 #[Route('/internship-program/requirements')]
-class RequirementsController extends PageControllerBase
+class RequirementsController extends ControllerBase
 {
     public function __construct(
         Environment $twig,
+        AuthorizationService $authzService,
         private readonly RequirementService $requirementService
     ) {
-        parent::__construct($twig);
+        parent::__construct($twig, $authzService);
     }
 
     #[Route([''], methods: ['GET'])]
-    public function requirements(Request $request, Identity $identity, ?InternshipCycle $cycle): Response
+    public function requirements(Request $request, ?InternshipCycle $cycle): Response
     {
-        if ($identity->hasRole(Role::InternshipProgramAdmin)) {
+        if ($this->hasRole(Role::InternshipProgramAdmin)) {
             return $this->render(
                 'internship-program/requirements/home-admin.html',
                 [
@@ -69,9 +70,9 @@ class RequirementsController extends PageControllerBase
     }
 
     #[Route('/{id}', requirements: ['id' => '\d+'], methods: ['GET'])]
-    public function requirement(Identity $identity, int $id): Response|RedirectResponse
+    public function requirement(int $id): Response|RedirectResponse
     {
-        if ($identity->hasRole(Role::InternshipProgramAdmin)) {
+        if ($this->hasRole(Role::InternshipProgramAdmin)) {
             $requirement = $this->requirementService->getRequirement($id);
             if ($requirement) {
                 return $this->render(

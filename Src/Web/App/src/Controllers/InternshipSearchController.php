@@ -7,7 +7,7 @@ use App\DTOs\createInternshipDTO;
 use App\Models\Internship;
 use App\Models\InternshipCycle;
 use App\Security\Attributes\RequiredRole;
-use App\Security\Identity;
+use App\Security\AuthorizationService;
 use App\Security\Role;
 use App\Services\InternshipService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -22,19 +22,20 @@ use Twig\Environment;
     Role::InternshipProgramStudent,
 ])]
 #[Route('/internship-program')]
-class InternshipSearchController extends PageControllerBase
+class InternshipSearchController extends ControllerBase
 {
     const int MAX_INTERNSHIP_RESULTS_PER_PAGE = 25;
 
     public function __construct(
         Environment $twig,
+        AuthorizationService $authzService,
         private readonly InternshipService $internshipService,
     ) {
-        parent::__construct($twig);
+        parent::__construct($twig, $authzService);
     }
 
     #[Route(['/internships'])]
-    public function internships(Request $request, Identity $identity, ?InternshipCycle $cycle): Response
+    public function internships(Request $request, ?InternshipCycle $cycle): Response
     {
         if ($cycle === null) {
             return $this->render('internship-program/internships.html', ['section' => 'internships']);
@@ -70,7 +71,7 @@ class InternshipSearchController extends PageControllerBase
         $cycleId = $cycle->getId();
         $orgs = null;
 
-        if ($identity->hasRole(Role::InternshipProgramPartner)) {
+        if ($this->hasRole(Role::InternshipProgramPartner)) {
             $userId = $request->getSession()->get('user_id');
             $internships = $this->internshipService
                 ->searchInternships(
@@ -93,7 +94,7 @@ class InternshipSearchController extends PageControllerBase
                 $userId
             );
         } else {
-            if ($identity->hasRole(Role::InternshipProgramStudent)) {
+            if ($this->hasRole(Role::InternshipProgramStudent)) {
                 $internships = $this->internshipService
                     ->searchInternships(
                         $cycleId,
@@ -200,21 +201,21 @@ class InternshipSearchController extends PageControllerBase
     }
 
     #[Route('/internships/create', methods: ['GET'])]
-    public function createGET(Identity $identity): Response
+    public function createGET(): Response
     {
         return $this->render(
             'internship-program/internship/create.html',
             [
                 'section' => 'internships',
-                'organizations' => $identity->hasRole(Role::InternshipProgramAdmin) ? $this->internshipService->getOrganizations() : null,
+                'organizations' => $this->hasRole(Role::InternshipProgramAdmin) ? $this->internshipService->getOrganizations() : null,
             ]
         );
     }
 
     #[Route('/internships/create', methods: ['POST'])]
-    public function createPOST(Request $request, Identity $identity, InternshipCycle $cycle): RedirectResponse
+    public function createPOST(Request $request, InternshipCycle $cycle): RedirectResponse
     {
-        $orgId = $identity->hasRole(Role::InternshipProgramAdmin) ?
+        $orgId = $this->hasRole(Role::InternshipProgramAdmin) ?
             (int) $request->get('organization') : null;
 
         $dto = new createInternshipDTO(
@@ -231,9 +232,9 @@ class InternshipSearchController extends PageControllerBase
     }
 
     #[Route('/round-2', methods: ['GET'])]
-    public function round2GET(Identity $identity, InternshipCycle $cycle): Response
+    public function round2GET(InternshipCycle $cycle): Response
     {
-        if ($identity->hasRole(Role::InternshipProgramStudent)) {
+        if ($this->hasRole(Role::InternshipProgramStudent)) {
             return $this->render(
                 'internship-program/round-2/home-student.html',
                 [
@@ -243,7 +244,7 @@ class InternshipSearchController extends PageControllerBase
             );
         }
 
-        if ($identity->hasRole(Role::InternshipProgramPartner)) {
+        if ($this->hasRole(Role::InternshipProgramPartner)) {
             return $this->render(
                 'internship-program/round-2/home-partner.html',
                 [

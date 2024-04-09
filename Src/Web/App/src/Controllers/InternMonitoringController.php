@@ -5,6 +5,7 @@ namespace App\Controllers;
 
 use App\Models\InternshipCycle;
 use App\Security\Attributes\RequiredRole;
+use App\Security\AuthorizationService;
 use App\Security\Role;
 use App\Services\InternMonitoringService;
 use App\Services\RequirementService;
@@ -16,14 +17,15 @@ use Twig\Environment;
 
 #[RequiredRole(Role::InternshipProgramAdmin)]
 #[Route('/internship-program/monitoring')]
-class InternMonitoringController extends PageControllerBase
+class InternMonitoringController extends ControllerBase
 {
     public function __construct(
         Environment $twig,
+        AuthorizationService $authzService,
         private readonly InternMonitoringService $internMonitoringService,
         private readonly RequirementService $requirementService,
     ) {
-        parent::__construct($twig);
+        parent::__construct($twig, $authzService);
     }
 
     #[Route('', methods: ['GET'])]

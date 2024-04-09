@@ -3,23 +3,28 @@ declare(strict_types=1);
 
 namespace App\Controllers\API;
 
-use App\Security\Identity;
+use App\Controllers\ControllerBase;
+use App\Security\AuthorizationService;
 use App\Security\Role;
 use App\Services\ApplicationService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Twig\Environment;
 
 #[Route('/api')]
-class ApplicationsAPIController
+class ApplicationsAPIController extends ControllerBase
 {
     public function __construct(
+        Environment $twig,
+        AuthorizationService $authzService,
         private ApplicationService $applicationService
     ) {
+        parent::__construct($twig, $authzService);
     }
 
     #[Route('/applicants/{id}/hire', requirements: ['id' => '\d+'], methods: ['POST'])]
-    public function hire(Request $request, Identity $identity, int $id): Response
+    public function hire(Request $request, int $id): Response
     {
         #region Validation
 
@@ -57,7 +62,7 @@ class ApplicationsAPIController
 
         $userId = $request->getSession()->get('user_id');
 
-        if ($identity->hasRole(Role::Admin)) {
+        if ($this->hasRole(Role::Admin)) {
             if ($this->applicationService->hire($id, null, $userId, $decoded->applicationId, $decoded->organizationId)) {
                 return new Response(null, 204);
             }
