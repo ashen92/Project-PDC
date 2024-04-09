@@ -33,7 +33,7 @@ export class Dialog {
             if (e.target === this.overlay) {
                 this.titleBarCloseBtn.click();
             }
-        });
+        }.bind(this));
     }
 
     open() {
