@@ -23,9 +23,13 @@
         border-radius: $rounded-1;
         box-shadow: $shadow-5;
         padding: 1.25rem;
+        overflow-y: auto;
 
+        display: flex;
+        flex-grow: 1;
+        flex-direction: column;
 
-        .header {
+        .title-bar {
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -45,5 +49,27 @@
             }
         }
 
+        .pdf-viewer {
+            width: 100%;
+            height: 100%;
+        }
+
+        .file-picker {
+            margin: auto;
+            padding: 0.25rem 0;
+            text-align: center;
+
+            label {
+                font-weight: $fw-semibold;
+                padding-right: 1rem;
+            }
+
+            select {
+                width: 50%;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+        }
     }
 }

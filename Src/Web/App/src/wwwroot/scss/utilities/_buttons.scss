@@ -109,6 +109,35 @@ $btn-disabled-border: #e8e8e8;
         #cd9193);
 }
 
+.btn-close {
+    @include mixins.button-variant(#323130,
+        transparent,
+        #8a8886,
+        #323130,
+        #f2f2f2,
+        #8a8886,
+        #323130,
+        #dedede,
+        #8a8886,
+        #979796,
+        transparent,
+        #8a8886);
+
+    .i {
+        font-size: 1.5rem;
+    }
+
+    border: none;
+    padding: 0.75rem;
+    margin: 0;
+    min-width: 2rem;
+    min-height: 2rem;
+    width: 2rem;
+    height: 2rem;
+    max-width: 2rem;
+    max-height: 2rem;
+}
+
 .btn-outline {
     &-primary {
         @include mixins.button-variant(#006fc9,

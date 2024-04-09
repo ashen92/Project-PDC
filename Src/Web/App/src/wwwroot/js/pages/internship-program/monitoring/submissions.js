@@ -1,3 +1,4 @@
+import { Dialog } from "../../../components/dialog";
 import { $, createElement } from "../../../core/dom";
 import { on } from "../../../core/events";
 import { Grid, h, html } from "gridjs";
@@ -12,10 +13,10 @@ if (isNaN(r)) {
 }
 apiEndpoint += "/api/intern-monitoring/requirements/" + r + "/user-requirements";
 
-const submissionViewer = $("#submission-viewer");
-const submissionViewerCloseBtn = $("#submission-viewer-close-btn");
 const pdfViewer = $("#pdf-viewer");
 const submissionViewerFilePicker = $("#submission-viewer #file-picker");
+
+const submissionViewerDialog = new Dialog("#submission-viewer");
 
 const grid = new Grid({
     className: {
@@ -45,13 +46,13 @@ const grid = new Grid({
                     className: "btn btn-primary",
                     disabled: row.cells[3].data === "pending",
                     onClick: () => {
-                        if (submissionViewer.style.display === "flex") {
-                            submissionViewer.style.display = "none";
+                        if (submissionViewerDialog.isOpen()) {
+                            submissionViewerDialog.close();
                             return;
                         }
 
                         if (parseInt(submissionViewerFilePicker.dataset.userRequirementId) === row.cells[0].data) {
-                            submissionViewer.style.display = "flex";
+                            submissionViewerDialog.open();
                             return;
                         }
 
@@ -65,9 +66,9 @@ const grid = new Grid({
                             submissionViewerFilePicker.appendChild(option);
                         });
 
-                        $("#title-bar-title").textContent = row.cells[1].data + " | " + row.cells[2].data;
+                        submissionViewerDialog.setTitle(row.cells[1].data + " | " + row.cells[2].data);
                         pdfViewer.data = row.cells[8].data[0].url;
-                        submissionViewer.style.display = "flex";
+                        submissionViewerDialog.open();
                     },
                     innerText: "View"
                 });
@@ -120,8 +121,4 @@ grid.on("rowClick", (e, row) => {
 
 on(submissionViewerFilePicker, "change", function () {
     pdfViewer.data = this.value;
-});
-
-on(submissionViewerCloseBtn, "click", () => {
-    submissionViewer.style.display = "none";
 });
