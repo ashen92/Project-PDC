@@ -228,7 +228,7 @@ class UserRepository implements IRepository
             "activationToken" => $user->getActivationToken(),
             "activationTokenExpiresAt" => $user
                 ->getActivationTokenExpiresAt()
-                    ?->format(self::DATE_TIME_FORMAT),
+                    ?->format($this::DATE_TIME_FORMAT),
         ]);
     }
 
