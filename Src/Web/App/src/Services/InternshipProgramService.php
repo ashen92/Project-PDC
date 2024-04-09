@@ -9,7 +9,6 @@ use App\Models\InternshipCycle;
 use App\Models\UserGroup;
 use App\Repositories\InternshipProgramRepository;
 use App\Repositories\UserRepository;
-use App\Security\Role;
 use DateTimeImmutable;
 use Throwable;
 
@@ -111,9 +110,9 @@ readonly class InternshipProgramService
                 );
 
             $this->userRepository
-                ->addRoleToUserGroup($partnerGroup->getId(), Role::InternshipProgramPartnerAdmin);
+                ->addRoleToUserGroup($partnerGroup->getId(), 'InternshipProgramPartnerAdmin');
             $this->userRepository
-                ->addRoleToUserGroup($studentGroup->getId(), Role::InternshipProgramStudent);
+                ->addRoleToUserGroup($studentGroup->getId(), 'InternshipProgramStudent');
 
             $this->userRepository
                 ->addUsersToUserGroup($partnerGroup->getId(), $partnerGroupId);
@@ -147,14 +146,14 @@ readonly class InternshipProgramService
 
             $this->internshipProgramRepository->removeRolesFromUserGroups(
                 [
-                    Role::InternshipProgramPartnerAdmin,
-                    Role::InternshipProgramPartner
+                    'InternshipProgramPartnerAdmin',
+                    'InternshipProgramPartner'
                 ],
                 $cycle->getPartnerGroupIds(),
             );
 
             $this->internshipProgramRepository->removeRolesFromUserGroups(
-                [Role::InternshipProgramStudent],
+                ['InternshipProgramStudent'],
                 [$cycle->getStudentGroupId()],
             );
 
@@ -217,7 +216,7 @@ readonly class InternshipProgramService
 
         if (!$group) {
             $group = $this->userRepository->createUserGroup($groupName);
-            $this->userRepository->addRoleToUserGroup($group->getId(), Role::InternshipProgramPartner);
+            $this->userRepository->addRoleToUserGroup($group->getId(), 'InternshipProgramPartner');
         }
 
         $this->userRepository->addToUserGroup($userId, $group->getId());

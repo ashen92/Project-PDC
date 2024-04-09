@@ -11,7 +11,6 @@ use App\Models\Requirement\RepeatInterval;
 use App\Models\Requirement\Type;
 use App\Security\Attributes\RequiredRole;
 use App\Security\AuthorizationService;
-use App\Security\Role;
 use App\Services\RequirementService;
 use DateTimeImmutable;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -22,9 +21,9 @@ use Throwable;
 use Twig\Environment;
 
 #[RequiredRole([
-    Role::InternshipProgramAdmin,
-    Role::InternshipProgramPartner,
-    Role::InternshipProgramStudent,
+    'InternshipProgramAdmin',
+    'InternshipProgramPartner',
+    'InternshipProgramStudent',
 ])]
 #[Route('/internship-program/requirements')]
 class RequirementsController extends ControllerBase
@@ -40,7 +39,7 @@ class RequirementsController extends ControllerBase
     #[Route([''], methods: ['GET'])]
     public function requirements(Request $request, ?InternshipCycle $cycle): Response
     {
-        if ($this->hasRole(Role::InternshipProgramAdmin)) {
+        if ($this->hasRole('InternshipProgramAdmin')) {
             return $this->render(
                 'internship-program/requirements/home-admin.html',
                 [
@@ -72,7 +71,7 @@ class RequirementsController extends ControllerBase
     #[Route('/{id}', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function requirement(int $id): Response|RedirectResponse
     {
-        if ($this->hasRole(Role::InternshipProgramAdmin)) {
+        if ($this->hasRole('InternshipProgramAdmin')) {
             $requirement = $this->requirementService->getRequirement($id);
             if ($requirement) {
                 return $this->render(

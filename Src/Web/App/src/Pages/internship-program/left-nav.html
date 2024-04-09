@@ -3,7 +3,7 @@
     Internship Program
 </a>
 
-{% if has_role(InternshipProgramAdmin) %}
+{% if has_role('InternshipProgramAdmin') %}
 
 <a class="{% if section == 'monitoring' %} active{% endif %}" href="/internship-program/monitoring">
     <i class="i i-clipboard-pulse"></i>
@@ -16,14 +16,14 @@
     Internships
 </a>
 
-{% elseif has_role(InternshipProgramPartner) and has_permission('internship', 'create') %}
+{% elseif has_role('InternshipProgramPartner') and has_permission('internship', 'create') %}
 
 <a class="{% if section == 'internships' %} active{% endif %}" href="/internship-program/internships">
     <i class="i i-briefcase"></i>
     Your Internships
 </a>
 
-{% if has_role(InternshipProgramPartnerAdmin) %}
+{% if has_role('InternshipProgramPartnerAdmin') %}
 
 <a class="{% if section == 'applicants' %} active{% endif %}" href="/internship-program/applicants">
     <i class="i i-person-vcard"></i>
@@ -32,7 +32,7 @@
 
 {% endif %}
 
-{% elseif has_role(InternshipProgramStudent) %}
+{% elseif has_role('InternshipProgramStudent') %}
 
 <div class="separator"></div>
 <a class="{% if section == 'profile' %} active{% endif %}" href="/internship-program/profile">

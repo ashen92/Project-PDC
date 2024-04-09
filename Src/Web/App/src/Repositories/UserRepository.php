@@ -13,7 +13,6 @@ use App\Mappers\UserStudentPartnerMapper;
 use App\Models\Student;
 use App\Models\User;
 use App\Models\UserGroup;
-use App\Security\Role;
 use PDO;
 
 class UserRepository implements IRepository
@@ -292,25 +291,29 @@ class UserRepository implements IRepository
         ]);
     }
 
-    public function addRoleToUserGroup(int $groupId, Role $role): bool
+    public function addRoleToUserGroup(int $groupId, string $role): bool
     {
+        // TODO: Move this to authorization service. This is not a user repository concern
+        // TODO: Check if the role exists
         $sql = "INSERT INTO user_group_roles (usergroup_id, role_id)
                 SELECT :groupId, id FROM roles WHERE name = :name";
         $statement = $this->pdo->prepare($sql);
         return $statement->execute([
             "groupId" => $groupId,
-            "name" => $role->value,
+            "name" => $role,
         ]);
     }
 
-    public function removeRoleFromUserGroup(int $groupId, Role $role): bool
+    public function removeRoleFromUserGroup(int $groupId, string $role): bool
     {
+        // TODO: Move this to authorization service. This is not a user repository concern
+        // TODO: Check if the role exists
         $sql = "DELETE FROM user_group_roles
                 WHERE usergroup_id = :groupId
                 AND role_id = (SELECT id FROM roles WHERE name = :roleName)";
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindValue("groupId", $groupId, PDO::PARAM_INT);
-        $stmt->bindValue("roleName", $role->value);
+        $stmt->bindValue("roleName", $role);
         return $stmt->execute();
     }
 

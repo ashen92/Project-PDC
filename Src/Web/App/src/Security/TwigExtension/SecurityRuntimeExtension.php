@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace App\Security\TwigExtension;
 
 use App\Security\AuthorizationService;
-use App\Security\Role;
 
 class SecurityRuntimeExtension extends \Twig\Extension\AbstractExtension
 {
@@ -18,7 +17,7 @@ class SecurityRuntimeExtension extends \Twig\Extension\AbstractExtension
         return $this->authorizationService->hasPermission($resource, $action);
     }
 
-    public function hasRole(Role $role): bool
+    public function hasRole(string $role): bool
     {
         return $this->authorizationService->hasRole($role);
     }

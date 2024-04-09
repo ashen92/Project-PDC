@@ -5,7 +5,6 @@ namespace App\Controllers\API;
 
 use App\Controllers\ControllerBase;
 use App\Security\AuthorizationService;
-use App\Security\Role;
 use App\Services\ApplicationService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -62,7 +61,7 @@ class ApplicationsAPIController extends ControllerBase
 
         $userId = $request->getSession()->get('user_id');
 
-        if ($this->hasRole(Role::Admin)) {
+        if ($this->hasRole('Admin')) {
             if ($this->applicationService->hire($id, null, $userId, $decoded->applicationId, $decoded->organizationId)) {
                 return new Response(null, 204);
             }

@@ -30,7 +30,7 @@ class AuthorizationService
         return $handler->handle($userId, $this->policyHandlers[$policyName][0]);
     }
 
-    public function hasRole(Role $role): bool
+    public function hasRole(string $role): bool
     {
         $userId = (int) $this->session->get('user_id');
         return $this->authzRepo->hasRole($userId, $role);

@@ -3,16 +3,13 @@ declare(strict_types=1);
 
 namespace App\Security\Attributes;
 
-use App\Security\Role;
-
 #[\Attribute]
 class RequiredRole
 {
     /**
-     * @param Role|array<Role> $role
+     * @param string|array<string> $role
      */
-    public function __construct(public Role|array $role)
+    public function __construct(public string|array $role)
     {
-
     }
 }

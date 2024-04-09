@@ -29,7 +29,7 @@ readonly class AuthorizationRepository implements IRepository
         $this->pdo->rollBack();
     }
 
-    public function hasRole(int $userId, Role $role): bool
+    public function hasRole(int $userId, string $role): bool
     {
         $sql = "SELECT COUNT(*) FROM users u
                 INNER JOIN user_group_membership ugm ON u.id = ugm.user_id
@@ -39,14 +39,14 @@ readonly class AuthorizationRepository implements IRepository
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindValue(':userId', $userId, PDO::PARAM_INT);
-        $stmt->bindValue(':roleName', $role->value);
+        $stmt->bindValue(':roleName', $role);
         $stmt->execute();
 
         return $stmt->fetchColumn() > 0;
     }
 
     /**
-     * @return array<Role>
+     * @return array<string>
      */
     public function findUserRoles(int $userId): array
     {
@@ -60,8 +60,7 @@ readonly class AuthorizationRepository implements IRepository
         $stmt->bindValue(':userId', $userId, PDO::PARAM_INT);
         $stmt->execute();
 
-        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        return array_map(fn($row) => Role::tryFrom($row['name']), $data);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function hasPermission(int $userId, string $resource, string $action): bool

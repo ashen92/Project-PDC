@@ -6,7 +6,6 @@ namespace App\Repositories;
 use App\Interfaces\IRepository;
 use App\Mappers\InternshipCycleMapper;
 use App\Models\InternshipCycle;
-use App\Security\Role;
 use DateTimeImmutable;
 use PDO;
 
@@ -169,12 +168,11 @@ class InternshipProgramRepository implements IRepository
     }
 
     /**
-     * @param array<Role> $roles
+     * @param array<string> $roles
      * @param array<int> $groupIds
      */
     public function removeRolesFromUserGroups(array $roles, array $groupIds): bool
     {
-        $roles = array_map(fn($role) => $role->value, $roles);
         $sql = "DELETE FROM user_group_roles
                 WHERE usergroup_id IN (" . implode(',', $groupIds) . ")
                 AND role_id IN (
@@ -222,8 +220,7 @@ class InternshipProgramRepository implements IRepository
         bool $resetJobHuntRound1End,
         bool $resetJobHuntRound2Start,
         bool $resetJobHuntRound2End,
-    ): bool
-    {
+    ): bool {
         $columns = '';
         $columns .= $resetJobCollectionStart ? "jobCollectionStart = NULL, " : '';
         $columns .= $resetJobCollectionEnd ? "jobCollectionEnd = NULL, " : '';

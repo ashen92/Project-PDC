@@ -8,7 +8,6 @@ use App\Models\Internship;
 use App\Models\InternshipCycle;
 use App\Security\Attributes\RequiredRole;
 use App\Security\AuthorizationService;
-use App\Security\Role;
 use App\Services\InternshipService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,9 +16,9 @@ use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
 
 #[RequiredRole([
-    Role::InternshipProgramAdmin,
-    Role::InternshipProgramPartnerAdmin,
-    Role::InternshipProgramStudent,
+    'InternshipProgramAdmin',
+    'InternshipProgramPartnerAdmin',
+    'InternshipProgramStudent',
 ])]
 #[Route('/internship-program')]
 class InternshipSearchController extends ControllerBase
@@ -71,7 +70,7 @@ class InternshipSearchController extends ControllerBase
         $cycleId = $cycle->getId();
         $orgs = null;
 
-        if ($this->hasRole(Role::InternshipProgramPartner)) {
+        if ($this->hasRole('InternshipProgramPartner')) {
             $userId = $request->getSession()->get('user_id');
             $internships = $this->internshipService
                 ->searchInternships(
@@ -94,7 +93,7 @@ class InternshipSearchController extends ControllerBase
                 $userId
             );
         } else {
-            if ($this->hasRole(Role::InternshipProgramStudent)) {
+            if ($this->hasRole('InternshipProgramStudent')) {
                 $internships = $this->internshipService
                     ->searchInternships(
                         $cycleId,
@@ -207,7 +206,7 @@ class InternshipSearchController extends ControllerBase
             'internship-program/internship/create.html',
             [
                 'section' => 'internships',
-                'organizations' => $this->hasRole(Role::InternshipProgramAdmin) ? $this->internshipService->getOrganizations() : null,
+                'organizations' => $this->hasRole('InternshipProgramAdmin') ? $this->internshipService->getOrganizations() : null,
             ]
         );
     }
@@ -215,7 +214,7 @@ class InternshipSearchController extends ControllerBase
     #[Route('/internships/create', methods: ['POST'])]
     public function createPOST(Request $request, InternshipCycle $cycle): RedirectResponse
     {
-        $orgId = $this->hasRole(Role::InternshipProgramAdmin) ?
+        $orgId = $this->hasRole('InternshipProgramAdmin') ?
             (int) $request->get('organization') : null;
 
         $dto = new createInternshipDTO(
@@ -234,7 +233,7 @@ class InternshipSearchController extends ControllerBase
     #[Route('/round-2', methods: ['GET'])]
     public function round2GET(InternshipCycle $cycle): Response
     {
-        if ($this->hasRole(Role::InternshipProgramStudent)) {
+        if ($this->hasRole('InternshipProgramStudent')) {
             return $this->render(
                 'internship-program/round-2/home-student.html',
                 [
@@ -244,7 +243,7 @@ class InternshipSearchController extends ControllerBase
             );
         }
 
-        if ($this->hasRole(Role::InternshipProgramPartner)) {
+        if ($this->hasRole('InternshipProgramPartner')) {
             return $this->render(
                 'internship-program/round-2/home-partner.html',
                 [

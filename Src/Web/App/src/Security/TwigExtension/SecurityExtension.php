@@ -4,9 +4,8 @@ declare(strict_types=1);
 namespace App\Security\TwigExtension;
 
 use Twig\Extension\AbstractExtension;
-use Twig\Extension\GlobalsInterface;
 
-class SecurityExtension extends AbstractExtension implements GlobalsInterface
+class SecurityExtension extends AbstractExtension
 {
     public function getFunctions(): array
     {
@@ -23,17 +22,6 @@ class SecurityExtension extends AbstractExtension implements GlobalsInterface
                 'IsAuthorized',
                 ['App\Security\TwigExtension\SecurityRuntimeExtension', 'isAuthorized']
             ),
-        ];
-    }
-
-    public function getGlobals(): array
-    {
-        return [
-            'InternshipProgramAdmin' => \App\Security\Role::InternshipProgramAdmin,
-            'InternshipProgramPartnerAdmin' => \App\Security\Role::InternshipProgramPartnerAdmin,
-            'InternshipProgramPartner' => \App\Security\Role::InternshipProgramPartner,
-            'InternshipProgramStudent' => \App\Security\Role::InternshipProgramStudent,
-            'Admin' => \App\Security\Role::Admin,
         ];
     }
 }

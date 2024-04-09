@@ -6,7 +6,6 @@ namespace App\Controllers\API;
 use App\Controllers\ControllerBase;
 use App\Security\Attributes\RequiredRole;
 use App\Security\AuthorizationService;
-use App\Security\Role;
 use App\Services\InternshipService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -34,7 +33,7 @@ class InternshipsAPIController extends ControllerBase
                 'description' => $internship->getDescription(),
             ];
 
-            if ($this->hasRole(Role::InternshipProgramStudent)) {
+            if ($this->hasRole('InternshipProgramStudent')) {
                 $userId = $request->getSession()->get('user_id');
                 $data['hasApplied'] = $this->internshipService->hasAppliedToInternship($id, $userId);
             }
@@ -65,8 +64,8 @@ class InternshipsAPIController extends ControllerBase
     }
 
     #[RequiredRole([
-        Role::InternshipProgramAdmin,
-        Role::InternshipProgramPartnerAdmin
+        'InternshipProgramAdmin',
+        'InternshipProgramPartnerAdmin'
     ])]
     #[Route('/{id}/applications', methods: ['GET'])]
     public function internshipApplications(int $id): Response

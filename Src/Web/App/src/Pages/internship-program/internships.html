@@ -21,14 +21,14 @@
             <button id="search-btn" class="btn btn-primary" type="button">Search</button>
         </div>
 
-        {% if has_role(InternshipProgramAdmin) or has_role(InternshipProgramStudent) %}
+        {% if has_role('InternshipProgramAdmin') or has_role('InternshipProgramStudent') %}
         <div class="filter" id="filter-by-company">
             Company
             <i class="i i-chevron-down"></i>
         </div>
         {% endif %}
 
-        {% if has_role(InternshipProgramAdmin) or has_role(InternshipProgramPartner) %}
+        {% if has_role('InternshipProgramAdmin') or has_role('InternshipProgramPartner') %}
         <div class="filter" id="filter-by-visibility">
             Visibility
             <i class="i i-chevron-down"></i>
@@ -156,7 +156,7 @@
 
     {% endif %}
 
-    {% if not has_role(InternshipProgramPartner) %}
+    {% if not has_role('InternshipProgramPartner') %}
     <div class="pop-up-multi-select-list hidden" id="company-multi-select-list">
         <h4>Companies</h4>
         <ul>
@@ -175,7 +175,7 @@
     </div>
     {% endif %}
 
-    {% if not has_role(InternshipProgramStudent) %}
+    {% if not has_role('InternshipProgramStudent') %}
 
     <div class="pop-up-multi-select-list hidden" id="visibility-popup">
         <h4>Visibility</h4>

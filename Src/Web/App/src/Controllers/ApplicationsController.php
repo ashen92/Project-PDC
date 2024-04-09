@@ -6,7 +6,6 @@ namespace App\Controllers;
 use App\Models\InternshipCycle;
 use App\Security\Attributes\RequiredRole;
 use App\Security\AuthorizationService;
-use App\Security\Role;
 use App\Services\InternshipService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,7 +32,7 @@ class ApplicationsController extends ControllerBase
         );
     }
 
-    #[RequiredRole(Role::InternshipProgramPartnerAdmin)]
+    #[RequiredRole('InternshipProgramPartnerAdmin')]
     #[Route('/applicants', methods: ['GET'])]
     public function applicants(Request $request, ?InternshipCycle $cycle): Response
     {
@@ -48,8 +47,8 @@ class ApplicationsController extends ControllerBase
     }
 
     #[RequiredRole([
-        Role::InternshipProgramAdmin,
-        Role::InternshipProgramPartnerAdmin
+        'InternshipProgramAdmin',
+        'InternshipProgramPartnerAdmin'
     ])]
     #[Route('/applicants/applications', methods: ['GET'])]
     public function applicantsApplications(Request $request): Response

@@ -6,7 +6,6 @@ namespace App\Controllers;
 use App\Models\InternshipCycle;
 use App\Security\Attributes\RequiredRole;
 use App\Security\AuthorizationService;
-use App\Security\Role;
 use App\Services\InternMonitoringService;
 use App\Services\RequirementService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -15,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
 
-#[RequiredRole(Role::InternshipProgramAdmin)]
+#[RequiredRole('InternshipProgramAdmin')]
 #[Route('/internship-program/monitoring')]
 class InternMonitoringController extends ControllerBase
 {

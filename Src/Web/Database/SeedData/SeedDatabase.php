@@ -317,35 +317,35 @@ $entityManager->flush();
 
 echo "Done.\nAdding roles...";
 
-$roleCoordinator = new Role('coordinator');
+$roleCoordinator = new Role('Coordinator');
 $entityManager->persist($roleCoordinator);
 $roleCoordinator->addGroup($groupCoordinators);
 
-$rolePartner = new Role('partner');
+$rolePartner = new Role('Partner');
 $entityManager->persist($rolePartner);
 $rolePartner->addGroup($groupPartners);
 
-$roleStudent = new Role('student');
+$roleStudent = new Role('Student');
 $entityManager->persist($roleStudent);
 $roleStudent->addGroup($groupStudents);
 
-$roleAdmin = new Role('admin');
+$roleAdmin = new Role('Admin');
 $entityManager->persist($roleAdmin);
 $roleAdmin->addGroup($groupCoordinators);
 
-$roleIntProgAdmin = new Role('internship_program_admin');
+$roleIntProgAdmin = new Role('InternshipProgramAdmin');
 $entityManager->persist($roleIntProgAdmin);
 $roleIntProgAdmin->addGroup($groupCoordinators);
 
-$roleIntProgPartnerAdmin = new Role('internship_program_partner_admin');
+$roleIntProgPartnerAdmin = new Role('InternshipProgramPartnerAdmin');
 $entityManager->persist($roleIntProgPartnerAdmin);
 $roleIntProgPartnerAdmin->addGroup($groupCyclePartnerAdmins);
 
-$roleIntProgStudent = new Role('internship_program_student');
+$roleIntProgStudent = new Role('InternshipProgramStudent');
 $entityManager->persist($roleIntProgStudent);
 $roleIntProgStudent->addGroup($groupCycleStudents);
 
-$roleIntProgPartner = new Role('internship_program_partner');
+$roleIntProgPartner = new Role('InternshipProgramPartner');
 $entityManager->persist($roleIntProgPartner);
 $roleIntProgPartner->addGroup($groupCyclePartnerAdmins);
 

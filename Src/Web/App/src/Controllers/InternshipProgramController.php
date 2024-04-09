@@ -8,7 +8,6 @@ use App\Exceptions\UserExistsException;
 use App\Models\InternshipCycle;
 use App\Security\Attributes\RequiredRole;
 use App\Security\AuthorizationService;
-use App\Security\Role;
 use App\Services\InternshipProgramService;
 use App\Services\RequirementService;
 use App\Services\UserService;
@@ -19,9 +18,9 @@ use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
 
 #[RequiredRole([
-    Role::InternshipProgramAdmin,
-    Role::InternshipProgramPartner,
-    Role::InternshipProgramStudent,
+    'InternshipProgramAdmin',
+    'InternshipProgramPartner',
+    'InternshipProgramStudent',
 ])]
 #[Route('/internship-program')]
 class InternshipProgramController extends ControllerBase
@@ -41,7 +40,7 @@ class InternshipProgramController extends ControllerBase
     {
         $userId = $request->getSession()->get('user_id');
 
-        if ($this->hasRole(Role::InternshipProgramAdmin)) {
+        if ($this->hasRole('InternshipProgramAdmin')) {
             return $this->render(
                 'internship-program/home-admin.html',
                 [
@@ -50,7 +49,7 @@ class InternshipProgramController extends ControllerBase
                 ]
             );
         }
-        if ($this->hasRole(Role::InternshipProgramPartnerAdmin)) {
+        if ($this->hasRole('InternshipProgramPartnerAdmin')) {
             return $this->render(
                 'internship-program/home-partner.html',
                 [
@@ -101,7 +100,7 @@ class InternshipProgramController extends ControllerBase
         return $this->redirect('/internship-program/users/create');
     }
 
-    #[RequiredRole(Role::InternshipProgramAdmin)]
+    #[RequiredRole('InternshipProgramAdmin')]
     #[Route('/cycle/create', methods: ['GET'])]
     public function cycleCreateGET(): Response
     {
@@ -117,7 +116,7 @@ class InternshipProgramController extends ControllerBase
         );
     }
 
-    #[RequiredRole(Role::InternshipProgramAdmin)]
+    #[RequiredRole('InternshipProgramAdmin')]
     #[Route('/cycle/create', methods: ['POST'])]
     public function cycleCreatePOST(Request $request): RedirectResponse
     {
@@ -132,7 +131,7 @@ class InternshipProgramController extends ControllerBase
         return $this->redirect('/internship-program');
     }
 
-    #[RequiredRole(Role::InternshipProgramAdmin)]
+    #[RequiredRole('InternshipProgramAdmin')]
     #[Route('/cycle/end')]
     public function cycleEnd(): RedirectResponse
     {
@@ -140,7 +139,7 @@ class InternshipProgramController extends ControllerBase
         return $this->redirect('/internship-program');
     }
 
-    #[RequiredRole(Role::InternshipProgramStudent)]
+    #[RequiredRole('InternshipProgramStudent')]
     #[Route('/profile', methods: ['GET'])]
     public function profile(Request $request): Response
     {
