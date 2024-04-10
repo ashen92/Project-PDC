@@ -157,67 +157,67 @@
     {% endif %}
 
     {% if not has_role('InternshipProgramPartner') %}
-    <div class="pop-up-multi-select-list hidden" id="company-multi-select-list">
-        <h4>Companies</h4>
-        <ul>
-            {% for i in organizations %}
-            <li>
-                <input type="checkbox" name="{{ i.name }}" id="{{ i.id }}">
-                <label for="{{ i.id }}">{{ i.name }}</label>
-            </li>
-            {% endfor %}
-        </ul>
-        <div class="actions">
-            <button type="button" class="btn btn-primary" id="company-multi-select-list-apply-btn">Apply</button>
-            <button type="button" class="btn btn-secondary" id="company-multi-select-list-reset-btn">Reset</button>
-            <button type="button" class="btn btn-secondary" id="company-multi-select-list-hide-btn">Hide</button>
+    <div class="dialog-container" id="company-popup">
+        <div class="dialog min-w-80">
+            <div class="mx-6 mt-3 mb-8">
+                {% for i in organizations %}
+                <div class="checkbox">
+                    <input type="checkbox" name="{{ i.name }}" id="{{ i.id }}">
+                    <label for="{{ i.id }}">{{ i.name }}</label>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="actions">
+                <button type="button" class="btn btn-primary" id="company-popup-apply-btn">Apply</button>
+                <button type="button" class="btn btn-secondary" id="company-popup-reset-btn">Reset</button>
+            </div>
         </div>
     </div>
     {% endif %}
 
     {% if not has_role('InternshipProgramStudent') %}
 
-    <div class="pop-up-multi-select-list hidden" id="visibility-popup">
-        <h4>Visibility</h4>
-        <ul>
-            <li>
-                <input type="radio" name="visibility" id="visibility-all" value="all" checked>
-                <label for="visibility-all">All</label>
-            </li>
-            <li>
-                <input type="radio" name="visibility" id="visibility-public" value="public">
-                <label for="visibility-public">Public</label>
-            </li>
-            <li>
-                <input type="radio" name="visibility" id="visibility-private" value="private">
-                <label for="visibility-private">Private</label>
-            </li>
-        </ul>
-        <div class="actions" id="action-btn-container">
-            <button type="button" class="btn btn-primary" id="visibility-popup-apply-btn">Apply</button>
-            <button type="button" class="btn btn-secondary" id="visibility-popup-hide-btn">Hide</button>
+    <div class="dialog-container" id="visibility-popup">
+        <div class="dialog min-w-80">
+            <div class="mx-6 mt-3 mb-8">
+                <div class="radio">
+                    <input type="radio" name="visibility" id="visibility-all" value="all" checked>
+                    <label for="visibility-all">All</label>
+                </div>
+                <div class="radio">
+                    <input type="radio" name="visibility" id="visibility-public" value="public">
+                    <label for="visibility-public">Public</label>
+                </div>
+                <div class="radio">
+                    <input type="radio" name="visibility" id="visibility-private" value="private">
+                    <label for="visibility-private">Private</label>
+                </div>
+            </div>
+            <div class="actions">
+                <button type="button" class="btn btn-primary" id="visibility-popup-apply-btn">Apply</button>
+            </div>
         </div>
     </div>
 
-    <div class="pop-up-multi-select-list hidden" id="approval-popup">
-        <h4>Approval</h4>
-        <ul>
-            <li>
-                <input type="radio" name="approval" id="approval-all" value="all" checked>
-                <label for="approval-all">All</label>
-            </li>
-            <li>
-                <input type="radio" name="approval" id="approval-approved" value="approved">
-                <label for="approval-approved">Approved</label>
-            </li>
-            <li>
-                <input type="radio" name="approval" id="approval-pending" value="pending">
-                <label for="approval-pending">Pending</label>
-            </li>
-        </ul>
-        <div class="actions" id="action-btn-container">
-            <button type="button" class="btn btn-primary" id="approval-popup-apply-btn">Apply</button>
-            <button type="button" class="btn btn-secondary" id="approval-popup-hide-btn">Hide</button>
+    <div class="dialog-container" id="approval-popup">
+        <div class="dialog min-w-80">
+            <div class="mx-6 mt-3 mb-8">
+                <div class="radio">
+                    <input type="radio" name="approval" id="approval-all" value="all" checked>
+                    <label for="approval-all">All</label>
+                </div>
+                <div class="radio">
+                    <input type="radio" name="approval" id="approval-approved" value="approved">
+                    <label for="approval-approved">Approved</label>
+                </div>
+                <div class="radio">
+                    <input type="radio" name="approval" id="approval-pending" value="pending">
+                    <label for="approval-pending">Pending</label>
+                </div>
+            </div>
+            <div class="actions">
+                <button type="button" class="btn btn-primary" id="approval-popup-apply-btn">Apply</button>
+            </div>
         </div>
     </div>
 

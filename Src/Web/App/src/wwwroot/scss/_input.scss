@@ -164,3 +164,35 @@ select {
         font-weight: $fw-semibold;
     }
 }
+
+.radio {
+    display: flex;
+
+    input[type="radio"]:first-child {
+        margin-right: 0.75rem;
+    }
+
+    label {
+        cursor: pointer;
+    }
+
+    +.radio {
+        margin-top: 0.5rem;
+    }
+}
+
+.checkbox {
+    display: flex;
+
+    input[type="checkbox"]:first-child {
+        margin-right: 0.75rem;
+    }
+
+    label {
+        cursor: pointer;
+    }
+
+    +.checkbox {
+        margin-top: 0.5rem;
+    }
+}

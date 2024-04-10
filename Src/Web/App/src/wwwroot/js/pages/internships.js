@@ -1,5 +1,6 @@
 import { $, $all } from "../core/dom";
 import { on } from "../core/events";
+import { Dialog } from "../components/dialog";
 
 const params = new URLSearchParams(window.location.search);
 
@@ -166,26 +167,22 @@ on(undoApplyBtn, "click", function () {
 
 // Filter by company
 const filterByCompany = $("#filter-by-company");
-const companyMultiSelectList = $("#company-multi-select-list");
+const companyDialog = new Dialog("#company-popup");
+companyDialog.setTitle("Filter by Company");
 
 on(filterByCompany, "click", function () {
-    companyMultiSelectList.classList.toggle("hidden");
+    companyDialog.open();
 });
 
-const companyMultiSelectApplyBtn = $("#company-multi-select-list-apply-btn");
-const companyMultiSelectResetBtn = $("#company-multi-select-list-reset-btn");
-const companyMultiSelectHideBtn = $("#company-multi-select-list-hide-btn");
+const companyMultiSelectApplyBtn = $("#company-popup-apply-btn");
+const companyMultiSelectResetBtn = $("#company-popup-reset-btn");
 
-let companyCheckboxes = $all("#company-multi-select-list input[type=checkbox]");
+let companyCheckboxes = $all("#company-popup input[type=checkbox]");
 
 on(companyMultiSelectResetBtn, "click", function () {
     companyCheckboxes.forEach(checkbox => {
         checkbox.checked = false;
     });
-});
-
-on(companyMultiSelectHideBtn, "click", function () {
-    companyMultiSelectList.classList.toggle("hidden");
 });
 
 on(companyMultiSelectApplyBtn, "click", function () {
@@ -207,68 +204,45 @@ on(companyMultiSelectApplyBtn, "click", function () {
 
 // Filter by visibility
 const filterByVisibility = $("#filter-by-visibility");
-const visibilityPopup = $("#visibility-popup");
 const visibilityRadioButtons = $all("#visibility-popup input[type=radio]");
+const visibilityDialog = new Dialog("#visibility-popup");
+visibilityDialog.setTitle("Filter by Visibility");
 
 on(filterByVisibility, "click", function () {
-    visibilityPopup.classList.toggle("hidden");
+    visibilityDialog.open();
 });
 
 
-on($("#visibility-popup #action-btn-container"), "click", function (e) {
-    if (e.target.tagName !== "BUTTON") {
-        return;
+on($("#visibility-popup-apply-btn"), "click", function (e) {
+    let visibility = $("#visibility-popup input[type=radio]:checked").value;
+    if (visibility === "all") {
+        params.delete("v");
+    } else {
+        params.set("v", visibility);
     }
 
-    let target = e.target;
-
-    if (target.id === "visibility-popup-apply-btn") {
-        let visibility = $("#visibility-popup input[type=radio]:checked").value;
-        if (visibility === "all") {
-            params.delete("v");
-        } else {
-            params.set("v", visibility);
-        }
-
-        window.location.href = `${window.location.pathname}?${params.toString()}`;
-    }
-
-    if (target.id === "visibility-popup-hide-btn") {
-        visibilityPopup.classList.toggle("hidden");
-    }
+    window.location.href = `${window.location.pathname}?${params.toString()}`;
 });
 
 // Filter by approval
 const filterByApproval = $("#filter-by-approval");
-const approvalPopup = $("#approval-popup");
 const approvalRadioButtons = $all("#approval-popup input[type=radio]");
+const approvalDialog = new Dialog("#approval-popup");
+approvalDialog.setTitle("Filter by Approval");
 
 on(filterByApproval, "click", function () {
-    approvalPopup.classList.toggle("hidden");
+    approvalDialog.open();
 });
 
-on($("#approval-popup #action-btn-container"), "click", function (e) {
-
-    if (e.target.tagName !== "BUTTON") {
-        return;
+on($("#approval-popup-apply-btn"), "click", function (e) {
+    let approval = $("#approval-popup input[type=radio]:checked").value;
+    if (approval === "all") {
+        params.delete("a");
+    } else {
+        params.set("a", approval);
     }
 
-    let target = e.target;
-
-    if (target.id === "approval-popup-apply-btn") {
-        let approval = $("#approval-popup input[type=radio]:checked").value;
-        if (approval === "all") {
-            params.delete("a");
-        } else {
-            params.set("a", approval);
-        }
-
-        window.location.href = `${window.location.pathname}?${params.toString()}`;
-    }
-
-    if (target.id === "approval-popup-hide-btn") {
-        approvalPopup.classList.toggle("hidden");
-    }
+    window.location.href = `${window.location.pathname}?${params.toString()}`;
 });
 
 // Default behavior on page load
