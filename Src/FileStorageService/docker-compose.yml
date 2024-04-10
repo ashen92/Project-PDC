@@ -13,3 +13,5 @@ services:
     image: mcr.microsoft.com/azure-storage/azurite
     expose:
       - 10000
+    ports:
+      - 10000:10000
