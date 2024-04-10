@@ -159,7 +159,7 @@
     {% if not has_role('InternshipProgramPartner') %}
     <div class="dialog-container" id="company-popup">
         <div class="dialog min-w-80">
-            <div class="mx-6 mt-3 mb-8">
+            <div class="mx-6 mt-2 mb-2">
                 {% for i in organizations %}
                 <div class="checkbox">
                     <input type="checkbox" name="{{ i.name }}" id="{{ i.id }}">
@@ -179,7 +179,7 @@
 
     <div class="dialog-container" id="visibility-popup">
         <div class="dialog min-w-80">
-            <div class="mx-6 mt-3 mb-8">
+            <div class="mx-6 mt-2 mb-2">
                 <div class="radio">
                     <input type="radio" name="visibility" id="visibility-all" value="all" checked>
                     <label for="visibility-all">All</label>
@@ -201,7 +201,7 @@
 
     <div class="dialog-container" id="approval-popup">
         <div class="dialog min-w-80">
-            <div class="mx-6 mt-3 mb-8">
+            <div class="mx-6 mt-2 mb-2">
                 <div class="radio">
                     <input type="radio" name="approval" id="approval-all" value="all" checked>
                     <label for="approval-all">All</label>

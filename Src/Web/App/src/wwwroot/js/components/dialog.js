@@ -21,7 +21,7 @@ export class Dialog {
             this.dialogContainer.style.display = "none";
         });
 
-        this.title = createElement("h4", { class: "title", id: "title" });
+        this.title = createElement("h5", { class: "title", id: "title" });
         this.titleBar = createElement("div", { class: "title-bar" },
             [
                 this.title,
