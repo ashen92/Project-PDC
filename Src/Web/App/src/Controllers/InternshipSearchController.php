@@ -162,7 +162,7 @@ class InternshipSearchController extends ControllerBase
         return new Response(null, 204);
     }
 
-    #[Route('/{id}/modify', methods: ['GET'])]
+    #[Route('/internships/{id}/modify', methods: ['GET'])]
     public function updateGET(int $id): Response
     {
         return $this->render(
@@ -227,6 +227,12 @@ class InternshipSearchController extends ControllerBase
         // TODO: Validate data
 
         $this->internshipService->createInternship($cycle->getId(), $dto);
+        return $this->redirect('/internship-program/internships');
+    }
+
+    #[Route('/internships/{id}/apply', methods: ['POST'])]
+    public function applyPOST(int $id): RedirectResponse
+    {
         return $this->redirect('/internship-program/internships');
     }
 

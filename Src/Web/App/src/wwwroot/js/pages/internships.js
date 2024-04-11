@@ -134,19 +134,6 @@ on(removeJobBtn, "click", function () {
 //#region
 // This section handles the applying for a internship
 
-on(applyBtn, "click", function () {
-    fetch("/api/internships/" + previouslySelectedItemCard.getAttribute("data-job-id") + "/apply", { method: "PUT" })
-        .then(response => {
-            if (response.status === 204) {
-                applyBtn.classList.add("hidden");
-                undoApplyBtn.classList.remove("hidden");
-            } else {
-                throw new Error("Error applying for job");
-            }
-        })
-        .catch(error => console.error("Error applying for job:", error));
-});
-
 on(undoApplyBtn, "click", function () {
     fetch("/api/internships/" + previouslySelectedItemCard.getAttribute("data-job-id") + "/apply", { method: "DELETE" })
         .then(response => {
@@ -158,6 +145,20 @@ on(undoApplyBtn, "click", function () {
             }
         })
         .catch(error => console.error("Error undoing application for job:", error));
+});
+
+const applicationDialog = new Dialog("#application-dialog");
+applicationDialog.setTitle("Upload CV or Resume");
+
+on(applyBtn, "click", function () {
+    applicationDialog.open();
+});
+
+const fileUploadForm = $("#file-upload-form");
+on(fileUploadForm, "submit", function (e) {
+    e.preventDefault();
+    fileUploadForm.action = `/internship-program/internships/${previouslySelectedItemCard.getAttribute("data-job-id")}/apply`;
+    fileUploadForm.submit();
 });
 
 //#endregion

@@ -224,6 +224,25 @@
     {% endif %}
 
 </div>
+
+<div class="dialog-container" id="application-dialog">
+    <div class="dialog min-w-80">
+        <form method="post" id="file-upload-form">
+            {% include 'shared/file-upload.html' with {
+            'id': 'files-to-upload',
+            'name': 'files-to-upload[]',
+            'accept': '.pdf',
+            'button_text': 'Select files to upload',
+            'multiple': true,
+            'required': true
+            } %}
+            <div class="actions">
+                <button type="submit" class="btn btn-primary" id="application-dialog-submit-btn">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <script src="/js/internships.js" type="text/javascript"></script>
 
 {% endblock %}
