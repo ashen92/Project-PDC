@@ -483,8 +483,8 @@ $container->register(
     ->setPublic(true);
 
 $container->register(
-    'App\Controllers\InternshipSearchController',
-    \App\Controllers\InternshipSearchController::class
+    'App\Controllers\InternshipsController',
+    \App\Controllers\InternshipsController::class
 )
     ->setArguments([
         new Reference('twig'),
