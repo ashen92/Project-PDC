@@ -6,9 +6,11 @@ namespace App\Controllers;
 use App\Models\InternshipCycle;
 use App\Security\Attributes\RequiredRole;
 use App\Security\AuthorizationService;
+use App\Services\ApplicationService;
 use App\Services\InternshipService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
 
@@ -18,19 +20,49 @@ class ApplicationsController extends ControllerBase
     public function __construct(
         Environment $twig,
         AuthorizationService $authzService,
-        private readonly InternshipService $internshipService
+        private readonly InternshipService $internshipService,
+        private readonly ApplicationService $applicationService,
     ) {
         parent::__construct($twig, $authzService);
     }
 
+    #[RequiredRole('InternshipProgramStudent')]
     #[Route(['/applications'])]
-    public function applications(): Response
+    public function applications(Request $request): Response
     {
+        $userId = $request->getSession()->get('user_id');
         return $this->render(
-            'internship-program/applications/home.html',
-            ['section' => 'applications']
+            'internship-program/applications/student/home.html',
+            [
+                'section' => 'applications',
+                'applications' => $this->applicationService->getStudentApplications($userId),
+            ]
         );
     }
+
+    #[Route('/applications/{applicationId}/files/{fileId}',
+        requirements: ['applicationId' => '\d+', 'fileId' => '\d+'],
+        methods: ['GET'])
+    ]
+    public function applicationFile(int $applicationId, int $fileId): Response
+    {
+        // TODO: Validate
+
+        $file = $this->applicationService->getApplicationFile($applicationId, $fileId);
+        if ($file === null) {
+            return new Response(null, 404);
+        }
+
+        $response = new Response();
+        $response->headers->set('Content-Type', $file['mimeType']);
+        $response->headers->set(
+            'Content-Disposition',
+            $response->headers->makeDisposition(ResponseHeaderBag::DISPOSITION_INLINE, $file['name'])
+        );
+        $response->setContent($file['content']);
+        return $response;
+    }
+
 
     #[RequiredRole('InternshipProgramPartnerAdmin')]
     #[Route('/applicants', methods: ['GET'])]

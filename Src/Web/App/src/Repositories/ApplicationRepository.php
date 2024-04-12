@@ -94,4 +94,39 @@ readonly class ApplicationRepository
         ]);
         return $stmt->rowCount() === 1;
     }
+
+    public function findAllApplicationsByStudent(int $studentId): array
+    {
+        $stmt = $this->pdo->prepare(
+            "SELECT a.id AS application_id, a.status AS application_status,
+            i.title AS internship_title,
+            o.name AS organization_name,
+            JSON_ARRAYAGG(af.id) AS fileIds
+            FROM applications a
+            LEFT JOIN internships i ON a.internship_id = i.id
+            LEFT JOIN organizations o ON i.organization_id = o.id
+            LEFT JOIN application_files af ON a.id = af.application_id
+            WHERE a.user_id = :studentId
+            GROUP BY a.id"
+        );
+        $stmt->execute([
+            "studentId" => $studentId
+        ]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function findApplicationFile(int $applicationId, int $fileId): ?array
+    {
+        $stmt = $this->pdo->prepare(
+            "SELECT name, path
+            FROM application_files
+            WHERE application_id = :applicationId
+            AND id = :fileId"
+        );
+        $stmt->execute([
+            "applicationId" => $applicationId,
+            "fileId" => $fileId
+        ]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 }

@@ -10,7 +10,8 @@ use BadMethodCallException;
 final readonly class ApplicationService
 {
     public function __construct(
-        private ApplicationRepository $applicationRepository
+        private ApplicationRepository $applicationRepository,
+        private FileStorageService $fileStorageService,
     ) {
 
     }
@@ -88,5 +89,27 @@ final readonly class ApplicationService
             $this->applicationRepository->rollback();
             throw $e;
         }
+    }
+
+    public function getStudentApplications(int $studentId): array
+    {
+        $applications = $this->applicationRepository->findAllApplicationsByStudent($studentId);
+        foreach ($applications as &$application) {
+            $application['fileIds'] = json_decode($application['fileIds']);
+        }
+        return $applications;
+    }
+
+    public function getApplicationFile(int $applicationId, int $fileId): ?array
+    {
+        $fileMetadata = $this->applicationRepository->findApplicationFile($applicationId, $fileId);
+
+        if ($fileMetadata === null) {
+            return null;
+        }
+
+        $file = $this->fileStorageService->get($fileMetadata['path']);
+        $file['name'] = $fileMetadata['name'];
+        return $file;
     }
 }

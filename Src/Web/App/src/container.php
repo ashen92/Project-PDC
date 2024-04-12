@@ -289,6 +289,7 @@ $container->register(
 )
     ->setArguments([
         new Reference('repository.application'),
+        new Reference('service.file_storage'),
     ]);
 
 $container->register(
@@ -502,6 +503,7 @@ $container->register(
         new Reference('twig'),
         new Reference('service.authorization'),
         new Reference('service.internship'),
+        new Reference('service.application')
     ])
     ->setPublic(true);
 
