@@ -1,6 +1,6 @@
-import { $, $all } from "../core/dom";
-import { on } from "../core/events";
-import { Dialog } from "../components/dialog";
+import { $, $all } from "../../core/dom";
+import { on } from "../../core/events";
+import { Dialog } from "../../components/dialog";
 
 const params = new URLSearchParams(window.location.search);
 
