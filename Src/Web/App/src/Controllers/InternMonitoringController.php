@@ -28,13 +28,13 @@ class InternMonitoringController extends ControllerBase
     }
 
     #[Route('', methods: ['GET'])]
-    public function monitoring(): Response
+    public function monitoring(InternshipCycle $cycle): Response
     {
         return $this->render(
             'internship-program/monitoring/home.html',
             [
                 'section' => 'monitoring',
-                'requirements' => $this->requirementService->getRequirements()
+                'requirements' => $this->requirementService->getRequirements($cycle->getId())
             ]
         );
     }

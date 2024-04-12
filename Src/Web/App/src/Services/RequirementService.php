@@ -4,16 +4,13 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\DTOs\CreateRequirementDTO;
-use App\DTOs\CreateUserRequirementDTO;
 use App\DTOs\UserRequirementFulfillmentDTO;
 use App\Interfaces\IFileStorageService;
 use App\Models\Requirement;
 use App\Models\Requirement\FulFillMethod;
 use App\Models\Requirement\Type;
 use App\Models\UserRequirement;
-use App\Models\UserRequirement\Status;
 use App\Repositories\RequirementRepository;
-use DateInterval;
 use Exception;
 
 readonly class RequirementService
@@ -31,18 +28,9 @@ readonly class RequirementService
         return $this->requirementRepo->findRequirement($id);
     }
 
-    /**
-     * @return array<Requirement>
-     */
-    public function getRequirements(?int $internshipCycleId = null): array
+    public function getRequirements(int $cycleId): array
     {
-        if ($internshipCycleId === null)
-            $internshipCycleId = $this->internshipCycleService->getLatestInternshipCycleId();
-
-        if ($internshipCycleId === null)
-            return [];
-
-        return $this->requirementRepo->findAllRequirements($internshipCycleId);
+        return $this->requirementRepo->findAllRequirements($cycleId);
     }
 
     public function getUserRequirement(int $id): ?UserRequirement
@@ -50,16 +38,9 @@ readonly class RequirementService
         return $this->requirementRepo->findUserRequirement($id);
     }
 
-    /**
-     * @return array<UserRequirement>
-     */
-    public function getUserRequirements(
-        int $cycleId,
-        ?int $requirementId = null,
-        ?int $userId = null,
-        ?Status $status = null
-    ): array {
-        return $this->requirementRepo->findAllUserRequirements($cycleId, $requirementId, $userId, $status);
+    public function getActiveUserRequirementsForUser(int $cycleId, int $userId): array
+    {
+        return $this->requirementRepo->findUserRequirementsToBeCompleted($cycleId, $userId);
     }
 
     public function createRequirement(CreateRequirementDTO $reqDTO): bool

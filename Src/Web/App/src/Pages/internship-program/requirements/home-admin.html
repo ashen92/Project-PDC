@@ -37,18 +37,18 @@
             </tr>
         </thead>
         <tbody class="table-rows-clickable">
-            {% for item in requirements %}
-            <tr data-href="/internship-program/requirements/{{ item.id }}">
-                <td>{{ item.name }}</td>
+            {% for r in requirements %}
+            <tr data-href="/internship-program/requirements/{{ r.id }}">
+                <td>{{ r.name }}</td>
                 <td class="capitalize">
-                    {% set requirementType = item.requirementType.value %}
+                    {% set requirementType = r.requirementType %}
                     {% if requirementType == "recurring" %}
-                    {{ requirementType }} ({{ item.repeatInterval.value }})
+                    {{ requirementType }} ({{ r.repeatInterval }})
                     {% else %}
                     {{ requirementType }}
                     {% endif %}
                 </td>
-                <td>{{ item.startDate.format("Y-m-d") }}</td>
+                <td>{{ r.startDate.format("Y-m-d") }}</td>
             </tr>
             {% endfor %}
         </tbody>

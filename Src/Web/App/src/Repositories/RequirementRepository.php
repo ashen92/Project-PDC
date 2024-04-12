@@ -53,18 +53,20 @@ readonly class RequirementRepository implements IRepository
     public function findAllRequirements(int $cycleId): array
     {
         $sql = "SELECT * FROM requirements WHERE internship_cycle_id = :cycleId";
-        $statement = $this->pdo->prepare($sql);
-        $statement->execute([
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([
             "cycleId" => $cycleId
         ]);
-        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
-        if ($results === false) {
+        $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        if ($res === false) {
             return [];
         }
 
-        return array_map(function ($result) {
-            return RequirementMapper::map($result);
-        }, $results);
+        foreach ($res as &$r) {
+            $r['startDate'] = new DateTime($r['startDate']);
+            $r['endBeforeDate'] = $r['endBeforeDate'] ? new DateTime($r['endBeforeDate']) : null;
+        }
+        return $res;
     }
 
     public function findUserRequirement(int $id): ?UserRequirement
@@ -82,9 +84,6 @@ readonly class RequirementRepository implements IRepository
         return UserRequirementMapper::map($result);
     }
 
-    /**
-     * @return array</App/Models/UserRequirement>
-     */
     public function findAllUserRequirements(
         int $cycleId,
         ?int $requirementId = null,
@@ -123,6 +122,42 @@ readonly class RequirementRepository implements IRepository
         return array_map(function ($result) {
             return UserRequirementMapper::map($result);
         }, $results);
+    }
+
+    public function findUserRequirementsToBeCompleted(int $cycleId, int $userId): array
+    {
+        $sql = "SELECT ur.*, JSON_OBJECT(
+                    'id', r.id,
+                    'name', r.name,
+                    'requirementType', r.requirementType,
+                    'fulfillMethod', r.fulfillMethod,
+                    'repeatInterval', r.repeatInterval
+                ) AS requirement
+                FROM user_requirements ur
+                INNER JOIN requirements r ON r.id = ur.requirement_id
+                WHERE r.internship_cycle_id = :cycleId
+                AND ur.user_id = :userId
+                AND ur.startDate <= :today
+                AND ur.endDate >= :today
+                GROUP BY ur.id";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([
+            "cycleId" => $cycleId,
+            "userId" => $userId,
+            "today" => (new DateTime())->format($this::DATE_TIME_FORMAT)
+        ]);
+        $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        if ($res === false) {
+            return [];
+        }
+
+        foreach ($res as &$r) {
+            $r['startDate'] = new DateTime($r['startDate']);
+            $r['endDate'] = new DateTime($r['endDate']);
+            $r['requirement'] = json_decode($r['requirement'], true);
+        }
+        return $res;
     }
 
     public function createRequirement(int $cycleId, CreateRequirementDTO $reqDTO): int

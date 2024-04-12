@@ -37,33 +37,26 @@ class RequirementsController extends ControllerBase
     }
 
     #[Route([''], methods: ['GET'])]
-    public function requirements(Request $request, ?InternshipCycle $cycle): Response
+    public function requirements(Request $request, InternshipCycle $cycle): Response
     {
         if ($this->hasRole('InternshipProgramAdmin')) {
             return $this->render(
                 'internship-program/requirements/home-admin.html',
                 [
                     'section' => 'requirements',
-                    'requirements' => $this->requirementService->getRequirements()
+                    'requirements' => $this->requirementService->getRequirements($cycle->getId())
                 ]
             );
-        }
-
-        $cycleId = $cycle->getId();
-        if ($cycleId) {
-            $userReq = $this->requirementService->getUserRequirements(
-                $cycleId,
-                userId: $request->getSession()->get('user_id')
-            );
-        } else {
-            $userReq = [];
         }
 
         return $this->render(
             'internship-program/requirements/home.html',
             [
                 'section' => 'requirements',
-                'userRequirements' => $userReq,
+                'userRequirements' => $this->requirementService->getActiveUserRequirementsForUser(
+                    $cycle->getId(),
+                    userId: $request->getSession()->get('user_id')
+                ),
             ]
         );
     }
