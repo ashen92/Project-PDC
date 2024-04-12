@@ -6,6 +6,7 @@ namespace App\Controllers;
 use App\DTOs\createInternshipDTO;
 use App\Models\Internship;
 use App\Models\InternshipCycle;
+use App\Models\InternshipProgram\createApplication;
 use App\Security\Attributes\RequiredRole;
 use App\Security\AuthorizationService;
 use App\Services\InternshipService;
@@ -231,8 +232,21 @@ class InternshipsController extends ControllerBase
     }
 
     #[Route('/internships/{id}/apply', methods: ['POST'])]
-    public function applyPOST(int $id): RedirectResponse
+    public function applyPOST(Request $request, int $id): RedirectResponse
     {
+        $userId = $request->getSession()->get('user_id');
+
+        $files = $request->files->get('files-to-upload');
+        if ($files && !is_array($files)) {
+            $files = [$files];
+        }
+
+        // TODO: Validate data
+
+        if (!$this->internshipService->createApplication(new createApplication($id, $userId, $files))) {
+            // TODO: Set errors
+        }
+
         return $this->redirect('/internship-program/internships');
     }
 

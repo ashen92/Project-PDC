@@ -227,7 +227,7 @@
 
 <div class="dialog-container" id="application-dialog">
     <div class="dialog min-w-80">
-        <form method="post" id="file-upload-form">
+        <form class="mt-5" id="file-upload-form" method="POST" enctype="multipart/form-data">
             {% include 'shared/file-upload.html' with {
             'id': 'files-to-upload',
             'name': 'files-to-upload[]',
@@ -236,7 +236,7 @@
             'multiple': true,
             'required': true
             } %}
-            <div class="actions">
+            <div class="form-actions">
                 <button type="submit" class="btn btn-primary" id="application-dialog-submit-btn">Submit</button>
             </div>
         </form>

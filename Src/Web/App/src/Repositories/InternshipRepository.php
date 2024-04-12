@@ -187,6 +187,22 @@ class InternshipRepository implements IRepository
         return (int) $stmt->fetch(PDO::FETCH_COLUMN);
     }
 
+    public function findInternshipDetailsForStudent(int $internshipId, int $studentId): array
+    {
+        $sql = 'SELECT i.*, o.*, a.id as application_id
+                FROM internships i
+                LEFT JOIN organizations o ON i.organization_id = o.id
+                LEFT JOIN applications a ON i.id = a.internship_id AND a.user_id = :studentId
+                WHERE i.id = :internshipId';
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([
+            'studentId' => $studentId,
+            'internshipId' => $internshipId,
+        ]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
     /**
      * @return array<mixed>
      */
@@ -210,26 +226,74 @@ class InternshipRepository implements IRepository
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function apply(int $internshipId, int $userId): bool
+    /**
+     * @param array<array<string, string>> $files
+     */
+    public function createApplication(int $internshipId, int $userId, array $files): bool
     {
-        $sql = 'INSERT INTO applications (internship_id, user_id, status)
+        $this->pdo->beginTransaction();
+        try {
+            $sql = 'INSERT INTO applications (internship_id, user_id, status)
                 VALUES (:internshipId, :userId, :status)';
-        $stmt = $this->pdo->prepare($sql);
-        return $stmt->execute([
-            'internshipId' => $internshipId,
-            'userId' => $userId,
-            'status' => 'pending',
-        ]);
+            $stmt = $this->pdo->prepare($sql);
+            if (
+                !$stmt->execute([
+                    'internshipId' => $internshipId,
+                    'userId' => $userId,
+                    'status' => 'pending',
+                ])
+            ) {
+                throw new \Exception('Failed to create application');
+            }
+
+            $applicationId = $this->pdo->lastInsertId();
+
+            $sql = 'INSERT INTO application_files (application_id, name, path) VALUES ';
+            $sql .= implode(
+                ',',
+                array_map(
+                    fn($file) => "($applicationId, '{$file['name']}', '{$file['path']}')",
+                    $files
+                )
+            );
+            $stmt = $this->pdo->prepare($sql);
+            if (!$stmt->execute()) {
+                throw new \Exception('Failed to create application files');
+            }
+
+            return $this->pdo->commit();
+        } catch (\Throwable $th) {
+            $this->pdo->rollBack();
+            return false;
+        }
     }
 
-    public function undoApply(int $internshipId, int $userId): bool
+    public function deleteApplication(int $applicationId, int $internshipId, int $userId): bool
     {
-        $sql = 'DELETE FROM applications WHERE internship_id = :internshipId AND user_id = :userId';
-        $stmt = $this->pdo->prepare($sql);
-        return $stmt->execute([
-            'internshipId' => $internshipId,
-            'userId' => $userId,
-        ]);
+        $this->pdo->beginTransaction();
+        try {
+            $sql = 'DELETE FROM application_files WHERE application_id = :applicationId';
+            $stmt = $this->pdo->prepare($sql);
+            if (!$stmt->execute(['applicationId' => $applicationId])) {
+                throw new \Exception('Failed to delete application files');
+            }
+
+            $sql = 'DELETE FROM applications WHERE internship_id = :internshipId AND user_id = :userId';
+            $stmt = $this->pdo->prepare($sql);
+            if (
+                !$stmt->execute([
+                    'internshipId' => $internshipId,
+                    'userId' => $userId,
+                ])
+            ) {
+                throw new \Exception('Failed to delete application');
+            }
+
+            return $this->pdo->commit();
+        } catch (\Throwable $th) {
+            $this->pdo->rollBack();
+            return false;
+        }
     }
 
     public function hasApplied(int $internshipId, int $userId): bool

@@ -26,6 +26,12 @@ class InternshipsAPIController extends ControllerBase
     #[Route('/{id}', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function internship(Request $request, int $id): Response
     {
+        if ($this->hasRole('InternshipProgramStudent')) {
+            $userId = $request->getSession()->get('user_id');
+            $res = $this->internshipService->getInternshipDetailsForStudent($id, $userId);
+            return new Response(json_encode($res), 200, ['Content-Type' => 'application/json']);
+        }
+
         $internship = $this->internshipService->getInternship($id);
         if ($internship) {
             $data = [
@@ -33,33 +39,24 @@ class InternshipsAPIController extends ControllerBase
                 'description' => $internship->getDescription(),
             ];
 
-            if ($this->hasRole('InternshipProgramStudent')) {
-                $userId = $request->getSession()->get('user_id');
-                $data['hasApplied'] = $this->internshipService->hasAppliedToInternship($id, $userId);
-            }
-
             return new Response(json_encode($data), 200, ['Content-Type' => 'application/json']);
         }
         return new Response(null, 404);
     }
 
-    #[Route('/{id}/apply', requirements: ['id' => '\d+'], methods: ['PUT'])]
-    public function apply(Request $request, int $id): Response
+    #[Route('/{internshipId}/applications/{applicationId}',
+        requirements: ['internshipId' => '\d+', 'applicationId' => '\d+'],
+        methods: ['DELETE'])
+    ]
+    public function cancelApplication(Request $request, int $internshipId, int $applicationId): Response
     {
         // TODO: Validate
 
-        $this->internshipService
-            ->apply($id, (int) $request->getSession()->get('user_id'));
-        return new Response(null, 204);
-    }
-
-    #[Route('/{id}/apply', requirements: ['id' => '\d+'], methods: ['DELETE'])]
-    public function cancelApplication(Request $request, int $id): Response
-    {
-        // TODO: Validate
-
-        $this->internshipService
-            ->undoApply($id, (int) $request->getSession()->get('user_id'));
+        $this->internshipService->removeApplication(
+            $applicationId,
+            $internshipId,
+            (int) $request->getSession()->get('user_id')
+        );
         return new Response(null, 204);
     }
 

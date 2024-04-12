@@ -6,6 +6,7 @@ namespace App\Services;
 use App\DTOs\createInternshipDTO;
 use App\Interfaces\IFileStorageService;
 use App\Models\Internship;
+use App\Models\InternshipProgram\createApplication;
 use App\Models\InternshipSearchResult;
 use App\Models\Organization;
 use App\Models\Student;
@@ -115,6 +116,18 @@ readonly class InternshipService
         );
     }
 
+    public function getInternshipDetailsForStudent(int $internshipId, int $studentId): array
+    {
+        $i = $this->internshipRepository->findInternshipDetailsForStudent($internshipId, $studentId);
+
+        $res['id'] = $i['id'];
+        $res['title'] = $i['title'];
+        $res['description'] = $i['description'];
+        $res['applicationId'] = $i['application_id'] ?? null;
+
+        return $res;
+    }
+
     /**
      * @return array<Student>
      */
@@ -161,20 +174,29 @@ readonly class InternshipService
         return $this->internshipRepository->updateInternship($id, $title, $description);
     }
 
-    public function apply(int $internshipId, int $userId): bool
+    public function createApplication(createApplication $createApplication): bool
     {
         // TODO: Check if internship exists
         // TODO: Check if user exists and is a student
 
-        return $this->internshipRepository->apply($internshipId, $userId);
+        $fileUploadResponse = $this->fileStorageService->upload($createApplication->files);
+        if (!$fileUploadResponse) {
+            return false;
+        }
+
+        return $this->internshipRepository->createApplication(
+            $createApplication->internshipId,
+            $createApplication->userId,
+            $fileUploadResponse
+        );
     }
 
-    public function undoApply(int $internshipId, int $userId): bool
+    public function removeApplication(int $applicationId, int $internshipId, int $userId): bool
     {
         // TODO: Check if internship exists
         // TODO: Check if user exists and is a student
 
-        return $this->internshipRepository->undoApply($internshipId, $userId);
+        return $this->internshipRepository->deleteApplication($applicationId, $internshipId, $userId);
     }
 
     public function hasAppliedToInternship(int $internshipId, int $userId): bool

@@ -82,7 +82,7 @@ form {
         }
 
         &-file-upload {
-            margin-bottom: 2rem;
+            margin-bottom: 0.9rem;
 
             .preview {
                 border-radius: $rounded-1;
@@ -117,7 +117,10 @@ form {
     .actions {
         display: flex;
         column-gap: 0.5rem;
-        padding-top: 0.95rem;
-        margin-top: 1.5rem;
     }
+
+}
+
+.form-actions {
+    margin-top: 1.5rem;
 }

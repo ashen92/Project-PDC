@@ -58,13 +58,15 @@ function fetchJobDetails(jobId) {
             jobDetailsSkeleton.classList.toggle("hidden");
             jobDetailsContent.classList.toggle("hidden");
 
-            if ("hasApplied" in data) {
-                if (data.hasApplied) {
+            if ('applicationId' in data) {
+                if (data["applicationId"] !== null) {
                     applyBtn.classList.add("hidden");
                     undoApplyBtn.classList.remove("hidden");
+                    undoApplyBtn.setAttribute("data-application-id", data["applicationId"]);
                 } else {
                     applyBtn.classList.remove("hidden");
                     undoApplyBtn.classList.add("hidden");
+                    undoApplyBtn.removeAttribute("data-application-id");
                 }
             }
         })
@@ -135,7 +137,8 @@ on(removeJobBtn, "click", function () {
 // This section handles the applying for a internship
 
 on(undoApplyBtn, "click", function () {
-    fetch("/api/internships/" + previouslySelectedItemCard.getAttribute("data-job-id") + "/apply", { method: "DELETE" })
+    const applicationId = undoApplyBtn.getAttribute("data-application-id");
+    fetch("/api/internships/" + previouslySelectedItemCard.getAttribute("data-job-id") + "/applications/" + applicationId, { method: "DELETE" })
         .then(response => {
             if (response.status === 204) {
                 applyBtn.classList.remove("hidden");

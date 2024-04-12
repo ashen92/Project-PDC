@@ -225,11 +225,13 @@ readonly class RequirementRepository implements IRepository
                     completedAt = :completedAt
                     WHERE id = :id";
             $stmt = $this->pdo->prepare($sql);
-            if(!$stmt->execute([
-                "status" => Status::FULFILLED->value,
-                "completedAt" => (new DateTime())->format(self::DATE_TIME_FORMAT),
-                "id" => $id,
-            ])) {
+            if (
+                !$stmt->execute([
+                    "status" => Status::FULFILLED->value,
+                    "completedAt" => (new DateTime())->format($this::DATE_TIME_FORMAT),
+                    "id" => $id,
+                ])
+            ) {
                 return false;
             }
 
@@ -238,10 +240,12 @@ readonly class RequirementRepository implements IRepository
 
             $fileIds = [];
             foreach ($filePaths as $file) {
-                if (!$stmt->execute([
-                    'name' => $file['name'],
-                    'path' => $file['path'],
-                ])) {
+                if (
+                    !$stmt->execute([
+                        'name' => $file['name'],
+                        'path' => $file['path'],
+                    ])
+                ) {
                     return false;
                 }
                 $fileIds[] = $this->pdo->lastInsertId();
