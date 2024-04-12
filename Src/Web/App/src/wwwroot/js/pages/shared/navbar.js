@@ -1,5 +1,5 @@
-import { $ } from "../core/dom";
-import { on } from "../core/events";
+import { $ } from "../../core/dom";
+import { on } from "../../core/events";
 
 const navbarDropdown = $(".navbar-dropdown");
 const navbarToggleShow = $("#navbar-toggle-show");
