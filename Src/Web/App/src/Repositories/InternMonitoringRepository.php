@@ -3,9 +3,8 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
-use App\DTOMappers\UserRequirementTableViewDTOMapper;
-use App\DTOs\UserRequirementTableViewDTO;
 use App\Interfaces\IRepository;
+use DateTimeImmutable;
 use PDO;
 
 class InternMonitoringRepository implements IRepository
@@ -118,10 +117,7 @@ class InternMonitoringRepository implements IRepository
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    /**
-     * @return array<UserRequirementTableViewDTO>
-     */
-    public function getUserRequirementsByUserId(int $cycleId, int $studentId): array
+    public function getUserRequirementsByUserId(int $cycleId, int $studentId): array|bool
     {
         $stmt = $this->pdo->prepare(
             "SELECT ur.id,
@@ -131,7 +127,9 @@ class InternMonitoringRepository implements IRepository
                 ur.endDate,
                 ur.completedAt,
                 ur.status,
-                r.name AS requirementName
+                JSON_OBJECT(
+                    'id', r.id, 'name', r.name
+                ) as requirement
             FROM user_requirements ur
             INNER JOIN requirements r ON ur.requirement_id = r.id
             WHERE r.internship_cycle_id = :cycleId
@@ -141,10 +139,21 @@ class InternMonitoringRepository implements IRepository
             ':cycleId' => $cycleId,
             ':studentId' => $studentId,
         ]);
-        return array_map(
-            fn($row) => UserRequirementTableViewDTOMapper::map($row),
-            $stmt->fetchAll(PDO::FETCH_ASSOC)
-        );
+
+        $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        if ($res === false) {
+            return false;
+        }
+
+        foreach ($res as &$row) {
+            $row['requirement'] = json_decode($row['requirement'], true);
+            $row['startDate'] = new DateTimeImmutable($row['startDate']);
+            $row['endDate'] = new DateTimeImmutable($row['endDate']);
+            $row['completedAt'] = $row['completedAt'] ? new DateTimeImmutable($row['completedAt']) : null;
+        }
+
+        return $res;
     }
 
     public function isEmployed(int $studentId): bool
@@ -152,7 +161,8 @@ class InternMonitoringRepository implements IRepository
         $stmt = $this->pdo->prepare(
             'SELECT COUNT(*)
             FROM interns
-            WHERE student_id = :studentId');
+            WHERE student_id = :studentId'
+        );
         $stmt->execute(["studentId" => $studentId]);
         $data = $stmt->fetch(PDO::FETCH_COLUMN);
         return $data > 0;
