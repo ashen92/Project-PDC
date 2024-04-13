@@ -10,9 +10,6 @@ use DateTimeImmutable;
 
 class CreateRequirementDTO
 {
-    /**
-     * @param array<string> $allowedFileTypes
-     */
     public function __construct(
         public string $name,
         public string $description,
@@ -21,7 +18,7 @@ class CreateRequirementDTO
         public ?DateTimeImmutable $endBeforeDate,
         public ?RepeatInterval $repeatInterval,
         public FulFillMethod $fulfillMethod,
-        public ?array $allowedFileTypes,
+        public ?string $allowedFileTypes,
         public ?int $maxFileSize,
         public ?int $maxFileCount,
     ) {

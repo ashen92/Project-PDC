@@ -5,9 +5,7 @@ namespace App\Repositories;
 
 use App\DTOs\CreateRequirementDTO;
 use App\Interfaces\IRepository;
-use App\Mappers\RequirementMapper;
 use App\Mappers\UserRequirementMapper;
-use App\Models\Requirement;
 use App\Models\UserRequirement;
 use App\Models\UserRequirement\Status;
 use DateTime;
@@ -35,19 +33,23 @@ readonly class RequirementRepository implements IRepository
         $this->pdo->rollBack();
     }
 
-    public function findRequirement(int $id): ?Requirement
+    public function findRequirement(int $id): array|bool
     {
         $sql = "SELECT * FROM requirements WHERE id = :id";
-        $statement = $this->pdo->prepare($sql);
-        $statement->execute([
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([
             "id" => $id
         ]);
-        $result = $statement->fetch(PDO::FETCH_ASSOC);
-        if ($result === false) {
-            return null;
+        $res = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($res === false) {
+            return false;
         }
 
-        return RequirementMapper::map($result);
+        $res['startDate'] = new DateTime($res['startDate']);
+        $res['endBeforeDate'] = $res['endBeforeDate'] ? new DateTime($res['endBeforeDate']) : null;
+        $res['allowedFileTypes'] = $res['allowedFileTypes'] ? json_decode($res['allowedFileTypes'], false) : null;
+        return $res;
     }
 
     public function findAllRequirements(int $cycleId): array

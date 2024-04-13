@@ -47,13 +47,13 @@ class Requirement
     #[ORM\Column(type: "requirement_fulfill_method")]
     private FulFillMethod $fulfillMethod;
 
-    #[ORM\Column(type: "simple_array", nullable: true)]
-    private ?array $allowedFileTypes;
+    #[ORM\Column(nullable: true)]
+    private ?string $allowedFileTypes;
 
-    #[ORM\Column(type: "integer", nullable: true)]
+    #[ORM\Column(nullable: true)]
     private ?int $maxFileSize;
 
-    #[ORM\Column(type: "integer", nullable: true)]
+    #[ORM\Column(nullable: true)]
     private ?int $maxFileCount;
 
     #[ORM\ManyToOne(targetEntity: InternshipCycle::class, inversedBy: "requirements")]

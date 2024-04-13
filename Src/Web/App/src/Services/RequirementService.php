@@ -5,8 +5,8 @@ namespace App\Services;
 
 use App\DTOs\CreateRequirementDTO;
 use App\DTOs\UserRequirementFulfillmentDTO;
+use App\Exceptions\EntityNotFound;
 use App\Interfaces\IFileStorageService;
-use App\Models\Requirement;
 use App\Models\Requirement\FulFillMethod;
 use App\Models\Requirement\Type;
 use App\Models\UserRequirement;
@@ -23,9 +23,16 @@ readonly class RequirementService
 
     }
 
-    public function getRequirement(int $id): ?Requirement
+    /**
+     * @throws \App\Exceptions\EntityNotFound
+     */
+    public function getRequirement(int $id): array
     {
-        return $this->requirementRepo->findRequirement($id);
+        $r = $this->requirementRepo->findRequirement($id);
+        if ($r === false)
+            throw new EntityNotFound('Requirement not found');
+
+        return $r;
     }
 
     public function getRequirements(int $cycleId): array

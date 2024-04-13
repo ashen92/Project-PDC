@@ -647,7 +647,7 @@ $requirementData = [
         new DateTimeImmutable('+1 month'),
         null,
         FulFillMethod::FILE_UPLOAD,
-        ['pdf'],
+        json_encode(['pdf']),
         5,
         3
     ),
@@ -659,7 +659,7 @@ $requirementData = [
         null,
         RepeatInterval::MONTHLY,
         FulFillMethod::FILE_UPLOAD,
-        ['pdf'],
+        json_encode(['pdf']),
         5,
         1
     ),
@@ -671,7 +671,7 @@ $requirementData = [
         null,
         RepeatInterval::WEEKLY,
         FulFillMethod::FILE_UPLOAD,
-        ['pdf'],
+        json_encode(['pdf']),
         5,
         1
     ),
@@ -683,7 +683,7 @@ $requirementData = [
         new DateTimeImmutable('+1 month'),
         null,
         FulFillMethod::TEXT_INPUT,
-        [],
+        null,
         null,
         null
     )

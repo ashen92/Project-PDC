@@ -28,7 +28,7 @@
     </form>
 
     {% if userRequirement.status == "pending" %}
-    {% set fulfillMethod = requirement.fulfillMethod.value %}
+    {% set fulfillMethod = requirement.fulfillMethod %}
     <div>
         {% if fulfillMethod == "file-upload" %}
         <form action="/internship-program/requirements/complete" method="POST" enctype="multipart/form-data">
