@@ -4,7 +4,7 @@ import Quill from "quill";
 function textEditor(textEditorElement, textEditorContent, textEditorPlaceholder, textValueElement) {
     let toolbarOptions = [["bold", "italic"], [{ "list": "bullet" }, { "list": "ordered" }]];
     let quill = new Quill(textEditorElement, {
-        formats: ["bold", "italic", "list", "bullet"],
+        formats: ["bold", "italic", "list"],
         modules: {
             toolbar: toolbarOptions
         },

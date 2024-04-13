@@ -322,11 +322,11 @@ class InternshipRepository implements IRepository
         if ($dto->organizationId === null) {
             $sql = 'INSERT INTO internships (
                 title, description, 
-                status,internship_cycle_id,
+                visibility, isApproved, internship_cycle_id,
                 created_by_user_id, organization_id, createdAt)
             VALUES (
                 :title, :description, 
-                :status, :internshipCycleId, 
+                :visibility, :isApproved, :internshipCycleId, 
                 :createdByUserId, 
                 (SELECT organization_id FROM partners WHERE id = :createdByUserId),
                 NOW())';
@@ -334,24 +334,26 @@ class InternshipRepository implements IRepository
             return $stmt->execute([
                 'title' => $dto->title,
                 'description' => $dto->description,
-                'status' => $dto->visibility->value,
+                'visibility' => $dto->visibility->value,
+                'isApproved' => $dto->isApproved ? 1 : 0,
                 'internshipCycleId' => $internshipCycleId,
                 'createdByUserId' => $dto->createdByUserId,
             ]);
         }
         $sql = 'INSERT INTO internships (
                     title, description, 
-                    status,internship_cycle_id,
+                    visibility, isApproved, internship_cycle_id,
                     created_by_user_id, organization_id, createdAt)
                 VALUES (
                     :title, :description, 
-                    :status, :internshipCycleId, 
+                    :visibility, :isApproved, :internshipCycleId, 
                     :createdByUserId, :organizationId, NOW())';
         $stmt = $this->pdo->prepare($sql);
         return $stmt->execute([
             'title' => $dto->title,
             'description' => $dto->description,
-            'status' => $dto->visibility->value,
+            'visibility' => $dto->visibility->value,
+            'isApproved' => $dto->isApproved ? 1 : 0,
             'internshipCycleId' => $internshipCycleId,
             'createdByUserId' => $dto->createdByUserId,
             'organizationId' => $dto->organizationId,
