@@ -20,13 +20,6 @@ readonly class InternMonitoringAPIController
     ) {
     }
 
-    #[Route('/students', methods: ['GET'])]
-    public function monitoring(?InternshipCycle $cycle): Response
-    {
-        $students = $this->internMonitoringService->getStudents($cycle->getId());
-        return new Response(json_encode($students), 200, ['Content-Type' => 'application/json']);
-    }
-
     #[Route('/requirements/{id}/user-requirements', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function userRequirements(Request $request, ?InternshipCycle $cycle, int $id): Response
     {
