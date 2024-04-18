@@ -15,7 +15,45 @@
 </div>
 
 <section>
-    <div id="user-requirements-grid"></div>
+    {% if userRequirements is empty %}
+    <p>No requirements found.</p>
+    {% else %}
+    <table class="hover row-border" id="user-requirements-table">
+        <thead>
+            <tr>
+                <th>Full name</th>
+                <th>Index number</th>
+                <th>Start date</th>
+                <th>End before date</th>
+                <th>Status</th>
+                <th>Submission</th>
+                <th class="hidden">Files</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in userRequirements %}
+            <tr data-id="{{ i.id }}">
+                <td>{{ i.fullName }}</td>
+                <td>{{ i.indexNumber }}</td>
+                <td>{{ i.startDate.format('Y-m-d') }}</td>
+                <td>{{ i.endDate.format('Y-m-d') }}</td>
+                <td>
+                    {% if i.completedAt is null %}
+                    <span class='fs-6 i i-dash-circle-fill text-warning'></span><span>Pending</span>
+                    {% else %}
+                    <span class='fs-6 i i-check-circle-fill text-success'></span><span>Fulfilled</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <button class="btn btn-sm btn-primary" name="view-submission-btn" data-id="{{ i.id }}" type="button"
+                        {% if i.completedAt is null %}disabled{% endif %}>View</button>
+                </td>
+                <td class="hidden">{{ i.files | json_encode }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
 </section>
 
 <div class="dialog-container" id="submission-viewer">

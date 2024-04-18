@@ -48,44 +48,54 @@ class InternMonitoringRepository implements IRepository
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function findUserRequirements(
-        int $cycleId,
-        int $requirementId,
-        int $limit,
-        int $offset
-    ): array {
-        $sql = "SELECT ur.*, 
-                    DATE(ur.startDate) as startDate, 
-                    DATE(ur.endDate) as endDate, 
+    public function findUserRequirements(int $cycleId, int $requirementId): array
+    {
+        $sql = "SELECT ur.*,
                     s.indexNumber,
                     s.fullName,
-                    GROUP_CONCAT(f.id, ':', f.name, ':', f.path SEPARATOR '|') as files
+                    JSON_ARRAYAGG(
+                        JSON_OBJECT(
+                            'id', urf.id,
+                            'name', urf.name
+                        )
+                    ) as files
                 FROM user_requirements ur
                 INNER JOIN students s ON ur.user_id = s.id
                 INNER JOIN requirements r ON ur.requirement_id = r.id
                 LEFT JOIN user_requirement_files urf ON ur.id = urf.user_requirement_id
-                LEFT JOIN files f ON urf.file_id = f.id
                 WHERE r.internship_cycle_id = :cycleId
                     AND ur.requirement_id = :requirementId
-                GROUP BY ur.id
-                LIMIT :limit";
-
-        if ($offset !== 0) {
-            $sql .= " OFFSET :offset";
-        }
+                GROUP BY ur.id";
 
         $stmt = $this->pdo->prepare($sql);
 
         $stmt->bindParam(':cycleId', $cycleId, PDO::PARAM_INT);
         $stmt->bindParam(':requirementId', $requirementId, PDO::PARAM_INT);
-        $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
-
-        if ($offset !== 0) {
-            $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
-        }
 
         $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($rows as &$row) {
+            $row['files'] = json_decode($row['files'], true);
+            $row['startDate'] = new DateTimeImmutable($row['startDate']);
+            $row['endDate'] = new DateTimeImmutable($row['endDate']);
+            $row['completedAt'] = $row['completedAt'] ? new DateTimeImmutable($row['completedAt']) : null;
+        }
+        return $rows;
+    }
+
+    public function findUserRequirementFile(int $userRequirementId, int $fileId): array|bool
+    {
+        $stmt = $this->pdo->prepare(
+            "SELECT name, path
+            FROM user_requirement_files
+            WHERE user_requirement_id = :userRequirementId
+            AND id = :fileId"
+        );
+        $stmt->execute([
+            "userRequirementId" => $userRequirementId,
+            "fileId" => $fileId
+        ]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     public function countUserRequirements(int $cycleId, int $requirementId): int

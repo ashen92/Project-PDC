@@ -40,4 +40,19 @@ abstract class ControllerBase
             $responseStatus
         );
     }
+
+    protected function serveFile(string $file, string $mimeType, string $fileName): Response
+    {
+        $response = new Response();
+        $response->headers->set('Content-Type', $mimeType);
+        $response->headers->set(
+            'Content-Disposition',
+            $response->headers->makeDisposition(
+                'inline',
+                $fileName
+            )
+        );
+        $response->setContent($file);
+        return $response;
+    }
 }

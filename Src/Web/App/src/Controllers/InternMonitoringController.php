@@ -81,8 +81,29 @@ class InternMonitoringController extends ControllerBase
             [
                 'section' => 'monitoring',
                 'requirement' => $requirement,
+                'userRequirements' => $this->internMonitoringService->getUserRequirements($cycle->getId(), (int) $requirementId),
             ]
         );
+    }
+
+    #[Route(
+        '/submissions/{userRequirementId}/files/{fileId}',
+        requirements: ['userRequirementId' => '\d+', 'fileId' => '\d+'],
+        methods: ['GET']
+    )]
+    public function submissionFile(int $userRequirementId, int $fileId): Response
+    {
+        // TODO: Validate
+
+        $file = $this->internMonitoringService->getUserRequirementFile(
+            $userRequirementId,
+            $fileId
+        );
+        if ($file === null) {
+            return new Response(null, 404);
+        }
+
+        return $this->serveFile($file['content'], $file['mimeType'], $file['name']);
     }
 
     #[Route('/interns', methods: ['GET'])]

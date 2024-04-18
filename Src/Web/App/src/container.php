@@ -387,15 +387,6 @@ $container->register(
     ->setPublic(true);
 
 $container->register(
-    'App\Controllers\API\InternMonitoringAPIController',
-    \App\Controllers\API\InternMonitoringAPIController::class
-)
-    ->setArguments([
-        new Reference('service.intern_monitoring'),
-    ])
-    ->setPublic(true);
-
-$container->register(
     'user_management_handler',
     \App\Services\UserManagementHandler::class
 )

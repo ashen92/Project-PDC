@@ -254,46 +254,44 @@ readonly class RequirementRepository implements IRepository
         ]);
     }
 
-    public function fulfillUserRequirement(int $id, ?array $filePaths = null, ?string $textResponse = null): bool
+    public function fulfillUserRequirement(int $userRequirementId, ?array $files = null, ?string $textResponse = null): bool
     {
-        if ($filePaths) {
-            $sql = "UPDATE user_requirements SET
+        if ($files) {
+            $this->pdo->beginTransaction();
+            try {
+                $sql = "UPDATE user_requirements SET
                     status = :status,
                     completedAt = :completedAt
                     WHERE id = :id";
-            $stmt = $this->pdo->prepare($sql);
-            if (
-                !$stmt->execute([
-                    "status" => Status::FULFILLED->value,
-                    "completedAt" => (new DateTime())->format($this::DATE_TIME_FORMAT),
-                    "id" => $id,
-                ])
-            ) {
-                return false;
-            }
-
-            $sql = "INSERT INTO files (name, path) VALUES (:name, :path)";
-            $stmt = $this->pdo->prepare($sql);
-
-            $fileIds = [];
-            foreach ($filePaths as $file) {
+                $stmt = $this->pdo->prepare($sql);
                 if (
                     !$stmt->execute([
-                        'name' => $file['name'],
-                        'path' => $file['path'],
+                        "status" => Status::FULFILLED->value,
+                        "completedAt" => (new DateTime())->format($this::DATE_TIME_FORMAT),
+                        "id" => $userRequirementId,
                     ])
                 ) {
                     return false;
                 }
-                $fileIds[] = $this->pdo->lastInsertId();
-            }
 
-            $sql = "INSERT INTO user_requirement_files (user_requirement_id, file_id) VALUES ";
-            $sql .= implode(", ", array_map(function ($fileId) use ($id) {
-                return "($id, $fileId)";
-            }, $fileIds));
-            $stmt = $this->pdo->prepare($sql);
-            return $stmt->execute();
+                $sql = "INSERT INTO user_requirement_files (user_requirement_id, name, path) VALUES ";
+                $sql .= implode(
+                    ',',
+                    array_map(
+                        fn($file) => "($userRequirementId, '{$file['name']}', '{$file['path']}')",
+                        $files
+                    )
+                );
+                $stmt = $this->pdo->prepare($sql);
+                if (!$stmt->execute()) {
+                    return false;
+                }
+
+                return $this->pdo->commit();
+            } catch (\Throwable $th) {
+                $this->pdo->rollBack();
+                return false;
+            }
         }
 
         $sql = "UPDATE user_requirements SET
@@ -306,7 +304,7 @@ readonly class RequirementRepository implements IRepository
             "status" => Status::FULFILLED->value,
             "completedAt" => (new DateTime())->format(self::DATE_TIME_FORMAT),
             "textResponse" => $textResponse,
-            "id" => $id,
+            "id" => $userRequirementId,
         ]);
     }
 }
