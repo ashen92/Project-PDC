@@ -63,7 +63,7 @@ readonly class AuthorizationRepository implements IRepository
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function hasPermission(int $userId, string $resource, string $action): bool
+    public function hasPermission(int $userId, string $name): bool
     {
         $sql = 'SELECT COUNT(*) FROM permissions p
         LEFT JOIN role_permissions rp ON p.id = rp.permission_id
@@ -71,14 +71,11 @@ readonly class AuthorizationRepository implements IRepository
         LEFT JOIN user_group_roles ugr ON rp.role_id = ugr.role_id
         LEFT JOIN user_group_membership ugm ON ugr.usergroup_id = ugm.usergroup_id
         LEFT JOIN users u ON ugm.user_id = u.id
-        INNER JOIN permission_resources pr ON p.resource_id = pr.id
-        INNER JOIN permission_actions pa ON p.action_id = pa.id
-        WHERE u.id = :userId AND pr.name = :resource AND pa.name = :action';
+        WHERE u.id = :userId AND p.name = :permissionName';
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindValue(':userId', $userId, PDO::PARAM_INT);
-        $stmt->bindValue(':resource', $resource);
-        $stmt->bindValue(':action', $action);
+        $stmt->bindValue(':permissionName', $name);
         $stmt->execute();
 
         return $stmt->fetchColumn() > 0;

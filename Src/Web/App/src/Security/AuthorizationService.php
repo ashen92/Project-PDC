@@ -36,9 +36,9 @@ class AuthorizationService
         return $this->authzRepo->hasRole($userId, $role);
     }
 
-    public function hasPermission(string $resource, string $action): bool
+    public function hasPermission(string $name): bool
     {
         $userId = (int) $this->session->get('user_id');
-        return $this->authzRepo->hasPermission($userId, $resource, $action);
+        return $this->authzRepo->hasPermission($userId, $name);
     }
 }

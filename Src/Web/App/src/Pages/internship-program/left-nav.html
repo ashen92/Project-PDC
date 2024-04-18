@@ -16,7 +16,7 @@
     Internships
 </a>
 
-{% elseif has_role('InternshipProgramPartner') and has_permission('internship', 'create') %}
+{% elseif has_role('InternshipProgramPartner') and has_permission('CreateInternship') %}
 
 <a class="{% if section == 'internships' %} active{% endif %}" href="/internship-program/internships">
     <i class="i i-briefcase"></i>

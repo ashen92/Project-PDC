@@ -54,7 +54,7 @@
 
     <div class="container">
         <div>
-            {% if has_permission('internship', 'create') %}
+            {% if has_permission('CreateInternship') %}
 
             <div class="mb-4 text-right">
                 <a class="btn btn-primary" role="button" href="/internship-program/internships/create">Post an
@@ -128,19 +128,19 @@
             <div class="content hidden" id="job-details-content">
                 <h3 class="title" id="job-title"></h3>
                 <div class="actions">
-                    {% if has_permission('application', 'read') %}
+                    {% if has_permission('ReadApplication') %}
                     <button type="button" class="btn btn-primary" id="applicants-job-btn">Applicants</button>
                     {% endif %}
 
-                    {% if has_permission('internship', 'update') %}
+                    {% if has_permission('UpdateInternship') %}
                     <button type="button" class="btn btn-outline-primary" id="modify-job-btn">Modify</button>
                     {% endif %}
 
-                    {% if has_permission('internship', 'delete') %}
+                    {% if has_permission('DeleteInternship') %}
                     <button type="button" class="btn btn-outline-danger" id="remove-job-btn">Remove</button>
                     {% endif %}
 
-                    {% if has_permission('internship', 'apply') %}
+                    {% if has_permission('ApplyInternship') %}
                     <button type="button" class="btn btn-primary" id="btn-apply">Apply</button>
                     <button type="button" class="btn btn-primary hidden" id="btn-undo-apply">Cancel
                         Application</button>

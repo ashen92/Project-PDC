@@ -16,7 +16,7 @@
                         TechTalks
                     </a>
                 </li>
-                {% if has_permission('internship_program', 'read') %}
+                {% if has_permission('ReadInternshipProgram') %}
                 <li>
                     <a href="/internship-program">
                         Internship Program
@@ -44,7 +44,7 @@
                     TechTalks
                 </a>
             </li>
-            {% if has_permission('internship_program', 'read') %}
+            {% if has_permission('ReadInternshipProgram') %}
             <li>
                 <a href="/internship-program">
                     Internship Program
