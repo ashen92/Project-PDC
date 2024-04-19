@@ -2,7 +2,6 @@
 @use '../mixins';
 
 .layout-auth {
-    background-image: linear-gradient(to right, #2152e3 0%, #b0e0e6 60%, #7d68f8 100%);
     display: grid;
     grid-template-rows: 1fr auto;
     min-height: 100vh;
@@ -57,18 +56,5 @@
             height: 22rem;
             border-radius: 11rem;
         }
-    }
-
-    .container {
-        max-width: 800px;
-        /* Set a maximum width for the container */
-        margin: 0 auto;
-        /* Center the container horizontally */
-        padding: 20px;
-        /* Add some padding inside the container */
-        background-color: #ffb703;
-        /* Set a background color for the container */
-        box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
-        border-radius: 10px
     }
 }
