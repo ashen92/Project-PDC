@@ -22,5 +22,8 @@
         "gulp-sourcemaps": "^3.0.0",
         "quill": "^2.0.0-rc.5",
         "sass": "^1.74.1"
+    },
+    "dependencies": {
+        "fullcalendar": "^6.1.11"
     }
 }

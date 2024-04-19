@@ -8,28 +8,17 @@
 
 {% block content %}
 
+
 <div class="title">
     <h2>
         Events
     </h2>
 </div>
-{% for event in events %}
-<div class="p-9 mb-2 border-1 rounded-2 ">
-    <div class="fw-semibold fs-4 pl-4 pb-5">
-        {{ event.title}}
-    </div>
-    <div>
-        {{ event.description}}
-    </div>
-    {% if has_role(Admin) %}
-    <div class="actions">
-        <a class="btn btn-primary" role="button" href="/events/edit/{{event.id}}">Modify</a>
-        <form action="/events/delete/{{event.id}}" method="POST">
-            <button class="btn btn-primary">Remove</button>
-        </form>
-    </div>
-    {% endif %}
-</div>
-{% endfor %}
 
+<div id="calendar-view">
+
+
+</div>
+
+<script src="/js/events/home.js" type="text/javascript"></script>
 {% endblock %}
