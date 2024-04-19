@@ -15,6 +15,18 @@
     margin: 0 0.2rem;
 }
 
+.i-calendar2::before {
+    content: "\F20C";
+}
+
+.i-calendar2-plus::before {
+    content: "\F205";
+}
+
+.i-list-task::before {
+    content: "\F477";
+}
+
 .i-search::before {
     content: "\F52A";
 }
@@ -87,9 +99,7 @@
     content: "\F4D4";
 }
 
-.i-list-task::before {
-    content: "\F477";
-}
+
 
 .i-clipboard-pulse::before {
     content: "\F722";
