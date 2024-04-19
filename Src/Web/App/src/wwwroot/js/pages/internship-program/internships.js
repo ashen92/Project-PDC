@@ -1,6 +1,7 @@
 import { $, $all } from "../../core/dom";
 import { on } from "../../core/events";
 import { Dialog } from "../../components/dialog";
+import { Collapse } from "../../components/collapse";
 
 const params = new URLSearchParams(window.location.search);
 
@@ -313,6 +314,17 @@ on(btnNextPage, "click", function () {
 on(btnPreviousPage, "click", function () {
     params.set("p", currentPage - 1);
     window.location.href = `${window.location.pathname}?${params.toString()}`;
+});
+
+//#endregion
+
+//#region Collapse
+
+const collapseContainers = $all(".collapse-container");
+const collapseInstances = [];
+
+collapseContainers.forEach(container => {
+    collapseInstances.push(new Collapse(container));
 });
 
 //#endregion

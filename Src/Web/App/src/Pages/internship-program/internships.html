@@ -126,29 +126,48 @@
                 </div>
             </div>
             <div class="content hidden" id="job-details-content">
-                <h3 class="title" id="job-title"></h3>
-                <div class="actions">
-                    {% if has_permission('ReadApplication') %}
-                    <button type="button" class="btn btn-primary" id="applicants-job-btn">Applicants</button>
-                    {% endif %}
+                <div class="header">
+                    <h3 class="title" id="job-title"></h3>
+                    <div class="company" id="job-company">
+                        <div class="logo"></div>
+                        Company
+                    </div>
+                    <div class="actions">
+                        {% if has_permission('ReadApplication') %}
+                        <button type="button" class="btn btn-primary" id="applicants-job-btn">Applicants</button>
+                        {% endif %}
 
-                    {% if has_permission('ModifyInternship') %}
-                    <button type="button" class="btn btn-outline-primary" id="modify-job-btn">Modify</button>
-                    {% endif %}
+                        {% if has_permission('ModifyInternship') %}
+                        <button type="button" class="btn btn-outline-primary" id="modify-job-btn">Modify</button>
+                        {% endif %}
 
-                    {% if has_permission('DeleteInternship') %}
-                    <button type="button" class="btn btn-outline-danger" id="remove-job-btn">Remove</button>
-                    {% endif %}
+                        {% if has_permission('DeleteInternship') %}
+                        <button type="button" class="btn btn-outline-danger" id="remove-job-btn">Remove</button>
+                        {% endif %}
 
-                    {% if has_permission('ApplyToInternship') %}
-                    <button type="button" class="btn btn-primary" id="btn-apply">Apply</button>
-                    <button type="button" class="btn btn-primary hidden" id="btn-undo-apply">Cancel
-                        Application</button>
-                    {% endif %}
+                        {% if has_permission('ApplyToInternship') %}
+                        <button type="button" class="btn btn-primary" id="btn-apply">Apply</button>
+                        <button type="button" class="btn btn-primary hidden" id="btn-undo-apply">Cancel
+                            Application</button>
+                        {% endif %}
+                    </div>
                 </div>
-                <div class="description">
-                    <h5 class="title">About the internship</h5>
-                    <div class="formatted-text-area" id="job-description"></div>
+                <div class="section collapse-container">
+                    <div class="collapse-header">
+                        <h5 class="title">About the internship</h5>
+                    </div>
+                    <div class="collapse-content formatted-text-area" id="job-description"></div>
+                </div>
+                <div class="section collapse-container">
+                    <div class="collapse-header">
+                        <h5 class="title">Comments</h5>
+                    </div>
+                    <div class="collapse-content" id="job-comments">
+                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Cumque in unde expedita, soluta totam
+                        voluptate enim. Voluptatem, a? Atque quae ipsa vitae error. Nam iste maxime, quis consequatur
+                        reiciendis ad molestiae voluptate saepe soluta velit accusantium ullam ducimus illo enim!
+                        Asperiores similique velit amet quo nam maxime molestiae dolore quaerat.
+                    </div>
                 </div>
             </div>
         </div>

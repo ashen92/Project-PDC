@@ -1,0 +1,17 @@
+@use '../variables' as *;
+
+.collapse-container {
+    .collapse-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .title {
+            margin: 0;
+        }
+    }
+
+    .collapse-content {
+        margin-top: 1rem;
+    }
+}

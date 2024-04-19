@@ -218,34 +218,23 @@
             >.content {
                 border-radius: $rounded-2;
                 box-shadow: $shadow-3;
-                padding-bottom: 1rem;
 
-                >* {
-                    padding-left: 2.5rem;
-                    padding-right: 2.5rem;
-                }
-
-                >.title {
-                    font-weight: $fw-semibold;
-                    padding-top: 2.5rem;
-                    padding-bottom: 2rem;
-                    margin-bottom: 0;
-                    background-color: #EEEDE7;
-                }
-
-                >.actions {
-                    padding-bottom: 2rem;
-                    background-color: #EEEDE7;
-                }
-
-                >.description {
-                    margin-top: 2rem;
-                    margin-bottom: 2.5rem;
+                >.header {
+                    padding: 2.5rem;
+                    background-color: #f6f8fa;
 
                     >.title {
                         font-weight: $fw-semibold;
-                        margin-bottom: 1.5rem;
                     }
+
+                    >.company {
+                        margin: 1.5rem 0;
+                    }
+                }
+
+                >.section {
+                    border-top: $border-1;
+                    padding: 1.5rem 2.5rem;
                 }
             }
         }
