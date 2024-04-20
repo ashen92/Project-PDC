@@ -294,4 +294,41 @@ class InternshipsController extends ControllerBase
             ]
         );
     }
+
+    #[Route('/round-2/job-roles/add', methods: ['POST'])]
+    public function jobRoleAdd(Request $request, InternshipCycle $cycle): RedirectResponse
+    {
+        $name = $request->get('name');
+        // TODO: Validate data
+
+        if (!$this->internshipService->createJobRole($cycle->getId(), $name)) {
+            // TODO: Set errors
+        }
+        return $this->redirect('/internship-program/round-2');
+    }
+
+    #[Route('/round-2/job-roles/edit', methods: ['POST'])]
+    public function jobRoleEdit(Request $request): RedirectResponse
+    {
+        $id = (int) $request->get('id');
+        $name = $request->get('name');
+        // TODO: Validate data
+
+        if (!$this->internshipService->modifyJobRole($id, $name)) {
+            // TODO: Set errors
+        }
+        return $this->redirect('/internship-program/round-2');
+    }
+
+    #[Route('/round-2/job-roles/delete', methods: ['POST'])]
+    public function jobRoleDelete(Request $request): RedirectResponse
+    {
+        $id = (int) $request->get('id');
+        // TODO: Validate data
+
+        if (!$this->internshipService->deleteJobRole($id)) {
+            // TODO: Set errors
+        }
+        return $this->redirect('/internship-program/round-2');
+    }
 }

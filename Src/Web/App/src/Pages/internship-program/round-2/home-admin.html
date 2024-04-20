@@ -17,32 +17,81 @@
     </p>
 </div>
 
-<button type="button" class="btn btn-primary">
+<button type="button" class="btn btn-primary" id="add-job-role-btn">
     <i class="i i-plus-lg"></i>
     <span>Add job role</span>
 </button>
 
 <section>
-    <table class="table table-hover">
+    <div class="command-bar">
+        <button type="button" class="btn btn-secondary" id="edit-job-role-btn" disabled>
+            <i class="i i-pencil"></i>
+            <span>Edit</span>
+        </button>
+        <button type="button" class="btn btn-outline-danger" id="delete-job-role-btn" disabled>
+            <i class="i i-trash"></i>
+            <span>Delete</span>
+        </button>
+    </div>
+    <table class="hover row-border stripe" id="job-roles-table">
         <thead>
             <tr>
-                <th class="margin-cell cell-checkbox">
-                    <input type="checkbox" name="select-all" id="select-all" title="Select">
-                </th>
+                <th class="hidden"></th>
                 <th>Name</th>
             </tr>
         </thead>
-        <tbody class="table-rows-clickable">
+        <tbody>
             {% for i in jobRoles %}
-            <tr data-href="round-2/job-roles/{{ i.id }}">
-                <td class="margin-cell cell-checkbox">
-                    <input type="checkbox" name="{{ i.id }}" id="{{ i.id }}" title="Select">
-                </td>
+            <tr>
+                <td class="hidden">{{ i.id }}</td>
                 <td>{{ i.name }}</td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
 </section>
-
+<div class="dialog-container" id="add-dialog">
+    <div class="dialog min-w-96">
+        <form action="/internship-program/round-2/job-roles/add" method="POST">
+            <div class="field">
+                <label for="add-job-role-name">Name</label>
+                <input type="text" name="name" id="add-job-role-name" required>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Add</button>
+                <button type="button" class="btn btn-secondary" id="add-cancel-btn">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="dialog-container" id="edit-dialog">
+    <div class="dialog min-w-96">
+        <form action="/internship-program/round-2/job-roles/edit" method="POST">
+            <input type="hidden" name="id" id="edit-job-role-id">
+            <div class="field">
+                <label for="edit-job-role-name">Name</label>
+                <input type="text" name="name" id="edit-job-role-name" required>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Modify</button>
+                <button type="button" class="btn btn-secondary" id="edit-cancel-btn">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="dialog-container" id="delete-dialog">
+    <div class="dialog min-w-96">
+        <form action="/internship-program/round-2/job-roles/delete" method="POST">
+            <input type="hidden" name="id" id="delete-job-role-id">
+            <div class="field">
+                <p>Are you sure you want to remove this job role?</p>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Yes</button>
+                <button type="button" class="btn btn-secondary" id="delete-cancel-btn">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script src="/js/internship-program/round-2/home-admin.js" type="text/javascript"></script>
 {% endblock %}

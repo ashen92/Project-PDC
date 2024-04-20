@@ -226,4 +226,19 @@ readonly class InternshipService
     {
         return $this->internshipRepository->findStudentsByJobRole($jobRoleId);
     }
+
+    public function createJobRole(int $cycleId, string $jobRoleName): bool
+    {
+        return $this->internshipRepository->createJobRole($cycleId, $jobRoleName);
+    }
+
+    public function modifyJobRole(int $jobRoleId, string $name): bool
+    {
+        return $this->internshipRepository->modifyJobRole($jobRoleId, $name);
+    }
+
+    public function deleteJobRole(int $jobRoleId): bool
+    {
+        return $this->internshipRepository->deleteJobRole($jobRoleId);
+    }
 }

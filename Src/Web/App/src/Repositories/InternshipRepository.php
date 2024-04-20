@@ -425,4 +425,25 @@ class InternshipRepository implements IRepository
         $stmt->execute(['jobRoleId' => $jobRoleId]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function createJobRole(int $cycleId, string $name): bool
+    {
+        $sql = 'INSERT INTO job_roles (internship_cycle_id, name) VALUES (:cycleId, :name)';
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute(['cycleId' => $cycleId, 'name' => $name]);
+    }
+
+    public function modifyJobRole(int $id, string $name): bool
+    {
+        $sql = 'UPDATE job_roles SET name = :name WHERE id = :id';
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute(['id' => $id, 'name' => $name]);
+    }
+
+    public function deleteJobRole(int $id): bool
+    {
+        $sql = 'DELETE FROM job_roles WHERE id = :id';
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute(['id' => $id]);
+    }
 }
