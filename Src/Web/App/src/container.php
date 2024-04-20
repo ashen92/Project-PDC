@@ -97,6 +97,12 @@ $container->register(
 )
     ->setArguments([new Reference('pdo_mysql_connection'),]);
 
+$container->register(
+    'repository.event',
+    App\Repositories\EventRepository::class
+)
+    ->setArguments([new Reference('pdo_mysql_connection'),]);   
+
 #endregion
 
 #region Twig -----------------------------------------------------------------------
@@ -297,6 +303,7 @@ $container->register(
     App\Services\EventService::class
 )
     ->setArguments([
+        new Reference('repository.event'),
     ]);
 
 $container->register(

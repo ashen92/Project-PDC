@@ -3,9 +3,11 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+use App\DTOs\CreateEventDTO;
 use App\Security\AuthorizationService;
 use App\Services\EventService;
 use DateTime;
+use DateTimeImmutable;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -54,39 +56,21 @@ class EventsController extends ControllerBase
             ]
         );
     }
-    #[Route('/edit/{eventId}', methods: ['POST'])]
-    public function editPOST(Request $request): Response
-    {
-        $eventId = (int) $request->get('eventId') ?? '1';
-        $data = $request->request->all();
-        $event = $this->eventService->getEventById($eventId);
-        $Title = $data['eventTitle'];
-        $eventDate = DateTime::createFromFormat('Y-m-d', $data['eventDate']);
-        $startTime = DateTime::createFromFormat('H:i:s', $data['startTime']);
-        $endTime = DateTime::createFromFormat('H:i:s', $data['endTime']);
-        $eventLocation = $data['eventLocation'];
-        $description = $data['description'];
-        $event->setEventDate($eventDate);
-        $event->setTitle($Title);
-        $event->setStartTime($startTime);
-        $event->setEndTime($endTime);
-        $event->setEventLocation($eventLocation);
-        $event->setDescription($description);
-        $this->eventService->editEvent($event);
-        return $this->redirect('/events');
-    }
+    //#[Route('/edit/{eventId}', methods: ['POST'])]
+    //public function editPOST(Request $request): Response
+    
 
     #[Route('/create', methods: ['POST'])]
     public function createPOST(Request $request): Response
     {
         $data = $request->request->all();
         $Title = $data['eventTitle'];
-        $eventDate = DateTime::createFromFormat('Y-m-d', $data['eventDate']);
-        $startTime = DateTime::createFromFormat('H:i', $data['startTime']);
-        $endTime = DateTime::createFromFormat('H:i', $data['endTime']);
+        $eventDate = DateTimeImmutable::createFromFormat('Y-m-d', $data['eventDate']);
+        $startTime = DateTimeImmutable::createFromFormat('H:i', $data['startTime']);
+        $endTime = DateTimeImmutable::createFromFormat('H:i', $data['endTime']);
         $eventLocation = $data['eventLocation'];
         $description = $data['description'];
-        $event = new Event($Title, $description, $startTime, $endTime, $eventDate, $eventLocation);
+        $event = new CreateEventDTO($Title, $eventDate , $startTime, $endTime, $eventLocation ,$description);
         $this->eventService->createEvent($event);
         return $this->render(
             'events/create.html',

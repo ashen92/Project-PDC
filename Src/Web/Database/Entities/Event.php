@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DB\Entities;
 
-use DateTime;
+use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -19,22 +19,22 @@ class Event
     #[ORM\Column]
     private string $title;
 
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column]
     private string $description;
 
-    #[ORM\Column(type: Types::TIME_MUTABLE)]
-    private DateTime $startTime;
+    #[ORM\Column]
+    private DateTimeImmutable $startTime;
 
-    #[ORM\Column(type: Types::TIME_MUTABLE)]
-    private DateTime $endTime;
+    #[ORM\Column]
+    private DateTimeImmutable $endTime;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private DateTime $eventDate;
+    #[ORM\Column]
+    private DateTimeImmutable $eventDate;
 
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column]
     private string $eventLocation;
 
-    public function __construct(string $title, string $description, DateTime $startTime, DateTime $endTime, DateTime $eventDate, string $eventLocation)
+    public function __construct(string $title, string $description, DateTimeImmutable $startTime, DateTimeImmutable $endTime, DateTimeImmutable $eventDate, string $eventLocation)
     {
         $this->title = $title;
         $this->description = $description;
@@ -76,33 +76,33 @@ class Event
 
     public function getStartTime(): string
     {
-        $dateTime = $this->startTime;
-        return $dateTime->format('H:i:s');
+        $DateTimeImmutable = $this->startTime;
+        return $DateTimeImmutable->format('H:i:s');
     }
 
-    public function setStartTime(bool|DateTime $startTime): void
+    public function setStartTime(bool|DateTimeImmutable $startTime): void
     {
         $this->startTime = $startTime;
     }
 
     public function getEndTime(): string
     {
-        $dateTime = $this->endTime;
-        return $dateTime->format('H:i:s');
+        $DateTimeImmutable = $this->endTime;
+        return $DateTimeImmutable->format('H:i:s');
     }
 
-    public function setEndTime(bool|DateTime $endTime): void
+    public function setEndTime(bool|DateTimeImmutable $endTime): void
     {
         $this->endTime = $endTime;
     }
 
     public function getEventDate(): string
     {
-        $dateTime = $this->eventDate;
-        return $dateTime->format('Y-m-d');
+        $DateTimeImmutable = $this->eventDate;
+        return $DateTimeImmutable->format('Y-m-d');
     }
 
-    public function setEventDate(bool|DateTime $eventDate): void
+    public function setEventDate(bool|DateTimeImmutable $eventDate): void
     {
         $this->eventDate = $eventDate;
     }
