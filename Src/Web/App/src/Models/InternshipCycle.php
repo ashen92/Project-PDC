@@ -79,11 +79,11 @@ class InternshipCycle
 
     public function isFirstRound(): bool
     {
-        return $this->jobHuntRound1Start !== null && $this->jobHuntRound1End !== null;
+        return $this->jobHuntRound1Start !== null && $this->jobHuntRound1End === null;
     }
 
     public function isSecondRound(): bool
     {
-        return $this->jobHuntRound2Start !== null && $this->jobHuntRound2End !== null;
+        return $this->jobHuntRound2Start !== null && $this->jobHuntRound2End === null;
     }
 }
