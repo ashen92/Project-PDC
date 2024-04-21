@@ -2,6 +2,7 @@ import { $, $all } from "../../core/dom";
 import { on } from "../../core/events";
 import { Dialog } from "../../components/dialog";
 import { Collapse } from "../../components/collapse";
+import { FileUpload } from "../../components/file-upload";
 
 const params = new URLSearchParams(window.location.search);
 
@@ -59,7 +60,7 @@ function fetchJobDetails(jobId) {
             jobDetailsSkeleton.classList.toggle("hidden");
             jobDetailsContent.classList.toggle("hidden");
 
-            if ('applicationId' in data) {
+            if ("applicationId" in data) {
                 if (data["applicationId"] !== null) {
                     applyBtn.classList.add("hidden");
                     undoApplyBtn.classList.remove("hidden");
@@ -151,6 +152,12 @@ on(undoApplyBtn, "click", function () {
         .catch(error => console.error("Error undoing application for job:", error));
 });
 
+const fileUpload = new FileUpload(
+    $("#file-upload-container"),
+    $("#file-upload-container input[type=file]"),
+    $("#file-upload-container label")
+);
+
 const applicationDialog = new Dialog("#application-dialog");
 applicationDialog.setTitle("Upload CV or Resume");
 
@@ -218,7 +225,7 @@ on(filterByVisibility, "click", function () {
 });
 
 
-on($("#visibility-popup-apply-btn"), "click", function (e) {
+on($("#visibility-popup-apply-btn"), "click", () => {
     let visibility = $("#visibility-popup input[type=radio]:checked").value;
     if (visibility === "all") {
         params.delete("v");
@@ -239,7 +246,7 @@ on(filterByApproval, "click", function () {
     approvalDialog.open();
 });
 
-on($("#approval-popup-apply-btn"), "click", function (e) {
+on($("#approval-popup-apply-btn"), "click", () => {
     let approval = $("#approval-popup input[type=radio]:checked").value;
     if (approval === "all") {
         params.delete("a");

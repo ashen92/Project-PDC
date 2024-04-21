@@ -238,7 +238,7 @@ class InternshipsController extends ControllerBase
     {
         $userId = $request->getSession()->get('user_id');
 
-        $files = $request->files->get('files-to-upload');
+        $files = $request->files->get('application-file');
         if ($files && !is_array($files)) {
             $files = [$files];
         }
