@@ -7,6 +7,7 @@ use App\DTOs\createInternshipDTO;
 use App\Models\Internship;
 use App\Models\InternshipCycle;
 use App\Models\InternshipProgram\createApplication;
+use App\Security\Attributes\RequiredAtLeastOne;
 use App\Security\Attributes\RequiredRole;
 use App\Security\AuthorizationService;
 use App\Services\InternshipService;
@@ -34,6 +35,7 @@ class InternshipsController extends ControllerBase
         parent::__construct($twig, $authzService);
     }
 
+    #[RequiredAtLeastOne(['Admin'], ['JobHuntFirstRound'])]
     #[Route(['/internships'])]
     public function internships(Request $request, ?InternshipCycle $cycle): Response
     {
