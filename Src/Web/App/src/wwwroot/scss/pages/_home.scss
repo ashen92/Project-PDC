@@ -11,8 +11,8 @@
 }
 
 .hero-container {
-    height: 500px;
-    background-image: linear-gradient(hsl(206, 46%, 70%, 0.6), 40%, hsl(262, 100%, 98%)), url('/images/bg1.jpeg');
+    height: 100vh;
+    background-image: linear-gradient(hsl(262, 15%, 86%, 0.9), 40%, hsl(209, 69%, 92%, 0.9)), url('/images/4.jpeg');
     background-repeat: no-repeat;
     background-size: cover;
     padding: 5rem;
@@ -41,7 +41,7 @@
     .hero-text {
         text-align: center;
         position: absolute;
-        top: 40%;
+        top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
         width: 80%;

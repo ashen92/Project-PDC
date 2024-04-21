@@ -7,3 +7,4 @@ let content = $(".page");
 if (topNav && content) {
     topNav = new topNavigation(topNav, content);
 }
+

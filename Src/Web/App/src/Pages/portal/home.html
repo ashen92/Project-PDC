@@ -10,23 +10,74 @@
 
 <div class="title">
     <h2>Admin Portal</h2>
-</div>
-<section>
-    <div class="flex top-navigation" id="top-navigation">
-        <a class="link mr-2" href="/portal/home/link1">
-            Tab 1
-        </a>
-        <a class=" link mr-2" href="/portal/home/link2">
-            Tab 2
-        </a>
-        <a class="link" href="/portal/home/link3">
-            Tab 3
-        </a>
-    </div>
-    <div class="page" id="page">
+    <p>
+        You can view the system information and status.
+    </p>
 
+</div>
+<div class="hero-text-container">
+    Our goal is to create a fully functional hosted web application with a responsive and user- friendly
+    interface
+    for the current Professional Development Centre at UCSC as our second-year group project.
+    The web application intended for all PDC users, including students, businesses, the PDC Coordinator, and the
+    PDC
+    Assistant Coordinator.
+    OpportunitiX focuses on four major responsibilities. They are as follows:
+    <ul class="list">
+        <li>Handling TechTalks</li>
+        <li>Handling Company Registrations</li>
+        <li>Handling Internship Placement</li>
+        <li>Handling Student Evaluation</li>
+        <li>Managing other events conducted by PDC.</li>
+    </ul>
+    The PDC Coordinator manages all users, including PDC Assistant Coordinator, students, and companies. He has the
+    authority to modify user data and access confidential reports submitted by companies. PDC Coordinator reviews
+    evaluations of students and companies. He uses reports generated within OpportunitiX in decision-making processes.
+</div>
+<div class="line"></div>
+<div class="title">
+    <h4>Status</h4>
+</div>
+<div class="layout-dash">
+
+    <div class="dash-container">
+        <div class="card one">
+            <h3>
+                {{active_users}}
+            </h3>
+            <p>Active Users</p>
+        </div>
+
+        <div class="card two">
+            <h3>
+                {{stu_count}}
+            </h3>
+            <p> Number of Students</p>
+        </div>
+
+        <div class="card three">
+            <h3>
+                {{app_partners}}
+            </h3>
+            <p> Approved Partners</p>
+        </div>
+
+        <div class="card four">
+            <h3>
+                {{pen_partners}}
+            </h3>
+            <p>Pending Partners</p>
+        </div>
     </div>
-</section>
+
+</div>
+
+
+
+
+
+</div>
+
 <script src="/js/portal.js"></script>
 
 {% endblock %}

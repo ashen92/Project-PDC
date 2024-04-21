@@ -30,7 +30,13 @@ class PortalController extends PageControllerBase
 	{
 		return $this->render(
 			'portal/home.html',
-			['section' => 'home']
+			[
+				'section' => 'home',
+				'active_users' => intval('67'),
+				'stu_count' => intval('98'),
+				'app_partners' => intval('30'),
+				'pen_partners' => intval('27'),
+			]
 		);
 	}
 

@@ -1,0 +1,99 @@
+@use '../variables' as *;
+@use '../mixins';
+
+
+.hero-text-container {
+    width: 100%;
+    margin: auto;
+    box-shadow: $shadow-1;
+    border-radius: 10px;
+    padding: 20px;
+    background-color: #f0f0f0;
+    text-align: left;
+
+    >.list {
+        margin-left: 2%;
+    }
+}
+
+.line {
+    border-top: 2px solid #c8c6c6;
+    margin: 4rem auto 2rem auto;
+}
+
+
+.layout-dash {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: max-content;
+    min-height: 100vh;
+    margin: auto;
+
+    .dash-container {
+        margin: auto;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: max-content max-content;
+
+
+        .card {
+            min-width: 225px;
+            width: 250px;
+            height: 150px;
+            border-radius: $rounded-1;
+            padding: 13px 15px 10px 15px;
+            text-align: center;
+            box-shadow: $shadow-1;
+            background: linear-gradient(hsl(217, 100%, 97%), 50%, hsl(0, 0%, 94%, 0.5));
+
+        }
+
+        >.one {
+            margin: 0rem auto auto 0rem;
+            animation: 1s anim-lineUp ease-out;
+        }
+
+        >.two {
+            margin: 0rem auto auto 3rem;
+            animation: 2s anim-lineUp ease-out;
+        }
+
+        >.three {
+            margin: 4rem auto auto 0rem;
+            animation: 3s anim-lineUp ease-out;
+        }
+
+        >.four {
+            margin: 4rem auto auto 3rem;
+            animation: 4s anim-lineUp ease-out;
+        }
+
+
+    }
+
+    @keyframes anim-lineUp {
+        0% {
+            opacity: 0;
+            transform: translateY(80%);
+        }
+
+        20% {
+            opacity: 0;
+        }
+
+        50% {
+            opacity: 1;
+            transform: translateY(0%);
+        }
+
+        100% {
+            opacity: 1;
+            transform: translateY(0%);
+        }
+    }
+
+    #piechart {
+        grid-row: span 2;
+    }
+
+}
