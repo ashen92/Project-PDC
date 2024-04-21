@@ -9,6 +9,7 @@ use App\Mappers\InternshipMapper;
 use App\Mappers\InternshipSearchResultMapper;
 use App\Mappers\OrganizationMapper;
 use App\Models\Internship;
+use App\Models\Internship\Visibility;
 use App\Models\InternshipSearchResult;
 use App\Models\Organization;
 use PDO;
@@ -118,8 +119,12 @@ class InternshipRepository implements IRepository
         return array_map(fn(array $result) => InternshipSearchResultMapper::map($result), $results);
     }
 
-    public function searchInternshipsGetOrganizations(int $cycleId, ?string $searchQuery): array
-    {
+    public function getOrganizationsForSearchQuery(
+        int $cycleId,
+        ?string $searchQuery,
+        ?Visibility $visibility,
+        ?bool $isApproved
+    ): array {
         $sql = 'SELECT DISTINCT o.*
                 FROM internships i
                 JOIN organizations o ON i.organization_id = o.id
@@ -128,6 +133,18 @@ class InternshipRepository implements IRepository
         if ($searchQuery) {
             $sql .= ' AND i.title LIKE :searchQuery';
             $params['searchQuery'] = '%' . $searchQuery . '%';
+        }
+        if ($visibility) {
+            $sql .= " AND i.visibility = :visibility";
+            $params['visibility'] = $visibility->value;
+        }
+        if ($isApproved !== null) {
+            if ($isApproved === true) {
+                $sql .= ' AND i.isApproved = :isApproved';
+            } else {
+                $sql .= ' AND i.isApproved != :isApproved';
+            }
+            $params['isApproved'] = true;
         }
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute($params);

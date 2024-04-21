@@ -138,9 +138,11 @@ class InternshipsController extends ControllerBase
                 );
             }
 
-            $orgs = $this->internshipService->searchInternshipsGetOrganizations(
+            $orgs = $this->internshipService->getOrganizationsForSearchQuery(
                 $cycleId,
                 $searchQuery,
+                $visibility,
+                $isApproved
             );
         }
 
