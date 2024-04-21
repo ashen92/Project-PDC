@@ -167,13 +167,13 @@ $container->register(
     ->setArguments(['unemployed']);
 
 $container->register(
-    'security.policy.job_hunt_round_1',
+    'security.policy.job_hunt_first_round',
     App\Security\Policies\JobHuntRoundPolicy::class
 )
     ->setArguments([1]);
 
 $container->register(
-    'security.policy.job_hunt_round_2',
+    'security.policy.job_hunt_second_round',
     App\Security\Policies\JobHuntRoundPolicy::class
 )
     ->setArguments([2]);
@@ -191,7 +191,10 @@ $container->register(
 $container->register(
     'security.policy_handler.job_hunt_round',
     App\Security\PolicyHandlers\JobHuntRoundPolicyHandler::class
-);
+)
+    ->setArguments([
+        new Reference('repository.internship_program'),
+    ]);
 
 $container->register(
     'service.authorization',
@@ -220,16 +223,16 @@ $container->register(
     ->addMethodCall(
         'addPolicyHandler',
         [
-            'JobHuntRound1',
-            new Reference('security.policy.job_hunt_round_1'),
+            'JobHuntFirstRound',
+            new Reference('security.policy.job_hunt_first_round'),
             new Reference('security.policy_handler.job_hunt_round')
         ]
     )
     ->addMethodCall(
         'addPolicyHandler',
         [
-            'JobHuntRound2',
-            new Reference('security.policy.job_hunt_round_2'),
+            'JobHuntSecondRound',
+            new Reference('security.policy.job_hunt_second_round'),
             new Reference('security.policy_handler.job_hunt_round')
         ]
     );
