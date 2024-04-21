@@ -179,83 +179,86 @@ on(fileUploadForm, "submit", function (e) {
 
 // Filter by company
 const filterByCompany = $("#filter-by-company");
-const companyDialog = new Dialog("#company-popup");
-companyDialog.setTitle("Filter by Company");
+if (filterByCompany) {
+    const companyDialog = new Dialog("#company-popup");
+    companyDialog.setTitle("Filter by Company");
 
-on(filterByCompany, "click", function () {
-    companyDialog.open();
-});
-
-const companyMultiSelectApplyBtn = $("#company-popup-apply-btn");
-const companyMultiSelectResetBtn = $("#company-popup-reset-btn");
-
-let companyCheckboxes = $all("#company-popup input[type=checkbox]");
-
-on(companyMultiSelectResetBtn, "click", function () {
-    companyCheckboxes.forEach(checkbox => {
-        checkbox.checked = false;
+    on(filterByCompany, "click", function () {
+        companyDialog.open();
     });
-});
 
-on(companyMultiSelectApplyBtn, "click", function () {
-    let companies = [];
-    companyCheckboxes.forEach(checkbox => {
-        if (checkbox.checked) {
-            companies.push(checkbox.getAttribute("id"));
+    const companyMultiSelectApplyBtn = $("#company-popup-apply-btn");
+    const companyMultiSelectResetBtn = $("#company-popup-reset-btn");
+
+    const companyCheckboxes = $all("#company-popup input[type=checkbox]");
+
+    on(companyMultiSelectResetBtn, "click", function () {
+        companyCheckboxes.forEach(checkbox => {
+            checkbox.checked = false;
+        });
+    });
+
+    on(companyMultiSelectApplyBtn, "click", function () {
+        let companies = [];
+        companyCheckboxes.forEach(checkbox => {
+            if (checkbox.checked) {
+                companies.push(checkbox.getAttribute("id"));
+            }
+        });
+
+        if (companies.length > 0) {
+            params.set("c", companies.join(","));
+        } else {
+            params.delete("c");
         }
+
+        window.location.href = `${window.location.pathname}?${params.toString()}`;
     });
-
-    if (companies.length > 0) {
-        params.set("c", companies.join(","));
-    } else {
-        params.delete("c");
-    }
-
-    window.location.href = `${window.location.pathname}?${params.toString()}`;
-});
+}
 
 // Filter by visibility
 const filterByVisibility = $("#filter-by-visibility");
-const visibilityRadioButtons = $all("#visibility-popup input[type=radio]");
-const visibilityDialog = new Dialog("#visibility-popup");
-visibilityDialog.setTitle("Filter by Visibility");
+if (filterByVisibility) {
+    const visibilityDialog = new Dialog("#visibility-popup");
+    visibilityDialog.setTitle("Filter by Visibility");
 
-on(filterByVisibility, "click", function () {
-    visibilityDialog.open();
-});
+    on(filterByVisibility, "click", function () {
+        visibilityDialog.open();
+    });
 
+    on($("#visibility-popup-apply-btn"), "click", () => {
+        let visibility = $("#visibility-popup input[type=radio]:checked").value;
+        if (visibility === "all") {
+            params.delete("v");
+        } else {
+            params.set("v", visibility);
+        }
 
-on($("#visibility-popup-apply-btn"), "click", () => {
-    let visibility = $("#visibility-popup input[type=radio]:checked").value;
-    if (visibility === "all") {
-        params.delete("v");
-    } else {
-        params.set("v", visibility);
-    }
-
-    window.location.href = `${window.location.pathname}?${params.toString()}`;
-});
+        window.location.href = `${window.location.pathname}?${params.toString()}`;
+    });
+}
 
 // Filter by approval
 const filterByApproval = $("#filter-by-approval");
-const approvalRadioButtons = $all("#approval-popup input[type=radio]");
-const approvalDialog = new Dialog("#approval-popup");
-approvalDialog.setTitle("Filter by Approval");
+if (filterByApproval) {
+    const approvalDialog = new Dialog("#approval-popup");
+    approvalDialog.setTitle("Filter by Approval");
 
-on(filterByApproval, "click", function () {
-    approvalDialog.open();
-});
+    on(filterByApproval, "click", function () {
+        approvalDialog.open();
+    });
 
-on($("#approval-popup-apply-btn"), "click", () => {
-    let approval = $("#approval-popup input[type=radio]:checked").value;
-    if (approval === "all") {
-        params.delete("a");
-    } else {
-        params.set("a", approval);
-    }
+    on($("#approval-popup-apply-btn"), "click", () => {
+        let approval = $("#approval-popup input[type=radio]:checked").value;
+        if (approval === "all") {
+            params.delete("a");
+        } else {
+            params.set("a", approval);
+        }
 
-    window.location.href = `${window.location.pathname}?${params.toString()}`;
-});
+        window.location.href = `${window.location.pathname}?${params.toString()}`;
+    });
+}
 
 // Default behavior on page load
 
@@ -275,7 +278,8 @@ let filterByVisibilityParam = params.get("v");
 let filterByApprovalParam = params.get("a");
 
 on(document, "DOMContentLoaded", function () {
-    if (filterByCompanyParam) {
+    if (filterByCompany && filterByCompanyParam) {
+        const companyCheckboxes = $all("#company-popup input[type=checkbox]");
         filterByCompany.classList.add("selected");
         companyCheckboxes.forEach(checkbox => {
             if (filterByCompanyParam.includes(parseInt(checkbox.getAttribute("id")))) {
@@ -284,7 +288,8 @@ on(document, "DOMContentLoaded", function () {
         });
     }
 
-    if (filterByVisibilityParam) {
+    if (filterByVisibility && filterByVisibilityParam) {
+        const visibilityRadioButtons = $all("#visibility-popup input[type=radio]");
         filterByVisibility.classList.add("selected");
         visibilityRadioButtons.forEach(radio => {
             if (radio.value === filterByVisibilityParam) {
@@ -293,7 +298,8 @@ on(document, "DOMContentLoaded", function () {
         });
     }
 
-    if (filterByApprovalParam) {
+    if (filterByApproval && filterByApprovalParam) {
+        const approvalRadioButtons = $all("#approval-popup input[type=radio]");
         filterByApproval.classList.add("selected");
         approvalRadioButtons.forEach(radio => {
             if (radio.value === filterByApprovalParam) {
