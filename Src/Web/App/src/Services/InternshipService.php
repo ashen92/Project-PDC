@@ -6,6 +6,7 @@ namespace App\Services;
 use App\DTOs\createInternshipDTO;
 use App\Interfaces\IFileStorageService;
 use App\Models\Internship;
+use App\Models\Internship\Visibility;
 use App\Models\InternshipProgram\createApplication;
 use App\Models\InternshipSearchResult;
 use App\Models\Organization;
@@ -77,13 +78,19 @@ readonly class InternshipService
     /**
      * @return array<Organization>
      */
-    public function searchInternshipsGetOrganizations(int $cycleId, ?string $searchQuery): array
-    {
+    public function getOrganizationsForSearchQuery(
+        int $cycleId,
+        ?string $searchQuery,
+        ?Visibility $visibility,
+        ?bool $isApproved
+    ): array {
         // TODO: Check if internship cycle exists
 
-        return $this->internshipRepository->searchInternshipsGetOrganizations(
+        return $this->internshipRepository->getOrganizationsForSearchQuery(
             $cycleId,
             $searchQuery,
+            $visibility,
+            $isApproved
         );
     }
 
@@ -222,8 +229,38 @@ readonly class InternshipService
         return $this->internshipRepository->findJobRoles($cycleId);
     }
 
+    public function getJobRolesAppliedTo(int $cycleId, int $studentId): array
+    {
+        return $this->internshipRepository->findJobRolesAppliedTo($cycleId, $studentId);
+    }
+
     public function getStudentsByJobRole(int $jobRoleId): array
     {
         return $this->internshipRepository->findStudentsByJobRole($jobRoleId);
+    }
+
+    public function applyToJobRole(int $jobRoleId, int $studentId): bool
+    {
+        return $this->internshipRepository->applyToJobRole($jobRoleId, $studentId);
+    }
+
+    public function removeFromJobRole(int $jobRoleId, int $studentId): bool
+    {
+        return $this->internshipRepository->removeFromJobRole($jobRoleId, $studentId);
+    }
+
+    public function createJobRole(int $cycleId, string $jobRoleName): bool
+    {
+        return $this->internshipRepository->createJobRole($cycleId, $jobRoleName);
+    }
+
+    public function modifyJobRole(int $jobRoleId, string $name): bool
+    {
+        return $this->internshipRepository->modifyJobRole($jobRoleId, $name);
+    }
+
+    public function deleteJobRole(int $jobRoleId): bool
+    {
+        return $this->internshipRepository->deleteJobRole($jobRoleId);
     }
 }

@@ -8,8 +8,9 @@
     "devDependencies": {
         "choices.js": "^10.2.0",
         "datatables.net-dt": "^2.0.3",
+        "datatables.net-select-dt": "^2.0.1",
         "esbuild": "^0.20.2",
-        "eslint": "^9.0.0",
+        "eslint": "^8.1.0",
         "gridjs": "^6.2.0",
         "gulp": "^5.0.0",
         "gulp-autoprefixer": "^9.0.0",

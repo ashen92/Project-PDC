@@ -247,14 +247,10 @@
 <div class="dialog-container" id="application-dialog">
     <div class="dialog min-w-80">
         <form class="mt-2" id="file-upload-form" method="POST" enctype="multipart/form-data">
-            {% include 'shared/file-upload.html' with {
-            'id': 'files-to-upload',
-            'name': 'files-to-upload[]',
-            'accept': '.pdf',
-            'button_text': 'Select files to upload',
-            'multiple': true,
-            'required': true
-            } %}
+            <div id="file-upload-container">
+                <label for="application-file">Select CV/Resume</label>
+                <input type="file" name="application-file" id="application-file" accept=".pdf" required>
+            </div>
             <div class="form-actions">
                 <button type="submit" class="btn btn-primary" id="application-dialog-submit-btn">Submit</button>
             </div>
