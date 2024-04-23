@@ -3,12 +3,12 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
-use App\Attributes\RequiredPolicy;
-use App\Attributes\RequiredRole;
 use App\DTOs\createInternshipDTO;
+use App\Models\Internship;
 use App\Models\InternshipCycle;
-use App\Security\Identity;
-use App\Security\Role;
+use App\Models\InternshipProgram\createApplication;
+use App\Security\Attributes\RequiredRole;
+use App\Security\AuthorizationService;
 use App\Services\InternshipService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,24 +17,25 @@ use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
 
 #[RequiredRole([
-    Role::InternshipProgram_Admin,
-    Role::InternshipProgram_Partner_Admin,
-    Role::InternshipProgram_Student,
+    'InternshipProgramAdmin',
+    'InternshipProgramPartnerAdmin',
+    'InternshipProgramStudent',
 ])]
-#[Route('/internship-program/internships')]
-class InternshipsController extends PageControllerBase
+#[Route('/internship-program')]
+class InternshipsController extends ControllerBase
 {
     const int MAX_INTERNSHIP_RESULTS_PER_PAGE = 25;
 
     public function __construct(
         Environment $twig,
+        AuthorizationService $authzService,
         private readonly InternshipService $internshipService,
     ) {
-        parent::__construct($twig);
+        parent::__construct($twig, $authzService);
     }
 
-    #[Route([''])]
-    public function internships(Request $request, Identity $identity, ?InternshipCycle $cycle): Response
+    #[Route(['/internships'])]
+    public function internships(Request $request, ?InternshipCycle $cycle): Response
     {
         if ($cycle === null) {
             return $this->render('internship-program/internships.html', ['section' => 'internships']);
@@ -51,49 +52,93 @@ class InternshipsController extends PageControllerBase
             $orgIds = array_map('intval', $orgIds);
         }
 
+        $visibility = $queryParams['v'] ?? null;
+        $visibility = $visibility ? Internship\Visibility::tryFrom($visibility) : null;
+
+        $isApproved = $queryParams['a'] ?? null;
+        if ($isApproved) {
+            if ($isApproved === 'approved') {
+                $isApproved = true;
+            } elseif ($isApproved === 'pending') {
+                $isApproved = false;
+            } else {
+                $isApproved = null;
+            }
+        }
+
         // TODO: Validate query params
 
         $cycleId = $cycle->getId();
         $orgs = null;
 
-        if ($identity->hasRole(Role::InternshipProgram_Partner)) {
+        if ($this->hasRole('InternshipProgramPartner')) {
             $userId = $request->getSession()->get('user_id');
             $internships = $this->internshipService
                 ->searchInternships(
                     $cycleId,
                     $searchQuery,
                     null,
-                    null,
+                    $visibility,
+                    $isApproved,
                     self::MAX_INTERNSHIP_RESULTS_PER_PAGE,
                     (int) (($pageNumber - 1) * self::MAX_INTERNSHIP_RESULTS_PER_PAGE),
                     $userId
                 );
 
-            $numberOfResults = $this->internshipService->getInternshipCount(
+            $numberOfResults = $this->internshipService->countInternships(
                 $cycleId,
                 $searchQuery,
+                null,
+                $visibility,
+                $isApproved,
                 $userId
             );
         } else {
-            $internships = $this->internshipService
-                ->searchInternships(
+            if ($this->hasRole('InternshipProgramStudent')) {
+                $internships = $this->internshipService
+                    ->searchInternships(
+                        $cycleId,
+                        $searchQuery,
+                        $orgIds,
+                        Internship\Visibility::Public ,
+                        true,
+                        self::MAX_INTERNSHIP_RESULTS_PER_PAGE,
+                        (int) (($pageNumber - 1) * self::MAX_INTERNSHIP_RESULTS_PER_PAGE)
+                    );
+
+                $numberOfResults = $this->internshipService->countInternships(
                     $cycleId,
                     $searchQuery,
                     $orgIds,
-                    null,
-                    self::MAX_INTERNSHIP_RESULTS_PER_PAGE,
-                    (int) (($pageNumber - 1) * self::MAX_INTERNSHIP_RESULTS_PER_PAGE)
+                    $visibility,
+                    true,
+                    null
                 );
+            } else {
+                $internships = $this->internshipService
+                    ->searchInternships(
+                        $cycleId,
+                        $searchQuery,
+                        $orgIds,
+                        $visibility,
+                        $isApproved,
+                        self::MAX_INTERNSHIP_RESULTS_PER_PAGE,
+                        (int) (($pageNumber - 1) * self::MAX_INTERNSHIP_RESULTS_PER_PAGE)
+                    );
+
+                $numberOfResults = $this->internshipService->countInternships(
+                    $cycleId,
+                    $searchQuery,
+                    $orgIds,
+                    $visibility,
+                    $isApproved,
+                    null
+                );
+            }
 
             $orgs = $this->internshipService->searchInternshipsGetOrganizations(
                 $cycleId,
                 $searchQuery,
-            );
-
-            $numberOfResults = $this->internshipService->getInternshipCount(
-                $cycleId,
-                $searchQuery,
-                null
             );
         }
 
@@ -111,14 +156,14 @@ class InternshipsController extends PageControllerBase
         );
     }
 
-    #[Route('/{id}', requirements: ['id' => '\d+'], methods: ['DELETE'])]
+    #[Route('/internships/{id}', requirements: ['id' => '\d+'], methods: ['DELETE'])]
     public function delete(int $id): Response
     {
         $this->internshipService->deleteInternship($id);
         return new Response(null, 204);
     }
 
-    #[Route('/{id}/modify', methods: ['GET'])]
+    #[Route('/internships/{id}/modify', methods: ['GET'])]
     public function updateGET(int $id): Response
     {
         return $this->render(
@@ -130,7 +175,7 @@ class InternshipsController extends PageControllerBase
         );
     }
 
-    #[Route('/{id}/modify', methods: ['POST'])]
+    #[Route('/internships/{id}/modify', methods: ['POST'])]
     public function updatePOST(Request $request): Response|RedirectResponse
     {
         $id = (int) $request->get('id');
@@ -155,41 +200,98 @@ class InternshipsController extends PageControllerBase
         );
     }
 
-    #[RequiredPolicy(InternshipCycle\State::JobCollection)]
-    #[Route('/create', methods: ['GET'])]
-    public function createGET(Identity $identity): Response
+    #[Route('/internships/create', methods: ['GET'])]
+    public function createGET(): Response
     {
         return $this->render(
             'internship-program/internship/create.html',
             [
                 'section' => 'internships',
-                'organizations' => $identity->hasRole(Role::InternshipProgram_Admin) ? $this->internshipService->getOrganizations() : null,
+                'organizations' => $this->hasRole('InternshipProgramAdmin') ? $this->internshipService->getOrganizations() : null,
             ]
         );
     }
 
-    #[RequiredPolicy(InternshipCycle\State::JobCollection)]
-    #[Route('/create', methods: ['POST'])]
-    public function createPOST(Request $request, Identity $identity, InternshipCycle $cycle): RedirectResponse
+    #[Route('/internships/create', methods: ['POST'])]
+    public function createPOST(Request $request, InternshipCycle $cycle): RedirectResponse
     {
-        $orgId = $identity->hasRole(Role::InternshipProgram_Admin) ?
+        $orgId = $this->hasRole('InternshipProgramAdmin') ?
             (int) $request->get('organization') : null;
-
-        $applyOnExternalWebsite = (bool) $request->get('apply-method');
-        $externalWebsite = $applyOnExternalWebsite ? $request->get('external-website') : null;
 
         $dto = new createInternshipDTO(
             $request->get('title'),
             $request->get('description'),
             (int) $request->getSession()->get('user_id'),
             $orgId,
-            $applyOnExternalWebsite,
-            $externalWebsite,
         );
 
         // TODO: Validate data
 
         $this->internshipService->createInternship($cycle->getId(), $dto);
         return $this->redirect('/internship-program/internships');
+    }
+
+    #[Route('/internships/{id}/apply', methods: ['POST'])]
+    public function applyPOST(Request $request, int $id): RedirectResponse
+    {
+        $userId = $request->getSession()->get('user_id');
+
+        $files = $request->files->get('files-to-upload');
+        if ($files && !is_array($files)) {
+            $files = [$files];
+        }
+
+        // TODO: Validate data
+
+        if (!$this->internshipService->createApplication(new createApplication($id, $userId, $files))) {
+            // TODO: Set errors
+        }
+
+        return $this->redirect('/internship-program/internships');
+    }
+
+    #[Route('/round-2', methods: ['GET'])]
+    public function round2GET(InternshipCycle $cycle): Response
+    {
+        if ($this->hasRole('InternshipProgramStudent')) {
+            return $this->render(
+                'internship-program/round-2/home-student.html',
+                [
+                    'section' => 'round-2',
+                    'jobRoles' => $this->internshipService->getJobRoles($cycle->getId()),
+                ]
+            );
+        }
+
+        if ($this->hasRole('InternshipProgramPartner')) {
+            return $this->render(
+                'internship-program/round-2/home-partner.html',
+                [
+                    'section' => 'round-2',
+                    'jobRoles' => $this->internshipService->getJobRoles($cycle->getId()),
+                ]
+            );
+        }
+
+        return $this->render(
+            'internship-program/round-2/home-admin.html',
+            [
+                'section' => 'round-2',
+                'jobRoles' => $this->internshipService->getJobRoles($cycle->getId()),
+            ]
+        );
+    }
+
+    #[Route('/round-2/job-roles/{id}', methods: ['GET'])]
+    public function jobRoleStudentsGET(int $id): Response
+    {
+        return $this->render(
+            'internship-program/round-2/job-role/students.html',
+            [
+                'section' => 'round-2',
+                'jobRole' => $this->internshipService->getJobRole($id),
+                'students' => $this->internshipService->getStudentsByJobRole($id),
+            ]
+        );
     }
 }

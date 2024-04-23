@@ -1,24 +1,16 @@
 @use '../variables' as *;
 
-$filter-bar-bg-color: #f0f0f0;
-$filter-bar-title-color: #444444;
-$search-bar-bg-color: #fdfdfd;
-$search-btn-bg-color: #d2d3d4;
-$filter-item-hover-bg-color: #dad8d8;
-$filter-item-active-bg-color: #c8c6c6;
-
 .layout-job-search {
     height: 100%;
 
     .filters {
         display: flex;
         column-gap: 0.3rem;
-        background-color: $filter-bar-bg-color;
+        background-color: #f0f0f0;
         border-radius: $rounded-1;
         padding: 0.5rem 1rem 0.5rem 1.25rem;
         margin-bottom: 1.5rem;
-        font-size: $text-field-font-size;
-        font-weight: $btn-font-weight;
+        font-weight: 500;
         border: $border-1;
 
         >* {
@@ -27,7 +19,7 @@ $filter-item-active-bg-color: #c8c6c6;
 
         >.title {
             font-weight: $fw-medium;
-            color: $filter-bar-title-color;
+            color: #444444;
 
             .i-filter::before {
                 font-size: 1.1rem;
@@ -44,43 +36,50 @@ $filter-item-active-bg-color: #c8c6c6;
             margin-left: 1.4rem;
             margin-right: 4rem;
 
-            background-color: $search-bar-bg-color;
+            background-color: #fdfdfd;
             border-radius: $rounded-1;
-            border: $btn-border $filter-bar-bg-color;
+            border: 1px solid #d1d1d1;
 
             &:hover {
-                border: $btn-border $btn-hover-border-color;
+                border-color: #a0a2a4;
             }
 
             >input[type="text"] {
-                outline: none;
+                background-color: #fff;
                 border: none;
                 width: 100%;
             }
 
             >.btn {
                 align-self: stretch;
-                border-radius: 0 $rounded-1 $rounded-1 0;
-
-                &:hover {
-                    border-radius: 0 ($rounded-1 - 2) ($rounded-1 - 2) 0;
-                }
+                border-radius: 0 ($rounded-1 - 1) ($rounded-1 - 1) 0;
             }
         }
 
-        >.item {
+        >.filter {
+            border: 1px solid transparent;
             border-radius: $rounded-1;
+            -webkit-user-select: none;
             user-select: none;
             transition: background 80ms linear;
-            padding: 0.45rem 0.75rem 0.4rem 1.1rem;
+            padding: 0.35rem 0.75rem 0.3rem 1.1rem;
 
             &:hover {
                 cursor: pointer;
-                background-color: $filter-item-hover-bg-color;
+                background-color: #dad8d8;
             }
 
             &:active {
-                background-color: $filter-item-active-bg-color;
+                background-color: #c8c6c6;
+            }
+
+            &.selected {
+                border: 1px solid #0078b4;
+                background-color: #cce3f5;
+
+                &:hover {
+                    background-color: #cce4f6;
+                }
             }
         }
     }
@@ -100,6 +99,7 @@ $filter-item-active-bg-color: #c8c6c6;
 
             .job {
                 padding: 1rem 1.4rem 1.2rem 1.2rem;
+                -webkit-user-select: none;
                 user-select: none;
                 cursor: pointer;
                 transition: background 80ms linear;
@@ -158,24 +158,20 @@ $filter-item-active-bg-color: #c8c6c6;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0.8rem 1.2rem 1rem 1.2rem;
+            padding: 0 1.2rem 1rem 1.2rem;
 
             .btn {
                 border: $border-0;
-                padding-left: 6px;
-                padding-right: 6px;
+                min-width: auto;
+                padding: 8px 12px;
 
                 &:first-child {
-                    padding-right: 12px;
+                    padding-right: 16px;
                 }
 
                 &:last-child {
-                    padding-left: 12px;
+                    padding-left: 16px;
                 }
-            }
-
-            .btn-icon {
-                column-gap: 8px;
 
                 .i {
                     font-weight: $fw-semibold;
@@ -222,88 +218,25 @@ $filter-item-active-bg-color: #c8c6c6;
             >.content {
                 border-radius: $rounded-2;
                 box-shadow: $shadow-3;
-                padding-bottom: 1rem;
 
-                >* {
-                    padding-left: 2.5rem;
-                    padding-right: 2.5rem;
-                }
-
-                >.title {
-                    font-weight: $fw-semibold;
-                    padding-top: 2.5rem;
-                    padding-bottom: 2rem;
-                    margin-bottom: 0;
-                    background-color: #EEEDE7;
-                }
-
-                >.actions {
-                    padding-bottom: 2rem;
-                    background-color: #EEEDE7;
-                }
-
-                >.description {
-                    margin-top: 2rem;
-                    margin-bottom: 2.5rem;
+                >.header {
+                    padding: 2.5rem;
+                    background-color: #f6f8fa;
 
                     >.title {
                         font-weight: $fw-semibold;
-                        margin-bottom: 1.5rem;
+                    }
+
+                    >.company {
+                        margin: 1.5rem 0;
                     }
                 }
-            }
-        }
-    }
 
-    .pop-up-multi-select-list {
-        position: fixed;
-        top: 10%;
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 1;
-
-        width: 30rem;
-
-        max-height: 75vh;
-        box-shadow: $popup-dialog-box-shadow;
-        background-color: #fff;
-        padding: 2rem 2rem 1.5rem 2.5rem;
-        border-radius: $rounded-2;
-        display: flex;
-        flex-direction: column;
-
-        h4 {
-            font-weight: $fw-semibold;
-            margin-bottom: 2rem;
-        }
-
-        ul {
-            margin-left: 1rem;
-            overflow-y: auto;
-            list-style: none;
-
-            li {
-                margin-bottom: 1rem;
-                display: flex;
-
-                &:last-child {
-                    margin-bottom: 0;
-                }
-
-                input[type="checkbox"] {
-                    margin-right: 0.5rem;
-                }
-
-                label {
-                    cursor: pointer;
-                    user-select: none;
+                >.section {
+                    border-top: $border-1;
+                    padding: 1.5rem 2.5rem;
                 }
             }
-        }
-
-        .actions {
-            text-align: right;
-            margin-top: 2rem;
         }
     }
 }

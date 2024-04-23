@@ -52,36 +52,7 @@ $fw-light: 300;
 
 // #endregion 
 
-// #region Buttons
-
-$btn-padding: 8px 24px;
-$btn-padding-top: 8px;
-$btn-padding-left: 24px;
-$btn-font-size: 0.9375rem;
-$btn-font-weight: 500;
-$btn-line-height: 1.15;
-$btn-color: #ffffff;
-$btn-bg: #006fc9;
-$btn-border-color: #006fc9;
-$btn-border: 1px solid;
-$btn-border-radius: 3px;
-$btn-box-shadow: none;
-$btn-transition: background-color .1s cubic-bezier(0.02, 1, 1, 1);
-
-$btn-hover-color: #ffffff;
-$btn-hover-bg: #0064b5;
-$btn-hover-border-color: #0064b5;
-$btn-active-color: #ffffff;
-$btn-active-bg: #005499;
-$btn-active-border-color: #005499;
-$btn-focus-box-shadow: none;
-$btn-disabled: #939393;
-$btn-disabled-bg: #e8e8e8;
-$btn-disabled-border: #e8e8e8;
-
-// #endregion
-
-$text-field-font-size: 0.9375rem;
+$input-element-font-size: 0.9375rem;
 
 // #region Shadows
 

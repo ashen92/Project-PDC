@@ -11,10 +11,11 @@
 @forward 'utilities/tables';
 @forward 'utilities/bg-color';
 @forward 'utilities/command-bar';
-@forward 'utilities/submission-viewer';
 @forward 'utilities/card';
 @forward 'utilities/choicesjs';
 @forward 'utilities/dialog';
+@forward 'utilities/overflow';
+@forward 'utilities/collapse';
 
 .divider {
     border-bottom-color: rgb(214, 214, 214);

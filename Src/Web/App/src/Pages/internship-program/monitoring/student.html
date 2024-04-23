@@ -49,9 +49,15 @@
         <tbody class="table-rows-clickable">
             {% for i in summary.userRequirements %}
             <tr data-href="/internship-program/requirements/{{ i.id }}">
-                <td>{{ i.requirementName }}</td>
+                <td>{{ i.requirement.name }}</td>
                 <td class="capitalize">{{ i.status }}</td>
-                <td>{{ i.completedAt.format("Y-m-d") }}</td>
+                <td>
+                    {% if i.completedAt %}
+                    {{ i.completedAt.format("Y-m-d") }}
+                    {% else %}
+                    Not completed
+                    {% endif %}
+                </td>
                 <td>{{ i.startDate.format("Y-m-d") }}</td>
                 <td>{{ i.endDate.format("Y-m-d") }}</td>
             </tr>

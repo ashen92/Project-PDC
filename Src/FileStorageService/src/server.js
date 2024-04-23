@@ -1,5 +1,4 @@
 import http from "http";
-// import "dotenv/config";
 import { parseIncomingFile } from "./fileParser.js";
 import { uploadFileToAzure } from "./azureUpload.js";
 import { getFilePropertiesFromAzure, getFileFromAzure } from "./azureGetFile.js";
@@ -49,5 +48,5 @@ const server = http.createServer(async (req, res) => {
     }
 });
 
-const port = process.env.SERVER_PORT || 3000;
+const port = 5000;
 server.listen(port, () => console.log(`Server running on port ${port}`));

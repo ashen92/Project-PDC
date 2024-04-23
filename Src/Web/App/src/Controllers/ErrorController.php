@@ -7,7 +7,7 @@ use Symfony\Component\ErrorHandler\Exception\FlattenException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class ErrorController extends PageControllerBase
+class ErrorController extends ControllerBase
 {
     #[Route('/{any}', requirements: ['any' => '.*'], methods: ['GET'], priority: -255)]
     public function notFound(): Response

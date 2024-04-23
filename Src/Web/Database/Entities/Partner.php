@@ -24,9 +24,10 @@ class Partner extends User
     public function __construct(
         ?string $email = null,
         ?string $firstName = null,
+        ?string $lastName = null,
         ?string $passwordHash = null
     ) {
-        parent::__construct($email, $firstName, $passwordHash);
+        parent::__construct($email, $firstName, $lastName, $passwordHash);
         $this->manage = new ArrayCollection();
     }
 

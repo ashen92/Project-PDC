@@ -65,10 +65,12 @@ class User
     public function __construct(
         ?string $email = null,
         ?string $firstName = null,
+        ?string $lastName = null,
         ?string $passwordHash = null
     ) {
         $this->email = $email;
         $this->firstName = $firstName;
+        $this->lastName = $lastName;
         $this->passwordHash = $passwordHash;
         $this->groups = new ArrayCollection();
         $this->permissions = new ArrayCollection();

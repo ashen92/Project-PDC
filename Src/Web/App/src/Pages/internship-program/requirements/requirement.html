@@ -20,25 +20,25 @@
         <div class="grid-details">
             <p class="label">Type</p>
             <p>:</p>
-            <p class="capitalize">{{ requirement.requirementType.value }}</p>
+            <p class="capitalize">{{ requirement.requirementType }}</p>
 
             {% if requirement.requirementType.value == "recurring" %}
             <p class="label">Repeat interval</p>
             <p>:</p>
-            <p class="capitalize">{{ requirement.repeatInterval.value }}</p>
+            <p class="capitalize">{{ requirement.repeatInterval }}</p>
             {% endif %}
 
             <p class="label">Start date</p>
             <p>:</p>
             <p>{{ requirement.startDate.format("Y-m-d") }}</p>
 
-            {% if requirement.requirementType.value == "one-time" %}
+            {% if requirement.requirementType == "one-time" %}
             <p class="label">End date (Exclusive)</p>
             <p>:</p>
             <p>{{ requirement.endBeforeDate.format("Y-m-d") }}</p>
             {% endif %}
 
-            {% set fulfillMethod = requirement.fulfillMethod.value %}
+            {% set fulfillMethod = requirement.fulfillMethod %}
             <p class="label">Fulfill Method</p>
             <p>:</p>
             <p class="capitalize">{{ fulfillMethod }}</p>

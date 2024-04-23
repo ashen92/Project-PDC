@@ -3,15 +3,14 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
-use App\Attributes\RequiredRole;
 use App\DTOs\CreateRequirementDTO;
 use App\DTOs\UserRequirementFulfillmentDTO;
 use App\Models\InternshipCycle;
 use App\Models\Requirement\FulFillMethod;
 use App\Models\Requirement\RepeatInterval;
 use App\Models\Requirement\Type;
-use App\Security\Identity;
-use App\Security\Role;
+use App\Security\Attributes\RequiredRole;
+use App\Security\AuthorizationService;
 use App\Services\RequirementService;
 use DateTimeImmutable;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -22,57 +21,50 @@ use Throwable;
 use Twig\Environment;
 
 #[RequiredRole([
-    Role::InternshipProgram_Admin,
-    Role::InternshipProgram_Partner_Admin,
-    Role::InternshipProgram_Partner,
-    Role::InternshipProgram_Student,
+    'InternshipProgramAdmin',
+    'InternshipProgramPartner',
+    'InternshipProgramStudent',
 ])]
 #[Route('/internship-program/requirements')]
-class RequirementsController extends PageControllerBase
+class RequirementsController extends ControllerBase
 {
     public function __construct(
         Environment $twig,
+        AuthorizationService $authzService,
         private readonly RequirementService $requirementService
     ) {
-        parent::__construct($twig);
+        parent::__construct($twig, $authzService);
     }
 
     #[Route([''], methods: ['GET'])]
-    public function requirements(Request $request, Identity $identity, ?InternshipCycle $cycle): Response
+    public function requirements(Request $request, InternshipCycle $cycle): Response
     {
-        if ($identity->hasRole(Role::InternshipProgram_Admin)) {
+        if ($this->hasRole('InternshipProgramAdmin')) {
             return $this->render(
                 'internship-program/requirements/home-admin.html',
                 [
                     'section' => 'requirements',
-                    'requirements' => $this->requirementService->getRequirements()
+                    'requirements' => $this->requirementService->getRequirements($cycle->getId())
                 ]
             );
-        }
-
-        $cycleId = $cycle->getId();
-        if ($cycleId) {
-            $userReq = $this->requirementService->getUserRequirements(
-                $cycleId,
-                userId: $request->getSession()->get('user_id')
-            );
-        } else {
-            $userReq = [];
         }
 
         return $this->render(
             'internship-program/requirements/home.html',
             [
                 'section' => 'requirements',
-                'userRequirements' => $userReq,
+                'userRequirements' => $this->requirementService->getActiveUserRequirementsForUser(
+                    $cycle->getId(),
+                    userId: $request->getSession()->get('user_id')
+                ),
             ]
         );
     }
 
     #[Route('/{id}', requirements: ['id' => '\d+'], methods: ['GET'])]
-    public function requirement(Identity $identity, int $id): Response|RedirectResponse
+    public function requirement(int $id): Response|RedirectResponse
     {
-        if ($identity->hasRole(Role::InternshipProgram_Admin)) {
+        if ($this->hasRole('InternshipProgramAdmin')) {
             $requirement = $this->requirementService->getRequirement($id);
             if ($requirement) {
                 return $this->render(
@@ -103,7 +95,19 @@ class RequirementsController extends PageControllerBase
     #[Route('/create', methods: ['GET'])]
     public function requirementAddGET(): Response
     {
-        return $this->render('internship-program/requirements/create.html', ['section' => 'requirements']);
+        return $this->render(
+            'internship-program/requirements/create.html',
+            ['section' => 'requirements']
+        );
+    }
+
+    #[Route('/create/users', methods: ['GET'])]
+    public function createRequirementSelectUsersGET(): Response
+    {
+        return $this->render(
+            'internship-program/requirements/select-users.html',
+            ['section' => 'requirements']
+        );
     }
 
     #[Route('/create', methods: ['POST'])]

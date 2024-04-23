@@ -6,6 +6,22 @@
     box-shadow: rgba(57, 76, 96, 0.15) 0px 2px 4px -1px;
     background-color: #006bbd;
 
+    .navbar-brand {
+        .logo {
+            display: flex;
+            padding: 0 1rem 0 0;
+            align-items: center;
+            column-gap: 0.5rem;
+            border-radius: 5rem;
+        }
+
+        img {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+        }
+    }
+
     .navbar {
         display: flex;
         height: 100%;

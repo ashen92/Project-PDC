@@ -3,9 +3,13 @@ import { createClient } from "redis";
 import { EmailClient, KnownEmailSendStatus } from "@azure/communication-email";
 
 const connectionString = process.env.COMMUNICATION_SERVICES_CONNECTION_STRING;
+const senderAddress = process.env.SENDER_EMAIL_ADDRESS;
+
 const emailClient = new EmailClient(connectionString);
 
-const redisClient = createClient();
+const redisClient = createClient({
+    url: process.env.REDIS_URL,
+});
 redisClient.on("error", err => console.log("Redis Client Error", err));
 
 async function connectRedisClient() {
@@ -36,7 +40,7 @@ async function sendEmail(emailData) {
     const POLLER_WAIT_TIME = 10;
     try {
         const message = {
-            senderAddress: process.env.FROM_EMAIL_ADDRESS,
+            senderAddress: senderAddress,
             content: {
                 subject: emailData.subject,
                 plainText: emailData.bodyPlainText,

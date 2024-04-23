@@ -1,0 +1,40 @@
+{% extends "shared/layout-left-nav.html" %}
+
+{% block title %}Recruiting Candidates - Round 2{% endblock %}
+
+{% block left_nav %}
+{% include "internship-program/left-nav.html" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="title">
+    <h2>
+        Recruiting Candidates - Round 2
+    </h2>
+    <p>
+        Now you can hire candidates for internships by job roles they are interested in.
+    </p>
+</div>
+
+<section>
+    <div class="title">
+        <p>
+            Click on the job role to see the candidates interested in that role.
+        </p>
+    </div>
+
+    <div class="grid grid-cols-5 xxl-grid-cols-4 xl-grid-cols-3 lg-grid-cols-2 md-grid-cols-1 col-gap-10 row-gap-10">
+        {% for i in jobRoles %}
+        <a class="card" href="round-2/job-roles/{{ i.id }}">
+            <div class="flex justify-between col-gap-10">
+                <div class="break-word overflow-hidden">
+                    {{ i.name }}
+                </div>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+</section>
+
+{% endblock %}

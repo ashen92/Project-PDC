@@ -3,7 +3,7 @@
     Internship Program
 </a>
 
-{% if has_role(InternshipProgram_Admin) %}
+{% if has_role('InternshipProgramAdmin') %}
 
 <a class="{% if section == 'monitoring' %} active{% endif %}" href="/internship-program/monitoring">
     <i class="i i-clipboard-pulse"></i>
@@ -16,14 +16,14 @@
     Internships
 </a>
 
-{% elseif has_role(InternshipProgram_Partner) and has_permission('internship', 'create') %}
+{% elseif has_role('InternshipProgramPartner') and has_permission('CreateInternship') %}
 
 <a class="{% if section == 'internships' %} active{% endif %}" href="/internship-program/internships">
     <i class="i i-briefcase"></i>
     Your Internships
 </a>
 
-{% if has_role(InternshipProgram_Partner_Admin) %}
+{% if has_role('InternshipProgramPartnerAdmin') %}
 
 <a class="{% if section == 'applicants' %} active{% endif %}" href="/internship-program/applicants">
     <i class="i i-person-vcard"></i>
@@ -32,7 +32,7 @@
 
 {% endif %}
 
-{% elseif has_role(InternshipProgram_Student) %}
+{% elseif has_role('InternshipProgramStudent') %}
 
 <div class="separator"></div>
 <a class="{% if section == 'profile' %} active{% endif %}" href="/internship-program/profile">
@@ -50,6 +50,11 @@
 </a>
 
 {% endif %}
+
+<a class="{% if section == 'round-2' %} active{% endif %}" href="/internship-program/round-2">
+    <i class="i i-2-circle"></i>
+    Round 2
+</a>
 
 <a class="{% if section == 'requirements' %} active{% endif %}" href="/internship-program/requirements">
     <i class="i i-clipboard-check"></i>

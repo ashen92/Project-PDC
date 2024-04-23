@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
-use App\Attributes\RequiredRole;
 use App\DTOs\CreateUserDTO;
 use App\Exceptions\UserExistsException;
-use App\Security\Role;
+use App\Security\Attributes\RequiredRole;
+use App\Security\AuthorizationService;
 use App\Services\UserService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,15 +14,16 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
 
-#[RequiredRole(Role::Admin)]
+#[RequiredRole('Admin')]
 #[Route('/portal')]
-class PortalController extends PageControllerBase
+class PortalController extends ControllerBase
 {
 	public function __construct(
 		Environment $twig,
+		AuthorizationService $authzService,
 		private readonly UserService $userService
 	) {
-		parent::__construct($twig);
+		parent::__construct($twig, $authzService);
 	}
 
 	#[Route('')]

@@ -6,6 +6,7 @@ namespace App\Controllers;
 use App\DTOs\UpdateStudentUserDTO;
 use App\Interfaces\IEmailService;
 use App\Models\SignupEmail;
+use App\Security\AuthorizationService;
 use App\Services\AuthenticationService;
 use DateTime;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -14,14 +15,15 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
 
-class AuthenticationController extends PageControllerBase
+class AuthenticationController extends ControllerBase
 {
     public function __construct(
         Environment $twig,
+        AuthorizationService $authzService,
         private readonly AuthenticationService $authn,
         private readonly IEmailService $emailService
     ) {
-        parent::__construct($twig);
+        parent::__construct($twig, $authzService);
     }
 
     #[Route('/login', methods: ['GET'])]

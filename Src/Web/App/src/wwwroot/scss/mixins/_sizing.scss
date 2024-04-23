@@ -279,6 +279,23 @@
     &-11\/12 {
         width: 91.666667%;
     }
+
+    &-full {
+        width: 100%;
+    }
+
+    &-min {
+        width: min-content;
+    }
+
+    &-max {
+        width: max-content;
+    }
+
+    &-fit {
+        width: -moz-fit-content;
+        width: fit-content;
+    }
 }
 
 @mixin max-width {
@@ -643,11 +660,11 @@
     }
 
     &-min {
-        max-width: min-content;
+        min-width: min-content;
     }
 
     &-max {
-        max-width: max-content;
+        min-width: max-content;
     }
 }
 

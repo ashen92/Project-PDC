@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Models\InternshipCycle\State;
 use DateTimeImmutable;
 
 class InternshipCycle
@@ -14,68 +13,13 @@ class InternshipCycle
         private ?DateTimeImmutable $endedAt,
         private ?DateTimeImmutable $jobCollectionStart,
         private ?DateTimeImmutable $jobCollectionEnd,
-        private ?DateTimeImmutable $applyingStart,
-        private ?DateTimeImmutable $applyingEnd,
-        private ?DateTimeImmutable $interningStart,
-        private ?DateTimeImmutable $interningEnd,
+        private ?DateTimeImmutable $jobHuntRound1Start,
+        private ?DateTimeImmutable $jobHuntRound1End,
+        private ?DateTimeImmutable $jobHuntRound2Start,
+        private ?DateTimeImmutable $jobHuntRound2End,
         private array $partnerGroupIds,
         private ?int $studentGroupId,
     ) {
-    }
-
-    public function getActiveState(): State
-    {
-        $now = new DateTimeImmutable();
-        if ($this->jobCollectionStart && $this->jobCollectionStart <= $now && (!$this->jobCollectionEnd || $now <= $this->jobCollectionEnd)) {
-            return State::JobCollection;
-        }
-        if ($this->applyingStart && $this->applyingStart <= $now && (!$this->applyingEnd || $now <= $this->applyingEnd)) {
-            return State::Applying;
-        }
-        if ($this->interningStart && $this->interningStart <= $now && (!$this->interningEnd || $now <= $this->interningEnd)) {
-            return State::Interning;
-        }
-        if ($this->endedAt) {
-            return State::Ended;
-        }
-
-        return State::None;
-    }
-
-    public function getNextState(): State
-    {
-        $activeState = $this->getActiveState();
-        if ($activeState === State::JobCollection) {
-            return State::Applying;
-        }
-        if ($activeState === State::Applying) {
-            return State::Interning;
-        }
-        if ($activeState === State::Interning) {
-            return State::None;
-        }
-
-        $now = new DateTimeImmutable();
-        if (!$this->jobCollectionStart || $now <= $this->jobCollectionStart) {
-            return State::JobCollection;
-        }
-        if ($this->jobCollectionEnd <= $now && (!$this->applyingStart || $now <= $this->applyingStart)) {
-            return State::Applying;
-        }
-        if ($this->applyingEnd <= $now && (!$this->interningStart || $now <= $this->interningStart)) {
-            return State::Interning;
-        }
-        return State::None;
-    }
-
-    public function isState(State $state): bool
-    {
-        $activeState = $this->getActiveState();
-        if ($state === $activeState) {
-            return true;
-        }
-
-        return $state === State::Ended;
     }
 
     public function getId(): int
@@ -103,24 +47,24 @@ class InternshipCycle
         return $this->jobCollectionEnd;
     }
 
-    public function getApplyingStart(): ?DateTimeImmutable
+    public function getJobHuntRound1Start(): ?DateTimeImmutable
     {
-        return $this->applyingStart;
+        return $this->jobHuntRound1Start;
     }
 
-    public function getApplyingEnd(): ?DateTimeImmutable
+    public function getJobHuntRound1End(): ?DateTimeImmutable
     {
-        return $this->applyingEnd;
+        return $this->jobHuntRound1End;
     }
 
-    public function getInterningStart(): ?DateTimeImmutable
+    public function getJobHuntRound2Start(): ?DateTimeImmutable
     {
-        return $this->interningStart;
+        return $this->jobHuntRound2Start;
     }
 
-    public function getInterningEnd(): ?DateTimeImmutable
+    public function getJobHuntRound2End(): ?DateTimeImmutable
     {
-        return $this->interningEnd;
+        return $this->jobHuntRound2End;
     }
 
     public function getPartnerGroupIds(): array
@@ -131,35 +75,5 @@ class InternshipCycle
     public function getStudentGroupId(): ?int
     {
         return $this->studentGroupId;
-    }
-
-    public function setJobCollectionStart(DateTimeImmutable $date): void
-    {
-        $this->jobCollectionStart = $date;
-    }
-
-    public function setJobCollectionEnd(DateTimeImmutable $date): void
-    {
-        $this->jobCollectionEnd = $date;
-    }
-
-    public function setApplyingStart(DateTimeImmutable $date): void
-    {
-        $this->applyingStart = $date;
-    }
-
-    public function setApplyingEnd(DateTimeImmutable $date): void
-    {
-        $this->applyingEnd = $date;
-    }
-
-    public function addPartnerGroupId(int $id): void
-    {
-        $this->partnerGroupIds[] = $id;
-    }
-
-    public function setStudentGroupId(int $id): void
-    {
-        $this->studentGroupId = $id;
     }
 }

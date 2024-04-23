@@ -30,8 +30,8 @@ $matcher = new UrlMatcher($routes, new RequestContext());
 
 $dispatcher = new EventDispatcher();
 $dispatcher->addSubscriber(new RouterListener($matcher, $requestStack));
+$dispatcher->addSubscriber($container->get("listener.authentication"));
 $dispatcher->addSubscriber($container->get("listener.authorization"));
-$dispatcher->addSubscriber($container->get("listener.internship_program"));
 $dispatcher->addSubscriber($container->get("listener.exception"));
 
 $controllerResolver = new ContainerControllerResolver($container);
@@ -41,7 +41,6 @@ $argumentResolver = new ArgumentResolver(
         new RequestAttributeValueResolver(),
         new RequestValueResolver(),
         new SessionValueResolver(),
-        $container->get('security.identity_resolver'),
         $container->get('internship_cycle_resolver'),
         new DefaultValueResolver(),
         new VariadicValueResolver(),

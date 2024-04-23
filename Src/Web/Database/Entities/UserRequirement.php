@@ -7,7 +7,6 @@ use App\Models\Requirement\FulFillMethod;
 use App\Models\UserRequirement\Status;
 use DateTimeImmutable;
 use DateTimeInterface;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
@@ -41,15 +40,6 @@ class UserRequirement
 
     #[ORM\Column(type: 'user_requirement_status')]
     private Status $status;
-
-    /**
-     * @var Collection<int, File>
-     */
-    #[ORM\JoinTable(name: 'user_requirement_files')]
-    #[ORM\JoinColumn(name: 'user_requirement_id', referencedColumnName: 'id')]
-    #[ORM\InverseJoinColumn(name: 'file_id', referencedColumnName: 'id', unique: true)]
-    #[ORM\ManyToMany(targetEntity: 'File')]
-    private Collection $files;
 
     #[ORM\Column(type: "text", nullable: true)]
     private ?string $textResponse;

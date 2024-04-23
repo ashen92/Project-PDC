@@ -20,38 +20,20 @@ class InternMonitoringService
         return $this->internMonitoringRepo->findStudents($cycleId);
     }
 
-    public function getUserRequirements(
-        int $cycleId,
-        int $requirementId,
-        int $limit,
-        int $offsetBy,
-    ): array {
-        $urs = $this->internMonitoringRepo->findUserRequirements($cycleId, $requirementId, $limit, $offsetBy);
-        foreach ($urs as &$ur) {
-            if ($ur['files'] === null) {
-                $ur['files'] = [];
-                continue;
-            }
-            $ur['files'] = explode('|', $ur['files']);
-            foreach ($ur['files'] as &$file) {
-                $file = explode(':', $file);
-                $file = [
-                    'id' => $file[0],
-                    'name' => $file[1],
-                    'url' => 'http://localhost:80/api/intern-monitoring/requirements/'
-                        . $requirementId . '/user-requirements/'
-                        . $ur['id'] . '/submissions/files/' . $file[2],
-                ];
-            }
-        }
-        $results["totalCount"] = $this->internMonitoringRepo->countUserRequirements($cycleId, $requirementId);
-        $results["data"] = $urs;
-        return $results;
+    public function getUserRequirements(int $cycleId, int $requirementId): array
+    {
+        return $this->internMonitoringRepo->findUserRequirements($cycleId, $requirementId);
     }
 
-    public function getFile(int $cycleId, int $reqId, int $userReqId, string $fileId): ?array
+    public function getUserRequirementFile(int $userReqId, int $fileId): ?array
     {
-        return $this->fileStorageService->get($fileId);
+        $fileMetadata = $this->internMonitoringRepo->findUserRequirementFile($userReqId, $fileId);
+        $file = $this->fileStorageService->get($fileMetadata['path']);
+        if ($file === null) {
+            return null;
+        }
+        $file['name'] = $fileMetadata['name'];
+        return $file;
     }
 
     public function getStudentSummary(int $cycleId, int $studentId): array

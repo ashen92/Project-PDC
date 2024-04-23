@@ -1,23 +1,31 @@
-@use '../variables' as *;
 @use '../mixins';
+@use '../variables' as *;
+
+$btn-disabled: #939393;
+$btn-disabled-bg: #e8e8e8;
+$btn-disabled-border: #e8e8e8;
 
 .btn {
-    display: inline-block;
-    padding: $btn-padding;
-    font-size: $btn-font-size;
-    font-weight: $btn-font-weight;
-    line-height: $btn-line-height;
-    text-align: center;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 6px 20px;
     cursor: pointer;
+    -webkit-user-select: none;
     user-select: none;
-    border: $btn-border;
-    border-radius: $btn-border-radius;
-    box-shadow: $btn-box-shadow;
-    transition: $btn-transition;
+    border: 1px solid;
+    box-shadow: none;
+    transition: background-color .1s cubic-bezier(0.02, 1, 1, 1);
+    font-weight: 600;
+    font-size: 0.9375rem;
+    line-height: 1.25rem;
+    border-radius: 4px;
+    min-width: 6rem;
+    column-gap: 0.4rem;
 
     &:focus-visible {
         outline: 0;
-        box-shadow: $btn-focus-box-shadow;
+        box-shadow: none;
     }
 
     &:disabled,
@@ -27,15 +35,22 @@
     }
 }
 
-.btn-icon {
-    display: inline-flex;
-    padding-left: 16px;
-    align-items: center;
-    column-gap: 0.3rem;
+.btn-sm {
+    padding: 4px 12px;
+    font-size: $fs-small;
+    line-height: 1rem;
+    min-width: 5rem;
+}
 
-    .i {
-        font-size: 1.2rem;
-        line-height: 1;
+.btn>.i {
+    font-size: 1.2rem;
+
+    &:first-child {
+        margin-left: -3px;
+    }
+
+    &:last-child {
+        margin-right: -3px;
     }
 }
 
@@ -100,6 +115,35 @@
         #e8e8e8,
         #cd9193,
         #cd9193);
+}
+
+.btn-close {
+    @include mixins.button-variant(#323130,
+        transparent,
+        #8a8886,
+        #323130,
+        #f2f2f2,
+        #8a8886,
+        #323130,
+        #dedede,
+        #8a8886,
+        #979796,
+        transparent,
+        #8a8886);
+
+    .i {
+        font-size: 1.5rem;
+    }
+
+    border: none;
+    padding: 0.75rem;
+    margin: 0;
+    min-width: 2rem;
+    min-height: 2rem;
+    width: 2rem;
+    height: 2rem;
+    max-width: 2rem;
+    max-height: 2rem;
 }
 
 .btn-outline {

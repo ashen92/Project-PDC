@@ -78,7 +78,7 @@ readonly class UserService
 
     public function searchUsers(?int $numberOfResults, ?int $offsetBy): array
     {
-        return $this->userRepository->searchUsers($numberOfResults, $offsetBy);
+        return $this->userRepository->searchUsers($numberOfResults ?? 50, $offsetBy ?? 0);
     }
 
     public function searchGroups(?int $numberOfResults, ?int $offsetBy): array

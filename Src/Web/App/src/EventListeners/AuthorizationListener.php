@@ -3,77 +3,41 @@ declare(strict_types=1);
 
 namespace App\EventListeners;
 
-use App\Attributes\RequiredRole;
+use App\Security\Attributes\RequiredPolicy;
+use App\Security\Attributes\RequiredRole;
 use App\Security\AuthorizationService;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
-use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Twig\Environment;
 
-class AuthorizationListener implements EventSubscriberInterface
+readonly class AuthorizationListener implements EventSubscriberInterface
 {
     public function __construct(
-        private Environment $twig,
         private AuthorizationService $authzService,
     ) {
-    }
-
-    public function onKernelRequest(RequestEvent $event): void
-    {
-        $request = $event->getRequest();
-        $currentRoute = $request->getPathInfo();
-        $currentMethod = $request->getMethod();
-
-        $specialRoutes = [
-            "/login" => ["GET", "POST"],
-            "/signup" => ["GET", "POST"],
-            "/signup/continue" => ["GET", "POST"],
-            "/register" => ["GET"],
-        ];
-
-        if ($event->getRequest()->getSession()->has("is_authenticated")) {
-            if (array_key_exists($currentRoute, $specialRoutes)) {
-                $response = new RedirectResponse("/home");
-                $event->setResponse($response);
-                return;
-            }
-        } else {
-            if (array_key_exists($currentRoute, $specialRoutes)) {
-                if (in_array($currentMethod, $specialRoutes[$currentRoute])) {
-                    return;
-                }
-            }
-            $response = new RedirectResponse("/login?redirect=$currentRoute");
-            $event->setResponse($response);
-        }
     }
 
     public function onKernelController(ControllerEvent $event): void
     {
         $reflector = $event->getControllerReflector();
-
         $controllerReflection = $reflector->getDeclaringClass();
         $controllerAttributes = $controllerReflection->getAttributes(RequiredRole::class);
         $controllerRequiredRole = "";
 
-        $hasControllerAccess = false;
-
         if (!empty($controllerAttributes)) {
             $controllerRequiredRole = $controllerAttributes[0]->newInstance()->role;
+            $hasControllerAccess = false;
 
             if (is_array($controllerRequiredRole)) {
                 foreach ($controllerRequiredRole as $role) {
                     if ($this->authzService->hasRole($role)) {
                         $hasControllerAccess = true;
+                        break;
                     }
                 }
             } else {
-                if ($this->authzService->hasRole($controllerRequiredRole)) {
-                    $hasControllerAccess = true;
-                }
+                $hasControllerAccess = $this->authzService->hasRole($controllerRequiredRole);
             }
 
             if (!$hasControllerAccess) {
@@ -81,32 +45,42 @@ class AuthorizationListener implements EventSubscriberInterface
             }
         }
 
-        $attributes = $reflector->getAttributes(RequiredRole::class);
+        $requiredRoleAttributes = $reflector->getAttributes(RequiredRole::class);
 
-        if (empty($attributes))
-            return;
+        if (!empty($requiredRoleAttributes)) {
+            $requiredRole = $requiredRoleAttributes[0]->newInstance()->role;
+            $hasRole = false;
 
-        $requiredRole = $attributes[0]->newInstance()->role;
-
-        if (is_array($requiredRole)) {
-            foreach ($requiredRole as $role) {
-                if ($this->authzService->hasRole($role)) {
-                    return;
+            if (is_array($requiredRole)) {
+                foreach ($requiredRole as $role) {
+                    if ($this->authzService->hasRole($role)) {
+                        $hasRole = true;
+                        break;
+                    }
                 }
+            } else {
+                $hasRole = $this->authzService->hasRole($requiredRole);
             }
-        } else {
-            if ($this->authzService->hasRole($requiredRole)) {
-                return;
+
+            if (!$hasRole) {
+                throw new AccessDeniedHttpException();
             }
         }
 
-        throw new AccessDeniedHttpException();
+        $requiredPolicyAttributes = $reflector->getAttributes(RequiredPolicy::class);
+
+        if (!empty($requiredPolicyAttributes)) {
+            $policyName = $requiredPolicyAttributes[0]->newInstance()->policyName;
+
+            if (!$this->authzService->authorize($policyName)) {
+                throw new AccessDeniedHttpException();
+            }
+        }
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
-            KernelEvents::REQUEST => "onKernelRequest",
             KernelEvents::CONTROLLER => ["onKernelController", 0]
         ];
     }

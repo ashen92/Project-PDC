@@ -30,16 +30,16 @@ class InternshipCycle
     private ?DateTimeImmutable $jobCollectionEnd;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
-    private ?DateTimeImmutable $applyingStart;
+    private ?DateTimeImmutable $jobHuntRound1Start;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
-    private ?DateTimeImmutable $applyingEnd;
+    private ?DateTimeImmutable $jobHuntRound1End;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
-    private ?DateTimeImmutable $interningStart;
+    private ?DateTimeImmutable $jobHuntRound2Start;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
-    private ?DateTimeImmutable $interningEnd;
+    private ?DateTimeImmutable $jobHuntRound2End;
 
     #[ORM\OneToOne(targetEntity: UserGroup::class)]
     #[ORM\JoinColumn(name: 'student_group_id', referencedColumnName: 'id')]
@@ -93,24 +93,24 @@ class InternshipCycle
         return $this->jobCollectionEnd;
     }
 
-    public function getApplyingStart(): ?DateTimeImmutable
+    public function getJobHuntRound1Start(): ?DateTimeImmutable
     {
-        return $this->applyingStart;
+        return $this->jobHuntRound1Start;
     }
 
-    public function getApplyingEnd(): ?DateTimeImmutable
+    public function getJobHuntRound1End(): ?DateTimeImmutable
     {
-        return $this->applyingEnd;
+        return $this->jobHuntRound1End;
     }
 
-    public function getInterningStart(): ?DateTimeImmutable
+    public function getJobHuntRound2Start(): ?DateTimeImmutable
     {
-        return $this->interningStart;
+        return $this->jobHuntRound2Start;
     }
 
-    public function getInterningEnd(): ?DateTimeImmutable
+    public function getJobHuntRound2End(): ?DateTimeImmutable
     {
-        return $this->interningEnd;
+        return $this->jobHuntRound2End;
     }
 
     public function getStudentGroup(): UserGroup
@@ -138,24 +138,24 @@ class InternshipCycle
         $this->jobCollectionEnd = $jobCollectionEnd;
     }
 
-    public function setApplyingStart(DateTimeImmutable $applyingStart): void
+    public function setJobHuntRound1Start(DateTimeImmutable $jobHuntRound1Start): void
     {
-        $this->applyingStart = $applyingStart;
+        $this->jobHuntRound1Start = $jobHuntRound1Start;
     }
 
-    public function setApplyingEnd(DateTimeImmutable $applyingEnd): void
+    public function setJobHuntRound1End(DateTimeImmutable $jobHuntRound1End): void
     {
-        $this->applyingEnd = $applyingEnd;
+        $this->jobHuntRound1End = $jobHuntRound1End;
     }
 
-    public function setInterningStart(DateTimeImmutable $interningStart): void
+    public function setJobHuntRound2Start(DateTimeImmutable $jobHuntRound2Start): void
     {
-        $this->interningStart = $interningStart;
+        $this->jobHuntRound2Start = $jobHuntRound2Start;
     }
 
-    public function setInterningEnd(DateTimeImmutable $interningEnd): void
+    public function setJobHuntRound2End(DateTimeImmutable $jobHuntRound2End): void
     {
-        $this->interningEnd = $interningEnd;
+        $this->jobHuntRound2End = $jobHuntRound2End;
     }
 
     public function addPartnerGroup(UserGroup $partnerGroup): void

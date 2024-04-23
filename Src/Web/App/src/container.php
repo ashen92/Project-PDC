@@ -1,8 +1,6 @@
 <?php
 declare(strict_types=1);
 
-use App\Security\IdentityProvider;
-use App\Security\IdentityResolver;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
@@ -19,20 +17,6 @@ $container->register(
     'session',
     Symfony\Component\HttpFoundation\Session\Session::class
 )
-    ->setPublic(true);
-
-$container->register(
-    'security.identity_provider',
-    IdentityProvider::class
-)
-    ->setArguments([new Reference('pdo_mysql_connection')])
-    ->setPublic(true);
-
-$container->register(
-    'security.identity_resolver',
-    IdentityResolver::class
-)
-    ->setArguments([new Reference('security.identity_provider')])
     ->setPublic(true);
 
 $container->register(
@@ -125,24 +109,19 @@ $container->register(
 
 $container->register(
     'twig.runtime_loader.security',
-    App\TwigExtension\SecurityRuntimeLoader::class
+    \App\Security\TwigExtension\SecurityRuntimeLoader::class
 )
     ->setArguments([new Reference('twig.runtime_extension.security')]);
 
 $container->register(
     'twig.runtime_extension.security',
-    App\TwigExtension\SecurityRuntimeExtension::class
+    \App\Security\TwigExtension\SecurityRuntimeExtension::class
 )
     ->setArguments([new Reference('service.authorization')]);
 
 $container->register(
     'twig.extension.security',
-    App\TwigExtension\SecurityExtension::class
-);
-
-$container->register(
-    'twig.extension',
-    App\TwigExtension\Extension::class
+    \App\Security\TwigExtension\SecurityExtension::class
 );
 
 $container->register(
@@ -152,7 +131,6 @@ $container->register(
     ->setArguments([new Reference('twig.loader')])
     ->addMethodCall('addRuntimeLoader', [new Reference('twig.runtime_loader.security')])
     ->addMethodCall('addExtension', [new Reference('twig.extension.security')])
-    ->addMethodCall('addExtension', [new Reference('twig.extension')])
     ->addMethodCall('addGlobal', ['app', ['session' => new Reference('session')]])
     ->setPublic(true);
 
@@ -174,6 +152,47 @@ $container->register(
         new Reference('password_hasher')
     ]);
 
+// Policies
+
+$container->register(
+    'security.policy.employed',
+    App\Security\Policies\EmploymentStatusPolicy::class
+)
+    ->setArguments(['employed']);
+
+$container->register(
+    'security.policy.unemployed',
+    App\Security\Policies\EmploymentStatusPolicy::class
+)
+    ->setArguments(['unemployed']);
+
+$container->register(
+    'security.policy.job_hunt_round_1',
+    App\Security\Policies\JobHuntRoundPolicy::class
+)
+    ->setArguments([1]);
+
+$container->register(
+    'security.policy.job_hunt_round_2',
+    App\Security\Policies\JobHuntRoundPolicy::class
+)
+    ->setArguments([2]);
+
+// Policy handlers
+
+$container->register(
+    'security.policy_handler.employment_status',
+    App\Security\PolicyHandlers\EmploymentStatusPolicyHandler::class
+)
+    ->setArguments([
+        new Reference('repository.intern_monitoring'),
+    ]);
+
+$container->register(
+    'security.policy_handler.job_hunt_round',
+    App\Security\PolicyHandlers\JobHuntRoundPolicyHandler::class
+);
+
 $container->register(
     'service.authorization',
     App\Security\AuthorizationService::class
@@ -181,7 +200,39 @@ $container->register(
     ->setArguments([
         new Reference('repository.authorization'),
         new Reference('session'),
-    ]);
+    ])
+    ->addMethodCall(
+        'addPolicyHandler',
+        [
+            'Employed',
+            new Reference('security.policy.employed'),
+            new Reference('security.policy_handler.employment_status')
+        ]
+    )
+    ->addMethodCall(
+        'addPolicyHandler',
+        [
+            'Unemployed',
+            new Reference('security.policy.unemployed'),
+            new Reference('security.policy_handler.employment_status')
+        ]
+    )
+    ->addMethodCall(
+        'addPolicyHandler',
+        [
+            'JobHuntRound1',
+            new Reference('security.policy.job_hunt_round_1'),
+            new Reference('security.policy_handler.job_hunt_round')
+        ]
+    )
+    ->addMethodCall(
+        'addPolicyHandler',
+        [
+            'JobHuntRound2',
+            new Reference('security.policy.job_hunt_round_2'),
+            new Reference('security.policy_handler.job_hunt_round')
+        ]
+    );
 
 $container->register(
     'service.user',
@@ -238,6 +289,7 @@ $container->register(
 )
     ->setArguments([
         new Reference('repository.application'),
+        new Reference('service.file_storage'),
     ]);
 
 $container->register(
@@ -285,21 +337,17 @@ $container->register(
     ->setPublic(true);
 
 $container->register(
+    'listener.authentication',
+    App\EventListeners\AuthenticationListener::class
+)
+    ->setPublic(true);
+
+$container->register(
     'listener.authorization',
     App\EventListeners\AuthorizationListener::class
 )
     ->setArguments([
-        new Reference('twig'),
         new Reference('service.authorization'),
-    ])
-    ->setPublic(true);
-
-$container->register(
-    'listener.internship_program',
-    App\EventListeners\InternshipProgramListener::class
-)
-    ->setArguments([
-        new Reference('repository.internship_program'),
     ])
     ->setPublic(true);
 
@@ -321,6 +369,8 @@ $container->register(
     \App\Controllers\API\InternshipsAPIController::class
 )
     ->setArguments([
+        new Reference('twig'),
+        new Reference('service.authorization'),
         new Reference('service.internship'),
     ])
     ->setPublic(true);
@@ -330,16 +380,9 @@ $container->register(
     \App\Controllers\API\ApplicationsAPIController::class
 )
     ->setArguments([
+        new Reference('twig'),
+        new Reference('service.authorization'),
         new Reference('service.application'),
-    ])
-    ->setPublic(true);
-
-$container->register(
-    'App\Controllers\API\InternMonitoringAPIController',
-    \App\Controllers\API\InternMonitoringAPIController::class
-)
-    ->setArguments([
-        new Reference('service.intern_monitoring'),
     ])
     ->setPublic(true);
 
@@ -368,7 +411,10 @@ $container->register(
     'App\Controllers\ErrorController',
     \App\Controllers\ErrorController::class
 )
-    ->setArguments([new Reference('twig')])
+    ->setArguments([
+        new Reference('twig'),
+        new Reference('service.authorization'),
+    ])
     ->setPublic(true);
 
 $container->register(
@@ -377,6 +423,7 @@ $container->register(
 )
     ->setArguments([
         new Reference('twig'),
+        new Reference('service.authorization'),
         new Reference('service.authentication'),
         new Reference('service.email')
     ])
@@ -386,14 +433,20 @@ $container->register(
     'App\Controllers\HomeController',
     \App\Controllers\HomeController::class
 )
-    ->setArguments([new Reference('twig')])
+    ->setArguments([
+        new Reference('twig'),
+        new Reference('service.authorization'),
+    ])
     ->setPublic(true);
 
 $container->register(
     'App\Controllers\TechTalksController',
     \App\Controllers\TechTalksController::class
 )
-    ->setArguments([new Reference('twig')])
+    ->setArguments([
+        new Reference('twig'),
+        new Reference('service.authorization'),
+    ])
     ->setPublic(true);
 
 $container->register(
@@ -402,6 +455,7 @@ $container->register(
 )
     ->setArguments([
         new Reference('twig'),
+        new Reference('service.authorization'),
         new Reference('service.user'),
         new Reference('service.internship_program'),
         new Reference('service.requirement'),
@@ -414,6 +468,7 @@ $container->register(
 )
     ->setArguments([
         new Reference('twig'),
+        new Reference('service.authorization'),
         new Reference('service.intern_monitoring'),
         new Reference('service.requirement'),
     ])
@@ -425,6 +480,7 @@ $container->register(
 )
     ->setArguments([
         new Reference('twig'),
+        new Reference('service.authorization'),
         new Reference('service.internship'),
         new Reference('service.user')
     ])
@@ -436,7 +492,9 @@ $container->register(
 )
     ->setArguments([
         new Reference('twig'),
+        new Reference('service.authorization'),
         new Reference('service.internship'),
+        new Reference('service.application')
     ])
     ->setPublic(true);
 
@@ -446,6 +504,7 @@ $container->register(
 )
     ->setArguments([
         new Reference('twig'),
+        new Reference('service.authorization'),
         new Reference('service.requirement')
     ])
     ->setPublic(true);
@@ -456,6 +515,7 @@ $container->register(
 )
     ->setArguments([
         new Reference('twig'),
+        new Reference('service.authorization'),
         new Reference('service.user'),
     ])
     ->setPublic(true);
@@ -466,6 +526,7 @@ $container->register(
 )
     ->setArguments([
         new Reference('twig'),
+        new Reference('service.authorization'),
         new Reference('service.event')
     ])
     ->setPublic(true);

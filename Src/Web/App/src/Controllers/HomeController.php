@@ -6,7 +6,7 @@ namespace App\Controllers;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class HomeController extends PageControllerBase
+class HomeController extends ControllerBase
 {
     #[Route([''])]
     public function home(): Response

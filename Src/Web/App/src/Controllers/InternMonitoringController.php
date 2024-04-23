@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
-use App\Attributes\RequiredRole;
 use App\Models\InternshipCycle;
-use App\Security\Role;
+use App\Security\Attributes\RequiredRole;
+use App\Security\AuthorizationService;
 use App\Services\InternMonitoringService;
 use App\Services\RequirementService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -14,37 +14,39 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
 
-#[RequiredRole(Role::InternshipProgram_Admin)]
+#[RequiredRole('InternshipProgramAdmin')]
 #[Route('/internship-program/monitoring')]
-class InternMonitoringController extends PageControllerBase
+class InternMonitoringController extends ControllerBase
 {
     public function __construct(
         Environment $twig,
+        AuthorizationService $authzService,
         private readonly InternMonitoringService $internMonitoringService,
         private readonly RequirementService $requirementService,
     ) {
-        parent::__construct($twig);
+        parent::__construct($twig, $authzService);
     }
 
     #[Route('', methods: ['GET'])]
-    public function monitoring(): Response
+    public function monitoring(InternshipCycle $cycle): Response
     {
         return $this->render(
             'internship-program/monitoring/home.html',
             [
                 'section' => 'monitoring',
-                'requirements' => $this->requirementService->getRequirements()
+                'requirements' => $this->requirementService->getRequirements($cycle->getId())
             ]
         );
     }
 
     #[Route('/students', methods: ['GET'])]
-    public function monitoringStudentUsers(): Response
+    public function monitoringStudentUsers(InternshipCycle $cycle): Response
     {
         return $this->render(
             'internship-program/monitoring/students.html',
             [
                 'section' => 'monitoring',
+                'students' => $this->internMonitoringService->getStudents($cycle->getId()),
             ]
         );
     }
@@ -79,8 +81,29 @@ class InternMonitoringController extends PageControllerBase
             [
                 'section' => 'monitoring',
                 'requirement' => $requirement,
+                'userRequirements' => $this->internMonitoringService->getUserRequirements($cycle->getId(), (int) $requirementId),
             ]
         );
+    }
+
+    #[Route(
+        '/submissions/{userRequirementId}/files/{fileId}',
+        requirements: ['userRequirementId' => '\d+', 'fileId' => '\d+'],
+        methods: ['GET']
+    )]
+    public function submissionFile(int $userRequirementId, int $fileId): Response
+    {
+        // TODO: Validate
+
+        $file = $this->internMonitoringService->getUserRequirementFile(
+            $userRequirementId,
+            $fileId
+        );
+        if ($file === null) {
+            return new Response(null, 404);
+        }
+
+        return $this->serveFile($file['content'], $file['mimeType'], $file['name']);
     }
 
     #[Route('/interns', methods: ['GET'])]

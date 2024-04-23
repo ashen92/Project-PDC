@@ -21,7 +21,7 @@
     <div>
         {{ event.description}}
     </div>
-    {% if has_role(Admin) %}
+    {% if has_role('Admin') %}
     <div class="actions">
         <a class="btn btn-primary" role="button" href="/events/edit/{{event.id}}">Modify</a>
         <form action="/events/delete/{{event.id}}" method="POST">

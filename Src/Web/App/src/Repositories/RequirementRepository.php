@@ -5,9 +5,7 @@ namespace App\Repositories;
 
 use App\DTOs\CreateRequirementDTO;
 use App\Interfaces\IRepository;
-use App\Mappers\RequirementMapper;
 use App\Mappers\UserRequirementMapper;
-use App\Models\Requirement;
 use App\Models\UserRequirement;
 use App\Models\UserRequirement\Status;
 use DateTime;
@@ -35,36 +33,42 @@ readonly class RequirementRepository implements IRepository
         $this->pdo->rollBack();
     }
 
-    public function findRequirement(int $id): ?Requirement
+    public function findRequirement(int $id): array|bool
     {
         $sql = "SELECT * FROM requirements WHERE id = :id";
-        $statement = $this->pdo->prepare($sql);
-        $statement->execute([
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([
             "id" => $id
         ]);
-        $result = $statement->fetch(PDO::FETCH_ASSOC);
-        if ($result === false) {
-            return null;
+        $res = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($res === false) {
+            return false;
         }
 
-        return RequirementMapper::map($result);
+        $res['startDate'] = new DateTime($res['startDate']);
+        $res['endBeforeDate'] = $res['endBeforeDate'] ? new DateTime($res['endBeforeDate']) : null;
+        $res['allowedFileTypes'] = $res['allowedFileTypes'] ? json_decode($res['allowedFileTypes'], false) : null;
+        return $res;
     }
 
     public function findAllRequirements(int $cycleId): array
     {
         $sql = "SELECT * FROM requirements WHERE internship_cycle_id = :cycleId";
-        $statement = $this->pdo->prepare($sql);
-        $statement->execute([
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([
             "cycleId" => $cycleId
         ]);
-        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
-        if ($results === false) {
+        $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        if ($res === false) {
             return [];
         }
 
-        return array_map(function ($result) {
-            return RequirementMapper::map($result);
-        }, $results);
+        foreach ($res as &$r) {
+            $r['startDate'] = new DateTime($r['startDate']);
+            $r['endBeforeDate'] = $r['endBeforeDate'] ? new DateTime($r['endBeforeDate']) : null;
+        }
+        return $res;
     }
 
     public function findUserRequirement(int $id): ?UserRequirement
@@ -82,9 +86,6 @@ readonly class RequirementRepository implements IRepository
         return UserRequirementMapper::map($result);
     }
 
-    /**
-     * @return array</App/Models/UserRequirement>
-     */
     public function findAllUserRequirements(
         int $cycleId,
         ?int $requirementId = null,
@@ -123,6 +124,42 @@ readonly class RequirementRepository implements IRepository
         return array_map(function ($result) {
             return UserRequirementMapper::map($result);
         }, $results);
+    }
+
+    public function findUserRequirementsToBeCompleted(int $cycleId, int $userId): array
+    {
+        $sql = "SELECT ur.*, JSON_OBJECT(
+                    'id', r.id,
+                    'name', r.name,
+                    'requirementType', r.requirementType,
+                    'fulfillMethod', r.fulfillMethod,
+                    'repeatInterval', r.repeatInterval
+                ) AS requirement
+                FROM user_requirements ur
+                INNER JOIN requirements r ON r.id = ur.requirement_id
+                WHERE r.internship_cycle_id = :cycleId
+                AND ur.user_id = :userId
+                AND ur.startDate <= :today
+                AND ur.endDate >= :today
+                GROUP BY ur.id";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([
+            "cycleId" => $cycleId,
+            "userId" => $userId,
+            "today" => (new DateTime())->format($this::DATE_TIME_FORMAT)
+        ]);
+        $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        if ($res === false) {
+            return [];
+        }
+
+        foreach ($res as &$r) {
+            $r['startDate'] = new DateTime($r['startDate']);
+            $r['endDate'] = new DateTime($r['endDate']);
+            $r['requirement'] = json_decode($r['requirement'], true);
+        }
+        return $res;
     }
 
     public function createRequirement(int $cycleId, CreateRequirementDTO $reqDTO): int
@@ -217,42 +254,44 @@ readonly class RequirementRepository implements IRepository
         ]);
     }
 
-    public function fulfillUserRequirement(int $id, ?array $filePaths = null, ?string $textResponse = null): bool
+    public function fulfillUserRequirement(int $userRequirementId, ?array $files = null, ?string $textResponse = null): bool
     {
-        if ($filePaths) {
-            $sql = "UPDATE user_requirements SET
+        if ($files) {
+            $this->pdo->beginTransaction();
+            try {
+                $sql = "UPDATE user_requirements SET
                     status = :status,
                     completedAt = :completedAt
                     WHERE id = :id";
-            $stmt = $this->pdo->prepare($sql);
-            if(!$stmt->execute([
-                "status" => Status::FULFILLED->value,
-                "completedAt" => (new DateTime())->format(self::DATE_TIME_FORMAT),
-                "id" => $id,
-            ])) {
-                return false;
-            }
-
-            $sql = "INSERT INTO files (name, path) VALUES (:name, :path)";
-            $stmt = $this->pdo->prepare($sql);
-
-            $fileIds = [];
-            foreach ($filePaths as $file) {
-                if (!$stmt->execute([
-                    'name' => $file['name'],
-                    'path' => $file['path'],
-                ])) {
+                $stmt = $this->pdo->prepare($sql);
+                if (
+                    !$stmt->execute([
+                        "status" => Status::FULFILLED->value,
+                        "completedAt" => (new DateTime())->format($this::DATE_TIME_FORMAT),
+                        "id" => $userRequirementId,
+                    ])
+                ) {
                     return false;
                 }
-                $fileIds[] = $this->pdo->lastInsertId();
-            }
 
-            $sql = "INSERT INTO user_requirement_files (user_requirement_id, file_id) VALUES ";
-            $sql .= implode(", ", array_map(function ($fileId) use ($id) {
-                return "($id, $fileId)";
-            }, $fileIds));
-            $stmt = $this->pdo->prepare($sql);
-            return $stmt->execute();
+                $sql = "INSERT INTO user_requirement_files (user_requirement_id, name, path) VALUES ";
+                $sql .= implode(
+                    ',',
+                    array_map(
+                        fn($file) => "($userRequirementId, '{$file['name']}', '{$file['path']}')",
+                        $files
+                    )
+                );
+                $stmt = $this->pdo->prepare($sql);
+                if (!$stmt->execute()) {
+                    return false;
+                }
+
+                return $this->pdo->commit();
+            } catch (\Throwable $th) {
+                $this->pdo->rollBack();
+                return false;
+            }
         }
 
         $sql = "UPDATE user_requirements SET
@@ -265,7 +304,7 @@ readonly class RequirementRepository implements IRepository
             "status" => Status::FULFILLED->value,
             "completedAt" => (new DateTime())->format(self::DATE_TIME_FORMAT),
             "textResponse" => $textResponse,
-            "id" => $id,
+            "id" => $userRequirementId,
         ]);
     }
 }

@@ -8,18 +8,18 @@
 
 {% block content %}
 
-<div class="title mb-0">
+<div class="title">
     <h4>{{ requirement.name }}</h4>
 </div>
-<section class="mt-0">
+<section>
     <form>
-        <div class="divider"></div>
-        <div class="row mb-6">
-            <p class="fw-medium">Complete this requirement before the following date :</p>
+        <div class="grid-details mb-6">
+            <label class="fw-medium">Complete this requirement before the following date</label>
+            <p>:</p>
             <p>{{ userRequirement.endDate.format("Y-m-d") }}</p>
         </div>
 
-        <p class="fw-medium mb-5">Description</p>
+        <label class="fw-medium mb-5">Description</label>
         <div class="mb-7 bg-grey-100 formatted-text-area p-5 rounded-1">
             {{ requirement.description|raw }}
         </div>
@@ -28,24 +28,23 @@
     </form>
 
     {% if userRequirement.status == "pending" %}
-    {% set fulfillMethod = requirement.fulfillMethod.value %}
+    {% set fulfillMethod = requirement.fulfillMethod %}
     <div>
         {% if fulfillMethod == "file-upload" %}
         <form action="/internship-program/requirements/complete" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="user-requirement-id" value="{{ userRequirement.id }}" />
 
-            <div class="row mb-1">
-                <p>Maximum number of files :</p>
+            <div class="grid-details mb-10">
+                <p>Maximum number of files</p>
+                <p>:</p>
                 <p>{{ requirement.maxFileCount }}</p>
-            </div>
 
-            <div class="row mb-1">
-                <p>Maximum file size :</p>
+                <p>Maximum file size</p>
+                <p>:</p>
                 <p>{{ requirement.maxFileSize }} MB</p>
-            </div>
 
-            <div class="row mb-6">
-                <p>Allowed file types :</p>
+                <p>Allowed file types</p>
+                <p>:</p>
                 <p class="uppercase">
                     {% for t in requirement.allowedFileTypes %}
                     {{ t }}{% if not loop.last %}, {% endif %}
@@ -78,7 +77,6 @@
             } %}
 
             {% endif %}
-            <div class="divider"></div>
 
             <button class="btn btn-primary mt-6" type="submit">Submit</button>
         </form>
@@ -95,7 +93,6 @@
                     <div class="text-editor"></div>
                 </div>
             </div>
-            <div class="divider"></div>
 
             <button class="btn btn-primary mt-6" type="submit">Submit</button>
         </form>
@@ -105,8 +102,9 @@
 
     {% if userRequirement.status == "fulfilled" %}
 
-    <div class="row mb-5">
-        <p class="fw-medium">Completed on :</p>
+    <div class="grid-details">
+        <label class="fw-medium">Completed on</label>
+        <p>:</p>
         <p>{{ userRequirement.completedAt.format("Y-m-d") }}</p>
     </div>
 

@@ -22,6 +22,6 @@ declare(strict_types=1);
     'DB\DoctrineTypes\Application\StatusType'
 );
 \Doctrine\DBAL\Types\Type::addType(
-    'internship_status',
-    'DB\DoctrineTypes\Internship\StatusType'
+    'internship_visibility',
+    'DB\DoctrineTypes\Internship\VisibilityType'
 );

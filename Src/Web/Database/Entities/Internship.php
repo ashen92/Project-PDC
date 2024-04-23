@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DB\Entities;
 
-use App\Models\Internship\Status;
+use App\Models\Internship\Visibility;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -22,8 +22,11 @@ class Internship
     #[ORM\Column(type: 'text')]
     private string $description;
 
-    #[ORM\Column(type: 'internship_status')]
-    private Status $status;
+    #[ORM\Column(type: 'internship_visibility')]
+    private Visibility $visibility;
+
+    #[ORM\Column(type: 'boolean')]
+    private bool $isApproved;
 
     #[ORM\ManyToOne(targetEntity: InternshipCycle::class, inversedBy: 'internships')]
     #[ORM\JoinColumn(name: 'internship_cycle_id', referencedColumnName: 'id')]
@@ -40,31 +43,23 @@ class Internship
     #[ORM\Column(type: 'datetime_immutable')]
     private DateTimeImmutable $createdAt;
 
-    #[ORM\Column(type: 'boolean')]
-    private bool $applyOnExternalWebsite;
-
-    #[ORM\Column(nullable: true)]
-    private ?string $externalWebsite;
-
     public function __construct(
         string $title,
         string $description,
-        Status $status,
+        Visibility $visibility,
+        bool $isApproved,
         InternshipCycle $internshipCycle,
         User $createdBy,
         Organization $organization,
-        bool $applyOnExternalWebsite,
-        ?string $externalWebsite = null,
     ) {
         $this->title = $title;
         $this->description = $description;
-        $this->status = $status;
+        $this->visibility = $visibility;
+        $this->isApproved = $isApproved;
         $this->internshipCycle = $internshipCycle;
         $this->createdBy = $createdBy;
         $this->organization = $organization;
         $this->createdAt = new DateTimeImmutable();
-        $this->applyOnExternalWebsite = $applyOnExternalWebsite;
-        $this->externalWebsite = $externalWebsite;
     }
 
     public function getId(): int

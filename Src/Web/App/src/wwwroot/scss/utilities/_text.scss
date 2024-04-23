@@ -139,3 +139,25 @@ h {
 .uppercase {
     text-transform: uppercase !important;
 }
+
+.break {
+    &-word {
+        overflow-wrap: break-word;
+    }
+
+    &-all {
+        word-break: break-all;
+    }
+}
+
+.text {
+    &-truncate {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    &-ellipsis {
+        text-overflow: ellipsis;
+    }
+}

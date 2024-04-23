@@ -16,7 +16,7 @@
 <form action="/internship-program/internships/create" method="POST">
     <div class="field">
         <label for="title">Title</label>
-        <input name="title" id="title" type="text" maxlength="75" placeholder="Add a title" required>
+        <input name="title" id="title" type="text" maxlength="75" placeholder="Job role or position" required>
     </div>
 
     <div class="field">
@@ -27,7 +27,7 @@
         </div>
     </div>
 
-    {% if has_role(Admin) %}
+    {% if has_role('Admin') %}
     <div class="field">
         <label for="organization">Company or institute</label>
         <select name="organization" id="organization">
@@ -38,25 +38,6 @@
         </select>
     </div>
     {% endif %}
-
-    <div class="field-radio" id="apply-method">
-        <div class="label">Do you want to receive applications on a different website?</div>
-        <div class="option">
-            <input type="radio" name="apply-method" id="apply-external" value="external" autocomplete="off" required>
-            <label for="apply-external">Yes</label>
-        </div>
-        <div class="option">
-            <input type="radio" name="apply-method" id="apply-internal" value="internal" autocomplete="off" required>
-            <label for="apply-internal">No</label>
-        </div>
-    </div>
-
-    <div class="hidden" id="apply-external-fields">
-        <div class="field">
-            <label for="external-website">Website URL</label>
-            <input name="external-website" id="external-website" type="url" placeholder="https://yourwebsite.com/apply">
-        </div>
-    </div>
 
     <div class="actions">
         <input class="btn btn-primary" type="submit" value="Add">

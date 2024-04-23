@@ -20,15 +20,17 @@
 
     <table class="table table-hover">
         <colgroup>
-            <col class="w-3/5">
-            <col class="w-1/5">
-            <col class="w-1/5">
+            <col class="w-3/6">
+            <col class="w-1/6">
+            <col class="w-1/6">
+            <col class="w-1/6">
         </colgroup>
         <thead>
             <tr>
                 <th>Name</th>
                 <th>Type</th>
                 <th>Start Date</th>
+                <th>Complete Before</th>
             </tr>
         </thead>
         <tbody class="table-rows-clickable">
@@ -37,14 +39,15 @@
             <tr data-href="/internship-program/requirements/{{ i.id }}">
                 <td>{{ r.name }}</td>
                 <td class="capitalize">
-                    {% set requirementType = r.requirementType.value %}
+                    {% set requirementType = r.requirementType %}
                     {% if requirementType == "recurring" %}
-                    {{ requirementType }} ({{ r.repeatInterval.value }})
+                    {{ requirementType }} ({{ r.repeatInterval }})
                     {% else %}
                     {{ requirementType }}
                     {% endif %}
                 </td>
                 <td>{{ i.startDate.format("Y-m-d") }}</td>
+                <td>{{ i.endDate.format("Y-m-d") }}</td>
             </tr>
             {% endfor %}
         </tbody>

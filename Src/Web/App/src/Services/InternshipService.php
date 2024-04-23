@@ -6,7 +6,7 @@ namespace App\Services;
 use App\DTOs\createInternshipDTO;
 use App\Interfaces\IFileStorageService;
 use App\Models\Internship;
-use App\Models\Internship\Status;
+use App\Models\InternshipProgram\createApplication;
 use App\Models\InternshipSearchResult;
 use App\Models\Organization;
 use App\Models\Student;
@@ -49,8 +49,9 @@ readonly class InternshipService
     public function searchInternships(
         int $cycleId,
         ?string $searchQuery,
-        ?array $filterByOrgIds,
-        ?array $filterByStatuses,
+        ?array $filterByOrg,
+        ?Internship\Visibility $filterByVisibility,
+        ?bool $isApproved,
         ?int $numberOfResults,
         ?int $offsetBy,
         ?int $filterByCreatorUserId = null,
@@ -62,8 +63,9 @@ readonly class InternshipService
         $result = $this->internshipRepository->searchInternships(
             $cycleId,
             $searchQuery,
-            $filterByOrgIds,
-            $filterByStatuses,
+            $filterByOrg,
+            $filterByVisibility,
+            $isApproved,
             $numberOfResults,
             $offsetBy,
             $filterByCreatorUserId,
@@ -93,12 +95,37 @@ readonly class InternshipService
         return $this->internshipRepository->findInternships($cycleId, $ownerId);
     }
 
-    public function getInternshipCount(int $cycleId, ?string $searchQuery, ?int $ownerUserId): int
-    {
+    public function countInternships(
+        int $cycleId,
+        ?string $searchQuery,
+        ?array $filterByOrg,
+        ?Internship\Visibility $filterByVisibility,
+        ?bool $isApproved,
+        ?int $creatorUserId = null
+    ): int {
 
         // TODO: Check if internship cycle exists
 
-        return $this->internshipRepository->count($cycleId, $searchQuery, $ownerUserId);
+        return $this->internshipRepository->count(
+            $cycleId,
+            $searchQuery,
+            $filterByOrg,
+            $filterByVisibility,
+            $isApproved,
+            $creatorUserId
+        );
+    }
+
+    public function getInternshipDetailsForStudent(int $internshipId, int $studentId): array
+    {
+        $i = $this->internshipRepository->findInternshipDetailsForStudent($internshipId, $studentId);
+
+        $res['id'] = $i['id'];
+        $res['title'] = $i['title'];
+        $res['description'] = $i['description'];
+        $res['applicationId'] = $i['application_id'] ?? null;
+
+        return $res;
     }
 
     /**
@@ -147,20 +174,29 @@ readonly class InternshipService
         return $this->internshipRepository->updateInternship($id, $title, $description);
     }
 
-    public function apply(int $internshipId, int $userId): bool
+    public function createApplication(createApplication $createApplication): bool
     {
         // TODO: Check if internship exists
         // TODO: Check if user exists and is a student
 
-        return $this->internshipRepository->apply($internshipId, $userId);
+        $fileUploadResponse = $this->fileStorageService->upload($createApplication->files);
+        if (!$fileUploadResponse) {
+            return false;
+        }
+
+        return $this->internshipRepository->createApplication(
+            $createApplication->internshipId,
+            $createApplication->userId,
+            $fileUploadResponse
+        );
     }
 
-    public function undoApply(int $internshipId, int $userId): bool
+    public function removeApplication(int $applicationId, int $internshipId, int $userId): bool
     {
         // TODO: Check if internship exists
         // TODO: Check if user exists and is a student
 
-        return $this->internshipRepository->undoApply($internshipId, $userId);
+        return $this->internshipRepository->deleteApplication($applicationId, $internshipId, $userId);
     }
 
     public function hasAppliedToInternship(int $internshipId, int $userId): bool
@@ -174,5 +210,20 @@ readonly class InternshipService
     public function getOrganizations(): array
     {
         return $this->internshipRepository->findOrganizations();
+    }
+
+    public function getJobRole(int $jobRoleId): array
+    {
+        return $this->internshipRepository->findJobRole($jobRoleId);
+    }
+
+    public function getJobRoles(int $cycleId): array
+    {
+        return $this->internshipRepository->findJobRoles($cycleId);
+    }
+
+    public function getStudentsByJobRole(int $jobRoleId): array
+    {
+        return $this->internshipRepository->findStudentsByJobRole($jobRoleId);
     }
 }

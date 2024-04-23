@@ -9,13 +9,36 @@
 {% block content %}
 
 <div class="title">
-    <h4>
+    <h2>
         Students
-    </h4>
+    </h2>
 </div>
 
 <section>
-    <div id="students-grid"></div>
+    {% if students is empty %}
+    <p>No students found.</p>
+    {% else %}
+    <table class="hover row-border row-click" id="students-table">
+        <thead>
+            <tr>
+                <th>Full name</th>
+                <th>Index number</th>
+                <th>Registration number</th>
+                <th>Student email</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in students %}
+            <tr data-id="{{ i.id }}">
+                <td>{{ i.fullName }}</td>
+                <td>{{ i.indexNumber }}</td>
+                <td>{{ i.registrationNumber }}</td>
+                <td>{{ i.studentEmail }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
 </section>
 
 <script src="/js/internship-program/monitoring/students.js"></script>
