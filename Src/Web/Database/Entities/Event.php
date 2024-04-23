@@ -19,17 +19,17 @@ class Event
     #[ORM\Column]
     private string $title;
 
-    #[ORM\Column]
+    #[ORM\Column(type: 'text')]
     private string $description;
 
-    #[ORM\Column]
+    #[ORM\Column(type: "datetime_immutable")]
     private DateTimeImmutable $startTime;
 
-    #[ORM\Column]
+    #[ORM\Column(type: "datetime_immutable")]
     private DateTimeImmutable $endTime;
 
-    #[ORM\Column]
-    private DateTimeImmutable $eventDate;
+    /* #[ORM\Column(type: "datetime_immutable")]
+    private DateTimeImmutable $eventDate;*/
 
     #[ORM\Column]
     private string $eventLocation;
@@ -40,7 +40,7 @@ class Event
         $this->description = $description;
         $this->startTime = $startTime;
         $this->endTime = $endTime;
-        $this->eventDate = $eventDate;
+        //$this->eventDate = $eventDate;
         $this->eventLocation = $eventLocation;
     }
 
@@ -80,7 +80,7 @@ class Event
         return $DateTimeImmutable->format('H:i:s');
     }
 
-    public function setStartTime(bool|DateTimeImmutable $startTime): void
+    public function setStartTime(DateTimeImmutable $startTime): void
     {
         $this->startTime = $startTime;
     }
@@ -91,21 +91,21 @@ class Event
         return $DateTimeImmutable->format('H:i:s');
     }
 
-    public function setEndTime(bool|DateTimeImmutable $endTime): void
+    public function setEndTime(DateTimeImmutable $endTime): void
     {
         $this->endTime = $endTime;
     }
 
-    public function getEventDate(): string
+    /* public function getEventDate(): string
     {
         $DateTimeImmutable = $this->eventDate;
         return $DateTimeImmutable->format('Y-m-d');
-    }
+    } */
 
-    public function setEventDate(bool|DateTimeImmutable $eventDate): void
+    /* public function setEventDate(bool|DateTimeImmutable $eventDate): void
     {
         $this->eventDate = $eventDate;
-    }
+    } */
 
     public function getEventLocation(): string
     {

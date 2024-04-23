@@ -29,7 +29,7 @@ class EventsController extends ControllerBase
     {
         return $this->render('events/home.html', [
             'section' => 'home',
-            'events' => $this->eventService->getEvents()
+            //'events' => $this->eventService->getEvent()
         ]);
     }
 
@@ -39,6 +39,15 @@ class EventsController extends ControllerBase
         return $this->render(
             'events/create.html',
             ['section' => 'create']
+        );
+    }
+
+    #[Route('/eventlist', methods: ['GET'])]
+    public function list(): Response
+    {
+        return $this->render(
+            'events/eventlist.html',
+            ['section' => 'list']
         );
     }
 
@@ -58,19 +67,29 @@ class EventsController extends ControllerBase
     }
     //#[Route('/edit/{eventId}', methods: ['POST'])]
     //public function editPOST(Request $request): Response
-    
+
 
     #[Route('/create', methods: ['POST'])]
     public function createPOST(Request $request): Response
     {
         $data = $request->request->all();
-        $Title = $data['eventTitle'];
-        $eventDate = DateTimeImmutable::createFromFormat('Y-m-d', $data['eventDate']);
-        $startTime = DateTimeImmutable::createFromFormat('H:i', $data['startTime']);
-        $endTime = DateTimeImmutable::createFromFormat('H:i', $data['endTime']);
-        $eventLocation = $data['eventLocation'];
-        $description = $data['description'];
-        $event = new CreateEventDTO($Title, $eventDate , $startTime, $endTime, $eventLocation ,$description);
+        $Title = $data['eventTitle'] ?? '';
+        $startTimeString = $data['startTime'] ?? '';   //$startTime = DateTimeImmutable::createFromFormat('H:i', $data['startTime']);  
+        $endTimeString = $data['endTime'] ?? '';    //$endTime = DateTimeImmutable::createFromFormat('H:i', $data['endTime']);
+        $eventLocation = $data['eventLocation'] ?? '';
+        $description = $data['description'] ?? '';
+
+        $startTime = DateTimeImmutable::createFromFormat('Y-m-d\TH:i', $startTimeString);
+        if (!$startTime instanceof DateTimeImmutable) {
+            throw new \InvalidArgumentException('Invalid start time format');
+        }
+
+        $endTime = DateTimeImmutable::createFromFormat('Y-m-d\TH:i', $endTimeString);
+        if (!$endTime instanceof DateTimeImmutable) {
+            throw new \InvalidArgumentException('Invalid end time format');
+        }
+
+        $event = new CreateEventDTO($Title, $startTime, $endTime, $eventLocation, $description);
         $this->eventService->createEvent($event);
         return $this->render(
             'events/create.html',
@@ -85,5 +104,20 @@ class EventsController extends ControllerBase
         $event = $this->eventService->getEventById($eventId);
         $this->eventService->deleteEvent($event);
         return $this->redirect('/events');
+    }
+
+    #[Route('/all', methods: ['GET'])]
+    public function all(Request $request): Response
+    {
+        $queryParams = $request->query->all();
+
+        $startTime = $queryParams['start'];
+        $endTime = $queryParams['end'];
+
+        $startTime = new DateTimeImmutable($startTime);
+        $endTime = new DateTimeImmutable($endTime);
+
+        $res = $this->eventService->getEvents($startTime, $endTime);
+        return new Response(json_encode($res), 200, ['Content-Type' => 'application/json']);
     }
 }

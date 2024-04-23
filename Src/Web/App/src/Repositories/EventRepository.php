@@ -5,6 +5,8 @@ namespace App\Repositories;
 
 use App\DTOs\CreateEventDTO;
 use App\Interfaces\IRepository;
+use DateTime;
+use DateTimeImmutable;
 use PDO;
 
 class EventRepository implements IRepository
@@ -34,14 +36,12 @@ class EventRepository implements IRepository
     ): int {
         $sql = "INSERT INTO events (
             title,
-            eventDate,
             startTime,
             endTime,
             eventLocation,
             description
         ) VALUES (
             :title,
-            :eventDate,
             :startTime,
             :endTime,
             :eventLocation,
@@ -50,7 +50,6 @@ class EventRepository implements IRepository
         $statement = $this->pdo->prepare($sql);
         $statement->execute([
             "title" => $dto->title,
-            "eventDate" => $dto->eventDate->format($this::DATE_TIME_FORMAT),
             "startTime" => $dto->startTime->format($this::DATE_TIME_FORMAT),
             "endTime" => $dto->endTime->format($this::DATE_TIME_FORMAT),
             "eventLocation" => $dto->eventLocation,
@@ -58,5 +57,47 @@ class EventRepository implements IRepository
 
         ]);
         return (int) $this->pdo->lastInsertId();
+    }
+    public function getEvent(int $id): array
+    {
+
+        $sql = "SELECT  *
+                FROM    events 
+                WHERE   id=:id";
+
+
+        $statement = $this->pdo->prepare($sql);
+
+        $statement->bindParam(':id', $id);
+
+        $statement->execute();
+
+        $event = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        $event['startTime'] = new DateTimeImmutable($event['startTime']);
+        $event['endTime'] = new DateTimeImmutable($event['endTime']);
+
+        return $event;
+    }
+
+    public function getEvents(DateTimeImmutable $startTime, DateTimeImmutable $endTime): array
+    {
+        $sql = "SELECT * FROM events ";
+                //WHERE (eventDate BETWEEN :startTime AND :endTime)
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([
+            ':startTime' => $startTime->format($this::DATE_TIME_FORMAT),
+            ':endTime' => $endTime->format($this::DATE_TIME_FORMAT)
+        ]);
+
+        $events = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        foreach ($events as &$event) {
+            $event['startTime'] = new DateTimeImmutable($event['startTime']);
+            $event['endTime'] = new DateTimeImmutable($event['endTime']);
+        }
+
+        return $events;
     }
 }

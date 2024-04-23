@@ -8,11 +8,10 @@ readonly class CreateEventDTO
 {
     public function __construct(
         public string $title,
-        public DateTimeImmutable $eventDate,
         public DateTimeImmutable $startTime,
         public DateTimeImmutable $endTime,
         public string $eventLocation,
-        public string $description,
+        public string $description
     ) {
     }
 }
