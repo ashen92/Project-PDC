@@ -1,0 +1,54 @@
+{% extends "shared/layout-left-nav.html" %}
+
+{% block title %}User Profile{% endblock %}
+
+{# {% block left_nav %} #}
+{# {% include "events/left-nav.html" %} #}
+{# {% endblock %} #}
+
+{% block content %}
+
+<div class="profile-section">
+    <div class="profile-header">
+        <div class="profile-picture">
+            <input type="file" id="image-upload" accept="image/*" style="display: none;">
+            <label for="image-upload" id="change-image-btn" title="Change Picture"><span
+                    class="camera-icon">&#x1F4F7;</span></label>
+            <img src="https://picsum.photos/id/237/200/300" alt="Profile Picture">
+        </div>
+        <div class="profile-info">
+            <h1>Dewmini Liyanawatte</h1>
+            <h3>Business Analyst</h3>
+            <h5> <span class="phone-icon">&#x260E; </span> <a href="tel:+94 71 1232 2678"> +94 71 1232 2678</a> </h5>
+            <h5> <span class="icon">&#x2709;</span> <a href="mailto:user@example.com"> user@example.com</a> </h5>
+            <h5> <span class="icon">&#x1F4AC;</span> <a href="chat:user@example.com">Chat</a> </h5>
+        </div>
+        <button class="edit-profile-btn" type="button">Edit Profile</button>
+    </div>
+
+    <div class="profile-details">
+        <div class="profile-card">
+            <h3>About</h3>
+            <p>
+                I am an Information Systems Second Year Undergraduate in search of a Business Analyst Opportunity.
+            </p>
+        </div>
+    </div>
+
+    <div class="qualifications">
+        <div class="qualification-item">
+            <h3>Education</h3>
+            <p>University of Colombo</p>
+        </div>
+        <div class="qualification-item">
+            <h3>Experience</h3>
+            <p>Intern</p>
+        </div>
+        <div class="qualification-item">
+            <h3>Skills</h3>
+            <p>Communication</p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

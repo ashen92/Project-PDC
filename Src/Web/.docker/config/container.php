@@ -538,6 +538,13 @@ $container->register(
     ])
     ->setPublic(true);
 
+$container->register(
+        'App\Controllers\ProfileController',
+        \App\Controllers\ProfileController::class
+    )
+        ->setArguments([new Reference('twig')])
+        ->setPublic(true);
+
 #endregion
 
 $container->compile();

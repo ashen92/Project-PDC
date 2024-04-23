@@ -10,130 +10,118 @@
     }
 }
 
-.hero-container {
-    height: 500px;
-    background-image: linear-gradient(hsl(206, 46%, 70%, 0.6), 40%, hsl(262, 100%, 98%)), url('/images/bg1.jpeg');
-    background-repeat: no-repeat;
-    background-size: cover;
-    padding: 5rem;
-    box-shadow: rgba(0, 0, 0, 0.12) 0px 0px 2px 0px, rgba(0, 0, 0, 0.14) 0px 1.008px 2px 0px;
+    .hero-container {
+        height: 500px;
+        background-color: #c9eee5;
+        padding: 5rem;
+        box-shadow: rgba(0, 0, 0, 0.12) 0px 0px 2px 0px, rgba(0, 0, 0, 0.14) 0px 1.008px 2px 0px;
 
-    @include media-breakpoint-down(md) {
-        height: 450px;
-        padding: 4rem;
+        @include media-breakpoint-down(md) {
+            height: 450px;
+            padding: 4rem;
 
-        .hero {
-            padding: 0;
-        }
-    }
-
-    @include media-breakpoint-down(sm) {
-        height: 450px;
-        padding: 3rem 2rem;
-    }
-
-    .hero-image {
-        height: auto;
-        width: 100%;
-        display: block;
-    }
-
-    .hero-text {
-        text-align: center;
-        position: absolute;
-        top: 40%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 80%;
-
-        &-title {
-            line-height: 1.25;
-            font-size: 3.4rem;
-            font-weight: $fw-semibold;
+            .hero {
+                padding: 0;
+            }
         }
 
-        &-subtitle {
-            margin-top: 2.5rem;
-            font-size: 1.55rem;
-            font-weight: $fw-normal;
-            color: #00243a;
+        @include media-breakpoint-down(sm) {
+            height: 450px;
+            padding: 3rem 2rem;
         }
 
-        @include media-breakpoint-down(xxl) {
+        .hero-text {
+            text-align: left;
+            width: 60%;
+
             &-title {
-                font-size: 3.5rem;
+                line-height: 1.25;
+                font-size: 4rem;
+                font-weight: $fw-semibold;
             }
 
             &-subtitle {
-                font-size: 1.3rem;
+                margin-top: 2.5rem;
+                font-size: 1.45rem;
+                font-weight: $fw-normal;
+                color: #00243a;
+            }
+
+            @include media-breakpoint-down(xxl) {
+                &-title {
+                    font-size: 3.5rem;
+                }
+
+                &-subtitle {
+                    font-size: 1.3rem;
+                }
+            }
+
+            @include media-breakpoint-down(xl) {
+                width: 75%;
+            }
+
+            @include media-breakpoint-down(lg) {
+                width: 100%;
+
+                &-title {
+                    font-size: 3rem;
+                }
+
+                &-subtitle {
+                    font-size: 1.25rem;
+                }
+            }
+
+            @include media-breakpoint-down(md) {
+                &-title {
+                    font-size: 2.5rem;
+                }
+
+                &-subtitle {
+                    font-size: 1.2rem;
+                }
             }
         }
+    }
+
+    .layout-home .card-container {
+        display: grid;
+        grid-template-columns: repeat(4, auto);
+        justify-items: center;
+        justify-content: center;
+        row-gap: 1.75rem;
+        column-gap: 2rem;
+        margin: 6rem 0;
 
         @include media-breakpoint-down(xl) {
-            width: 75%;
+            grid-template-columns: repeat(3, auto);
         }
 
         @include media-breakpoint-down(lg) {
-            width: 100%;
-
-            &-title {
-                font-size: 3rem;
-            }
-
-            &-subtitle {
-                font-size: 1.25rem;
-            }
+            grid-template-columns: repeat(2, auto);
         }
 
-        @include media-breakpoint-down(md) {
-            &-title {
-                font-size: 2.5rem;
-            }
-
-            &-subtitle {
-                font-size: 1.2rem;
-            }
+        @include media-breakpoint-down(sm) {
+            grid-template-columns: auto;
         }
     }
-}
 
-.layout-home .card-container {
-    display: grid;
-    grid-template-columns: repeat(4, auto);
-    justify-items: center;
-    justify-content: center;
-    row-gap: 1.75rem;
-    column-gap: 2rem;
-    margin: 6rem 0;
+    .layout-home .card {
+        min-width: 225px;
+        width: 250px;
+        border-radius: $rounded-1;
+        padding: 13px 15px 10px 15px;
+        text-align: center;
+        box-shadow: $shadow-1;
+        border-left: 5px solid #00588a;
 
-    @include media-breakpoint-down(xl) {
-        grid-template-columns: repeat(3, auto);
+        &:hover {
+            background-color: $hov-light-blue;
+            border-left: 5px solid #55befb;
+        }
+
+        &:active {
+            background-color: $active-light-blue;
+        }
     }
-
-    @include media-breakpoint-down(lg) {
-        grid-template-columns: repeat(2, auto);
-    }
-
-    @include media-breakpoint-down(sm) {
-        grid-template-columns: auto;
-    }
-}
-
-.layout-home .card {
-    min-width: 225px;
-    width: 250px;
-    border-radius: $rounded-1;
-    padding: 13px 15px 10px 15px;
-    text-align: center;
-    box-shadow: $shadow-1;
-    border-left: 5px solid #00588a;
-
-    &:hover {
-        background-color: $hov-light-blue;
-        border-left: 5px solid #006bbd;
-    }
-
-    &:active {
-        background-color: $active-light-blue;
-    }
-}
