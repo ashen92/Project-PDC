@@ -23,5 +23,12 @@
         "gulp-sourcemaps": "^3.0.0",
         "quill": "^2.0.0-rc.5",
         "sass": "^1.74.1"
+    },
+    "dependencies": {
+        "@fullcalendar/core": "^6.1.11",
+        "@fullcalendar/daygrid": "^6.1.11",
+        "@fullcalendar/list": "^6.1.11",
+        "@fullcalendar/timegrid": "^6.1.11",
+        "fullcalendar": "^6.1.11"
     }
 }
