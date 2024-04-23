@@ -255,14 +255,16 @@ class InternshipsController extends ControllerBase
     }
 
     #[Route('/round-2', methods: ['GET'])]
-    public function round2GET(InternshipCycle $cycle): Response
+    public function round2GET(Request $request, InternshipCycle $cycle): Response
     {
         if ($this->hasRole('InternshipProgramStudent')) {
+            $userId = $request->getSession()->get('user_id');
             return $this->render(
                 'internship-program/round-2/home-student.html',
                 [
                     'section' => 'round-2',
                     'jobRoles' => $this->internshipService->getJobRoles($cycle->getId()),
+                    'jobRolesAppliedTo' => $this->internshipService->getJobRolesAppliedTo($cycle->getId(), $userId),
                 ]
             );
         }
@@ -297,6 +299,30 @@ class InternshipsController extends ControllerBase
                 'students' => $this->internshipService->getStudentsByJobRole($id),
             ]
         );
+    }
+
+    #[RequiredRole('InternshipProgramStudent')]
+    #[Route('/round-2/job-roles/{id}/apply', methods: ['PUT'])]
+    public function jobRoleApply(Request $request, int $id): Response
+    {
+        $userId = $request->getSession()->get('user_id');
+        if ($this->internshipService->applyToJobRole($id, $userId)) {
+            return new Response(null, 204);
+        }
+
+        return new Response(null, 400);
+    }
+
+    #[RequiredRole('InternshipProgramStudent')]
+    #[Route('/round-2/job-roles/{id}/apply', methods: ['DELETE'])]
+    public function jobRoleUndoApply(Request $request, int $id): Response
+    {
+        $userId = $request->getSession()->get('user_id');
+        if ($this->internshipService->removeFromJobRole($id, $userId)) {
+            return new Response(null, 204);
+        }
+
+        return new Response(null, 400);
     }
 
     #[Route('/round-2/job-roles/add', methods: ['POST'])]

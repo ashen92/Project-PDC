@@ -431,6 +431,17 @@ class InternshipRepository implements IRepository
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function findJobRolesAppliedTo(int $cycleId, int $studentId): array
+    {
+        $sql = 'SELECT jr.id, jr.name
+                FROM job_roles jr
+                INNER JOIN job_role_students jrs ON jr.id = jrs.jobrole_id
+                WHERE jr.internship_cycle_id = :cycleId AND jrs.student_id = :studentId';
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['cycleId' => $cycleId, 'studentId' => $studentId]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function findStudentsByJobRole(int $jobRoleId): array
     {
         $sql = 'SELECT u.*, s.*
@@ -441,6 +452,20 @@ class InternshipRepository implements IRepository
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['jobRoleId' => $jobRoleId]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function applyToJobRole(int $jobRoleId, int $studentId): bool
+    {
+        $sql = 'INSERT INTO job_role_students (student_id, jobrole_id) VALUES (:studentId, :jobRoleId)';
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute(['studentId' => $studentId, 'jobRoleId' => $jobRoleId]);
+    }
+
+    public function removeFromJobRole(int $jobRoleId, int $studentId): bool
+    {
+        $sql = 'DELETE FROM job_role_students WHERE student_id = :studentId AND jobrole_id = :jobRoleId';
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute(['studentId' => $studentId, 'jobRoleId' => $jobRoleId]);
     }
 
     public function createJobRole(int $cycleId, string $name): bool
