@@ -36,15 +36,17 @@
     <table class="hover row-border stripe" id="job-roles-table">
         <thead>
             <tr>
+                <th></th>
                 <th class="hidden"></th>
                 <th>Name</th>
             </tr>
         </thead>
         <tbody>
             {% for i in jobRoles %}
-            <tr>
+            <tr data-id="{{ i.id }}">
+                <td></td>
                 <td class="hidden">{{ i.id }}</td>
-                <td>{{ i.name }}</td>
+                <td class="click">{{ i.name }}</td>
             </tr>
             {% endfor %}
         </tbody>

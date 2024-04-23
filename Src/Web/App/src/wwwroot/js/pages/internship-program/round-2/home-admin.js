@@ -1,5 +1,5 @@
 import DataTable from "datatables.net-dt";
-import 'datatables.net-select-dt';
+import "datatables.net-select-dt";
 import { Dialog } from "../../../components/dialog";
 import { on } from "../../../core/events";
 import { $ } from "../../../core/dom";
@@ -11,18 +11,34 @@ const table = new DataTable("#job-roles-table", {
     select: {
         info: false,
         style: "single",
-        items: "row"
+        items: "row",
+        selector: "td:first-child",
+        headerCheckbox: false
     },
     columnDefs: [
         {
-            targets: 0,
-            visible: false
+            render: DataTable.render.select(),
+            targets: 0
         },
         {
             targets: 1,
-            className: "pl-6"
+            visible: false
+        },
+        {
+            targets: 2,
         },
     ]
+});
+
+table.on("click", "tbody", function (e) {
+    const target = e.target;
+    if (target.tagName === "TD" && target.cellIndex === 1) {
+        const row = e.target.closest("tr");
+        if (row) {
+            const id = row.dataset.id;
+            window.location.href = `${window.location.href}/job-roles/${id}`;
+        }
+    }
 });
 
 const addDialog = new Dialog("#add-dialog");
@@ -43,13 +59,13 @@ const editJobRoleInput = $("#edit-dialog #edit-job-role-name");
 const editJobRoleBtn = $("#edit-job-role-btn");
 
 on(editJobRoleBtn, "click", () => {
-    const selected = table.rows({ selected: true }).data()
+    const selected = table.rows({ selected: true }).data();
     if (selected.length === 0) {
         return;
     }
 
-    editJobRoleId.value = selected[0][0];
-    editJobRoleInput.value = selected[0][1];
+    editJobRoleId.value = selected[0][1];
+    editJobRoleInput.value = selected[0][2];
     editDialog.open();
 });
 
@@ -62,13 +78,13 @@ const deleteJobRoleId = $("#delete-dialog #delete-job-role-id");
 const deleteJobRoleBtn = $("#delete-job-role-btn");
 
 on(deleteJobRoleBtn, "click", () => {
-    const selected = table.rows({ selected: true }).data()
+    const selected = table.rows({ selected: true }).data();
     if (selected.length === 0) {
         return;
     }
 
-    deleteDialog.setTitle(selected[0][1]);
-    deleteJobRoleId.value = selected[0][0];
+    deleteDialog.setTitle(selected[0][2]);
+    deleteJobRoleId.value = selected[0][1];
     deleteDialog.open();
 });
 
