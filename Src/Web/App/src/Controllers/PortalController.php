@@ -32,10 +32,11 @@ class PortalController extends PageControllerBase
 			'portal/home.html',
 			[
 				'section' => 'home',
-				'active_users' => intval('67'),
+				'active_users' => intval('135'),
 				'stu_count' => intval('98'),
 				'app_partners' => intval('30'),
 				'pen_partners' => intval('27'),
+				'co_count' => intval('5'),
 			]
 		);
 	}
