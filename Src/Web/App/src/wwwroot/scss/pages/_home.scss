@@ -2,7 +2,7 @@
 @use '../mixins' as *;
 
 .layout-home {
-    background-color: $hov-light-blue;
+    background-color: #f1f4f6;
 
     .content {
         max-width: $webpage-max-allowed-width;
@@ -14,15 +14,16 @@
 }
 
 .hero-container {
-    height: 520px;
+    height: 500px;
     background-image: url('/images/5.jpg');
     background-size: cover;
     background-attachment: fixed;
     //background-position: center;
-    border-bottom-left-radius: $rounded-6;
-    border-bottom-right-radius: $rounded-6;
+    border-bottom-left-radius: $rounded-5;
+    border-bottom-right-radius: $rounded-5;
     padding: 5rem;
     box-shadow: rgba(57, 76, 96, 0.15) 0px 2px 4px -1px;
+
 
     @include media-breakpoint-down(md) {
         height: 450px;
@@ -43,10 +44,11 @@
         text-align: center;
         width: 100%;
         padding: 10px;
-        margin: 3rem auto;
-        background-color: rgba(0, 107, 189, 0.6);
-        border-radius: $rounded-2;
-        box-shadow: $shadow-1;
+        margin: 4rem auto;
+        //background-color: rgba(0, 107, 189, 0.6);
+        text-shadow: 4px 4px 4px rgba(0, 0, 0, 0.5);
+        //border-radius: $rounded-2;
+        //box-shadow: $shadow-1;
 
 
         &-title {
