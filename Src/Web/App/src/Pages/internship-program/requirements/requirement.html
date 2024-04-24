@@ -28,15 +28,13 @@
             <p class="capitalize">{{ requirement.repeatInterval }}</p>
             {% endif %}
 
-            <p class="label">Start date</p>
+            <p class="label">Starting month and week</p>
             <p>:</p>
-            <p>{{ requirement.startDate.format("Y-m-d") }}</p>
+            <p>{{ requirement.startWeekAsMonthWeek }}</p>
 
-            {% if requirement.requirementType == "one-time" %}
-            <p class="label">End date (Exclusive)</p>
+            <p class="label">Duration</p>
             <p>:</p>
-            <p>{{ requirement.endBeforeDate.format("Y-m-d") }}</p>
-            {% endif %}
+            <p>{{ requirement.durationWeeksAsWeeks }}</p>
 
             {% set fulfillMethod = requirement.fulfillMethod %}
             <p class="label">Fulfill Method</p>

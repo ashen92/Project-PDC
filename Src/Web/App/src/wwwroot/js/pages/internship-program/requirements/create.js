@@ -34,10 +34,7 @@ on($("#select-users-btn"), "click", function () {
 
 createTextEditors();
 
-const oneTimeEndDateElement = $("#field-one-time");
 const recurringRepeatElement = $("#field-recurring");
-
-const endBeforeDateElement = $("#end-before-one-time");
 const radioRepeatElements = $all("input[name='repeat-interval']");
 
 const typeDiv = $("#type");
@@ -48,11 +45,6 @@ on(typeDiv, "change", function (event) {
             radioRepeatElements.forEach(element => {
                 element.removeAttribute("required");
             });
-
-            endBeforeDateElement.setAttribute("required", "");
-
-            oneTimeEndDateElement.classList.add("block");
-            oneTimeEndDateElement.classList.remove("hidden");
             recurringRepeatElement.classList.add("hidden");
             recurringRepeatElement.classList.remove("block");
         }
@@ -60,11 +52,6 @@ on(typeDiv, "change", function (event) {
             radioRepeatElements.forEach(element => {
                 element.setAttribute("required", "");
             });
-
-            endBeforeDateElement.removeAttribute("required");
-
-            oneTimeEndDateElement.classList.add("hidden");
-            oneTimeEndDateElement.classList.remove("block");
             recurringRepeatElement.classList.add("block");
             recurringRepeatElement.classList.remove("hidden");
         }

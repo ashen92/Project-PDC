@@ -55,10 +55,47 @@
         </div>
 
         <div class="field row">
-            <label for="start-date">
-                Select a date from which the requirement must be fulfilled. (date inclusive)
+            <label for="start-week">
+                Select the starting week of the requirement (Weeks start when the student is hired)
             </label>
-            <input type="date" name="start-date" id="start-date" autocomplete="off" required>
+            <select name="start-week" id="start-week" autocomplete="off" required>
+                <optgroup label="Month 1">
+                    {% for i in 1..4 %}
+                    <option value="{{ i }}">{{ i }}</option>
+                    {% endfor %}
+                </optgroup>
+                <optgroup label="Month 2">
+                    {% for i in 5..8 %}
+                    <option value="{{ i }}">{{ i }}</option>
+                    {% endfor %}
+                </optgroup>
+                <optgroup label="Month 3">
+                    {% for i in 9..12 %}
+                    <option value="{{ i }}">{{ i }}</option>
+                    {% endfor %}
+                </optgroup>
+                <optgroup label="Month 4">
+                    {% for i in 13..16 %}
+                    <option value="{{ i }}">{{ i }}</option>
+                    {% endfor %}
+                </optgroup>
+                <optgroup label="Month 5">
+                    {% for i in 17..20 %}
+                    <option value="{{ i }}">{{ i }}</option>
+                    {% endfor %}
+                </optgroup>
+                <optgroup label="Month 6">
+                    {% for i in 21..24 %}
+                    <option value="{{ i }}">{{ i }}</option>
+                    {% endfor %}
+                </optgroup>
+            </select>
+        </div>
+
+        <div class="field row">
+            <label for="duration-weeks">Select the duration submissions are accepted from the student</label>
+            <input type="number" name="duration-weeks" id="duration-weeks" autocomplete="off" value="1" min="1"
+                max="24">
         </div>
 
         <div id="type">
@@ -92,14 +129,6 @@
                         <label for="repeat-monthly">Monthly</label>
                     </div>
                 </div>
-            </div>
-        </div>
-
-        <div class="hidden" id="field-one-time">
-            <div class="field row">
-                <label for="end-before-one-time">Select a date by which the requirement must be fulfilled. (date not
-                    inclusive)</label>
-                <input type="date" name="end-before" id="end-before-one-time" autocomplete="off">
             </div>
         </div>
 

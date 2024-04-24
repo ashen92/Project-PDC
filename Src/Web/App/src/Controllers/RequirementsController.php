@@ -12,7 +12,6 @@ use App\Models\Requirement\Type;
 use App\Security\Attributes\RequiredRole;
 use App\Security\AuthorizationService;
 use App\Services\RequirementService;
-use DateTimeImmutable;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -125,8 +124,8 @@ class RequirementsController extends ControllerBase
                 $request->get('name'),
                 $request->get('description'),
                 Type::tryFrom($request->get('type')),
-                new DateTimeImmutable($request->get('start-date')),
-                new DateTimeImmutable($request->get('end-before')),
+                (int) $request->get('start-week'),
+                (int) $request->get('duration-weeks'),
                 $repeatInterval ? RepeatInterval::tryFrom($repeatInterval) : null,
                 FulFillMethod::tryFrom($request->get('fulfill-method')),
                 $fileTypes,
