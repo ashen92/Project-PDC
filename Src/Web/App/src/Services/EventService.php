@@ -4,13 +4,16 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Repositories\EventRepository;
+use App\Repositories\UserRepository;
+use App\Models\UserGroup;
 use App\DTOs\CreateEventDTO;
 use DateTimeImmutable;
 
 readonly class EventService
 {
     public function __construct(
-        private EventRepository $eventRepository
+        private EventRepository $eventRepository,
+        private UserRepository $userRepository,
     ) {
     }
 
@@ -28,6 +31,32 @@ readonly class EventService
         return $events;
     }
 
+    public function getUserGroups(): array
+    {
+        $groups = $this->userRepository->findAllUserGroups();
+        $eligibleGroups = [];
+        foreach ($groups as $group) {
+            if (str_contains(strtolower($group->getName()), 'admin')) {
+                continue;
+            }
+            if (str_contains(strtolower($group->getName()), 'coordinator')) {
+                continue;
+            }
+            if (str_contains(strtolower($group->getName()), 'partner')) {
+                continue;
+            }
+            if (str_starts_with($group->getName(), UserGroup::AUTO_GENERATED_USER_GROUP_PREFIX)) {
+                continue;
+            }
+            $eligibleGroups[] = $group;
+        }
+        return $eligibleGroups;
+    }
+    /* public function getAllEvents()
+    {
+        return $this->eventRepository->getAllEvents();
+    } */
+
     public function getEventById(int $id)
     {
         //return $this->eventRepository->getEventById($id);
@@ -36,6 +65,7 @@ readonly class EventService
     public function createEvent(CreateEventDTO $dto): void
     {
         $this->eventRepository->createEvent($dto);
+
     }
 
     public function editEvent($event): void
@@ -43,5 +73,11 @@ readonly class EventService
     }
     public function deleteEvent($event): void
     {
+    }
+
+    public function addParticipantToEvent(int $eventId, int $userGroupId): void
+    {
+        // Add participant to the specified event
+        $this->eventRepository->addParticipantToEvent($eventId, $userGroupId);
     }
 }

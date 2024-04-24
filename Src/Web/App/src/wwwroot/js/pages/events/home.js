@@ -1,12 +1,12 @@
 import { Calendar } from "@fullcalendar/core";
-import interactionPlugin from "@fullcalendar/interaction";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
-//import listPlugin from "@fullcalendar/list";
+import listPlugin from "@fullcalendar/list";
+import interactionPlugin from "@fullcalendar/interaction";
 import { $ } from "../../core/dom";
 
 const calendar = new Calendar($("#calendar-view"), {
-    plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
+    plugins: [dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin],
     initialView: "dayGridMonth",
     selectable: true,
     events: {
@@ -16,11 +16,11 @@ const calendar = new Calendar($("#calendar-view"), {
             alert("Failed to fetch events from the server.");
         }
     },
-    eventContent: function (arg) {
-        return {
-            html: "<b>" + arg.event.title + "</b><br>" + arg.event.extendedProps.location
-        };
-    },
+    // eventContent: function (arg) {
+    //     return {
+    //         html: "<b>" + arg.event.title + "</b><br>" + arg.event.extendedProps.location
+    //     };
+    //},
     headerToolbar: {
         left: "prev,next today",
         center: "title",

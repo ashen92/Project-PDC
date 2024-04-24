@@ -9,20 +9,31 @@
 {% block content %}
 
 <div class="title">
-    <h4>
+    <h2>
         Create an event
-    </h4>
+    </h2>
 </div>
-<form action="/events/create" method="get">
+<form action="/events/create" method="POST">
     <div class="field">
         <label for="eventTitle">Event Title</label>
         <input type="text" id="eventTitle" name="eventTitle" required>
     </div>
+
+
     <div class="field">
+        <label for="eventLocation">Event Participants</label>
+        <select name="participants" id="participants" required>
+            {% for group in groups %}
+            <option value="{{ group.id }}">{{ group.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="fielddate">
         <label for="startTime">Start Time</label>
         <input type="datetime-local" id="startTime" name="startTime" required>
     </div>
-    <div class="field">
+    <div class="fielddate">
         <label for="endTime">End Time</label>
         <input type="datetime-local" id="endTime" name="endTime" required>
     </div>

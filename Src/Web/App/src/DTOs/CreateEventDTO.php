@@ -11,7 +11,8 @@ readonly class CreateEventDTO
         public DateTimeImmutable $startTime,
         public DateTimeImmutable $endTime,
         public string $eventLocation,
-        public string $description
+        public string $description,
+        public array $participants
     ) {
     }
 }

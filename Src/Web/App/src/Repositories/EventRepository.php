@@ -47,17 +47,47 @@ class EventRepository implements IRepository
             :eventLocation,
             :description
         )";
+
         $statement = $this->pdo->prepare($sql);
         $statement->execute([
             "title" => $dto->title,
             "startTime" => $dto->startTime->format($this::DATE_TIME_FORMAT),
             "endTime" => $dto->endTime->format($this::DATE_TIME_FORMAT),
             "eventLocation" => $dto->eventLocation,
-            "description" => $dto->description
+            "description" => $dto->description,
 
         ]);
-        return (int) $this->pdo->lastInsertId();
+        
+        $eventId = (int) $this->pdo->lastInsertId();
+    /*  $userGroupIds = $dto->participants;
+
+        if (!empty($userGroupIds)) {
+            // Prepare SQL statement for inserting participants
+            $sql2 = "INSERT INTO event_participants (event_id, usergroup_id) VALUES (:eventId, :userGroupId)";
+            $statement2 = $this->pdo->prepare($sql2);
+
+            // Execute insert statement for each participant
+            foreach ($userGroupIds as $userGroupId) {
+                $statement2->execute([
+                    "eventId" => $eventId,
+                    "userGroupId" => $userGroupId,
+                ]);
+            }
+        } */
+
+        return $eventId;
     }
+
+    public function addParticipantToEvent(int $eventId, int $userGroupId): void
+    {
+        $sql = "INSERT INTO event_participants (event_id, usergroup_id) VALUES (:eventId, :userGroupId)";
+        $statement = $this->pdo->prepare($sql);
+        $statement->execute([
+            'eventId' => $eventId,
+            'userGroupId' => $userGroupId,
+        ]);
+    }
+
     public function getEvent(int $id): array
     {
 
@@ -82,8 +112,8 @@ class EventRepository implements IRepository
 
     public function getEvents(DateTimeImmutable $startTime, DateTimeImmutable $endTime): array
     {
-        $sql = "SELECT * FROM events ";
-                //WHERE (eventDate BETWEEN :startTime AND :endTime)
+        $sql = "SELECT * FROM events
+                WHERE (startTime BETWEEN :startTime AND :endTime)";
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([
@@ -100,4 +130,11 @@ class EventRepository implements IRepository
 
         return $events;
     }
+
+    /* public function getAllEvents()
+    {
+        $statement = $this->pdo->prepare("SELECT * FROM events ORDER BY date_time");
+        $statement->execute();
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    } */
 }

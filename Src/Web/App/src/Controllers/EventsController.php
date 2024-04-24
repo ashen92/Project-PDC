@@ -6,7 +6,6 @@ namespace App\Controllers;
 use App\DTOs\CreateEventDTO;
 use App\Security\AuthorizationService;
 use App\Services\EventService;
-use DateTime;
 use DateTimeImmutable;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -38,7 +37,10 @@ class EventsController extends ControllerBase
     {
         return $this->render(
             'events/create.html',
-            ['section' => 'create']
+            [
+                'section' => 'create',
+                'groups' => $this->eventService->getUserGroups()
+            ]
         );
     }
 
@@ -65,9 +67,6 @@ class EventsController extends ControllerBase
             ]
         );
     }
-    //#[Route('/edit/{eventId}', methods: ['POST'])]
-    //public function editPOST(Request $request): Response
-
 
     #[Route('/create', methods: ['POST'])]
     public function createPOST(Request $request): Response
@@ -78,6 +77,7 @@ class EventsController extends ControllerBase
         $endTimeString = $data['endTime'] ?? '';    //$endTime = DateTimeImmutable::createFromFormat('H:i', $data['endTime']);
         $eventLocation = $data['eventLocation'] ?? '';
         $description = $data['description'] ?? '';
+        $participants = $data['participants'] ?? '';
 
         $startTime = DateTimeImmutable::createFromFormat('Y-m-d\TH:i', $startTimeString);
         if (!$startTime instanceof DateTimeImmutable) {
@@ -89,13 +89,33 @@ class EventsController extends ControllerBase
             throw new \InvalidArgumentException('Invalid end time format');
         }
 
-        $event = new CreateEventDTO($Title, $startTime, $endTime, $eventLocation, $description);
+        $event = new CreateEventDTO($Title, $startTime, $endTime, $eventLocation, $description, [$participants]);
         $this->eventService->createEvent($event);
+        
         return $this->render(
             'events/create.html',
-            ['section' => 'create']
+            [
+                'section' => 'create'
+            ]
         );
     }
+
+    #[Route('/add-participant/{eventId}', methods: ['POST'])]
+    public function addParticipant(int $eventId, Request $request): Response
+    {
+        $data = $request->request->all();
+        $userGroupId = (int) ($data['userGroupId'] ?? 0);
+
+        if ($userGroupId <= 0) {
+            throw new \InvalidArgumentException('Invalid user group ID');
+        }
+
+        $this->eventService->addParticipantToEvent($eventId, $userGroupId);
+
+        // Redirect back to event details page or any appropriate route
+        return $this->redirect('/events/edit/' . $eventId);
+    }
+
 
     #[Route('/delete/{eventId}', methods: ['POST'])]
     public function deletePOST(Request $request): Response
@@ -120,4 +140,12 @@ class EventsController extends ControllerBase
         $res = $this->eventService->getEvents($startTime, $endTime);
         return new Response(json_encode($res), 200, ['Content-Type' => 'application/json']);
     }
+
+    // #[Route('/{eventId}', methods:['GET'])]
+    // public function getAllEvents()
+    // {
+    //     $events = $this->eventService->getAllEvents();
+    //     header('Content-Type: application/json');
+    //     echo json_encode($events);
+    // } 
 }

@@ -307,6 +307,7 @@ $container->register(
 )
     ->setArguments([
         new Reference('repository.event'),
+        new Reference('repository.user'),
     ]);
 
 $container->register(
