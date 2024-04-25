@@ -15,32 +15,6 @@
 </div>
 <section>
     <form id="create-requirement-form" action="/internship-program/requirements/create" method="POST">
-        <div class="field-radio row" id="user-group-radio">
-            <div class="label">This requirement is for,</div>
-            <div>
-                <div class="option">
-                    <input type="radio" name="user-group" id="user-group-students" value="students" autocomplete="off"
-                        required>
-                    <label for="user-group-students">Students</label>
-                </div>
-                <div class="option">
-                    <input type="radio" name="user-group" id="user-group-partners" value="partners" autocomplete="off"
-                        required>
-                    <label for="user-group-partners">Partners</label>
-                </div>
-                <div class="option">
-                    <input type="radio" name="user-group" id="user-group-select-users" value="select-users"
-                        autocomplete="off" required>
-                    <label for="user-group-select-users">Select Users</label>
-                </div>
-            </div>
-        </div>
-
-        <div class="field row hidden" id="select-users-field">
-            <label for="name">Select users</label>
-            <a id="select-users-btn" href="/internship-program/requirements/create/users" class="btn btn-primary">Select
-                users</a>
-        </div>
 
         <div class="field row">
             <label for="name">Display name</label>
