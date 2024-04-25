@@ -89,13 +89,7 @@ class ApplicationsController extends ControllerBase
         // TODO: Validate
 
         if (!$internshipId || $internshipId < 1) {
-            return $this->render(
-                'internship-program/applicants/applications.html',
-                [
-                    'section' => 'applicants',
-                    'internship' => null,
-                ]
-            );
+            return $this->redirect('/internship-program/applicants');
         }
 
         $internship = $this->internshipService->getInternship($internshipId);
