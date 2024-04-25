@@ -2,6 +2,9 @@
 @use '../mixins';
 
 .layout-auth {
+    background-image: url('/images/auth-background.png');
+    background-size: cover;
+    background-position: center;
     display: grid;
     grid-template-rows: 1fr auto;
     min-height: 100vh;
@@ -40,10 +43,18 @@
         }
 
         >.form-wrapper {
-            width: 18rem;
+            width: 24rem;
+            padding: 3rem 2.5rem;
+            background-color: #fff;
+            border-radius: 1.25rem;
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.12), 0 4px 8px rgba(0, 0, 0, 0.14);
+
+            >h4 {
+                padding-bottom: 2rem;
+            }
 
             &.signup {
-                width: 22rem;
+                width: 28rem;
             }
         }
     }

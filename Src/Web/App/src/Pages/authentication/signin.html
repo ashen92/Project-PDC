@@ -4,8 +4,8 @@
 
 {% block content %}
 
-<h4>Sign in</h4>
 <div class="form-wrapper">
+    <h4>Sign in</h4>
     <form action="/login?redirect={{ redirect }}" method="post">
         {% for message in app.session.flashbag.get("signin_error") %}
         <div class="alert alert-error">
@@ -24,13 +24,15 @@
             <input class="btn btn-primary" type="submit" value="Sign in">
         </div>
     </form>
+
     <div class="pt-10 text-center">Don't have an account?
         <div>
             <a class="link" href="/signup">Create one!</a>
         </div>
     </div>
-    <div class="pt-7 text-center">Want to register with our Partner Program? <a class="link" href="/register">Click
-            here!</a></div>
+
+    <div class="pt-7 text-center">To join our partner program <a class="link" href="/register">Click
+            here</a></div>
 </div>
 
 {% endblock %}
