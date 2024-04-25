@@ -19,18 +19,24 @@
 <div class="layout-dash">
 
     <div class="dash-container">
+
         <div class="card one">
-            <h3>
-                {{active_users}}
-            </h3>
-            <p>Active Users</p>
+            <a class="dash-link" href="/portal/home/link1">
+                <h3>
+                    {{ activeUsers }}
+                </h3>
+                <p>Active Users</p>
+            </a>
         </div>
 
+
         <div class="card two">
-            <h3>
-                {{stu_count}}
-            </h3>
-            <p> Students</p>
+            <a class="dash-link" href="/portal/home/link2">
+                <h3>
+                    {{ studentCount }}
+                </h3>
+                <p> Students</p>
+            </a>
         </div>
 
         <div class="card three">
@@ -48,12 +54,17 @@
         </div>
 
         <div class="card five">
-            <h3>
-                {{co_count}}
-            </h3>
-            <p> PDC Asst. Cordinators</p>
+            <a class="dash-link" href="/portal/home/link3">
+                <h3>
+                    {{ coordinatorsCount }}
+                </h3>
+                <p> PDC Assistant Coordinators</p>
+            </a>
         </div>
     </div>
+
+    <div class="hidden" id="studentCount">{{ studentCount }}</div>
+    <div class="hidden" id="coordinatorsCount">{{ coordinatorsCount }}</div>
 
     <div class="chart-container">
         <div class="chart one">

@@ -102,7 +102,15 @@
             padding-top: 2rem;
 
         }
-
     }
 
+    .dash-link {
+        text-decoration: none;
+        color: black;
+    }
+
+    .dash-link:hover {
+        color: #0078b4;
+        font-weight: bold;
+    }
 }

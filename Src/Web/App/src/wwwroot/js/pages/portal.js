@@ -10,16 +10,18 @@ if (topNav && content) {
 
 import Chart from 'chart.js/auto'
 
+const studentCount = document.getElementById('studentCount').innerText;
+const coordinatorsCount = document.getElementById('coordinatorsCount').innerText;
 
 const pieChartdata = {
     labels: [
         'Students',
         'Partners',
-        'PDC Asst.Cordinators',
+        'PDC Assistant Cordinators',
     ],
     datasets: [{
         label: '',
-        data: [98, 30, 5],
+        data: [studentCount, 30, coordinatorsCount],
         backgroundColor: [
             '#d2d3d4',
             '#f2f7ff',
@@ -105,7 +107,7 @@ function handleIntersection(entries, observer) {
             const countElement = entry.target.querySelector('h3');
             const startCount = 0;
             const endCount = parseInt(countElement.textContent);
-            const duration = 2000;
+            const duration = 1000;
             animateCounting(countElement, startCount, endCount, duration);
             observer.unobserve(entry.target);
         }
