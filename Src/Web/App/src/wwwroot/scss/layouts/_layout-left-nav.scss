@@ -5,9 +5,9 @@
     grid-template-columns: 15rem auto;
 
     >.left-nav {
-        box-shadow: $shadow-1;
         padding: 3rem 0 1rem 0;
-        background-color: #faf9f7;
+        background-color: #edf2f9;
+        box-shadow: rgba(57, 76, 96, 0.15) 0px 2px 4px -1px;
 
         >a {
             display: flex;
@@ -20,15 +20,17 @@
             transition-timing-function: cubic-bezier(0.33, 0, 0.67, 1);
 
             &:hover {
-                background-color: #c4e2fd;
+                background-color: #c5dff6;
             }
 
             &:active {
-                background-color: #b1d8fc;
+                background-color: #b7d7f3;
             }
 
             &.active {
-                background-color: #c4e2fd;
+                background-color: #b7d7f3;
+                color: #00589b;
+                font-weight: $fw-semibold;
             }
 
             i {
