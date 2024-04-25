@@ -625,11 +625,11 @@ $requirementData = [
         'Internship Contract',
         'Upload the contract between you and the company.',
         Type::ONE_TIME,
-        new DateTimeImmutable(),
-        new DateTimeImmutable('+1 month'),
+        1,
+        2,
         null,
         FulFillMethod::FILE_UPLOAD,
-        json_encode(['pdf']),
+        ['pdf'],
         5,
         3
     ),
@@ -637,11 +637,11 @@ $requirementData = [
         'Monthly Report',
         'Upload a report of your progress.',
         Type::RECURRING,
-        new DateTimeImmutable(),
-        null,
+        1,
+        4,
         RepeatInterval::MONTHLY,
         FulFillMethod::FILE_UPLOAD,
-        json_encode(['pdf']),
+        ['pdf'],
         5,
         1
     ),
@@ -649,11 +649,11 @@ $requirementData = [
         'Weekly Report',
         'Upload a report of your progress.',
         Type::RECURRING,
-        new DateTimeImmutable(),
-        null,
+        1,
+        1,
         RepeatInterval::WEEKLY,
         FulFillMethod::FILE_UPLOAD,
-        json_encode(['pdf']),
+        ['pdf'],
         5,
         1
     ),
@@ -661,8 +661,8 @@ $requirementData = [
         'Your feedback about the internship',
         'What do you think about the company. How was your experience? Your feedback will not be shared with the company.',
         Type::ONE_TIME,
-        new DateTimeImmutable(),
-        new DateTimeImmutable('+1 month'),
+        23,
+        2,
         null,
         FulFillMethod::TEXT_INPUT,
         null,
@@ -687,32 +687,32 @@ $entityManager->flush();
 
 echo "Done.\nAdding user requirements...";
 
-$ur = new UserRequirement(
-    $studentUser0,
-    $requirements[0],
-    $requirements[0]->getStartDate(),
-    $requirements[0]->getEndBeforeDate()
-);
-$entityManager->persist($ur);
-$ur = new UserRequirement(
-    $studentUser0,
-    $requirements[3],
-    $requirements[3]->getStartDate(),
-    $requirements[3]->getEndBeforeDate()
-);
-$entityManager->persist($ur);
+// $ur = new UserRequirement(
+//     $studentUser0,
+//     $requirements[0],
+//     $requirements[0]->getStartDate(),
+//     $requirements[0]->getEndBeforeDate()
+// );
+// $entityManager->persist($ur);
+// $ur = new UserRequirement(
+//     $studentUser0,
+//     $requirements[3],
+//     $requirements[3]->getStartDate(),
+//     $requirements[3]->getEndBeforeDate()
+// );
+// $entityManager->persist($ur);
 
-$requirements[1]->createUserRequirements($studentUser0, $entityManager);
-$requirements[2]->createUserRequirements($studentUser0, $entityManager);
+// $requirements[1]->createUserRequirements($studentUser0, $entityManager);
+// $requirements[2]->createUserRequirements($studentUser0, $entityManager);
 
-$entityManager->flush();
+// $entityManager->flush();
 
-foreach ($requirements as $r) {
-    for ($i = 1; $i < 200; $i++) {
-        $r->createUserRequirements($studentUsers[$i], $entityManager);
-    }
-}
-$entityManager->flush();
+// foreach ($requirements as $r) {
+//     for ($i = 1; $i < 200; $i++) {
+//         $r->createUserRequirements($studentUsers[$i], $entityManager);
+//     }
+// }
+// $entityManager->flush();
 
 echo "Done.\nDatabase seeded successfully.\n";
 

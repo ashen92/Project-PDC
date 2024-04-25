@@ -5,50 +5,35 @@ namespace App\Services;
 
 use App\Models\Application;
 use App\Repositories\ApplicationRepository;
-use BadMethodCallException;
 
 final readonly class ApplicationService
 {
     public function __construct(
         private ApplicationRepository $applicationRepository,
         private FileStorageService $fileStorageService,
+        private RequirementService $requirementService,
     ) {
 
     }
 
-    public function hire(
-        int $applicantId,
-        ?int $partnerId,
-        ?int $adminId,
-        ?int $applicationId,
-        ?int $organizationId = null,
-    ): bool {
-        if ($adminId) {
-            if (!$organizationId || $partnerId) {
-                throw new BadMethodCallException("'partnerId' must be null and 'organizationId' must be set when Admin Id is set");
-            }
-        }
-        if ($partnerId) {
-            if ($adminId || $organizationId) {
-                throw new BadMethodCallException("'adminId' must be null and 'organizationId' must be null when Partner Id is set");
-            }
-        }
-
+    public function hire(int $partnerId, int $applicationId): bool
+    {
         // TODO: Check if parameters exist
 
         $this->applicationRepository->beginTransaction();
         try {
+            $application = $this->applicationRepository->findApplication($applicationId);
             $this->applicationRepository->createIntern(
-                $applicantId,
-                $adminId ?? $partnerId,
-                $organizationId,
+                $application['user_id'],
+                $partnerId,
+                null,
                 $applicationId
             );
 
-            if ($applicationId) {
-                $this->applicationRepository
-                    ->updateApplicationStatus($applicationId, Application\Status::Hired);
-            }
+            $this->applicationRepository
+                ->updateApplicationStatus($applicationId, Application\Status::Hired);
+
+            $this->requirementService->createUserRequirements($application['user_id']);
 
             return $this->applicationRepository->commit();
         } catch (\Exception $e) {
@@ -57,16 +42,17 @@ final readonly class ApplicationService
         }
     }
 
-    public function reject(int $applicantId, int $applicationId): bool
+    public function reject(int $applicationId): bool
     {
         // TODO: Check if parameters exist
 
         $this->applicationRepository->beginTransaction();
-
         try {
-            $this->applicationRepository->deleteInternIfExists($applicantId, $applicationId);
+            $application = $this->applicationRepository->findApplication($applicationId);
+            $this->applicationRepository->deleteInternIfExists($application['user_id'], $applicationId);
             $this->applicationRepository
                 ->updateApplicationStatus($applicationId, Application\Status::Rejected);
+            $this->requirementService->removeUserRequirements($application['user_id']);
             return $this->applicationRepository->commit();
         } catch (\Exception $e) {
             $this->applicationRepository->rollback();
@@ -74,16 +60,17 @@ final readonly class ApplicationService
         }
     }
 
-    public function resetApplicationStatus(int $applicantId, int $applicationId): bool
+    public function resetApplicationStatus(int $applicationId): bool
     {
         // TODO: Check if parameters exist
 
         $this->applicationRepository->beginTransaction();
-
         try {
-            $this->applicationRepository->deleteInternIfExists($applicantId, $applicationId);
+            $application = $this->applicationRepository->findApplication($applicationId);
+            $this->applicationRepository->deleteInternIfExists($application['user_id'], $applicationId);
             $this->applicationRepository
                 ->updateApplicationStatus($applicationId, Application\Status::Pending);
+            $this->requirementService->removeUserRequirements($application['user_id']);
             return $this->applicationRepository->commit();
         } catch (\Exception $e) {
             $this->applicationRepository->rollback();

@@ -293,6 +293,7 @@ $container->register(
     ->setArguments([
         new Reference('repository.application'),
         new Reference('service.file_storage'),
+        new Reference('service.requirement'),
     ]);
 
 $container->register(
@@ -375,17 +376,6 @@ $container->register(
         new Reference('twig'),
         new Reference('service.authorization'),
         new Reference('service.internship'),
-    ])
-    ->setPublic(true);
-
-$container->register(
-    'App\Controllers\API\ApplicationsAPIController',
-    \App\Controllers\API\ApplicationsAPIController::class
-)
-    ->setArguments([
-        new Reference('twig'),
-        new Reference('service.authorization'),
-        new Reference('service.application'),
     ])
     ->setPublic(true);
 
