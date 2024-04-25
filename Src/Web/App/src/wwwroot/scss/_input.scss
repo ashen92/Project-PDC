@@ -58,6 +58,11 @@ input {
         @extend %text-field-styles;
     }
 
+    &[type="datetime-local"] {
+        cursor: pointer;
+        @extend %text-field-styles;
+    }
+
     &[type="radio"] {
         outline: none;
         width: 18px;
