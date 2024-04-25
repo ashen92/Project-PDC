@@ -293,6 +293,7 @@ $container->register(
     ->setArguments([
         new Reference('repository.application'),
         new Reference('service.file_storage'),
+        new Reference('service.requirement'),
     ]);
 
 $container->register(

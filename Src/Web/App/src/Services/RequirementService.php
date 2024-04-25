@@ -10,6 +10,7 @@ use App\Models\Requirement;
 use App\Models\Requirement\FulFillMethod;
 use App\Models\UserRequirement;
 use App\Repositories\RequirementRepository;
+use DateTimeImmutable;
 use Exception;
 
 readonly class RequirementService
@@ -55,6 +56,29 @@ readonly class RequirementService
             $this->requirementRepo->rollBack();
             throw $e;
         }
+    }
+
+    public function createUserRequirements(int $userId): bool
+    {
+        $cycle = $this->internshipCycleService->getLatestCycle();
+        $requirements = $this->requirementRepo->findAllRequirements($cycle->getId());
+
+        foreach ($requirements as $req) {
+            if ($req->getStartWeek()->d === 0) {
+
+                $now = new DateTimeImmutable();
+                $startDate = $now->modify('tomorrow midnight');
+                $endDate = $startDate->add($req->getDurationWeeks());
+
+                $this->requirementRepo->createUserRequirement($req, $userId, $startDate, $endDate);
+            }
+        }
+        return true;
+    }
+
+    public function removeUserRequirements(int $userId): bool
+    {
+        return $this->requirementRepo->deleteUserRequirements($userId);
     }
 
     public function completeUserRequirement(UserRequirementFulfillmentDTO $dto): bool

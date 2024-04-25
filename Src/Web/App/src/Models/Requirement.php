@@ -47,6 +47,16 @@ class Requirement
         return $this->requirementType;
     }
 
+    public function getStartWeek(): DateInterval
+    {
+        return $this->startWeek;
+    }
+
+    public function getDurationWeeks(): DateInterval
+    {
+        return $this->durationWeeks;
+    }
+
     public function getStartWeekAsMonthWeek(): string
     {
         $days = $this->startWeek->d;

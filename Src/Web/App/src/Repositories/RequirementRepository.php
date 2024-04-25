@@ -11,6 +11,7 @@ use App\Models\Requirement;
 use App\Models\UserRequirement;
 use App\Models\UserRequirement\Status;
 use DateTime;
+use DateTimeImmutable;
 use PDO;
 
 readonly class RequirementRepository implements IRepository
@@ -51,6 +52,9 @@ readonly class RequirementRepository implements IRepository
         return RequirementMapper::map($res);
     }
 
+    /**
+     * @return array<Requirement>
+     */
     public function findAllRequirements(int $cycleId): array
     {
         $sql = "SELECT * FROM requirements WHERE internship_cycle_id = :cycleId";
@@ -250,6 +254,42 @@ readonly class RequirementRepository implements IRepository
     //         "status" => Status::PENDING->value
     //     ]);
     // }
+
+    public function createUserRequirement(
+        Requirement $requirement,
+        int $userId,
+        DateTimeImmutable $startDate,
+        DateTimeImmutable $endDate
+    ): bool {
+        $sql = "INSERT INTO user_requirements (
+                    user_id,
+                    requirement_id,
+                    status,
+                    fulfillMethod,
+                    startDate,
+                    endDate
+                )
+                VALUES(:userId, :reqId, :status, :fulfillMethod, :startDate, :endDate)";
+
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute([
+            "reqId" => $requirement->getId(),
+            "userId" => $userId,
+            "status" => Status::PENDING->value,
+            "fulfillMethod" => $requirement->getFulfillMethod(),
+            "startDate" => $startDate->format($this::DATE_TIME_FORMAT),
+            "endDate" => $endDate->format($this::DATE_TIME_FORMAT)
+        ]);
+    }
+
+    public function deleteUserRequirements(int $userId): bool
+    {
+        $sql = "DELETE FROM user_requirements WHERE user_id = :userId";
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute([
+            "userId" => $userId
+        ]);
+    }
 
     public function fulfillUserRequirement(int $userRequirementId, ?array $files = null, ?string $textResponse = null): bool
     {

@@ -5,13 +5,13 @@ namespace App\Services;
 
 use App\Models\Application;
 use App\Repositories\ApplicationRepository;
-use BadMethodCallException;
 
 final readonly class ApplicationService
 {
     public function __construct(
         private ApplicationRepository $applicationRepository,
         private FileStorageService $fileStorageService,
+        private RequirementService $requirementService,
     ) {
 
     }
@@ -33,6 +33,8 @@ final readonly class ApplicationService
             $this->applicationRepository
                 ->updateApplicationStatus($applicationId, Application\Status::Hired);
 
+            $this->requirementService->createUserRequirements($application['user_id']);
+
             return $this->applicationRepository->commit();
         } catch (\Exception $e) {
             $this->applicationRepository->rollback();
@@ -50,6 +52,7 @@ final readonly class ApplicationService
             $this->applicationRepository->deleteInternIfExists($application['user_id'], $applicationId);
             $this->applicationRepository
                 ->updateApplicationStatus($applicationId, Application\Status::Rejected);
+            $this->requirementService->removeUserRequirements($application['user_id']);
             return $this->applicationRepository->commit();
         } catch (\Exception $e) {
             $this->applicationRepository->rollback();
@@ -67,6 +70,7 @@ final readonly class ApplicationService
             $this->applicationRepository->deleteInternIfExists($application['user_id'], $applicationId);
             $this->applicationRepository
                 ->updateApplicationStatus($applicationId, Application\Status::Pending);
+            $this->requirementService->removeUserRequirements($application['user_id']);
             return $this->applicationRepository->commit();
         } catch (\Exception $e) {
             $this->applicationRepository->rollback();
