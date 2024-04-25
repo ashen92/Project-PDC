@@ -98,13 +98,54 @@ class ApplicationsController extends ControllerBase
             );
         }
 
+        $internship = $this->internshipService->getInternship($internshipId);
         return $this->render(
             'internship-program/applicants/applications.html',
             [
                 'section' => 'applicants',
-                'internship' => $this->internshipService
-                    ->getInternship($internshipId),
+                'internship' => $internship,
+                'applications' => $this->internshipService->getApplications($internship->getId()),
             ]
         );
+    }
+
+    #[RequiredRole([
+        'InternshipProgramAdmin',
+        'InternshipProgramPartnerAdmin'
+    ])]
+    #[Route('/applicants/applications/{id}/hire', requirements: ['id' => '\d+'], methods: ['PUT'])]
+    public function applicantHire(Request $request, int $id): Response
+    {
+        $userId = $request->getSession()->get('user_id');
+        if ($this->applicationService->hire($userId, $id)) {
+            return new Response(null, 204);
+        }
+        return new Response(null, 400);
+    }
+
+    #[RequiredRole([
+        'InternshipProgramAdmin',
+        'InternshipProgramPartnerAdmin'
+    ])]
+    #[Route('/applicants/applications/{id}/reject', requirements: ['id' => '\d+'], methods: ['PUT'])]
+    public function applicantReject(Request $request, int $id): Response
+    {
+        if ($this->applicationService->reject($id)) {
+            return new Response(null, 204);
+        }
+        return new Response(null, 400);
+    }
+
+    #[RequiredRole([
+        'InternshipProgramAdmin',
+        'InternshipProgramPartnerAdmin'
+    ])]
+    #[Route('/applicants/applications/{id}/reset', requirements: ['id' => '\d+'], methods: ['PUT'])]
+    public function applicantReset(Request $request, int $id): Response
+    {
+        if ($this->applicationService->resetApplicationStatus($id)) {
+            return new Response(null, 204);
+        }
+        return new Response(null, 400);
     }
 }

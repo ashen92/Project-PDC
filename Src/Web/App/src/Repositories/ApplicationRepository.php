@@ -28,9 +28,22 @@ readonly class ApplicationRepository
         $this->pdo->rollBack();
     }
 
+    public function findApplication(int $id): ?array
+    {
+        $stmt = $this->pdo->prepare(
+            "SELECT *
+            FROM applications
+            WHERE id = :id"
+        );
+        $stmt->execute([
+            "id" => $id
+        ]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
     public function createIntern(
         int $studentId,
-        int $adderUserId,
+        int $partnerUserId,
         ?int $organizationId,
         ?int $applicationId
     ): bool {
@@ -47,7 +60,7 @@ readonly class ApplicationRepository
 
             $stmt->execute([
                 "studentId" => $studentId,
-                "adderUserId" => $adderUserId,
+                "adderUserId" => $partnerUserId,
                 "applicationId" => $applicationId
             ]);
             return $stmt->rowCount() === 1;
@@ -60,7 +73,7 @@ readonly class ApplicationRepository
         );
         $stmt->execute([
             "studentId" => $studentId,
-            "adderUserId" => $adderUserId,
+            "adderUserId" => $partnerUserId,
             "organizationId" => $organizationId,
             "applicationId" => $applicationId
         ]);

@@ -16,39 +16,22 @@ final readonly class ApplicationService
 
     }
 
-    public function hire(
-        int $applicantId,
-        ?int $partnerId,
-        ?int $adminId,
-        ?int $applicationId,
-        ?int $organizationId = null,
-    ): bool {
-        if ($adminId) {
-            if (!$organizationId || $partnerId) {
-                throw new BadMethodCallException("'partnerId' must be null and 'organizationId' must be set when Admin Id is set");
-            }
-        }
-        if ($partnerId) {
-            if ($adminId || $organizationId) {
-                throw new BadMethodCallException("'adminId' must be null and 'organizationId' must be null when Partner Id is set");
-            }
-        }
-
+    public function hire(int $partnerId, int $applicationId): bool
+    {
         // TODO: Check if parameters exist
 
         $this->applicationRepository->beginTransaction();
         try {
+            $application = $this->applicationRepository->findApplication($applicationId);
             $this->applicationRepository->createIntern(
-                $applicantId,
-                $adminId ?? $partnerId,
-                $organizationId,
+                $application['user_id'],
+                $partnerId,
+                null,
                 $applicationId
             );
 
-            if ($applicationId) {
-                $this->applicationRepository
-                    ->updateApplicationStatus($applicationId, Application\Status::Hired);
-            }
+            $this->applicationRepository
+                ->updateApplicationStatus($applicationId, Application\Status::Hired);
 
             return $this->applicationRepository->commit();
         } catch (\Exception $e) {
@@ -57,14 +40,14 @@ final readonly class ApplicationService
         }
     }
 
-    public function reject(int $applicantId, int $applicationId): bool
+    public function reject(int $applicationId): bool
     {
         // TODO: Check if parameters exist
 
         $this->applicationRepository->beginTransaction();
-
         try {
-            $this->applicationRepository->deleteInternIfExists($applicantId, $applicationId);
+            $application = $this->applicationRepository->findApplication($applicationId);
+            $this->applicationRepository->deleteInternIfExists($application['user_id'], $applicationId);
             $this->applicationRepository
                 ->updateApplicationStatus($applicationId, Application\Status::Rejected);
             return $this->applicationRepository->commit();
@@ -74,14 +57,14 @@ final readonly class ApplicationService
         }
     }
 
-    public function resetApplicationStatus(int $applicantId, int $applicationId): bool
+    public function resetApplicationStatus(int $applicationId): bool
     {
         // TODO: Check if parameters exist
 
         $this->applicationRepository->beginTransaction();
-
         try {
-            $this->applicationRepository->deleteInternIfExists($applicantId, $applicationId);
+            $application = $this->applicationRepository->findApplication($applicationId);
+            $this->applicationRepository->deleteInternIfExists($application['user_id'], $applicationId);
             $this->applicationRepository
                 ->updateApplicationStatus($applicationId, Application\Status::Pending);
             return $this->applicationRepository->commit();

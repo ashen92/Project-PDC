@@ -135,23 +135,13 @@ readonly class InternshipService
         return $res;
     }
 
-    /**
-     * @return array<Student>
-     */
     public function getApplications(int $internshipId): array
     {
         $applications = $this->internshipRepository->findAllApplications($internshipId);
-        $internship = $this->internshipRepository->findInternship($internshipId);
-
         foreach ($applications as &$application) {
             $application["isApplicantAvailable"] = $application["isApplicantAvailable"] === 1;
         }
-
-        $res['id'] = $internship->getId();
-        $res['title'] = $internship->getTitle();
-        $res['applications'] = $applications;
-
-        return $res;
+        return $applications;
     }
 
     public function deleteInternship(int $id): bool

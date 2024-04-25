@@ -379,17 +379,6 @@ $container->register(
     ->setPublic(true);
 
 $container->register(
-    'App\Controllers\API\ApplicationsAPIController',
-    \App\Controllers\API\ApplicationsAPIController::class
-)
-    ->setArguments([
-        new Reference('twig'),
-        new Reference('service.authorization'),
-        new Reference('service.application'),
-    ])
-    ->setPublic(true);
-
-$container->register(
     'user_management_handler',
     \App\Services\UserManagementHandler::class
 )
