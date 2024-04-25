@@ -8,7 +8,7 @@
     <h4>Sign in</h4>
     <form action="/login?redirect={{ redirect }}" method="post">
         {% for message in app.session.flashbag.get("signin_error") %}
-        <div class="alert alert-error">
+        <div class="text-center mb-2 alert alert-error">
             {{ message }}
         </div>
         {% endfor %}
