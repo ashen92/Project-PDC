@@ -94,6 +94,18 @@ readonly class ApplicationRepository
         return $stmt->rowCount() === 1;
     }
 
+    public function deleteIntern(int $studentId): bool
+    {
+        $stmt = $this->pdo->prepare(
+            "DELETE FROM interns 
+            WHERE student_id = :studentId"
+        );
+        $stmt->execute([
+            "studentId" => $studentId
+        ]);
+        return $stmt->rowCount() === 1;
+    }
+
     public function deleteInternIfExists(int $studentId, int $applicationId): bool
     {
         $stmt = $this->pdo->prepare(

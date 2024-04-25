@@ -462,14 +462,24 @@ class InternshipRepository implements IRepository
 
     public function findStudentsByJobRole(int $jobRoleId): array
     {
-        $sql = 'SELECT u.*, s.*
+        $sql = 'SELECT u.*, s.*,
+                CASE
+                    WHEN interns.student_id IS NOT NULL THEN 0
+                    ELSE 1
+                END AS isApplicantAvailable
                 FROM users u
                 INNER JOIN students s ON u.id = s.id
                 INNER JOIN job_role_students jrs ON u.id = jrs.student_id
-                WHERE jrs.jobrole_id = :jobRoleId';
+                LEFT JOIN interns ON u.id = interns.student_id
+                WHERE jrs.jobrole_id = :jobRoleId
+                GROUP BY u.id';
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['jobRoleId' => $jobRoleId]);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($res as &$r) {
+            $r["isApplicantAvailable"] = $r["isApplicantAvailable"] === 1;
+        }
+        return $res;
     }
 
     public function applyToJobRole(int $jobRoleId, int $studentId): bool
