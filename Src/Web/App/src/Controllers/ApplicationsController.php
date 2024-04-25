@@ -142,4 +142,16 @@ class ApplicationsController extends ControllerBase
         }
         return new Response(null, 400);
     }
+
+    #[RequiredRole([
+        'InternshipProgramAdmin',
+        'InternshipProgramPartnerAdmin'
+    ])]
+    #[Route('/applicants/applications/{applicationId}/files/{fileId}',
+        requirements: ['applicationId' => '\d+', 'fileId' => '\d+'],
+        methods: ['GET'])]
+    public function applicantFile(Request $request, int $applicationId, int $fileId): Response
+    {
+        return $this->applicationFile($applicationId, $fileId);
+    }
 }

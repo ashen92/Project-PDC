@@ -137,11 +137,7 @@ readonly class InternshipService
 
     public function getApplications(int $internshipId): array
     {
-        $applications = $this->internshipRepository->findAllApplications($internshipId);
-        foreach ($applications as &$application) {
-            $application["isApplicantAvailable"] = $application["isApplicantAvailable"] === 1;
-        }
-        return $applications;
+        return $this->internshipRepository->findAllApplications($internshipId);
     }
 
     public function deleteInternship(int $id): bool

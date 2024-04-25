@@ -1,4 +1,6 @@
 import DataTable from "datatables.net-dt";
+import { Dialog } from "../../../components/dialog";
+import { $ } from "../../../core/dom";
 
 const table = new DataTable("#applications-table", {
     pageLength: 25,
@@ -9,6 +11,10 @@ const table = new DataTable("#applications-table", {
         },
     ],
 });
+
+const dialog = new Dialog("#file-viewer");
+dialog.setTitle("CV/Resume");
+const pdfViewer = $("#pdf-viewer");
 
 let url = new URL(window.location.href);
 url.search = "";
@@ -29,8 +35,6 @@ table.on("click", "tbody", (e) => {
                 location.reload(true);
             }).catch(error => {
                 console.error(error);
-            }).finally(() => {
-                e.target.disabled = false;
             });
         } else if (e.target.name === "reject-btn") {
             fetch(`${url}/${id}/reject`, {
@@ -42,8 +46,6 @@ table.on("click", "tbody", (e) => {
                 location.reload(true);
             }).catch(error => {
                 console.error(error);
-            }).finally(() => {
-                e.target.disabled = false;
             });
         } else if (e.target.name === "reset-btn") {
             fetch(`${url}/${id}/reset`, {
@@ -55,9 +57,15 @@ table.on("click", "tbody", (e) => {
                 location.reload(true);
             }).catch(error => {
                 console.error(error);
-            }).finally(() => {
-                e.target.disabled = false;
             });
+        } else if (e.target.name === "view-btn") {
+            dialog.open();
+            const fileId = e.target.dataset.fileId;
+            if (pdfViewer.dataset.fileId !== fileId) {
+                pdfViewer.data = `${url}/${id}/files/${fileId}`;
+                pdfViewer.dataset.fileId = fileId;
+            }
+            e.target.disabled = false;
         }
     }
 });

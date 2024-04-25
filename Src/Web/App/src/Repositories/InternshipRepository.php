@@ -232,6 +232,13 @@ class InternshipRepository implements IRepository
                         'lastName', u.lastName,
                         'email', u.email
                     ) AS user,
+                    JSON_ARRAYAGG(
+                        JSON_OBJECT(
+                            'id', af.id,
+                            'name', af.name,
+                            'path', af.path
+                        )
+                    ) AS files,
                     CASE
                         WHEN interns.student_id IS NOT NULL THEN 0
                         ELSE 1
@@ -240,12 +247,16 @@ class InternshipRepository implements IRepository
                 INNER JOIN students s ON a.user_id = s.id
                 INNER JOIN users u ON a.user_id = u.id
                 LEFT JOIN interns ON a.user_id = interns.student_id
-                WHERE a.internship_id = :internshipId";
+                LEFT JOIN application_files af ON a.id = af.application_id
+                WHERE a.internship_id = :internshipId
+                GROUP BY a.id";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['internshipId' => $internshipId]);
         $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
         foreach ($res as &$r) {
             $r['user'] = json_decode($r['user'], true);
+            $r['files'] = json_decode($r['files'], true);
+            $r["isApplicantAvailable"] = $r["isApplicantAvailable"] === 1;
         }
         return $res;
     }
