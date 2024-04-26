@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DB\Entities;
 
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
@@ -26,6 +27,9 @@ class Intern
     #[ORM\JoinColumn(name: 'organization_id', referencedColumnName: 'id')]
     private Organization $organization;
 
+    #[ORM\Column(type: 'datetime_immutable')]
+    private DateTimeImmutable $createdAt;
+
     #[ORM\OneToOne(targetEntity: Application::class)]
     #[ORM\JoinColumn(name: 'application_id', referencedColumnName: 'id')]
     private ?Application $application = null;
@@ -34,11 +38,13 @@ class Intern
         Student $student,
         User $adderUserId,
         Organization $organization,
-        ?Application $application = null
+        DateTimeImmutable $createdAt,
+        ?Application $application = null,
     ) {
         $this->student = $student;
         $this->adderUserId = $adderUserId;
         $this->organization = $organization;
+        $this->createdAt = $createdAt;
         $this->application = $application;
     }
 }
