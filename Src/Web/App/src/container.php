@@ -173,16 +173,22 @@ $container->register(
     ->setArguments(['unemployed']);
 
 $container->register(
-    'security.policy.job_hunt_first_round',
-    App\Security\Policies\JobHuntRoundPolicy::class
+    'security.policy.internship_program_phase.job_collection',
+    App\Security\Policies\InternshipProgramPhasePolicy::class
 )
-    ->setArguments([1]);
+    ->setArguments(['JobCollectionPhase']);
 
 $container->register(
-    'security.policy.job_hunt_second_round',
-    App\Security\Policies\JobHuntRoundPolicy::class
+    'security.policy.internship_program_phase.first_round',
+    App\Security\Policies\InternshipProgramPhasePolicy::class
 )
-    ->setArguments([2]);
+    ->setArguments(['FirstRoundPhase']);
+
+$container->register(
+    'security.policy.internship_program_phase.second_round',
+    App\Security\Policies\InternshipProgramPhasePolicy::class
+)
+    ->setArguments(['SecondRoundPhase']);
 
 // Policy handlers
 
@@ -195,8 +201,8 @@ $container->register(
     ]);
 
 $container->register(
-    'security.policy_handler.job_hunt_round',
-    App\Security\PolicyHandlers\JobHuntRoundPolicyHandler::class
+    'security.policy_handler.internship_program_phase',
+    App\Security\PolicyHandlers\InternshipProgramPhasePolicyHandler::class
 )
     ->setArguments([
         new Reference('repository.internship_program'),
@@ -229,17 +235,24 @@ $container->register(
     ->addMethodCall(
         'addPolicyHandler',
         [
-            'JobHuntFirstRound',
-            new Reference('security.policy.job_hunt_first_round'),
-            new Reference('security.policy_handler.job_hunt_round')
+            'JobCollectionPhase',
+            new Reference('security.policy.internship_program_phase.job_collection'),
+            new Reference('security.policy_handler.internship_program_phase')
+        ]
+    )->addMethodCall(
+        'addPolicyHandler',
+        [
+            'FirstRoundPhase',
+            new Reference('security.policy.internship_program_phase.first_round'),
+            new Reference('security.policy_handler.internship_program_phase')
         ]
     )
     ->addMethodCall(
         'addPolicyHandler',
         [
-            'JobHuntSecondRound',
-            new Reference('security.policy.job_hunt_second_round'),
-            new Reference('security.policy_handler.job_hunt_round')
+            'SecondRoundPhase',
+            new Reference('security.policy.internship_program_phase.second_round'),
+            new Reference('security.policy_handler.internship_program_phase')
         ]
     );
 

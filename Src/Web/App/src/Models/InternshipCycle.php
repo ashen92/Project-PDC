@@ -86,4 +86,19 @@ class InternshipCycle
     {
         return $this->jobHuntRound2Start !== null && $this->jobHuntRound2End === null;
     }
+
+    public function isJobCollectionPhase(): bool
+    {
+        return $this->jobCollectionStart !== null && $this->jobCollectionEnd === null;
+    }
+
+    public function isFirstRoundPhase(): bool
+    {
+        return $this->jobHuntRound1Start !== null && $this->jobHuntRound1End === null;
+    }
+
+    public function isSecondRoundPhase(): bool
+    {
+        return $this->jobHuntRound2Start !== null && $this->jobHuntRound2End === null;
+    }
 }
