@@ -101,7 +101,7 @@ $container->register(
     'repository.event',
     App\Repositories\EventRepository::class
 )
-    ->setArguments([new Reference('pdo_mysql_connection'),]);   
+    ->setArguments([new Reference('pdo_mysql_connection'),]);
 
 #endregion
 
@@ -483,7 +483,7 @@ $container->register(
         new Reference('twig'),
         new Reference('service.authorization'),
         new Reference('service.internship'),
-        new Reference('service.user')
+        new Reference('service.application')
     ])
     ->setPublic(true);
 

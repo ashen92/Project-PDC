@@ -10,6 +10,7 @@ use App\Models\InternshipProgram\createApplication;
 use App\Security\Attributes\RequiredAtLeastOne;
 use App\Security\Attributes\RequiredRole;
 use App\Security\AuthorizationService;
+use App\Services\ApplicationService;
 use App\Services\InternshipService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,6 +32,7 @@ class InternshipsController extends ControllerBase
         Environment $twig,
         AuthorizationService $authzService,
         private readonly InternshipService $internshipService,
+        private readonly ApplicationService $applicationService,
     ) {
         parent::__construct($twig, $authzService);
     }
@@ -360,5 +362,28 @@ class InternshipsController extends ControllerBase
             // TODO: Set errors
         }
         return $this->redirect('/internship-program/round-2');
+    }
+
+    #[Route('/round-2/job-roles/{jobRoleId}/candidates/{candidateId}/hire',
+        requirements: ['jobRoleId' => '\d+', 'candidateId' => '\d+'],
+        methods: ['PUT'])]
+    public function candidateHire(Request $request, int $jobRoleId, int $candidateId): Response
+    {
+        $userId = $request->getSession()->get('user_id');
+        if ($this->applicationService->hire($userId, candidateId: $candidateId)) {
+            return new Response(null, 204);
+        }
+        return new Response(null, 400);
+    }
+
+    #[Route('/round-2/job-roles/{jobRoleId}/candidates/{candidateId}/cancel',
+        requirements: ['jobRoleId' => '\d+', 'candidateId' => '\d+'],
+        methods: ['PUT'])]
+    public function candidateCancel(Request $request, int $jobRoleId, int $candidateId): Response
+    {
+        if ($this->applicationService->cancelHire($candidateId)) {
+            return new Response(null, 204);
+        }
+        return new Response(null, 400);
     }
 }
