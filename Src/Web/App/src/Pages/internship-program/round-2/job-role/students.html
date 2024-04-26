@@ -21,19 +21,35 @@
     <table class="hover" id="students-table">
         <thead>
             <tr>
+                <th class="hidden"></th>
                 <th>Name</th>
                 <th>Email</th>
                 <th>View Candidate</th>
+                {% if has_role('InternshipProgramPartnerAdmin') %}
+                <th>Hire</th>
+                <th>Cancel</th>
+                {% endif %}
             </tr>
         </thead>
         <tbody>
             {% for i in students %}
             <tr>
+                <td class="hidden">{{ i.id }}</td>
                 <td>{{ i.firstName }} {{ i.lastName }}</td>
                 <td>{{ i.email }}</td>
                 <td>
                     <a class="link" href="/internship-program/candidates/{{ i.id }}" title="View Candidate">View</a>
                 </td>
+                {% if has_role('InternshipProgramPartnerAdmin') %}
+                <td>
+                    <button class="btn btn-sm btn-primary" name="hire-btn" type="button" {% if not
+                        i.isApplicantAvailable %}disabled{% endif %}>Hire</button>
+                </td>
+                <td>
+                    <button class="btn btn-sm btn-secondary" name="cancel-btn" type="button" {% if
+                        i.isApplicantAvailable %}disabled{% endif %}>Cancel</button>
+                </td>
+                {% endif %}
             </tr>
             {% endfor %}
         </tbody>

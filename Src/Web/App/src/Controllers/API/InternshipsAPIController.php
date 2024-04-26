@@ -59,18 +59,4 @@ class InternshipsAPIController extends ControllerBase
         );
         return new Response(null, 204);
     }
-
-    #[RequiredRole([
-        'InternshipProgramAdmin',
-        'InternshipProgramPartnerAdmin'
-    ])]
-    #[Route('/{id}/applications', methods: ['GET'])]
-    public function internshipApplications(int $id): Response
-    {
-        return new Response(
-            json_encode($this->internshipService->getApplications($id)),
-            200,
-            ['Content-Type' => 'application/json']
-        );
-    }
 }

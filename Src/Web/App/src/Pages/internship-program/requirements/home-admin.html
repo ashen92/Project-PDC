@@ -10,7 +10,7 @@
 
 <div class="title">
     <h2>Requirements to be fulfilled</h2>
-    <p>Manage requirements that students and partners must complete.</p>
+    <p>Manage requirements that students must complete.</p>
 </div>
 
 <div class="actions mb-5">
@@ -25,7 +25,8 @@
 
     <table class="table table-hover">
         <colgroup>
-            <col class="w-3/5">
+            <col class="w-2/5">
+            <col class="w-1/5">
             <col class="w-1/5">
             <col class="w-1/5">
         </colgroup>
@@ -33,7 +34,8 @@
             <tr>
                 <th>Name</th>
                 <th>Type</th>
-                <th>Start Date</th>
+                <th>Starts on</th>
+                <th>Duration</th>
             </tr>
         </thead>
         <tbody class="table-rows-clickable">
@@ -48,7 +50,8 @@
                     {{ requirementType }}
                     {% endif %}
                 </td>
-                <td>{{ r.startDate.format("Y-m-d") }}</td>
+                <td>{{ r.startWeekAsMonthWeek }}</td>
+                <td>{{ r.durationWeeksAsWeeks }}</td>
             </tr>
             {% endfor %}
         </tbody>

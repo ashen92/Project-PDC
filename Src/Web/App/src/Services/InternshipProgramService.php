@@ -84,10 +84,10 @@ readonly class InternshipProgramService
 
     public function getLatestInternshipCycleId(): ?int
     {
-        return $this->getLatestCycle()?->getId();
+        return $this->getLatestCycle()->getId();
     }
 
-    public function getLatestCycle(): ?InternshipCycle
+    public function getLatestCycle(): InternshipCycle
     {
         return $this->internshipProgramRepository->findLatestCycle();
     }

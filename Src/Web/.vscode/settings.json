@@ -37,6 +37,7 @@
     "php.version": "8.3",
     "cSpell.words": [
         "gridjs",
-        "Mgmt"
+        "Mgmt",
+        "usergroup"
     ]
 }

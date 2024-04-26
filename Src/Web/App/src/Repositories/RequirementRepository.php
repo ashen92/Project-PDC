@@ -5,10 +5,13 @@ namespace App\Repositories;
 
 use App\DTOs\CreateRequirementDTO;
 use App\Interfaces\IRepository;
+use App\Mappers\RequirementMapper;
 use App\Mappers\UserRequirementMapper;
+use App\Models\Requirement;
 use App\Models\UserRequirement;
 use App\Models\UserRequirement\Status;
 use DateTime;
+use DateTimeImmutable;
 use PDO;
 
 readonly class RequirementRepository implements IRepository
@@ -33,7 +36,7 @@ readonly class RequirementRepository implements IRepository
         $this->pdo->rollBack();
     }
 
-    public function findRequirement(int $id): array|bool
+    public function findRequirement(int $id): ?Requirement
     {
         $sql = "SELECT * FROM requirements WHERE id = :id";
         $stmt = $this->pdo->prepare($sql);
@@ -43,15 +46,15 @@ readonly class RequirementRepository implements IRepository
         $res = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($res === false) {
-            return false;
+            return null;
         }
 
-        $res['startDate'] = new DateTime($res['startDate']);
-        $res['endBeforeDate'] = $res['endBeforeDate'] ? new DateTime($res['endBeforeDate']) : null;
-        $res['allowedFileTypes'] = $res['allowedFileTypes'] ? json_decode($res['allowedFileTypes'], false) : null;
-        return $res;
+        return RequirementMapper::map($res);
     }
 
+    /**
+     * @return array<Requirement>
+     */
     public function findAllRequirements(int $cycleId): array
     {
         $sql = "SELECT * FROM requirements WHERE internship_cycle_id = :cycleId";
@@ -64,11 +67,9 @@ readonly class RequirementRepository implements IRepository
             return [];
         }
 
-        foreach ($res as &$r) {
-            $r['startDate'] = new DateTime($r['startDate']);
-            $r['endBeforeDate'] = $r['endBeforeDate'] ? new DateTime($r['endBeforeDate']) : null;
-        }
-        return $res;
+        return array_map(function ($r) {
+            return RequirementMapper::map($r);
+        }, $res);
     }
 
     public function findUserRequirement(int $id): ?UserRequirement
@@ -169,8 +170,8 @@ readonly class RequirementRepository implements IRepository
             name,
             description,
             requirementType,
-            startDate,
-            endBeforeDate,
+            startWeek,
+            durationWeeks,
             repeatInterval,
             fulfillMethod,
             allowedFileTypes,
@@ -181,8 +182,8 @@ readonly class RequirementRepository implements IRepository
             :name,
             :description,
             :requirementType,
-            :startDate,
-            :endBeforeDate,
+            :startWeek,
+            :durationWeeks,
             :repeatInterval,
             :fulfillMethod,
             :allowedFileTypes,
@@ -195,8 +196,8 @@ readonly class RequirementRepository implements IRepository
             "name" => $reqDTO->name,
             "description" => $reqDTO->description,
             "requirementType" => $reqDTO->requirementType->value,
-            "startDate" => $reqDTO->startDate->format(self::DATE_TIME_FORMAT),
-            "endBeforeDate" => $reqDTO->endBeforeDate?->format(self::DATE_TIME_FORMAT),
+            "startWeek" => $reqDTO->startWeek->format('%d days'),
+            "durationWeeks" => $reqDTO->durationWeeks->format('%d days'),
             "repeatInterval" => $reqDTO->repeatInterval->value,
             "fulfillMethod" => $reqDTO->fulfillMethod->value,
             "allowedFileTypes" => json_encode($reqDTO->allowedFileTypes),
@@ -206,29 +207,60 @@ readonly class RequirementRepository implements IRepository
         return (int) $this->pdo->lastInsertId();
     }
 
-    public function createOneTimeUserRequirements(int $reqId, ?int $userGroupId = null, ?int $userId = null): bool
-    {
-        if ($userId) {
-            $sql = "INSERT INTO user_requirements (
-                    user_id,
-                    requirement_id,
-                    status,
-                    fulfillMethod,
-                    startDate,
-                    endDate
-                )
-                SELECT :userId, :reqId, :status, r.fulfillMethod, r.startDate, r.endBeforeDate
-                FROM requirements r
-                WHERE r.id = :reqId";
+    // public function createOneTimeUserRequirements(int $reqId, ?int $userGroupId = null, ?int $userId = null): bool
+    // {
+    //     if ($userId) {
+    //         $sql = "INSERT INTO user_requirements (
+    //                 user_id,
+    //                 requirement_id,
+    //                 status,
+    //                 fulfillMethod,
+    //                 startDate,
+    //                 endDate
+    //             )
+    //             SELECT :userId, :reqId, :status, r.fulfillMethod, r.startDate, r.endBeforeDate
+    //             FROM requirements r
+    //             WHERE r.id = :reqId";
 
-            $stmt = $this->pdo->prepare($sql);
-            return $stmt->execute([
-                "reqId" => $reqId,
-                "userId" => $userId,
-                "status" => Status::PENDING->value
-            ]);
-        }
+    //         $stmt = $this->pdo->prepare($sql);
+    //         return $stmt->execute([
+    //             "reqId" => $reqId,
+    //             "userId" => $userId,
+    //             "status" => Status::PENDING->value
+    //         ]);
+    //     }
 
+    //     $sql = "INSERT INTO user_requirements (
+    //                 user_id,
+    //                 requirement_id,
+    //                 status,
+    //                 fulfillMethod,
+    //                 startDate,
+    //                 endDate
+    //             )
+    //             SELECT ugm.user_id, :reqId, :status, r.fulfillMethod, r.startDate, r.endBeforeDate
+    //             FROM (
+    //                 SELECT fulfillMethod, startDate, endBeforeDate
+    //                 FROM requirements
+    //                 WHERE id = :reqId
+    //             ) AS r
+    //             INNER JOIN user_group_membership ugm ON 1=1
+    //             WHERE ugm.usergroup_id = :userGroupId";
+
+    //     $stmt = $this->pdo->prepare($sql);
+    //     return $stmt->execute([
+    //         "reqId" => $reqId,
+    //         "userGroupId" => $userGroupId,
+    //         "status" => Status::PENDING->value
+    //     ]);
+    // }
+
+    public function createUserRequirement(
+        Requirement $requirement,
+        int $userId,
+        DateTimeImmutable $startDate,
+        DateTimeImmutable $endDate
+    ): bool {
         $sql = "INSERT INTO user_requirements (
                     user_id,
                     requirement_id,
@@ -237,20 +269,25 @@ readonly class RequirementRepository implements IRepository
                     startDate,
                     endDate
                 )
-                SELECT ugm.user_id, :reqId, :status, r.fulfillMethod, r.startDate, r.endBeforeDate
-                FROM (
-                    SELECT fulfillMethod, startDate, endBeforeDate
-                    FROM requirements
-                    WHERE id = :reqId
-                ) AS r
-                INNER JOIN user_group_membership ugm ON 1=1
-                WHERE ugm.usergroup_id = :userGroupId";
+                VALUES(:userId, :reqId, :status, :fulfillMethod, :startDate, :endDate)";
 
         $stmt = $this->pdo->prepare($sql);
         return $stmt->execute([
-            "reqId" => $reqId,
-            "userGroupId" => $userGroupId,
-            "status" => Status::PENDING->value
+            "reqId" => $requirement->getId(),
+            "userId" => $userId,
+            "status" => Status::PENDING->value,
+            "fulfillMethod" => $requirement->getFulfillMethod(),
+            "startDate" => $startDate->format($this::DATE_TIME_FORMAT),
+            "endDate" => $endDate->format($this::DATE_TIME_FORMAT)
+        ]);
+    }
+
+    public function deleteUserRequirements(int $userId): bool
+    {
+        $sql = "DELETE FROM user_requirements WHERE user_id = :userId";
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute([
+            "userId" => $userId
         ]);
     }
 

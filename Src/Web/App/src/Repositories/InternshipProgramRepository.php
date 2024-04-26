@@ -82,7 +82,7 @@ class InternshipProgramRepository implements IRepository
         return (int) $stmt->fetchColumn();
     }
 
-    public function findLatestCycle(): ?InternshipCycle
+    public function findLatestCycle(): InternshipCycle
     {
         $sql = "SELECT ic.*, GROUP_CONCAT(icpg.usergroup_id SEPARATOR ',') AS partner_group_ids
                 FROM internship_cycles ic
@@ -94,7 +94,7 @@ class InternshipProgramRepository implements IRepository
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         if ($result === false) {
-            return null;
+            throw new \Exception();
         }
         return InternshipCycleMapper::map($result);
     }

@@ -2,6 +2,22 @@
 
 form {
     max-width: 50rem;
+    .fielddate{
+        display: inline-flex;
+        flex-direction: column;
+        margin-bottom: 2rem;
+        margin-right: 2rem;
+
+        label {
+            padding-bottom: 0.9rem;
+            padding-left: 0.1rem;
+        }
+
+        input[type="date"] {
+            width: 200px; 
+            height: 40px;
+        }
+    }
 
     .field {
         display: flex;

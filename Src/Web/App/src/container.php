@@ -97,6 +97,12 @@ $container->register(
 )
     ->setArguments([new Reference('pdo_mysql_connection'),]);
 
+$container->register(
+    'repository.event',
+    App\Repositories\EventRepository::class
+)
+    ->setArguments([new Reference('pdo_mysql_connection'),]);
+
 #endregion
 
 #region Twig -----------------------------------------------------------------------
@@ -167,13 +173,13 @@ $container->register(
     ->setArguments(['unemployed']);
 
 $container->register(
-    'security.policy.job_hunt_round_1',
+    'security.policy.job_hunt_first_round',
     App\Security\Policies\JobHuntRoundPolicy::class
 )
     ->setArguments([1]);
 
 $container->register(
-    'security.policy.job_hunt_round_2',
+    'security.policy.job_hunt_second_round',
     App\Security\Policies\JobHuntRoundPolicy::class
 )
     ->setArguments([2]);
@@ -191,7 +197,10 @@ $container->register(
 $container->register(
     'security.policy_handler.job_hunt_round',
     App\Security\PolicyHandlers\JobHuntRoundPolicyHandler::class
-);
+)
+    ->setArguments([
+        new Reference('repository.internship_program'),
+    ]);
 
 $container->register(
     'service.authorization',
@@ -220,16 +229,16 @@ $container->register(
     ->addMethodCall(
         'addPolicyHandler',
         [
-            'JobHuntRound1',
-            new Reference('security.policy.job_hunt_round_1'),
+            'JobHuntFirstRound',
+            new Reference('security.policy.job_hunt_first_round'),
             new Reference('security.policy_handler.job_hunt_round')
         ]
     )
     ->addMethodCall(
         'addPolicyHandler',
         [
-            'JobHuntRound2',
-            new Reference('security.policy.job_hunt_round_2'),
+            'JobHuntSecondRound',
+            new Reference('security.policy.job_hunt_second_round'),
             new Reference('security.policy_handler.job_hunt_round')
         ]
     );
@@ -290,6 +299,7 @@ $container->register(
     ->setArguments([
         new Reference('repository.application'),
         new Reference('service.file_storage'),
+        new Reference('service.requirement'),
     ]);
 
 $container->register(
@@ -297,6 +307,8 @@ $container->register(
     App\Services\EventService::class
 )
     ->setArguments([
+        new Reference('repository.event'),
+        new Reference('repository.user'),
     ]);
 
 $container->register(
@@ -372,17 +384,6 @@ $container->register(
         new Reference('twig'),
         new Reference('service.authorization'),
         new Reference('service.internship'),
-    ])
-    ->setPublic(true);
-
-$container->register(
-    'App\Controllers\API\ApplicationsAPIController',
-    \App\Controllers\API\ApplicationsAPIController::class
-)
-    ->setArguments([
-        new Reference('twig'),
-        new Reference('service.authorization'),
-        new Reference('service.application'),
     ])
     ->setPublic(true);
 
@@ -482,7 +483,7 @@ $container->register(
         new Reference('twig'),
         new Reference('service.authorization'),
         new Reference('service.internship'),
-        new Reference('service.user')
+        new Reference('service.application')
     ])
     ->setPublic(true);
 

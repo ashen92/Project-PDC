@@ -13,35 +13,47 @@
         Create an event
     </h2>
 </div>
-<form action="/events/create" method="post">
+<form action="/events/create" method="POST">
     <div class="field">
-        <label for="eventTitle">Event Title:</label>
+        <label for="eventTitle">Event Title</label>
         <input type="text" id="eventTitle" name="eventTitle" required>
     </div>
-    <div class="field">
-        <label for="eventDate">Event Date:</label>
-        <input type="date" id="eventDate" name="eventDate" required>
-    </div>
-    <div class="field">
-        <label for="startTime">Start Time:</label>
-        <input type="time" id="startTime" name="startTime" required>
 
+
+    <div class="field">
+        <label for="eventLocation">Event Participants</label>
+        <select name="participants" id="participants" required>
+            {% for group in groups %}
+            <option value="{{ group.id }}">{{ group.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="fielddate">
+        <label for="startTime">Start Time</label>
+        <input type="datetime-local" id="startTime" name="startTime" required>
+    </div>
+    <div class="fielddate">
+        <label for="endTime">End Time</label>
+        <input type="datetime-local" id="endTime" name="endTime" required>
     </div>
     <div class="field">
-        <label for="endTime">End Time:</label>
-        <input type="time" id="endTime" name="endTime" required>
-    </div>
-    <div class="field">
-        <label for="eventLocation">Event Location:</label>
+        <label for="eventLocation">Event Location</label>
         <input type="text" id="eventLocation" name="eventLocation" required>
     </div>
+
     <div class="field">
         <label for="description">Event Description</label>
-        <div>TODO: Implement text editor</div>
+        <div class="text-editor-container">
+            <input type="hidden" name="description" id="description" placeholder="Put your description here.">
+            <div class="text-editor"></div>
+        </div>
     </div>
+
     <div class="actions">
         <input class="btn btn-primary" type="submit" value="Schedule Event">
     </div>
 </form>
+<script src="/js/events/create.js"></script>
 
 {% endblock %}

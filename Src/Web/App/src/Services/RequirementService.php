@@ -5,12 +5,12 @@ namespace App\Services;
 
 use App\DTOs\CreateRequirementDTO;
 use App\DTOs\UserRequirementFulfillmentDTO;
-use App\Exceptions\EntityNotFound;
 use App\Interfaces\IFileStorageService;
+use App\Models\Requirement;
 use App\Models\Requirement\FulFillMethod;
-use App\Models\Requirement\Type;
 use App\Models\UserRequirement;
 use App\Repositories\RequirementRepository;
+use DateTimeImmutable;
 use Exception;
 
 readonly class RequirementService
@@ -23,16 +23,9 @@ readonly class RequirementService
 
     }
 
-    /**
-     * @throws \App\Exceptions\EntityNotFound
-     */
-    public function getRequirement(int $id): array
+    public function getRequirement(int $id): ?Requirement
     {
-        $r = $this->requirementRepo->findRequirement($id);
-        if ($r === false)
-            throw new EntityNotFound('Requirement not found');
-
-        return $r;
+        return $this->requirementRepo->findRequirement($id);
     }
 
     public function getRequirements(int $cycleId): array
@@ -55,23 +48,37 @@ readonly class RequirementService
         $this->requirementRepo->beginTransaction();
         try {
             $cycle = $this->internshipCycleService->getLatestCycle();
-            $reqId = $this->requirementRepo
+            $this->requirementRepo
                 ->createRequirement($cycle->getId(), $reqDTO);
-
-            if ($reqDTO->requirementType === Type::ONE_TIME) {
-                $this->requirementRepo
-                    ->createOneTimeUserRequirements($reqId, $cycle->getStudentGroupId());
-            } else {
-                // TODO
-                // $this->createRecurringUserRequirements($reqId);
-            }
-
             $this->requirementRepo->commit();
             return true;
         } catch (Exception $e) {
             $this->requirementRepo->rollBack();
             throw $e;
         }
+    }
+
+    public function createUserRequirements(int $userId): bool
+    {
+        $cycle = $this->internshipCycleService->getLatestCycle();
+        $requirements = $this->requirementRepo->findAllRequirements($cycle->getId());
+
+        foreach ($requirements as $req) {
+            if ($req->getStartWeek()->d === 0) {
+
+                $now = new DateTimeImmutable();
+                $startDate = $now->modify('tomorrow midnight');
+                $endDate = $startDate->add($req->getDurationWeeks());
+
+                $this->requirementRepo->createUserRequirement($req, $userId, $startDate, $endDate);
+            }
+        }
+        return true;
+    }
+
+    public function removeUserRequirements(int $userId): bool
+    {
+        return $this->requirementRepo->deleteUserRequirements($userId);
     }
 
     public function completeUserRequirement(UserRequirementFulfillmentDTO $dto): bool

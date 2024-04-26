@@ -1,43 +1,10 @@
-import { $, $all, createElement } from "../../../core/dom.js";
-import { on, trigger } from "../../../core/events.js";
+import { $, $all } from "../../../core/dom.js";
+import { on } from "../../../core/events.js";
 import { createTextEditors } from "../../../components/textEditor.js";
-
-on(document, "DOMContentLoaded", function () {
-    const selectedUsers = localStorage.getItem("selectUsers");
-    if (selectedUsers) {
-        userGroupRadio.forEach(function (element) {
-            if (element.value === "select-users") {
-                element.checked = true;
-                trigger(element, "change");
-            }
-        });
-    }
-    localStorage.removeItem("selectUsers");
-});
-
-const userGroupRadio = $all("#user-group-radio input[name='user-group']");
-const selectUsersField = $("#select-users-field");
-
-userGroupRadio.forEach(function (element) {
-    on(element, "change", function () {
-        if (this.value === "select-users") {
-            selectUsersField.classList.remove("hidden");
-        } else {
-            selectUsersField.classList.add("hidden");
-        }
-    });
-});
-
-on($("#select-users-btn"), "click", function () {
-    localStorage.setItem("selectUsers", "true");
-});
 
 createTextEditors();
 
-const oneTimeEndDateElement = $("#field-one-time");
 const recurringRepeatElement = $("#field-recurring");
-
-const endBeforeDateElement = $("#end-before-one-time");
 const radioRepeatElements = $all("input[name='repeat-interval']");
 
 const typeDiv = $("#type");
@@ -48,11 +15,6 @@ on(typeDiv, "change", function (event) {
             radioRepeatElements.forEach(element => {
                 element.removeAttribute("required");
             });
-
-            endBeforeDateElement.setAttribute("required", "");
-
-            oneTimeEndDateElement.classList.add("block");
-            oneTimeEndDateElement.classList.remove("hidden");
             recurringRepeatElement.classList.add("hidden");
             recurringRepeatElement.classList.remove("block");
         }
@@ -60,11 +22,6 @@ on(typeDiv, "change", function (event) {
             radioRepeatElements.forEach(element => {
                 element.setAttribute("required", "");
             });
-
-            endBeforeDateElement.removeAttribute("required");
-
-            oneTimeEndDateElement.classList.add("hidden");
-            oneTimeEndDateElement.classList.remove("block");
             recurringRepeatElement.classList.add("block");
             recurringRepeatElement.classList.remove("hidden");
         }
@@ -85,29 +42,4 @@ on(fulfillMethodDiv, "change", function (event) {
             }
         }
     }
-});
-
-window.onbeforeunload = function () {
-    localStorage.removeItem("selectedUserIds");
-};
-
-let form = $("#create-requirement-form");
-
-on(form, "submit", function (event) {
-    userGroupRadio.forEach(function (element) {
-        if (element.checked && element.value === "select-users") {
-            const selectedUserIds = JSON.parse(localStorage.getItem("selectedUserIds")) || [];
-            if (selectedUserIds.length === 0) {
-                event.preventDefault();
-                alert("Please select users\nTODO: Show a better error message.");
-            }
-
-            let input = createElement("input", {
-                type: "hidden",
-                name: "user-ids",
-                value: JSON.stringify(selectedUserIds)
-            });
-            form.appendChild(input);
-        }
-    });
 });

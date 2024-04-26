@@ -7,8 +7,10 @@ use App\DTOs\createInternshipDTO;
 use App\Models\Internship;
 use App\Models\InternshipCycle;
 use App\Models\InternshipProgram\createApplication;
+use App\Security\Attributes\RequiredAtLeastOne;
 use App\Security\Attributes\RequiredRole;
 use App\Security\AuthorizationService;
+use App\Services\ApplicationService;
 use App\Services\InternshipService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,10 +32,12 @@ class InternshipsController extends ControllerBase
         Environment $twig,
         AuthorizationService $authzService,
         private readonly InternshipService $internshipService,
+        private readonly ApplicationService $applicationService,
     ) {
         parent::__construct($twig, $authzService);
     }
 
+    #[RequiredAtLeastOne(['Admin'], ['JobHuntFirstRound'])]
     #[Route(['/internships'])]
     public function internships(Request $request, ?InternshipCycle $cycle): Response
     {
@@ -136,9 +140,11 @@ class InternshipsController extends ControllerBase
                 );
             }
 
-            $orgs = $this->internshipService->searchInternshipsGetOrganizations(
+            $orgs = $this->internshipService->getOrganizationsForSearchQuery(
                 $cycleId,
                 $searchQuery,
+                $visibility,
+                $isApproved
             );
         }
 
@@ -236,7 +242,7 @@ class InternshipsController extends ControllerBase
     {
         $userId = $request->getSession()->get('user_id');
 
-        $files = $request->files->get('files-to-upload');
+        $files = $request->files->get('application-file');
         if ($files && !is_array($files)) {
             $files = [$files];
         }
@@ -251,14 +257,16 @@ class InternshipsController extends ControllerBase
     }
 
     #[Route('/round-2', methods: ['GET'])]
-    public function round2GET(InternshipCycle $cycle): Response
+    public function round2GET(Request $request, InternshipCycle $cycle): Response
     {
         if ($this->hasRole('InternshipProgramStudent')) {
+            $userId = $request->getSession()->get('user_id');
             return $this->render(
                 'internship-program/round-2/home-student.html',
                 [
                     'section' => 'round-2',
                     'jobRoles' => $this->internshipService->getJobRoles($cycle->getId()),
+                    'jobRolesAppliedTo' => $this->internshipService->getJobRolesAppliedTo($cycle->getId(), $userId),
                 ]
             );
         }
@@ -293,5 +301,89 @@ class InternshipsController extends ControllerBase
                 'students' => $this->internshipService->getStudentsByJobRole($id),
             ]
         );
+    }
+
+    #[RequiredRole('InternshipProgramStudent')]
+    #[Route('/round-2/job-roles/{id}/apply', methods: ['PUT'])]
+    public function jobRoleApply(Request $request, int $id): Response
+    {
+        $userId = $request->getSession()->get('user_id');
+        if ($this->internshipService->applyToJobRole($id, $userId)) {
+            return new Response(null, 204);
+        }
+
+        return new Response(null, 400);
+    }
+
+    #[RequiredRole('InternshipProgramStudent')]
+    #[Route('/round-2/job-roles/{id}/apply', methods: ['DELETE'])]
+    public function jobRoleUndoApply(Request $request, int $id): Response
+    {
+        $userId = $request->getSession()->get('user_id');
+        if ($this->internshipService->removeFromJobRole($id, $userId)) {
+            return new Response(null, 204);
+        }
+
+        return new Response(null, 400);
+    }
+
+    #[Route('/round-2/job-roles/add', methods: ['POST'])]
+    public function jobRoleAdd(Request $request, InternshipCycle $cycle): RedirectResponse
+    {
+        $name = $request->get('name');
+        // TODO: Validate data
+
+        if (!$this->internshipService->createJobRole($cycle->getId(), $name)) {
+            // TODO: Set errors
+        }
+        return $this->redirect('/internship-program/round-2');
+    }
+
+    #[Route('/round-2/job-roles/edit', methods: ['POST'])]
+    public function jobRoleEdit(Request $request): RedirectResponse
+    {
+        $id = (int) $request->get('id');
+        $name = $request->get('name');
+        // TODO: Validate data
+
+        if (!$this->internshipService->modifyJobRole($id, $name)) {
+            // TODO: Set errors
+        }
+        return $this->redirect('/internship-program/round-2');
+    }
+
+    #[Route('/round-2/job-roles/delete', methods: ['POST'])]
+    public function jobRoleDelete(Request $request): RedirectResponse
+    {
+        $id = (int) $request->get('id');
+        // TODO: Validate data
+
+        if (!$this->internshipService->deleteJobRole($id)) {
+            // TODO: Set errors
+        }
+        return $this->redirect('/internship-program/round-2');
+    }
+
+    #[Route('/round-2/job-roles/{jobRoleId}/candidates/{candidateId}/hire',
+        requirements: ['jobRoleId' => '\d+', 'candidateId' => '\d+'],
+        methods: ['PUT'])]
+    public function candidateHire(Request $request, int $jobRoleId, int $candidateId): Response
+    {
+        $userId = $request->getSession()->get('user_id');
+        if ($this->applicationService->hire($userId, candidateId: $candidateId)) {
+            return new Response(null, 204);
+        }
+        return new Response(null, 400);
+    }
+
+    #[Route('/round-2/job-roles/{jobRoleId}/candidates/{candidateId}/cancel',
+        requirements: ['jobRoleId' => '\d+', 'candidateId' => '\d+'],
+        methods: ['PUT'])]
+    public function candidateCancel(Request $request, int $jobRoleId, int $candidateId): Response
+    {
+        if ($this->applicationService->cancelHire($candidateId)) {
+            return new Response(null, 204);
+        }
+        return new Response(null, 400);
     }
 }
