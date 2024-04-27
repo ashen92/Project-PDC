@@ -51,6 +51,11 @@ let isLoading = false;
 const applyBtn = $("#btn-apply");
 const undoApplyBtn = $("#btn-undo-apply");
 
+const onPendingApproval = $("#on-pending-approval");
+const onApproval = $("#on-approval");
+const notYetApproved = $("#not-yet-approved");
+const approved = $("#approved");
+
 function fetchJobDetails(jobId) {
     fetch(`/api/internships/${jobId}`, { method: "GET" })
         .then(response => response.json())
@@ -69,6 +74,24 @@ function fetchJobDetails(jobId) {
                     applyBtn.classList.remove("hidden");
                     undoApplyBtn.classList.add("hidden");
                     undoApplyBtn.removeAttribute("data-application-id");
+                }
+            } else {
+                if (data.isApproved === true) {
+                    if (onPendingApproval && onApproval) {
+                        onPendingApproval.classList.add("hidden");
+                        onApproval.classList.remove("hidden");
+                    } else {
+                        notYetApproved.classList.add("hidden");
+                        approved.classList.remove("hidden");
+                    }
+                } else {
+                    if (onPendingApproval && onApproval) {
+                        onPendingApproval.classList.remove("hidden");
+                        onApproval.classList.add("hidden");
+                    } else {
+                        notYetApproved.classList.remove("hidden");
+                        approved.classList.add("hidden");
+                    }
                 }
             }
         })

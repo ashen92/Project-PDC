@@ -37,6 +37,8 @@ class InternshipsAPIController extends ControllerBase
             $data = [
                 'title' => $internship->getTitle(),
                 'description' => $internship->getDescription(),
+                'isApproved' => $internship->isApproved(),
+                'organizationId' => $internship->getOrganizationId(),
             ];
 
             return new Response(json_encode($data), 200, ['Content-Type' => 'application/json']);
