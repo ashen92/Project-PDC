@@ -43,7 +43,7 @@ class InternshipsController extends ControllerBase
     public function internships(Request $request, ?InternshipCycle $cycle): Response
     {
         if ($this->hasRole('InternshipProgramStudent')) {
-            if (!$this->authorize('JobHuntFirstRound'))
+            if (!$this->authorize('FirstRoundPhase'))
                 throw new AccessDeniedHttpException();
         }
 
