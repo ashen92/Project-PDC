@@ -2,6 +2,7 @@
 
 use App\DTOs\CreateRequirementDTO;
 use App\Models\Internship\Visibility;
+use App\Models\Requirement\FulFillMethod;
 use Database\Entities\JobRole;
 use DB\Entities\Event;
 use DB\Entities\Internship;
@@ -9,17 +10,11 @@ use DB\Entities\InternshipCycle;
 use DB\Entities\Organization;
 use DB\Entities\Partner;
 use DB\Entities\Permission;
-use DB\Entities\Permission\Action;
-use DB\Entities\Permission\Resource;
 use DB\Entities\Requirement;
 use DB\Entities\Role;
 use DB\Entities\Student;
 use DB\Entities\User;
 use DB\Entities\UserGroup;
-use DB\Entities\UserRequirement;
-use App\Models\Requirement\FulFillMethod;
-use App\Models\Requirement\RepeatInterval;
-use App\Models\Requirement\Type;
 
 #region Users
 
