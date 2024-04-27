@@ -35,6 +35,7 @@ class RequirementsController extends ControllerBase
         parent::__construct($twig, $authzService);
     }
 
+    #[RequiredRole(['InternshipProgramAdmin', 'InternshipProgramStudent'])]
     #[Route([''], methods: ['GET'])]
     public function requirements(Request $request, InternshipCycle $cycle): Response
     {
@@ -118,15 +119,11 @@ class RequirementsController extends ControllerBase
         }
 
         try {
-            $repeatInterval = $request->get('repeat-interval');
-
             $requirementDTO = new CreateRequirementDTO(
                 $request->get('name'),
                 $request->get('description'),
-                Type::tryFrom($request->get('type')),
                 (int) $request->get('start-week'),
                 (int) $request->get('duration-weeks'),
-                $repeatInterval ? RepeatInterval::tryFrom($repeatInterval) : null,
                 FulFillMethod::tryFrom($request->get('fulfill-method')),
                 $fileTypes,
                 (int) $request->get('max-file-size'),
