@@ -15,10 +15,8 @@ class Requirement
         private int $id,
         private string $name,
         private string $description,
-        private string $requirementType,
         private DateInterval $startWeek,
         private DateInterval $durationWeeks,
-        private ?string $repeatInterval,
         private string $fulfillMethod,
         private ?array $allowedFileTypes,
         private ?int $maxFileSize,
@@ -40,11 +38,6 @@ class Requirement
     public function getDescription(): string
     {
         return $this->description;
-    }
-
-    public function getRequirementType(): string
-    {
-        return $this->requirementType;
     }
 
     public function getStartWeek(): DateInterval
@@ -74,11 +67,6 @@ class Requirement
         $days = $this->durationWeeks->d;
         $weeks = $days / 7;
         return "$weeks weeks";
-    }
-
-    public function getRepeatInterval(): ?string
-    {
-        return $this->repeatInterval;
     }
 
     public function getFulfillMethod(): string

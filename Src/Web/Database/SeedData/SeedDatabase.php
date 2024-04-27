@@ -624,10 +624,8 @@ $requirementData = [
     new CreateRequirementDTO(
         'Internship Contract',
         'Upload the contract between you and the company.',
-        Type::ONE_TIME,
         1,
         2,
-        null,
         FulFillMethod::FILE_UPLOAD,
         ['pdf'],
         5,
@@ -636,10 +634,8 @@ $requirementData = [
     new CreateRequirementDTO(
         'Monthly Report',
         'Upload a report of your progress.',
-        Type::RECURRING,
         1,
         4,
-        RepeatInterval::MONTHLY,
         FulFillMethod::FILE_UPLOAD,
         ['pdf'],
         5,
@@ -648,10 +644,8 @@ $requirementData = [
     new CreateRequirementDTO(
         'Weekly Report',
         'Upload a report of your progress.',
-        Type::RECURRING,
         1,
         1,
-        RepeatInterval::WEEKLY,
         FulFillMethod::FILE_UPLOAD,
         ['pdf'],
         5,
@@ -660,10 +654,8 @@ $requirementData = [
     new CreateRequirementDTO(
         'Your feedback about the internship',
         'What do you think about the company. How was your experience? Your feedback will not be shared with the company.',
-        Type::ONE_TIME,
         23,
         2,
-        null,
         FulFillMethod::TEXT_INPUT,
         null,
         null,

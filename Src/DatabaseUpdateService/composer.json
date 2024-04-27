@@ -1,0 +1,16 @@
+{
+    "name": "ashen/database-update-service",
+    "type": "project",
+    "license": "proprietary",
+    "autoload": {
+        "psr-4": {
+            "DatabaseUpdateService\\": ""
+        }
+    },
+    "authors": [
+        {
+            "name": "Ashen Sandaruwan"
+        }
+    ],
+    "require": {}
+}

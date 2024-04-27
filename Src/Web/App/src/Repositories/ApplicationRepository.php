@@ -3,10 +3,12 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
+use App\Interfaces\IRepository;
 use App\Models\Application;
+use DateTimeImmutable;
 use PDO;
 
-readonly class ApplicationRepository
+readonly class ApplicationRepository implements IRepository
 {
     public function __construct(
         private PDO $pdo,
@@ -42,6 +44,7 @@ readonly class ApplicationRepository
     }
 
     public function createIntern(
+        int $cycleId,
         int $studentId,
         int $partnerUserId,
         ?int $organizationId,
@@ -51,31 +54,35 @@ readonly class ApplicationRepository
         if ($organizationId === null) {
             $stmt = $this->pdo->prepare(
                 "INSERT INTO interns 
-                (student_id, adder_user_id, organization_id, application_id) 
+                (student_id, adder_user_id, organization_id, createdAt, application_id, internship_cycle_id) 
                 VALUES 
                 (:studentId, :adderUserId, 
                 (SELECT organization_id FROM partners WHERE id = :adderUserId), 
-                :applicationId)"
+                :createdAt, :applicationId, :cycleId)"
             );
 
             $stmt->execute([
                 "studentId" => $studentId,
                 "adderUserId" => $partnerUserId,
-                "applicationId" => $applicationId
+                "createdAt" => (new DateTimeImmutable())->format($this::DATE_TIME_FORMAT),
+                "applicationId" => $applicationId,
+                "cycleId" => $cycleId,
             ]);
             return $stmt->rowCount() === 1;
         }
         $stmt = $this->pdo->prepare(
             "INSERT INTO interns 
-            (student_id, adder_user_id, organization_id, application_id) 
+            (student_id, adder_user_id, organization_id, createdAt, application_id, internship_cycle_id) 
             VALUES 
-            (:studentId, :adderUserId, :organizationId, :applicationId)"
+            (:studentId, :adderUserId, :organizationId, :createdAt, :applicationId, :cycleId)"
         );
         $stmt->execute([
             "studentId" => $studentId,
             "adderUserId" => $partnerUserId,
             "organizationId" => $organizationId,
-            "applicationId" => $applicationId
+            "createdAt" => (new DateTimeImmutable())->format($this::DATE_TIME_FORMAT),
+            "applicationId" => $applicationId,
+            "cycleId" => $cycleId,
         ]);
         return $stmt->rowCount() === 1;
     }

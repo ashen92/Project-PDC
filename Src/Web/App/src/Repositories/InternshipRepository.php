@@ -26,9 +26,9 @@ class InternshipRepository implements IRepository
         $this->pdo->beginTransaction();
     }
 
-    public function commit(): void
+    public function commit(): bool
     {
-        $this->pdo->commit();
+        return $this->pdo->commit();
     }
 
     public function rollback(): void

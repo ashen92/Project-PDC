@@ -26,9 +26,9 @@ readonly class RequirementRepository implements IRepository
         $this->pdo->beginTransaction();
     }
 
-    public function commit(): void
+    public function commit(): bool
     {
-        $this->pdo->commit();
+        return $this->pdo->commit();
     }
 
     public function rollBack(): void
@@ -169,10 +169,8 @@ readonly class RequirementRepository implements IRepository
             internship_cycle_id,
             name,
             description,
-            requirementType,
             startWeek,
             durationWeeks,
-            repeatInterval,
             fulfillMethod,
             allowedFileTypes,
             maxFileSize,
@@ -181,10 +179,8 @@ readonly class RequirementRepository implements IRepository
             :cycleId,
             :name,
             :description,
-            :requirementType,
             :startWeek,
             :durationWeeks,
-            :repeatInterval,
             :fulfillMethod,
             :allowedFileTypes,
             :maxFileSize,
@@ -195,10 +191,8 @@ readonly class RequirementRepository implements IRepository
             "cycleId" => $cycleId,
             "name" => $reqDTO->name,
             "description" => $reqDTO->description,
-            "requirementType" => $reqDTO->requirementType->value,
             "startWeek" => $reqDTO->startWeek->format('%d days'),
             "durationWeeks" => $reqDTO->durationWeeks->format('%d days'),
-            "repeatInterval" => $reqDTO->repeatInterval->value,
             "fulfillMethod" => $reqDTO->fulfillMethod->value,
             "allowedFileTypes" => json_encode($reqDTO->allowedFileTypes),
             "maxFileSize" => $reqDTO->maxFileSize,
@@ -206,54 +200,6 @@ readonly class RequirementRepository implements IRepository
         ]);
         return (int) $this->pdo->lastInsertId();
     }
-
-    // public function createOneTimeUserRequirements(int $reqId, ?int $userGroupId = null, ?int $userId = null): bool
-    // {
-    //     if ($userId) {
-    //         $sql = "INSERT INTO user_requirements (
-    //                 user_id,
-    //                 requirement_id,
-    //                 status,
-    //                 fulfillMethod,
-    //                 startDate,
-    //                 endDate
-    //             )
-    //             SELECT :userId, :reqId, :status, r.fulfillMethod, r.startDate, r.endBeforeDate
-    //             FROM requirements r
-    //             WHERE r.id = :reqId";
-
-    //         $stmt = $this->pdo->prepare($sql);
-    //         return $stmt->execute([
-    //             "reqId" => $reqId,
-    //             "userId" => $userId,
-    //             "status" => Status::PENDING->value
-    //         ]);
-    //     }
-
-    //     $sql = "INSERT INTO user_requirements (
-    //                 user_id,
-    //                 requirement_id,
-    //                 status,
-    //                 fulfillMethod,
-    //                 startDate,
-    //                 endDate
-    //             )
-    //             SELECT ugm.user_id, :reqId, :status, r.fulfillMethod, r.startDate, r.endBeforeDate
-    //             FROM (
-    //                 SELECT fulfillMethod, startDate, endBeforeDate
-    //                 FROM requirements
-    //                 WHERE id = :reqId
-    //             ) AS r
-    //             INNER JOIN user_group_membership ugm ON 1=1
-    //             WHERE ugm.usergroup_id = :userGroupId";
-
-    //     $stmt = $this->pdo->prepare($sql);
-    //     return $stmt->execute([
-    //         "reqId" => $reqId,
-    //         "userGroupId" => $userGroupId,
-    //         "status" => Status::PENDING->value
-    //     ]);
-    // }
 
     public function createUserRequirement(
         Requirement $requirement,

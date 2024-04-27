@@ -4,8 +4,6 @@ declare(strict_types=1);
 namespace App\DTOs;
 
 use App\Models\Requirement\FulFillMethod;
-use App\Models\Requirement\RepeatInterval;
-use App\Models\Requirement\Type;
 use DateInterval;
 
 class CreateRequirementDTO
@@ -15,10 +13,8 @@ class CreateRequirementDTO
     public function __construct(
         public string $name,
         public string $description,
-        public Type $requirementType,
         private int $startWeekAsInt,
         private int $durationWeeksAsInt,
-        public ?RepeatInterval $repeatInterval,
         public FulFillMethod $fulfillMethod,
         public ?array $allowedFileTypes,
         public ?int $maxFileSize,
