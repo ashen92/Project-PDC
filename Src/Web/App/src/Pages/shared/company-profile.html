@@ -1,0 +1,56 @@
+{% extends "shared/layout-left-nav.html" %}
+
+{% block title %}User Profile{% endblock %}
+
+{# {% block left_nav %} #}
+{# {% include "events/left-nav.html" %} #}
+{# {% endblock %} #}
+
+{% block content %}
+
+<class="profile-section">
+    <div class="profile-header">
+        <div class="profile-picture">
+            <input type="file" id="image-upload" accept="image/*" style="display: none;">
+            <label for="image-upload" id="change-image-btn" title="Change Picture"><span
+                    class="camera-icon">&#x1F4F7;</span></label>
+            <img src="https://picsum.photos/id/237/200/300" alt="Profile Picture">
+        </div>
+        <div class="profile-info">
+            <h1>Creative Software</h1>
+            <h3></h3>
+            <h5> <span class="phone-icon">&#x260E; </span> <a href="tel:+94 71 1232 2678"> +94 71 1232 2678</a> </h5>
+            <h5> <span class="icon">&#x2709;</span> <a href="mailto:user@example.com"> user@example.com</a> </h5>
+            <h5> <span class="icon">&#x1F4AC;</span> <a href="chat:user@example.com">Chat</a> </h5>
+        </div>
+        <button class="edit-profile-btn" type="button">Edit Profile</button>
+    </div>
+
+    <div class="profile-details">
+        <div class="profile-card">
+            <h3>About</h3>
+            <p>
+                Creative Software builds and manages high-performance offshore software development teams to bring big
+                ideas to life.
+                Whether you want to extend your in-house team or need assistance with developing, quality assuring, or
+                supporting
+                your application, we can help.
+            </p>
+        </div>
+    </div>
+
+    <div class="profile-tabs">
+        <button class="tab-btn" onclick="openTab('Vacancies')">Vacancies</button>
+        <button class="tab-btn" onclick="openTab('Events')">Events</button>
+        <button class="tab-btn" onclick="openTab('Application status')">Applications</button>
+    </div>
+
+
+    <script>
+        //navigate to edit profile page
+        document.querySelector('.edit-profile-btn').addEventListener('click', function () {
+            window.location.href = '/profile/edit';
+        });
+    </script>
+
+    {% endblock %}

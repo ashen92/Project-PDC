@@ -17,5 +17,20 @@ class ProfileController extends ControllerBase
     {
         return $this->render('shared/profile.html');
     }
+
+    #[Route('/company', methods: ['GET'])]
+
+    public function company(): Response
+    {
+        return $this->render('shared/company-profile.html');
+    }
+
+    #[Route('/edit', methods: ['GET'])]
+
+    public function edit(): Response
+    {
+        return $this->render('shared/edit-profile.html');
+    }
+
 }
 

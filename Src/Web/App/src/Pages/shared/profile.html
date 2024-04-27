@@ -8,7 +8,7 @@
 
 {% block content %}
 
-<div class="profile-section">
+<class="profile-section">
     <div class="profile-header">
         <div class="profile-picture">
             <input type="file" id="image-upload" accept="image/*" style="display: none;">
@@ -23,7 +23,9 @@
             <h5> <span class="icon">&#x2709;</span> <a href="mailto:user@example.com"> user@example.com</a> </h5>
             <h5> <span class="icon">&#x1F4AC;</span> <a href="chat:user@example.com">Chat</a> </h5>
         </div>
-        <button class="edit-profile-btn" type="button">Edit Profile</button>
+        <a href="/profile/edit">
+            <button class="edit-profile-btn" type="button">Edit Profile</button>
+        </a>
     </div>
 
     <div class="profile-details">
@@ -35,20 +37,90 @@
         </div>
     </div>
 
-    <div class="qualifications">
-        <div class="qualification-item">
-            <h3>Education</h3>
-            <p>University of Colombo</p>
+    <div class="profile-tabs">
+        <button class="tab-btn" onclick="openTab('profile')">Profile</button>
+        <button class="tab-btn" onclick="openTab('Curriculam Vitae')">Curriculam Vitae</button>
+        <button class="tab-btn" onclick="openTab('Application status')">Applications</button>
+    </div>
+
+    <div id="profile-tab" class="tab-content active">
+        <div class="profile-columns">
+            <div class="profile-column">
+                <h2>Personal Information</h2>
+                <p><strong>Email:</strong> user@example.com</p>
+                <p><strong>Phone:</strong> +1234567890</p>
+                <p><strong>Location:</strong> Colombo</p>
+            </div>
+            <br> <br>
+
+            <div class="profile-column">
+                <h2>Education</h2>
+                <p>Ordinary Level</p>
+                <p>Advanced Level</p>
+                <p>University: University of Colombo</p>
+            </div>
         </div>
-        <div class="qualification-item">
-            <h3>Experience</h3>
-            <p>Intern</p>
-        </div>
-        <div class="qualification-item">
-            <h3>Skills</h3>
-            <p>Communication</p>
+        <br> <br>
+
+        <div class="profile-columns">
+            <div class="profile-column">
+                <h2>Skills</h2>
+                <p>Communication skills</p>
+                <p>Design skills</p>
+                <p>Content writing skills</p>
+            </div>
+            <br> <br>
+
+            <div class="profile-column">
+                <h2>Work Experience</h2>
+                <p>Business Analyst Intern</p>
+                <p>Junior Business Analyst</p>
+            </div>
         </div>
     </div>
-</div>
+    <br> <br>
 
-{% endblock %}
+    <div id="Curriculam Vitae-tab" class="tab-content">
+        <h2>Curriculam Vitae</h2>
+        <p>Find my CV and Cover letter here!</p>
+        <a href="CV.pdf"> CV </a>
+    </div>
+
+    <div id="Application status-tab" class="tab-content">
+        <h2>Application status</h2>
+        <ul id="job-applications-list">
+            <!-- Placeholder for displaying job applications -->
+        </ul>
+    </div>
+
+    </div>
+
+    <script>
+        function openTab(tabName) {
+            const tabContents = document.querySelectorAll('.tab-content');
+            const tabButtons = document.querySelectorAll('.tab-btn');
+
+            tabContents.forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            tabButtons.forEach(btn => {
+                btn.classList.remove('active'); // Remove active class from all buttons
+            });
+
+            // Show the selected tab content
+            const selectedTabContent = document.getElementById(tabName + '-tab');
+            if (selectedTabContent) {
+                selectedTabContent.classList.add('active'); // Show the selected tab content
+            }
+
+            // Activate the corresponding tab button
+            const selectedTabButton = document.querySelector(`button.tab-btn[data-tab="${tabName}"]`);
+            if (selectedTabButton) {
+                selectedTabButton.classList.add('active'); // Activate the corresponding tab button
+            }
+        }
+    </script>
+
+
+    {% endblock %}
