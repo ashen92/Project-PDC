@@ -34,6 +34,10 @@ class Intern
     #[ORM\JoinColumn(name: 'application_id', referencedColumnName: 'id')]
     private ?Application $application = null;
 
+    #[ORM\ManyToOne(targetEntity: InternshipCycle::class, inversedBy: 'internships')]
+    #[ORM\JoinColumn(name: 'internship_cycle_id', referencedColumnName: 'id')]
+    private InternshipCycle $internshipCycle;
+
     public function __construct(
         Student $student,
         User $adderUserId,

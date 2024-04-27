@@ -378,10 +378,10 @@ class InternshipsController extends ControllerBase
     #[Route('/round-2/job-roles/{jobRoleId}/candidates/{candidateId}/hire',
         requirements: ['jobRoleId' => '\d+', 'candidateId' => '\d+'],
         methods: ['PUT'])]
-    public function candidateHire(Request $request, int $jobRoleId, int $candidateId): Response
+    public function candidateHire(Request $request, InternshipCycle $cycle, int $jobRoleId, int $candidateId): Response
     {
         $userId = $request->getSession()->get('user_id');
-        if ($this->applicationService->hire($userId, candidateId: $candidateId)) {
+        if ($this->applicationService->hire($cycle->getId(), $userId, candidateId: $candidateId)) {
             return new Response(null, 204);
         }
         return new Response(null, 400);
