@@ -125,8 +125,7 @@ readonly class InternshipProgramService
                 $studentGroup->getId(),
             );
 
-            $this->internshipProgramRepository->commit();
-            return true;
+            return $this->internshipProgramRepository->commit();
 
         } catch (Throwable $th) {
             $this->internshipProgramRepository->rollBack();
@@ -157,8 +156,7 @@ readonly class InternshipProgramService
                 [$cycle->getStudentGroupId()],
             );
 
-            $this->internshipProgramRepository->commit();
-            return true;
+            return $this->internshipProgramRepository->commit();
         } catch (Throwable $th) {
             $this->internshipProgramRepository->rollBack();
             throw $th;

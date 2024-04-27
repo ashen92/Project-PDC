@@ -50,8 +50,7 @@ readonly class RequirementService
             $cycle = $this->internshipCycleService->getLatestCycle();
             $this->requirementRepo
                 ->createRequirement($cycle->getId(), $reqDTO);
-            $this->requirementRepo->commit();
-            return true;
+            return $this->requirementRepo->commit();
         } catch (Exception $e) {
             $this->requirementRepo->rollBack();
             throw $e;

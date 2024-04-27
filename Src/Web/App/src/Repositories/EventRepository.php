@@ -21,9 +21,9 @@ class EventRepository implements IRepository
         $this->pdo->beginTransaction();
     }
 
-    public function commit(): void
+    public function commit(): bool
     {
-        $this->pdo->commit();
+        return $this->pdo->commit();
     }
 
     public function rollback(): void
@@ -57,23 +57,23 @@ class EventRepository implements IRepository
             "description" => $dto->description,
 
         ]);
-        
+
         $eventId = (int) $this->pdo->lastInsertId();
-    /*  $userGroupIds = $dto->participants;
+        /*  $userGroupIds = $dto->participants;
 
-        if (!empty($userGroupIds)) {
-            // Prepare SQL statement for inserting participants
-            $sql2 = "INSERT INTO event_participants (event_id, usergroup_id) VALUES (:eventId, :userGroupId)";
-            $statement2 = $this->pdo->prepare($sql2);
+            if (!empty($userGroupIds)) {
+                // Prepare SQL statement for inserting participants
+                $sql2 = "INSERT INTO event_participants (event_id, usergroup_id) VALUES (:eventId, :userGroupId)";
+                $statement2 = $this->pdo->prepare($sql2);
 
-            // Execute insert statement for each participant
-            foreach ($userGroupIds as $userGroupId) {
-                $statement2->execute([
-                    "eventId" => $eventId,
-                    "userGroupId" => $userGroupId,
-                ]);
-            }
-        } */
+                // Execute insert statement for each participant
+                foreach ($userGroupIds as $userGroupId) {
+                    $statement2->execute([
+                        "eventId" => $eventId,
+                        "userGroupId" => $userGroupId,
+                    ]);
+                }
+            } */
 
         return $eventId;
     }
@@ -122,7 +122,7 @@ class EventRepository implements IRepository
         ]);
 
         $events = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        
+
         foreach ($events as &$event) {
             $event['startTime'] = new DateTimeImmutable($event['startTime']);
             $event['endTime'] = new DateTimeImmutable($event['endTime']);
