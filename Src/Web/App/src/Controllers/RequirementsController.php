@@ -7,8 +7,6 @@ use App\DTOs\CreateRequirementDTO;
 use App\DTOs\UserRequirementFulfillmentDTO;
 use App\Models\InternshipCycle;
 use App\Models\Requirement\FulFillMethod;
-use App\Models\Requirement\RepeatInterval;
-use App\Models\Requirement\Type;
 use App\Security\Attributes\RequiredRole;
 use App\Security\AuthorizationService;
 use App\Services\RequirementService;

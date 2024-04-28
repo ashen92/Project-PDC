@@ -132,9 +132,7 @@ readonly class RequirementRepository implements IRepository
         $sql = "SELECT ur.*, JSON_OBJECT(
                     'id', r.id,
                     'name', r.name,
-                    'requirementType', r.requirementType,
-                    'fulfillMethod', r.fulfillMethod,
-                    'repeatInterval', r.repeatInterval
+                    'fulfillMethod', r.fulfillMethod
                 ) AS requirement
                 FROM user_requirements ur
                 INNER JOIN requirements r ON r.id = ur.requirement_id

@@ -10,6 +10,7 @@ use DateTimeImmutable;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Twig\Environment;
 
 #[Route('/events')]
@@ -32,6 +33,57 @@ class EventsController extends ControllerBase
         ]);
     }
 
+    #[Route('/{id}', requirements: ['id' => '\d+'], methods: ['DELETE'])]
+    public function delete(int $id): Response
+    {
+        $this->eventService->deleteEvent($id);
+        return new Response(null, 204);
+    }
+
+    #[Route('/events/{id}/modify', methods: ['GET'])]
+    public function updateGET(int $id): Response
+    {
+        return $this->render(
+            'events/modify.html',
+            [
+                'section' => 'events',
+                'events' => $this->eventService->getEventById($id)
+            ]
+        );
+    }
+
+    #[Route('/events/{id}/modify', methods: ['POST'])]
+    /* public function updatePOST(Request $request): Response|RedirectResponse
+    {
+        $id = (int) $request->get('id');
+        $title = $request->get('title');
+        $description = $request->get('description');
+        //$isPublished = (bool) $request->get('is_published');
+
+        
+        if ($this->eventService->updateEvents($id, $title, $description)) {
+            return $this->redirect('/internship-program/internships');
+        }
+
+        // TODO: Set errors
+
+        return $this->render(
+            'events/modify.html',
+            [
+                'section' => 'events',
+                'event' => $this->eventService->getEventById($id)
+            ]
+        );
+    } */
+
+    #[Route('/{id}', requirements: ['id' => '\d+'], methods: ['GET'])]
+    public function getEventByID(Request $request, int $id): Response
+    {
+        $res = $this->eventService->getEventById($id);
+        return new Response(json_encode($res), 200, ['Content-Type' => 'application/json']);
+    
+    }
+
     #[Route('/create', methods: ['GET'])]
     public function create(): Response
     {
@@ -45,11 +97,20 @@ class EventsController extends ControllerBase
     }
 
     #[Route('/eventlist', methods: ['GET'])]
-    public function list(): Response
+    public function list(Request $request): Response
     {
+        /* $queryParams = $request->query->all();
+
+        $startTime = $queryParams['start'];
+        $endTime = $queryParams['end'];
+
+        $startTime = new DateTimeImmutable($startTime);
+        $endTime = new DateTimeImmutable($endTime); */
+
         return $this->render(
             'events/eventlist.html',
-            ['section' => 'list']
+            ['section' => 'list','events'=>$this->eventService->getEventlist()]
+            
         );
     }
 

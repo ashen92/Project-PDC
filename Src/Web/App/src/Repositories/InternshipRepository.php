@@ -516,4 +516,36 @@ class InternshipRepository implements IRepository
         $stmt = $this->pdo->prepare($sql);
         return $stmt->execute(['id' => $id]);
     }
+
+    public function countSubmittedApplications(int $cycleId, int $studentId): int
+    {
+        $stmt = $this->pdo->prepare(
+            "SELECT COUNT(*) AS count
+            FROM applications a
+            INNER JOIN internships i ON a.internship_id = i.id
+            WHERE user_id = :studentId
+            AND i.internship_cycle_id = :cycleId"
+        );
+        $stmt->execute([
+            "studentId" => $studentId,
+            "cycleId" => $cycleId
+        ]);
+        return (int) $stmt->fetch(PDO::FETCH_ASSOC)['count'];
+    }
+
+    public function countSelectedJobRoles(int $cycleId, int $studentId): int
+    {
+        $stmt = $this->pdo->prepare(
+            "SELECT COUNT(*) AS count
+            FROM job_role_students jrs
+            INNER JOIN job_roles jr ON jrs.job_role_id = jr.id
+            WHERE jrs.student_id = :studentId
+            AND jr.internship_cycle_id = :cycleId"
+        );
+        $stmt->execute([
+            "studentId" => $studentId,
+            "cycleId" => $cycleId
+        ]);
+        return (int) $stmt->fetch(PDO::FETCH_ASSOC)['count'];
+    }
 }

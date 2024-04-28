@@ -50,6 +50,12 @@ let isLoading = false;
 
 const applyBtn = $("#btn-apply");
 const undoApplyBtn = $("#btn-undo-apply");
+const applyLimitText = $("#apply-limit-text");
+
+const onPendingApproval = $("#on-pending-approval");
+const onApproval = $("#on-approval");
+const notYetApproved = $("#not-yet-approved");
+const approved = $("#approved");
 
 function fetchJobDetails(jobId) {
     fetch(`/api/internships/${jobId}`, { method: "GET" })
@@ -63,12 +69,38 @@ function fetchJobDetails(jobId) {
             if ("applicationId" in data) {
                 if (data["applicationId"] !== null) {
                     applyBtn.classList.add("hidden");
+                    applyLimitText.classList.add("hidden");
                     undoApplyBtn.classList.remove("hidden");
                     undoApplyBtn.setAttribute("data-application-id", data["applicationId"]);
                 } else {
-                    applyBtn.classList.remove("hidden");
-                    undoApplyBtn.classList.add("hidden");
-                    undoApplyBtn.removeAttribute("data-application-id");
+                    if (data.submittedApplicationsCount < data.maximumApplicationsCount) {
+                        applyBtn.classList.remove("hidden");
+                        undoApplyBtn.classList.add("hidden");
+                        applyLimitText.classList.add("hidden");
+                        undoApplyBtn.removeAttribute("data-application-id");
+                    } else {
+                        applyBtn.classList.add("hidden");
+                        undoApplyBtn.classList.add("hidden");
+                        applyLimitText.classList.remove("hidden");
+                    }
+                }
+            } else {
+                if (data.isApproved === true) {
+                    if (onPendingApproval && onApproval) {
+                        onPendingApproval.classList.add("hidden");
+                        onApproval.classList.remove("hidden");
+                    } else {
+                        notYetApproved.classList.add("hidden");
+                        approved.classList.remove("hidden");
+                    }
+                } else {
+                    if (onPendingApproval && onApproval) {
+                        onPendingApproval.classList.remove("hidden");
+                        onApproval.classList.add("hidden");
+                    } else {
+                        notYetApproved.classList.remove("hidden");
+                        approved.classList.add("hidden");
+                    }
                 }
             }
         })

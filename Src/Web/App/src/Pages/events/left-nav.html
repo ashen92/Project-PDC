@@ -1,6 +1,6 @@
 <a class="nav-link {% if section == 'home' %} active{% endif %}" href="/events">
     <i class="i i-calendar2"></i>
-    Events
+    Events Calendar
 </a>
 
 {% if has_role('Admin') %}
@@ -8,9 +8,9 @@
     <i class="i i-calendar2-plus"></i>
     Create an event
 </a>
+{% endif %}
 
 <a class="nav-link {% if section == 'list' %} active{% endif %}" href="/events/eventlist">
     <i class="i i-card-list"></i>
     Event List
 </a>
-{% endif %}

@@ -111,8 +111,12 @@ class ApplicationsController extends ControllerBase
     public function applicantHire(Request $request, InternshipCycle $cycle, int $id): Response
     {
         $userId = $request->getSession()->get('user_id');
-        if ($this->applicationService->hire($cycle->getId(), $userId, $id)) {
-            return new Response(null, 204);
+        try {
+            if ($this->applicationService->hire($cycle->getId(), $userId, $id))
+                return new Response(null, 204);
+        } catch (\Throwable $th) {
+            if ($th->getCode() === 1000)
+                return new Response(json_encode(['message' => $th->getMessage()]), 409);
         }
         return new Response(null, 400);
     }
