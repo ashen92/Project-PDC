@@ -548,4 +548,18 @@ class InternshipRepository implements IRepository
         ]);
         return (int) $stmt->fetch(PDO::FETCH_ASSOC)['count'];
     }
+
+    public function approveInternship(int $id): bool
+    {
+        $sql = 'UPDATE internships SET isApproved = 1 WHERE id = :id';
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute(['id' => $id]);
+    }
+
+    public function undoApproveInternship(int $id): bool
+    {
+        $sql = 'UPDATE internships SET isApproved = 0 WHERE id = :id';
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute(['id' => $id]);
+    }
 }

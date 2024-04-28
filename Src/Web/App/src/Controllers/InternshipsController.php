@@ -409,4 +409,24 @@ class InternshipsController extends ControllerBase
         }
         return new Response(null, 400);
     }
+
+    #[RequiredRole('InternshipProgramAdmin')]
+    #[Route('/internships/{id}/approve', methods: ['PUT'])]
+    public function approveInternship(Request $request, int $id): Response
+    {
+        if ($this->internshipService->approveInternship($id)) {
+            return new Response(null, 204);
+        }
+        return new Response(null, 400);
+    }
+
+    #[RequiredRole('InternshipProgramAdmin')]
+    #[Route('/internships/{id}/approve', methods: ['DELETE'])]
+    public function undoApproveInternship(Request $request, int $id): Response
+    {
+        if ($this->internshipService->undoApproveInternship($id)) {
+            return new Response(null, 204);
+        }
+        return new Response(null, 400);
+    }
 }

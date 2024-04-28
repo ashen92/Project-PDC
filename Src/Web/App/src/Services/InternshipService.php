@@ -264,4 +264,14 @@ readonly class InternshipService
     {
         return $this->internshipRepository->deleteJobRole($jobRoleId);
     }
+
+    public function approveInternship(int $internshipId): bool
+    {
+        return $this->internshipRepository->approveInternship($internshipId);
+    }
+
+    public function undoApproveInternship(int $internshipId): bool
+    {
+        return $this->internshipRepository->undoApproveInternship($internshipId);
+    }
 }
