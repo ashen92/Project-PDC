@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Controllers\API;
 
 use App\Controllers\ControllerBase;
-use App\Security\Attributes\RequiredRole;
+use App\Repositories\ApplicationRepository;
 use App\Security\AuthorizationService;
 use App\Services\InternshipService;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,6 +19,7 @@ class InternshipsAPIController extends ControllerBase
         Environment $twig,
         AuthorizationService $authzService,
         private InternshipService $internshipService,
+        private ApplicationRepository $applicationRepository,
     ) {
         parent::__construct($twig, $authzService);
     }
@@ -54,10 +55,11 @@ class InternshipsAPIController extends ControllerBase
     {
         // TODO: Validate
 
-        $this->internshipService->removeApplication(
+        $this->applicationRepository->deleteApplication(
             $applicationId,
+            (int) $request->getSession()->get('user_id'),
             $internshipId,
-            (int) $request->getSession()->get('user_id')
+            null
         );
         return new Response(null, 204);
     }

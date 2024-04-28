@@ -273,7 +273,8 @@ $container->register(
     ->setArguments([
         new Reference('repository.internship'),
         new Reference('service.internship_program'),
-        new Reference('service.file_storage')
+        new Reference('service.file_storage'),
+        new Reference('repository.application'),
     ]);
 
 $container->register(
@@ -313,6 +314,8 @@ $container->register(
         new Reference('repository.application'),
         new Reference('service.file_storage'),
         new Reference('service.requirement'),
+        new Reference('service.internship_program'),
+        new Reference('repository.user'),
     ]);
 
 $container->register(
@@ -397,6 +400,7 @@ $container->register(
         new Reference('twig'),
         new Reference('service.authorization'),
         new Reference('service.internship'),
+        new Reference('repository.application'),
     ])
     ->setPublic(true);
 
@@ -496,7 +500,7 @@ $container->register(
         new Reference('twig'),
         new Reference('service.authorization'),
         new Reference('service.internship'),
-        new Reference('service.application')
+        new Reference('service.application'),
     ])
     ->setPublic(true);
 

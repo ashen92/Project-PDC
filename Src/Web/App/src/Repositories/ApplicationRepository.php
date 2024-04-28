@@ -43,6 +43,113 @@ readonly class ApplicationRepository implements IRepository
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    /**
+     * @param array<array<string, string>> $files
+     */
+    public function createApplication(
+        int $userId,
+        array $files,
+        ?int $internshipId,
+        ?int $jobRoleId
+    ): bool {
+        $this->pdo->beginTransaction();
+        try {
+            $sql = 'INSERT INTO applications (user_id, internship_id, jobRoleId, status)
+                VALUES (:userId, :internshipId, :jobRoleId, :status)';
+            $stmt = $this->pdo->prepare($sql);
+            if (
+                !$stmt->execute([
+                    'userId' => $userId,
+                    'status' => 'pending',
+                    'internshipId' => $internshipId,
+                    'jobRoleId' => $jobRoleId,
+                ])
+            ) {
+                throw new \Exception('Failed to create application');
+            }
+
+            $applicationId = $this->pdo->lastInsertId();
+
+            $sql = 'INSERT INTO application_files (application_id, name, path) VALUES ';
+            $sql .= implode(
+                ',',
+                array_map(
+                    fn($file) => "($applicationId, '{$file['name']}', '{$file['path']}')",
+                    $files
+                )
+            );
+            $stmt = $this->pdo->prepare($sql);
+            if (!$stmt->execute()) {
+                throw new \Exception('Failed to create application files');
+            }
+
+            return $this->pdo->commit();
+        } catch (\Throwable $th) {
+            $this->pdo->rollBack();
+            return false;
+        }
+    }
+
+    public function deleteApplication(int $applicationId, int $userId, ?int $internshipId, ?int $jobRoleId): bool
+    {
+        if ($internshipId === null && $jobRoleId === null)
+            throw new \BadMethodCallException('Internship ID or Job Role ID must be provided');
+
+        if ($internshipId !== null && $jobRoleId !== null)
+            throw new \BadMethodCallException('Only one of Internship ID or Job Role ID must be provided');
+
+        $this->pdo->beginTransaction();
+        try {
+            $sql = 'DELETE FROM application_files WHERE application_id = :applicationId';
+            $stmt = $this->pdo->prepare($sql);
+            if (!$stmt->execute(['applicationId' => $applicationId])) {
+                throw new \Exception('Failed to delete application files');
+            }
+
+            if ($internshipId) {
+                $sql = 'DELETE FROM applications WHERE internship_id = :internshipId AND user_id = :userId';
+                $params = [
+                    'internshipId' => $internshipId,
+                    'userId' => $userId,
+                ];
+            } else {
+                $sql = 'DELETE FROM applications WHERE jobRoleId = :jobRoleId AND user_id = :userId';
+                $params = [
+                    'jobRoleId' => $jobRoleId,
+                    'userId' => $userId,
+                ];
+            }
+
+            $stmt = $this->pdo->prepare($sql);
+            if (
+                !$stmt->execute($params)
+            ) {
+                throw new \Exception('Failed to delete application');
+            }
+
+            return $this->pdo->commit();
+        } catch (\Throwable $th) {
+            $this->pdo->rollBack();
+            return false;
+        }
+    }
+
+    public function countSubmittedApplications(int $cycleId, int $studentId): int
+    {
+        $stmt = $this->pdo->prepare(
+            "SELECT COUNT(*) AS count
+            FROM applications a
+            INNER JOIN internships i ON a.internship_id = i.id
+            WHERE user_id = :studentId
+            AND i.internship_cycle_id = :cycleId"
+        );
+        $stmt->execute([
+            "studentId" => $studentId,
+            "cycleId" => $cycleId
+        ]);
+        return (int) $stmt->fetch(PDO::FETCH_ASSOC)['count'];
+    }
+
     public function isIntern(int $cycleId, ?int $studentId, ?int $applicationId): bool
     {
         if ($studentId === null && $applicationId === null) {

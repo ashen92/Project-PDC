@@ -4,7 +4,9 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Models\Application;
+use App\Models\InternshipProgram\CreateApplication;
 use App\Repositories\ApplicationRepository;
+use App\Repositories\UserRepository;
 
 final readonly class ApplicationService
 {
@@ -12,8 +14,42 @@ final readonly class ApplicationService
         private ApplicationRepository $applicationRepository,
         private FileStorageService $fileStorageService,
         private RequirementService $requirementService,
+        private InternshipProgramService $internshipProgramService,
+        private UserRepository $userRepository,
     ) {
 
+    }
+
+    public function createApplication(int $cycleId, CreateApplication $createApplication): bool
+    {
+        $user = $this->userRepository->findUser($createApplication->userId);
+        if ($user === null) {
+            throw new \BadMethodCallException('User not found', 1004);
+        }
+
+        $maxApplications = $this->internshipProgramService->valueOfSetting('MaxInternshipApplications');
+        $studentApplications = $this->applicationRepository->countSubmittedApplications($cycleId, $createApplication->userId);
+
+        if ($studentApplications >= $maxApplications) {
+            throw new \InvalidArgumentException('Maximum number of applications reached', 1001);
+        }
+
+        $fileUploadResponse = $this->fileStorageService->upload($createApplication->files);
+        if (!$fileUploadResponse) {
+            return false;
+        }
+
+        return $this->applicationRepository->createApplication(
+            $createApplication->userId,
+            $fileUploadResponse,
+            $createApplication->internshipId,
+            $createApplication->jobRoleId
+        );
+    }
+
+    public function removeApplication(int $applicationId, int $userId, ?int $internshipId, ?int $jobRoleId): bool
+    {
+        return $this->applicationRepository->deleteApplication($applicationId, $userId, $internshipId, $jobRoleId);
     }
 
     public function hire(int $cycleId, int $partnerId, ?int $applicationId = null, ?int $candidateId = null): bool

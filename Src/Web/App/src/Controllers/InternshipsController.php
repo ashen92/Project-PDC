@@ -243,8 +243,8 @@ class InternshipsController extends ControllerBase
         return $this->redirect('/internship-program/internships');
     }
 
-    #[Route('/internships/{id}/apply', methods: ['POST'])]
-    public function applyPOST(Request $request, InternshipCycle $cycle, int $id): RedirectResponse
+    #[Route('/internships/{internshipId}/apply', methods: ['POST'])]
+    public function applyPOST(Request $request, InternshipCycle $cycle, int $internshipId): RedirectResponse
     {
         $userId = $request->getSession()->get('user_id');
 
@@ -253,10 +253,13 @@ class InternshipsController extends ControllerBase
             $files = [$files];
         }
 
-        // TODO: Validate data
-
         try {
-            if (!$this->internshipService->createApplication($cycle->getId(), new CreateApplication($id, $userId, $files))) {
+            if (
+                !$this->applicationService->createApplication(
+                    $cycle->getId(),
+                    new CreateApplication($userId, $files, $internshipId, null)
+                )
+            ) {
                 $request->getSession()->getFlashBag()->add('error', 'Error occurred. Please try again.');
             }
         } catch (\Throwable $th) {

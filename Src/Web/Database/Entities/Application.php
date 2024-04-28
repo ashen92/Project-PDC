@@ -21,18 +21,24 @@ class Application
 
     #[ORM\ManyToOne(targetEntity: Internship::class)]
     #[ORM\JoinColumn(name: 'internship_id', referencedColumnName: 'id')]
-    private Internship $internship;
+    private ?Internship $internship;
+
+    #[ORM\ManyToOne(targetEntity: JobRole::class)]
+    #[ORM\JoinColumn(name: 'jobRoleId', referencedColumnName: 'id')]
+    private ?JobRole $jobRole;
 
     #[ORM\Column(type: 'application_status')]
     private Status $status;
 
     public function __construct(
         Student $student,
-        Internship $internship,
+        ?Internship $internship,
+        ?JobRole $jobRole,
         Status $status
     ) {
         $this->student = $student;
         $this->internship = $internship;
+        $this->jobRole = $jobRole;
         $this->status = $status;
     }
 }

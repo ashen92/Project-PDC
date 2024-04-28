@@ -261,88 +261,6 @@ class InternshipRepository implements IRepository
         return $res;
     }
 
-    /**
-     * @param array<array<string, string>> $files
-     */
-    public function createApplication(int $internshipId, int $userId, array $files): bool
-    {
-        $this->pdo->beginTransaction();
-        try {
-            $sql = 'INSERT INTO applications (internship_id, user_id, status)
-                VALUES (:internshipId, :userId, :status)';
-            $stmt = $this->pdo->prepare($sql);
-            if (
-                !$stmt->execute([
-                    'internshipId' => $internshipId,
-                    'userId' => $userId,
-                    'status' => 'pending',
-                ])
-            ) {
-                throw new \Exception('Failed to create application');
-            }
-
-            $applicationId = $this->pdo->lastInsertId();
-
-            $sql = 'INSERT INTO application_files (application_id, name, path) VALUES ';
-            $sql .= implode(
-                ',',
-                array_map(
-                    fn($file) => "($applicationId, '{$file['name']}', '{$file['path']}')",
-                    $files
-                )
-            );
-            $stmt = $this->pdo->prepare($sql);
-            if (!$stmt->execute()) {
-                throw new \Exception('Failed to create application files');
-            }
-
-            return $this->pdo->commit();
-        } catch (\Throwable $th) {
-            $this->pdo->rollBack();
-            return false;
-        }
-    }
-
-    public function deleteApplication(int $applicationId, int $internshipId, int $userId): bool
-    {
-        $this->pdo->beginTransaction();
-        try {
-            $sql = 'DELETE FROM application_files WHERE application_id = :applicationId';
-            $stmt = $this->pdo->prepare($sql);
-            if (!$stmt->execute(['applicationId' => $applicationId])) {
-                throw new \Exception('Failed to delete application files');
-            }
-
-            $sql = 'DELETE FROM applications WHERE internship_id = :internshipId AND user_id = :userId';
-            $stmt = $this->pdo->prepare($sql);
-            if (
-                !$stmt->execute([
-                    'internshipId' => $internshipId,
-                    'userId' => $userId,
-                ])
-            ) {
-                throw new \Exception('Failed to delete application');
-            }
-
-            return $this->pdo->commit();
-        } catch (\Throwable $th) {
-            $this->pdo->rollBack();
-            return false;
-        }
-    }
-
-    public function hasApplied(int $internshipId, int $userId): bool
-    {
-        $sql = 'SELECT COUNT(*) FROM applications WHERE internship_id = :internshipId AND user_id = :userId';
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([
-            'internshipId' => $internshipId,
-            'userId' => $userId,
-        ]);
-        $result = $stmt->fetch(PDO::FETCH_COLUMN);
-        return $result > 0;
-    }
-
     public function delete(int $id): bool
     {
         $sql = 'DELETE FROM internships WHERE id = :id';
@@ -515,22 +433,6 @@ class InternshipRepository implements IRepository
         $sql = 'DELETE FROM job_roles WHERE id = :id';
         $stmt = $this->pdo->prepare($sql);
         return $stmt->execute(['id' => $id]);
-    }
-
-    public function countSubmittedApplications(int $cycleId, int $studentId): int
-    {
-        $stmt = $this->pdo->prepare(
-            "SELECT COUNT(*) AS count
-            FROM applications a
-            INNER JOIN internships i ON a.internship_id = i.id
-            WHERE user_id = :studentId
-            AND i.internship_cycle_id = :cycleId"
-        );
-        $stmt->execute([
-            "studentId" => $studentId,
-            "cycleId" => $cycleId
-        ]);
-        return (int) $stmt->fetch(PDO::FETCH_ASSOC)['count'];
     }
 
     public function countSelectedJobRoles(int $cycleId, int $studentId): int
