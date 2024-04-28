@@ -176,13 +176,22 @@ final readonly class ApplicationService
         }
     }
 
-    public function getStudentApplications(int $studentId): array
+    public function getApplicationsByStudent(int $studentId): array
     {
         $applications = $this->applicationRepository->findAllApplicationsByStudent($studentId);
+        $array = [
+            'internship' => [],
+            'jobRole' => []
+        ];
         foreach ($applications as &$application) {
             $application['fileIds'] = json_decode($application['fileIds']);
+            if ($application['internshipId'] !== null) {
+                $array['internship'][] = $application;
+            } else {
+                $array['jobRole'][] = $application;
+            }
         }
-        return $applications;
+        return $array;
     }
 
     public function getApplicationFile(int $applicationId, int $fileId): ?array

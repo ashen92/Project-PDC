@@ -336,12 +336,16 @@ readonly class ApplicationRepository implements IRepository
     public function findAllApplicationsByStudent(int $studentId): array
     {
         $stmt = $this->pdo->prepare(
-            "SELECT a.id AS application_id, a.status AS application_status,
-            i.title AS internship_title,
-            o.name AS organization_name,
+            "SELECT a.id AS application_id, a.status AS applicationStatus,
+            i.id AS internshipId,
+            i.title AS internshipTitle,
+            jr.id AS jobRoleId,
+            jr.name AS jobRoleName,
+            o.name AS organizationName,
             JSON_ARRAYAGG(af.id) AS fileIds
             FROM applications a
             LEFT JOIN internships i ON a.internship_id = i.id
+            LEFT JOIN job_roles jr ON a.jobRoleId = jr.id
             LEFT JOIN organizations o ON i.organization_id = o.id
             LEFT JOIN application_files af ON a.id = af.application_id
             WHERE a.user_id = :studentId

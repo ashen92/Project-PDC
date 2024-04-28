@@ -10,22 +10,114 @@
 
 <div class="title">
     <h2>
-        Internships you have applied for
+        All the applications you have submitted
     </h2>
 </div>
 
 <section>
     <div class="title">
         <h5>
-            Applications
+            For internships
         </h5>
     </div>
 
-    {% if applications is empty %}
+    {% if internshipApplications is empty %}
     <p>No applications have found.</p>
     {% else %}
 
+    <table class="hover row-border" id="internship-applications-table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Company</th>
+                <th>Application Status</th>
+                <th>View Uploaded Files</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in internshipApplications %}
+            <tr>
+                <td>{{ i.internshipTitle }}</td>
+                <td>{{ i.organizationName }}</td>
+                <td>
+                    {% if i.applicationStatus == 'pending' %}
+                    <span class='fs-6 i i-dash-circle-fill text-warning'></span>
+                    <span>Pending</span>
+                    {% elseif i.applicationStatus == 'hired' %}
+                    <span class='fs-6 i i-check-circle-fill text-success'></span>
+                    <span>Accepted</span>
+                    {% elseif i.applicationStatus == 'rejected' %}
+                    <span class='fs-6 i i-x-circle text-danger'></span>
+                    <span>Rejected</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% for id in i.fileIds %}
+                    <a class="btn btn-sm btn-secondary"
+                        href="/internship-program/applications/{{ i.application_id }}/files/{{ id }}"
+                        target="_blank">View
+                    </a>
+                    {% endfor %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
     {% endif %}
 </section>
+
+<section>
+    <div class="title">
+        <h5>
+            For job roles
+        </h5>
+    </div>
+
+    {% if jobRoleApplications is empty %}
+    <p>No applications have found.</p>
+    {% else %}
+
+    <table class="hover row-border" id="job-role-applications-table">
+        <thead>
+            <tr>
+                <th>Job Role</th>
+                <th>Application Status</th>
+                <th>View Uploaded Files</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in jobRoleApplications %}
+            <tr>
+                <td>{{ i.jobRoleName }}</td>
+                <td>
+                    {% if i.applicationStatus == 'pending' %}
+                    <span class='fs-6 i i-dash-circle-fill text-warning'></span>
+                    <span>Pending</span>
+                    {% elseif i.applicationStatus == 'hired' %}
+                    <span class='fs-6 i i-check-circle-fill text-success'></span>
+                    <span>Accepted</span>
+                    {% elseif i.applicationStatus == 'rejected' %}
+                    <span class='fs-6 i i-x-circle text-danger'></span>
+                    <span>Rejected</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% for id in i.fileIds %}
+                    <a class="btn btn-sm btn-secondary"
+                        href="/internship-program/applications/{{ i.application_id }}/files/{{ id }}"
+                        target="_blank">View
+                    </a>
+                    {% endfor %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% endif %}
+</section>
+
+<script src="/js/internship-program/applications/student/home.js"></script>
 
 {% endblock %}
