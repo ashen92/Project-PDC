@@ -80,6 +80,36 @@ class EventRepository implements IRepository
         ]);
     }
 
+    public function updateEvents(
+        int $id,
+        ?string $title = null,
+        ?string $description = null,
+        
+    ): bool {
+        if ($title === null && $description === null) {
+            return true;
+        }
+
+        $sql = 'UPDATE events SET ';
+        $params = [];
+        if ($title !== null) {
+            $sql .= 'title = :title';
+            $params['title'] = $title;
+        }
+        if ($description !== null) {
+            if (count($params) > 0) {
+                $sql .= ', ';
+            }
+            $sql .= 'description = :description';
+            $params['description'] = $description;
+        }
+       
+        $sql .= ' WHERE id = :id';
+        $params['id'] = $id;
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute($params);
+    }
+
     public function getEvent(int $id): array
     {
 

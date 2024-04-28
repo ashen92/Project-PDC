@@ -74,16 +74,16 @@ readonly class EventService
 
     }
 
-    /* public function updateInternship(
+    public function updateEvents(
         int $id,
         ?string $title = null,
-        ?string $description = null,
-        //?bool $isPublished = null
+        ?string $description = null
+       
     ): bool {
-        // TODO: Check if internship exists
+        
 
-        return $this->eventRepository->update($id, $title, $description);
-    } */
+        return $this->eventRepository->updateEvents($id, $title, $description);
+    }
     public function deleteEvent($id): bool
     {
         return $this->eventRepository->delete($id);
