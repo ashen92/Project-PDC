@@ -56,8 +56,8 @@ class InternshipsAPIController extends ControllerBase
         // TODO: Validate
 
         $this->applicationRepository->deleteApplication(
-            $applicationId,
             (int) $request->getSession()->get('user_id'),
+            $applicationId,
             $internshipId,
             null
         );

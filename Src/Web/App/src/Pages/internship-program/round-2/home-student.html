@@ -22,8 +22,11 @@
     </div>
 
     <div class="hidden pb-5" id="alert-container">
-        <div class="hidden alert alert-info" id="alert-success"></div>
-        <div class="hidden alert alert-error" id="alert-error"></div>
+        {% for i in app.session.flashbag.get("error") %}
+        <div class="text-center mb-2 alert alert-error">
+            {{ i }}
+        </div>
+        {% endfor %}
     </div>
 
     <div class="grid grid-cols-5 xxl-grid-cols-4 xl-grid-cols-3 lg-grid-cols-2 md-grid-cols-1 col-gap-10 row-gap-10"
@@ -34,13 +37,29 @@
                 <div class="break-word overflow-hidden">
                     {{ i.name }}
                 </div>
-                <div>
-                    <input type="checkbox" name="{{ i.name }}" id="{{ i.id }}" title="Select" {% if i in
-                        jobRolesAppliedTo %}checked {% endif %}>
+                <div class="btn-container">
+                    {% if i in jobRolesAppliedTo %}
+                    <button class="btn btn-outline-danger" type="button" name="remove-btn" id="{{i.id}}">Remove</button>
+                    {% else %}
+                    <button class="btn btn-primary" type="button" name="apply-btn" id="{{ i.id }}">Apply</button>
+                    {% endif %}
                 </div>
             </div>
         </div>
         {% endfor %}
+    </div>
+    <div class="dialog-container" id="file-upload-dialog">
+        <div class="dialog min-w-80">
+            <form class="mt-2" id="file-upload-form" method="POST" enctype="multipart/form-data">
+                <div id="file-upload-container">
+                    <label for="application-file">Select CV/Resume</label>
+                    <input type="file" name="application-file" id="application-file" accept=".pdf" required>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary" id="application-dialog-submit-btn">Submit</button>
+                </div>
+            </form>
+        </div>
     </div>
 </section>
 <script src="/js/internship-program/round-2/home-student.js" type="text/javascript"></script>

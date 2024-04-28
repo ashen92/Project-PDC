@@ -90,7 +90,7 @@ readonly class ApplicationRepository implements IRepository
         }
     }
 
-    public function deleteApplication(int $applicationId, int $userId, ?int $internshipId, ?int $jobRoleId): bool
+    public function deleteApplication(int $userId, ?int $applicationId, ?int $internshipId, ?int $jobRoleId): bool
     {
         if ($internshipId === null && $jobRoleId === null)
             throw new \BadMethodCallException('Internship ID or Job Role ID must be provided');
@@ -100,6 +100,16 @@ readonly class ApplicationRepository implements IRepository
 
         $this->pdo->beginTransaction();
         try {
+            if ($applicationId === null) {
+                $sql = 'SELECT id FROM applications WHERE user_id = :userId AND jobRoleId = :jobRoleId';
+                $stmt = $this->pdo->prepare($sql);
+                $stmt->execute([
+                    'userId' => $userId,
+                    'jobRoleId' => $jobRoleId,
+                ]);
+                $applicationId = $stmt->fetch(PDO::FETCH_ASSOC)['id'];
+            }
+
             $sql = 'DELETE FROM application_files WHERE application_id = :applicationId';
             $stmt = $this->pdo->prepare($sql);
             if (!$stmt->execute(['applicationId' => $applicationId])) {
@@ -302,5 +312,16 @@ readonly class ApplicationRepository implements IRepository
             "fileId" => $fileId
         ]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function findJobRolesAppliedTo(int $cycleId, int $studentId): array
+    {
+        $sql = 'SELECT jr.id, jr.name
+                FROM job_roles jr
+                INNER JOIN applications a ON jr.id = a.jobRoleId
+                WHERE jr.internship_cycle_id = :cycleId AND a.user_id = :studentId';
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['cycleId' => $cycleId, 'studentId' => $studentId]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }

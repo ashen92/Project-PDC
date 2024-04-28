@@ -47,9 +47,9 @@ final readonly class ApplicationService
         );
     }
 
-    public function removeApplication(int $applicationId, int $userId, ?int $internshipId, ?int $jobRoleId): bool
+    public function removeApplication(int $userId, ?int $applicationId, ?int $internshipId, ?int $jobRoleId): bool
     {
-        return $this->applicationRepository->deleteApplication($applicationId, $userId, $internshipId, $jobRoleId);
+        return $this->applicationRepository->deleteApplication($userId, $applicationId, $internshipId, $jobRoleId);
     }
 
     public function hire(int $cycleId, int $partnerId, ?int $applicationId = null, ?int $candidateId = null): bool
@@ -169,5 +169,10 @@ final readonly class ApplicationService
         $file = $this->fileStorageService->get($fileMetadata['path']);
         $file['name'] = $fileMetadata['name'];
         return $file;
+    }
+
+    public function getJobRolesAppliedTo(int $cycleId, int $studentId): array
+    {
+        return $this->applicationRepository->findJobRolesAppliedTo($cycleId, $studentId);
     }
 }

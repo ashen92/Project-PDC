@@ -183,31 +183,9 @@ readonly class InternshipService
         return $this->internshipRepository->findJobRoles($cycleId);
     }
 
-    public function getJobRolesAppliedTo(int $cycleId, int $studentId): array
-    {
-        return $this->internshipRepository->findJobRolesAppliedTo($cycleId, $studentId);
-    }
-
     public function getStudentsByJobRole(int $jobRoleId): array
     {
         return $this->internshipRepository->findStudentsByJobRole($jobRoleId);
-    }
-
-    public function applyToJobRole(int $cycleId, int $jobRoleId, int $studentId): bool
-    {
-        $maxApplications = $this->internshipProgramService->valueOfSetting('MaxJobRoleApplications');
-        $studentApplications = $this->internshipRepository->countSelectedJobRoles($cycleId, $studentId);
-
-        if ($studentApplications >= $maxApplications) {
-            throw new \InvalidArgumentException('Maximum number of job roles reached', 1002);
-        }
-
-        return $this->internshipRepository->applyToJobRole($jobRoleId, $studentId);
-    }
-
-    public function removeFromJobRole(int $jobRoleId, int $studentId): bool
-    {
-        return $this->internshipRepository->removeFromJobRole($jobRoleId, $studentId);
     }
 
     public function createJobRole(int $cycleId, string $jobRoleName): bool
