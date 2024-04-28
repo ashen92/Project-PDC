@@ -43,6 +43,41 @@ readonly class ApplicationRepository implements IRepository
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    public function isIntern(int $cycleId, ?int $studentId, ?int $applicationId): bool
+    {
+        if ($studentId === null && $applicationId === null) {
+            throw new \InvalidArgumentException("Student ID or Application ID must be provided");
+        }
+
+        if ($studentId !== null && $applicationId !== null) {
+            throw new \InvalidArgumentException("Only one of Student ID or Application ID must be provided");
+        }
+
+        if ($studentId !== null) {
+            $sql = "SELECT COUNT(*) AS count
+            FROM interns
+            WHERE student_id = :studentId
+            AND internship_cycle_id = :cycleId";
+            $params = [
+                "studentId" => $studentId,
+                "cycleId" => $cycleId
+            ];
+        } else {
+            $sql = "SELECT COUNT(*) AS count
+            FROM interns
+            WHERE student_id = (SELECT user_id FROM applications WHERE id = :applicationId)
+            AND internship_cycle_id = :cycleId";
+            $params = [
+                "applicationId" => $applicationId,
+                "cycleId" => $cycleId
+            ];
+        }
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetch(PDO::FETCH_ASSOC)['count'] > 0;
+    }
+
     public function createIntern(
         int $cycleId,
         int $studentId,

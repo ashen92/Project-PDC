@@ -2,6 +2,8 @@ import { $, createElement } from "../core/dom";
 import { on } from "../core/events";
 
 export class Dialog {
+    #onCloseCallback;
+
     constructor(dialogContainerSelector) {
         this.dialogContainer = $(dialogContainerSelector);
         this.contentDialog = this.dialogContainer.getElementsByClassName("dialog")[0];
@@ -18,7 +20,7 @@ export class Dialog {
         ]);
 
         this.titleBarCloseBtn.addEventListener("click", () => {
-            this.dialogContainer.style.display = "none";
+            this.close();
         });
 
         this.title = createElement("h5", { class: "title", id: "title" });
@@ -42,6 +44,9 @@ export class Dialog {
 
     close() {
         this.dialogContainer.style.display = "none";
+        if (this.#onCloseCallback) {
+            this.#onCloseCallback();
+        }
     }
 
     isOpen() {
@@ -50,5 +55,9 @@ export class Dialog {
 
     setTitle(title) {
         this.title.innerText = title;
+    }
+
+    onClose(callback) {
+        this.#onCloseCallback = callback;
     }
 }
