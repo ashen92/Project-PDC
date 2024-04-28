@@ -11,6 +11,7 @@ use App\Security\Attributes\RequiredAtLeastOne;
 use App\Security\Attributes\RequiredRole;
 use App\Security\AuthorizationService;
 use App\Services\ApplicationService;
+use App\Services\InternshipProgramService;
 use App\Services\InternshipService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,6 +35,7 @@ class InternshipsController extends ControllerBase
         AuthorizationService $authzService,
         private readonly InternshipService $internshipService,
         private readonly ApplicationService $applicationService,
+        private readonly InternshipProgramService $internshipProgramService,
     ) {
         parent::__construct($twig, $authzService);
     }
@@ -275,12 +277,15 @@ class InternshipsController extends ControllerBase
     {
         if ($this->hasRole('InternshipProgramStudent')) {
             $userId = $request->getSession()->get('user_id');
+            $jobRolesAppliedTo = $this->applicationService->getJobRolesAppliedTo($cycle->getId(), $userId);
+            $maxApplications = $this->internshipProgramService->valueOfSetting('MaxJobRoleApplications');
             return $this->render(
                 'internship-program/round-2/home-student.html',
                 [
                     'section' => 'round-2',
                     'jobRoles' => $this->internshipService->getJobRoles($cycle->getId()),
-                    'jobRolesAppliedTo' => $this->applicationService->getJobRolesAppliedTo($cycle->getId(), $userId),
+                    'jobRolesAppliedTo' => $jobRolesAppliedTo,
+                    'isApplicationsLimitReached' => count($jobRolesAppliedTo) >= $maxApplications
                 ]
             );
         }
@@ -315,11 +320,11 @@ class InternshipsController extends ControllerBase
         }
 
         return $this->render(
-            'internship-program/round-2/job-role/students.html',
+            'internship-program/round-2/job-role/applications.html',
             [
                 'section' => 'round-2',
                 'jobRole' => $this->internshipService->getJobRole($id),
-                'students' => $this->internshipService->getStudentsByJobRole($id),
+                'applications' => $this->applicationService->getJobRoleApplications($id),
             ]
         );
     }
@@ -340,7 +345,7 @@ class InternshipsController extends ControllerBase
                 $request->getSession()->getFlashBag()->add('error', 'Error occurred. Please try again.');
 
         } catch (\Throwable $th) {
-            if ($th->getCode() === 1004)
+            if ($th->getCode() === 1001)
                 $request->getSession()->getFlashBag()->add('error', $th->getMessage());
         }
         return $this->redirect('/internship-program/round-2');

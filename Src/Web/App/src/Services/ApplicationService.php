@@ -27,11 +27,28 @@ final readonly class ApplicationService
             throw new \BadMethodCallException('User not found', 1004);
         }
 
-        $maxApplications = $this->internshipProgramService->valueOfSetting('MaxInternshipApplications');
-        $studentApplications = $this->applicationRepository->countSubmittedApplications($cycleId, $createApplication->userId);
+        if ($createApplication->internshipId === null && $createApplication->jobRoleId === null) {
+            throw new \InvalidArgumentException('Either internshipId or jobRoleId must be provided', 1005);
+        }
 
-        if ($studentApplications >= $maxApplications) {
-            throw new \InvalidArgumentException('Maximum number of applications reached', 1001);
+        if ($createApplication->internshipId !== null && $createApplication->jobRoleId !== null) {
+            throw new \InvalidArgumentException('Only one of internshipId or jobRoleId must be provided', 1006);
+        }
+
+        if ($createApplication->jobRoleId === null) {
+            $maxApplications = $this->internshipProgramService->valueOfSetting('MaxInternshipApplications');
+            $studentApplications = $this->applicationRepository->countInternshipApplicationsByStudent($cycleId, $createApplication->userId);
+
+            if ($studentApplications >= $maxApplications) {
+                throw new \InvalidArgumentException('Maximum number of applications reached', 1001);
+            }
+        } else {
+            $maxApplications = $this->internshipProgramService->valueOfSetting('MaxJobRoleApplications');
+            $studentApplications = $this->applicationRepository->countJobRoleApplicationsByStudent($cycleId, $createApplication->userId);
+
+            if ($studentApplications >= $maxApplications) {
+                throw new \InvalidArgumentException('Maximum number of applications reached', 1001);
+            }
         }
 
         $fileUploadResponse = $this->fileStorageService->upload($createApplication->files);
@@ -50,6 +67,16 @@ final readonly class ApplicationService
     public function removeApplication(int $userId, ?int $applicationId, ?int $internshipId, ?int $jobRoleId): bool
     {
         return $this->applicationRepository->deleteApplication($userId, $applicationId, $internshipId, $jobRoleId);
+    }
+
+    public function getJobRoleApplications(int $jobRoleId): array
+    {
+        return $this->applicationRepository->findAllApplicationsByJobRole($jobRoleId);
+    }
+
+    public function countInternshipApplicationsByStudent(int $cycleId, int $studentId): int
+    {
+        return $this->applicationRepository->countInternshipApplicationsByStudent($cycleId, $studentId);
     }
 
     public function hire(int $cycleId, int $partnerId, ?int $applicationId = null, ?int $candidateId = null): bool

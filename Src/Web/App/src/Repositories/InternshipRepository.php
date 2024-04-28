@@ -367,28 +367,6 @@ class InternshipRepository implements IRepository
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function findStudentsByJobRole(int $jobRoleId): array
-    {
-        $sql = 'SELECT u.*, s.*,
-                CASE
-                    WHEN interns.student_id IS NOT NULL THEN 0
-                    ELSE 1
-                END AS isApplicantAvailable
-                FROM users u
-                INNER JOIN students s ON u.id = s.id
-                INNER JOIN job_role_students jrs ON u.id = jrs.student_id
-                LEFT JOIN interns ON u.id = interns.student_id
-                WHERE jrs.jobrole_id = :jobRoleId
-                GROUP BY u.id';
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute(['jobRoleId' => $jobRoleId]);
-        $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        foreach ($res as &$r) {
-            $r["isApplicantAvailable"] = $r["isApplicantAvailable"] === 1;
-        }
-        return $res;
-    }
-
     public function createJobRole(int $cycleId, string $name): bool
     {
         $sql = 'INSERT INTO job_roles (internship_cycle_id, name) VALUES (:cycleId, :name)';
@@ -408,22 +386,6 @@ class InternshipRepository implements IRepository
         $sql = 'DELETE FROM job_roles WHERE id = :id';
         $stmt = $this->pdo->prepare($sql);
         return $stmt->execute(['id' => $id]);
-    }
-
-    public function countSelectedJobRoles(int $cycleId, int $studentId): int
-    {
-        $stmt = $this->pdo->prepare(
-            "SELECT COUNT(*) AS count
-            FROM job_role_students jrs
-            INNER JOIN job_roles jr ON jrs.job_role_id = jr.id
-            WHERE jrs.student_id = :studentId
-            AND jr.internship_cycle_id = :cycleId"
-        );
-        $stmt->execute([
-            "studentId" => $studentId,
-            "cycleId" => $cycleId
-        ]);
-        return (int) $stmt->fetch(PDO::FETCH_ASSOC)['count'];
     }
 
     public function approveInternship(int $id): bool

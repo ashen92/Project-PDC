@@ -17,17 +17,13 @@
 <section>
     <div class="title">
         <h5>
-            Choose the job roles you're interested in for internship opportunities.
+            Choose job roles you're interested in for internship opportunities.
         </h5>
     </div>
 
-    <div class="hidden pb-5" id="alert-container">
-        {% for i in app.session.flashbag.get("error") %}
-        <div class="text-center mb-2 alert alert-error">
-            {{ i }}
-        </div>
-        {% endfor %}
-    </div>
+    {% if isApplicationsLimitReached %}
+    <div class="text-center p-5 fs-6 fw-semibold text-info">You have reached maximum applications limit.</div>
+    {% endif %}
 
     <div class="grid grid-cols-5 xxl-grid-cols-4 xl-grid-cols-3 lg-grid-cols-2 md-grid-cols-1 col-gap-10 row-gap-10"
         id="job-roles-container">
@@ -41,7 +37,8 @@
                     {% if i in jobRolesAppliedTo %}
                     <button class="btn btn-outline-danger" type="button" name="remove-btn" id="{{i.id}}">Remove</button>
                     {% else %}
-                    <button class="btn btn-primary" type="button" name="apply-btn" id="{{ i.id }}">Apply</button>
+                    <button class="btn btn-primary" type="button" name="apply-btn" id="{{ i.id }}" {% if
+                        isApplicationsLimitReached %}disabled{% endif %}>Apply</button>
                     {% endif %}
                 </div>
             </div>

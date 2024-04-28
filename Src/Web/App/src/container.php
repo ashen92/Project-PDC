@@ -501,6 +501,7 @@ $container->register(
         new Reference('service.authorization'),
         new Reference('service.internship'),
         new Reference('service.application'),
+        new Reference('service.internship_program'),
     ])
     ->setPublic(true);
 

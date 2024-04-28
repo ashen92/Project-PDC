@@ -131,7 +131,7 @@ readonly class InternshipService
         $res['title'] = $i['title'];
         $res['description'] = $i['description'];
         $res['applicationId'] = $i['application_id'] ?? null;
-        $res['submittedApplicationsCount'] = $this->applicationRepository->countSubmittedApplications($i['internship_cycle_id'], $studentId);
+        $res['submittedApplicationsCount'] = $this->applicationRepository->countInternshipApplicationsByStudent($i['internship_cycle_id'], $studentId);
         $res['maximumApplicationsCount'] = $this->internshipProgramService->valueOfSetting('MaxInternshipApplications');
         return $res;
     }
@@ -181,11 +181,6 @@ readonly class InternshipService
     public function getJobRoles(int $cycleId): array
     {
         return $this->internshipRepository->findJobRoles($cycleId);
-    }
-
-    public function getStudentsByJobRole(int $jobRoleId): array
-    {
-        return $this->internshipRepository->findStudentsByJobRole($jobRoleId);
     }
 
     public function createJobRole(int $cycleId, string $jobRoleName): bool
