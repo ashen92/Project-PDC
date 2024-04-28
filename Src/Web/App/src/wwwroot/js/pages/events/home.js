@@ -16,6 +16,22 @@ const calendar = new Calendar($("#calendar-view"), {
             alert("Failed to fetch events from the server.");
         }
     },
+    eventClick: function (info) {
+        var eventObj = info.event;
+
+        if (eventObj.url) {
+            alert(
+                "Clicked " + eventObj.title + ".\n" +
+                "Will open " + eventObj.url + " in a new tab"
+            );
+
+            window.open(eventObj.url);
+
+            info.jsEvent.preventDefault(); // prevents browser from following link in current tab.
+        } else {
+            alert("Clicked " + eventObj.title);
+        }
+    },
     // eventContent: function (arg) {
     //     return {
     //         html: "<b>" + arg.event.title + "</b><br>" + arg.event.extendedProps.location
