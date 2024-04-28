@@ -2,24 +2,20 @@
 
 use App\DTOs\CreateRequirementDTO;
 use App\Models\Internship\Visibility;
-use Database\Entities\JobRole;
+use App\Models\Requirement\FulFillMethod;
+use DB\Entities\InternshipProgramSetting;
+use DB\Entities\JobRole;
 use DB\Entities\Event;
 use DB\Entities\Internship;
 use DB\Entities\InternshipCycle;
 use DB\Entities\Organization;
 use DB\Entities\Partner;
 use DB\Entities\Permission;
-use DB\Entities\Permission\Action;
-use DB\Entities\Permission\Resource;
 use DB\Entities\Requirement;
 use DB\Entities\Role;
 use DB\Entities\Student;
 use DB\Entities\User;
 use DB\Entities\UserGroup;
-use DB\Entities\UserRequirement;
-use App\Models\Requirement\FulFillMethod;
-use App\Models\Requirement\RepeatInterval;
-use App\Models\Requirement\Type;
 
 #region Users
 
@@ -391,6 +387,31 @@ $entityManager->flush();
 
 #endregion
 
+#region Internship Program Settings
+
+echo "Done.\nAdding Internship Program Settings...";
+
+$maxInternshipApplications = new InternshipProgramSetting(
+    'MaxInternshipApplications',
+    '5',
+    'int',
+    'Maximum number of internship applications a student can submit.'
+);
+
+$entityManager->persist($maxInternshipApplications);
+
+$maxJobRoleApplications = new InternshipProgramSetting(
+    'MaxJobRoleApplications',
+    '5',
+    'int',
+    'Maximum number of job roles a student can select.'
+);
+
+$entityManager->persist($maxJobRoleApplications);
+$entityManager->flush();
+
+#endregion
+
 #region Internships
 
 echo "Done.\nAdding internships...";
@@ -448,21 +469,21 @@ $internData = [
         "<p><strong>Role Responsibilities &amp; Key Accountabilities</strong></p><p><br></p><ul><li> Delivers tasks given related to business processes and reference data on time and to agreed quality, executing to set procedures.</li><li> Solves basic problems / queries.</li><li> Gets well versed with Company’s policies and procedures.</li><li> Performs routine assignments at entry level</li><li> Receives and relays telephone and email queries.</li><li> Performs moderately complex and varied assignments within an administrative function</li><li> Drafts parts of reports for internal and external stakeholders with a high degree of accuracy</li><li> Develops knowledge of and ensures any work is conducted in line with LSEG design and content standards</li><li> Provides support to the team by co-ordinating meetings, printing materials, taking minutes and maintaining accurate action and decision logs</li></ul><p><br></p><p><strong>Qualifications &amp; Experience</strong></p><p><br></p><ul><li> Applies general knowledge of business, developed through education, to make informed judgements</li></ul><p><br></p><p>LSEG is a leading global financial markets infrastructure and data provider. Our purpose is driving financial stability, empowering economies and enabling customers to create sustainable growth.</p><p><br></p><p>Our purpose is the foundation on which our culture is built. Our values of Integrity, Partnership, Excellence and Change underpin our purpose and set the standard for everything we do, every day. They go to the heart of who we are and guide our decision making and everyday actions.</p><p><br></p><p>Working with us means that you will be part of a dynamic organisation of 25,000 people across 65 countries. However, we will value your individuality and enable you to bring your true self to work so you can help enrich our diverse workforce. You will be part of a collaborative and creative culture where we encourage new ideas and are committed to sustainability across our global business. You will experience the critical role we have in helping to re-engineer the financial ecosystem to support and drive sustainable economic growth. Together, we are aiming to achieve this growth by accelerating the just transition to net zero, enabling growth of the green economy and creating inclusive economic opportunity.</p><p><br></p><p>LSEG offers a range of tailored benefits and support, including healthcare, retirement planning, paid volunteering days and wellbeing initiatives.</p><p><br></p><p>We are proud to be an equal opportunities employer. This means that we do not discriminate on the basis of anyone’s race, religion, colour, national origin, gender, sexual orientation, gender identity, gender expression, age, marital status, veteran status, pregnancy or disability, or any other basis protected under applicable law. Conforming with applicable law, we can reasonably accommodate applicants' and employees' religious practices and beliefs, as well as mental health or physical disability needs.</p><p><br></p><p>Please take a moment to read this privacy notice carefully, as it describes what personal information London Stock Exchange Group (LSEG) (we) may hold about you, what it’s used for, and how it’s obtained, your rights and how to contact us as a data subject.</p><p><br></p><p>If you are submitting as a Recruitment Agency Partner, it is essential and your responsibility to ensure that candidates applying to LSEG are aware of this privacy notice.</p>",
         $partnerUsers[5],
         Visibility::Public ,
-        false,
+        true,
     ],
     [
         "Intern - Digital Platforms and Partnerships",
         "<p>WOW is a Superapp that consists of an array of services that aim to cater to a wide range of digital lifestyle needs! With a heavy focus on personalization, the WOW Superapp will mean different things to different users, from being the go-to platform for entertainment, rewards, discounts and convenience through digital interactions &amp; transactions. The WOW Superapp will offer opportunities to engage, be rewarded, transact, and enjoy convenience in a seamless manner within a single app interface. Users will be rewarded not only for their transactions but also for their engagement with the app, through daily mission accomplishments and exciting gamifications.</p><p>We are seeking a motivated and tech-savvy Digital Marketing Intern to join our dynamic team. This internship offers a hands-on experience in digital marketing, providing exposure to various digital channels and strategies.</p><p><br></p><p><strong>The Job</strong></p><p><br></p><p><strong>Social Media Management:</strong></p><ul><li>Assist in developing and implementing social media strategies to increase brand awareness.</li><li>Create engaging content for various social media platforms.</li><li>Monitor and respond to audience interactions when needed.</li></ul><p><br></p><p><strong>Content Creation:</strong></p><ul><li>Collaborate with the content team to create creative, compelling and shareable content for digital channels.</li><li>Assist in the development of blog posts, infographics, and multimedia content.</li></ul><p><br></p><p><strong>Performance Marketing (Digital Advertising):</strong></p><ul><li>Assist in the creation and optimization of digital advertising campaigns (Google Ads, Meta ads, etc.)</li><li>Monitor and analyze the performance of digital ads.</li></ul><p><br></p><p><strong>Analytics and Reporting:</strong></p><ul><li>Collect and analyze data from various digital marketing channels.</li><li>Generate reports to measure the effectiveness of campaigns and provide actionable insights.</li></ul><p><br></p><p><strong>Website Management:</strong></p><ul><li>Assist in the maintenance and optimization of the company website.</li><li>Collaborate with the web development team on digital projects.</li></ul><p><br></p><p><strong>Search Engine Optimization (SEO):</strong></p><ul><li>Support SEO initiatives by optimizing website content and structure.</li><li>Conduct keyword research and analysis.</li></ul><p><br></p><p><br></p><p><strong>The Person</strong></p><p><br></p><ul><li>Currently pursuing a degree in Marketing, Digital Marketing, Business, or a related field.</li><li>Basic understanding of digital marketing concepts and tools.</li><li>Familiarity with social media platforms, SEO, and digital advertising.</li><li>Strong written and verbal communication skills.</li><li>Proficiency in Microsoft Office packages</li><li>Ability to work independently and as part of a team.</li></ul><p><br></p><p><strong>Benefits</strong></p><p><br></p><ul><li>Practical exposure to diverse digital marketing channels and tools.</li><li>Mentorship from experienced digital marketing professionals.</li><li>Networking opportunities within the digital marketing industry.</li></ul><p><br></p><p>If you are a digitally inclined and creative individual looking to jumpstart your career in digital marketing, we invite you to apply for our Digital Marketing Intern position.</p>",
         $partnerUsers[6],
         Visibility::Public ,
-        false,
+        true,
     ],
     [
         "Intern - Software Engineering",
         "<p><strong>Location</strong>: Colombo, Sri Lanka</p><p><br></p><p>Our mission is to unlock human potential. We welcome you for who you are, the background you bring, and we embrace individuals who get excited about learning. Bring your experiences, your perspectives, and your passion; it is in our differences that we empower the way the world learns.</p><p><br></p><p><strong>How You Will Make An Impact</strong></p><p><br></p><ul><li>Hands-on experience involving software development lifecycle.</li><li>Hands-on experience in Programming industrial level applications and related processes</li><li>Participate in new feature addition discussions with the other development and business teams.</li><li>Participate and contribute to all Agile/Scrum ceremonies within the team and cross teams.</li><li>Setting up non-prod environments and gain exposure of using them correctly.</li><li>Expertise in working in a multinational organization environment.</li><li>Proactive and reactive monitoring of Application Systems and Infrastructure.</li><li>Improve communication skills and understanding the dynamics of working in a team.</li><li>Reading, understanding, and writing technical documentations.</li></ul><p><br></p><p><strong>What We Look For</strong></p><p><br></p><ul><li>Reading for a degree in Computer Science, Software Engineering, IT, or any other related discipline who can join us for a 1-year internship.</li><li>Have strong knowledge in OOP concepts and its applications.</li><li>Have knowledge in basic programming and design patterns.</li><li>Have knowledge in database concepts and SQL queries.</li><li>Have knowledge in web programming languages such as React JS, Angular JS, Node, Java will be an added advantage.</li><li>Have a basic understanding of cloud-based environments such as AWS.</li><li>Have excellent communication and critical thinking skills.</li></ul><p><br></p><p><strong>About Wiley</strong></p><p><br></p><p>Enabling Discovery, Powering Education, Shaping Workforces.</p><p><br></p><p>We clear the way for seekers of knowledge: illuminating the path forward for research and education, tearing down barriers to society’s advancement, and giving seekers the help, they need to turn their steps into strides.</p><p><br></p><p>Wiley may have been founded over two centuries ago, but our secret to success remains the same: our people. We are willing to challenge the status quo, move the needle, and be innovative. Wiley’s headquarters are located in Hoboken, New Jersey, with operations across the globe in more than 40 countries.</p><p><br></p><p>Please attach your CV in order to be considered for this position.</p><p><br></p><p><strong>Location/Division:</strong></p><p><br></p><p>Colombo, Sri Lanka</p><p><br></p><p><strong>Job Requisition</strong></p><p><br></p><p>R2302464</p><p><br></p><p><strong>Remote Location:</strong></p><p><br></p><p>No</p><p><br></p><p><strong>Time Type</strong></p><p><br></p><p>Full Time</p>",
         $partnerUsers[4],
-        Visibility::Private ,
-        false,
+        Visibility::Public ,
+        true,
     ],
     [
         "Software Engineer- Intern",
@@ -475,8 +496,8 @@ $internData = [
         "Systems Engineering- Intern",
         "<p><strong>Description</strong>: This position is a Systems Engineering intern to support the C2BMC-Global program.</p><p><br></p><p><strong>Basic Qualifications</strong></p><p><br></p><p>College course exposure to Systems Engineering concepts and skills such as requirements engineering, use case development, logical architecture modeling, model-based systems engineering and interface definition.</p><p><br></p><p>College course work in common programming languages including Java, C++, Python, data base management, networking or data communications is a plus. Experience with Microsoft Excel including development of Pivot Tables and Excel Macros.</p><p><br></p><p>Must be a US Citizen; this position will require a government security clearance. This position is located at a facility that requires special access.</p><p><br></p><p><strong>Desired Skills</strong></p><p><br></p><p>Experience with performing systems engineering for DoD Information Systems is desirable. Formal Systems Engineering education is a significant plus. Experience with Model-Based Systems Engineering Tools is desired.</p><p><br></p><p>Security Clearance Statement: This position requires a government security clearance, you must be a US Citizen for consideration.</p><p><br></p><p><strong>Clearance Level</strong>: Top Secret</p><p><br></p><p><strong>Other Important Information You Should Know</strong></p><p><br></p><p><strong>Expression of Interest</strong>: By applying to this job, you are expressing interest in this position and could be considered for other career opportunities where similar skills and requirements have been identified as a match. Should this match be identified you may be contacted for this and future openings.</p><p><br></p><p><strong>Ability to Work Remotely</strong>: Onsite Full-time: The work associated with this position will be performed onsite at a designated Lockheed Martin facility.</p><p><br></p><p><strong>Work Schedules</strong>: Lockheed Martin supports a variety of alternate work schedules that provide additional flexibility to our employees. Schedules range from standard 40 hours over a five day work week while others may be condensed. These condensed schedules provide employees with additional time away from the office and are in addition to our Paid Time off benefits.</p><p><br></p><p><strong>Schedule for this Position</strong>: 4x10 hour day, 3 days off per week</p><p><br></p><p><strong>Pay Rate</strong></p><p><br></p><p>The annual base salary range for this position in California and New York (excluding most major metropolitan areas), Colorado, or Washington is $20,904 - $67,288. Please note that the salary information is a general guideline only. Lockheed Martin considers factors such as (but not limited to) scope and responsibilities of the position, candidate's work experience, education/ training, key skills as well as market and business considerations when extending an offer.</p><p><br></p><p>Benefits offered: Medical, Dental, Vision, Life Insurance, Short-Term Disability, Long-Term Disability, 401(k) match, Flexible Spending Accounts, EAP, Education Assistance, Parental Leave, Paid time off, and Holidays.</p><p><br></p><p>(Washington state applicants only) Non-represented full time employees: accrue 10 hours per month of Paid Time Off (PTO); receive 40 hours of Granted PTO annually for incidental absences; receive at least 90 hours for holidays. Represented full time employees accrue 6.67 hours of PTO per month; accrue up to 52 hours of sick leave annually; receive at least 96 hours for holidays. PTO is prorated based on hours worked and start date during the calendar year.</p><p><br></p><p>Lockheed Martin is an Equal Opportunity/Affirmative Action Employer. All qualified applicants will receive consideration for employment without regard to race, color, religion, sex, pregnancy, sexual orientation, gender identity, national origin, age, protected veteran status, or disability status.</p><p><br></p><p>The application window will close in 90 days; applicants are encouraged to apply within 5 - 30 days of the requisition posting date in order to receive optimal consideration.</p><p><br></p><p>At Lockheed Martin, we use our passion for purposeful innovation to help keep people safe and solve the world's most complex challenges. Our people are some of the greatest minds in the industry and truly make Lockheed Martin a great place to work.</p><p><br></p><p>With our employees as our priority, we provide diverse career opportunities designed to propel, develop, and boost agility. Our flexible schedules, competitive pay, and comprehensive benefits enable our employees to live a healthy, fulfilling life at and outside of work. We place an emphasis on empowering our employees by fostering an inclusive environment built upon integrity and corporate responsibility.</p><p><br></p><p>If this sounds like a culture you connect with, you’re invited to apply for this role. Or, if you are unsure whether your experience aligns with the requirements of this position, we encourage you to search on Lockheed Martin Jobs, and apply for roles that align with your qualifications.</p><p><br></p><p><strong>Experience Level</strong>: Co-op/Summer Intern</p><p><br></p><p><strong>Business Unit</strong>: RMS</p><p><br></p><p><strong>Relocation Available</strong>: Possible</p><p><br></p><p><strong>Career Area</strong>: Software Engineering</p><p><br></p><p><strong>Type</strong>: Part-Time</p><p><br></p><p><strong>Shift</strong>: First</p>",
         $partnerUsers[7],
-        Visibility::Private ,
-        false,
+        Visibility::Public ,
+        true,
     ]
 ];
 

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DB\Entities;
 
-use Database\Entities\JobRole;
+use DB\Entities\JobRole;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -79,15 +79,5 @@ class Student extends User
     public function setIndexNumber(string $indexNumber): void
     {
         $this->indexNumber = $indexNumber;
-    }
-
-    public function addToInternshipsApplied(Internship $internship): void
-    {
-        $this->internshipsApplied[] = $internship;
-    }
-
-    public function removeFromInternshipsApplied(Internship $internship): void
-    {
-        $this->internshipsApplied->removeElement($internship);
     }
 }

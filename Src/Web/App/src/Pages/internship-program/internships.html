@@ -127,18 +127,53 @@
             </div>
             <div class="content hidden" id="job-details-content">
                 <div class="header">
-                    <h3 class="title" id="job-title"></h3>
+                    <div class="title col-gap-20">
+                        <h3 class="mb-0" id="job-title"></h3>
+                        {% if has_role('InternshipProgramAdmin') %}
+                        <div class="flex">
+                            <div>
+                                <button type="button" class="btn btn-primary hidden"
+                                    id="on-pending-approval">Approve</button>
+                                <div class="flex col-gap-10 hidden" id="on-approval">
+                                    <div class="flex items-center text-success fw-semibold">
+                                        <i class="i i-check2-circle fs-5"></i>
+                                        <span>Approved</span>
+                                    </div>
+                                    <button type="button" class="btn btn-secondary">Undo</button>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        {% if has_role('InternshipProgramPartner') %}
+                        <div>
+                            <div class="hidden" id="not-yet-approved">
+                                <div class="flex items-center text-info fw-semibold">
+                                    <i class="i i-hourglass fs-5"></i>
+                                    <span>Not yet approved</span>
+                                </div>
+                            </div>
+                            <div class="flex col-gap-10 hidden" id="approved">
+                                <div class="flex items-center text-success fw-semibold">
+                                    <i class="i i-check2-circle fs-5"></i>
+                                    <span>Approved</span>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
                     <div class="company" id="job-company">
                         <div class="logo"></div>
                         Company
                     </div>
                     <div class="actions">
                         {% if has_permission('ReadApplication') %}
-                        <button type="button" class="btn btn-primary" id="applicants-job-btn">Applicants</button>
+                        <button type="button" class="btn btn-outline-primary"
+                            id="applicants-job-btn">Applicants</button>
                         {% endif %}
 
                         {% if has_permission('ModifyInternship') %}
-                        <button type="button" class="btn btn-outline-primary" id="modify-job-btn">Modify</button>
+                        <button type="button" class="btn btn-secondary" id="modify-job-btn">Modify</button>
                         {% endif %}
 
                         {% if has_permission('DeleteInternship') %}
@@ -149,6 +184,9 @@
                         <button type="button" class="btn btn-primary" id="btn-apply">Apply</button>
                         <button type="button" class="btn btn-primary hidden" id="btn-undo-apply">Cancel
                             Application</button>
+                        <span class="hidden" id="apply-limit-text">
+                            You have reached maximum number of internship applications
+                        </span>
                         {% endif %}
                     </div>
                 </div>

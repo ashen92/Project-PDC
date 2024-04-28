@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Database\Entities;
+namespace DB\Entities;
 
 use DB\Entities\InternshipCycle;
 use DB\Entities\Student;

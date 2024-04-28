@@ -7,7 +7,7 @@ use App\DTOs\createInternshipDTO;
 use App\Interfaces\IFileStorageService;
 use App\Models\Internship;
 use App\Models\Internship\Visibility;
-use App\Models\InternshipProgram\createApplication;
+use App\Models\InternshipProgram\CreateApplication;
 use App\Models\InternshipSearchResult;
 use App\Models\Organization;
 use App\Models\Student;
@@ -17,7 +17,7 @@ readonly class InternshipService
 {
     public function __construct(
         private InternshipRepository $internshipRepository,
-        private InternshipProgramService $internshipCycleService,
+        private InternshipProgramService $internshipProgramService,
         private IFileStorageService $fileStorageService
     ) {
     }
@@ -131,7 +131,8 @@ readonly class InternshipService
         $res['title'] = $i['title'];
         $res['description'] = $i['description'];
         $res['applicationId'] = $i['application_id'] ?? null;
-
+        $res['submittedApplicationsCount'] = $this->internshipRepository->countSubmittedApplications($i['internship_cycle_id'], $studentId);
+        $res['maximumApplicationsCount'] = $this->internshipProgramService->valueOfSetting('MaxInternshipApplications');
         return $res;
     }
 
@@ -167,10 +168,17 @@ readonly class InternshipService
         return $this->internshipRepository->updateInternship($id, $title, $description);
     }
 
-    public function createApplication(createApplication $createApplication): bool
+    public function createApplication(int $cycleId, CreateApplication $createApplication): bool
     {
         // TODO: Check if internship exists
         // TODO: Check if user exists and is a student
+
+        $maxApplications = $this->internshipProgramService->valueOfSetting('MaxInternshipApplications');
+        $studentApplications = $this->internshipRepository->countSubmittedApplications($cycleId, $createApplication->userId);
+
+        if ($studentApplications >= $maxApplications) {
+            throw new \InvalidArgumentException('Maximum number of applications reached', 1001);
+        }
 
         $fileUploadResponse = $this->fileStorageService->upload($createApplication->files);
         if (!$fileUploadResponse) {
@@ -225,8 +233,15 @@ readonly class InternshipService
         return $this->internshipRepository->findStudentsByJobRole($jobRoleId);
     }
 
-    public function applyToJobRole(int $jobRoleId, int $studentId): bool
+    public function applyToJobRole(int $cycleId, int $jobRoleId, int $studentId): bool
     {
+        $maxApplications = $this->internshipProgramService->valueOfSetting('MaxJobRoleApplications');
+        $studentApplications = $this->internshipRepository->countSelectedJobRoles($cycleId, $studentId);
+
+        if ($studentApplications >= $maxApplications) {
+            throw new \InvalidArgumentException('Maximum number of job roles reached', 1002);
+        }
+
         return $this->internshipRepository->applyToJobRole($jobRoleId, $studentId);
     }
 

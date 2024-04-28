@@ -220,11 +220,13 @@
                 box-shadow: $shadow-3;
 
                 >.header {
+                    border-radius: $rounded-2 $rounded-2 0 0;
                     padding: 2.5rem;
                     background-color: #f6f8fa;
 
                     >.title {
-                        font-weight: $fw-semibold;
+                        display: flex;
+                        justify-content: space-between;
                     }
 
                     >.company {

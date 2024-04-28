@@ -219,4 +219,9 @@ readonly class InternshipProgramService
 
         $this->userRepository->addToUserGroup($userId, $group->getId());
     }
+
+    public function valueOfSetting(string $key): mixed
+    {
+        return $this->internshipProgramRepository->findValueOfSetting($key);
+    }
 }

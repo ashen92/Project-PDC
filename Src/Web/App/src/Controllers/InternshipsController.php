@@ -6,7 +6,7 @@ namespace App\Controllers;
 use App\DTOs\createInternshipDTO;
 use App\Models\Internship;
 use App\Models\InternshipCycle;
-use App\Models\InternshipProgram\createApplication;
+use App\Models\InternshipProgram\CreateApplication;
 use App\Security\Attributes\RequiredAtLeastOne;
 use App\Security\Attributes\RequiredRole;
 use App\Security\AuthorizationService;
@@ -244,7 +244,7 @@ class InternshipsController extends ControllerBase
     }
 
     #[Route('/internships/{id}/apply', methods: ['POST'])]
-    public function applyPOST(Request $request, int $id): RedirectResponse
+    public function applyPOST(Request $request, InternshipCycle $cycle, int $id): RedirectResponse
     {
         $userId = $request->getSession()->get('user_id');
 
@@ -255,8 +255,12 @@ class InternshipsController extends ControllerBase
 
         // TODO: Validate data
 
-        if (!$this->internshipService->createApplication(new createApplication($id, $userId, $files))) {
-            // TODO: Set errors
+        try {
+            if (!$this->internshipService->createApplication($cycle->getId(), new CreateApplication($id, $userId, $files))) {
+                $request->getSession()->getFlashBag()->add('error', 'Error occurred. Please try again.');
+            }
+        } catch (\Throwable $th) {
+            $request->getSession()->getFlashBag()->add('error', $th->getMessage());
         }
 
         return $this->redirect('/internship-program/internships');
@@ -312,13 +316,16 @@ class InternshipsController extends ControllerBase
 
     #[RequiredRole('InternshipProgramStudent')]
     #[Route('/round-2/job-roles/{id}/apply', methods: ['PUT'])]
-    public function jobRoleApply(Request $request, int $id): Response
+    public function jobRoleApply(Request $request, InternshipCycle $cycle, int $id): Response
     {
         $userId = $request->getSession()->get('user_id');
-        if ($this->internshipService->applyToJobRole($id, $userId)) {
-            return new Response(null, 204);
+        try {
+            if ($this->internshipService->applyToJobRole($cycle->getId(), $id, $userId))
+                return new Response(null, 204);
+        } catch (\Throwable $th) {
+            if ($th->getCode() === 1002)
+                return new Response(json_encode(['message' => $th->getMessage()]), 409);
         }
-
         return new Response(null, 400);
     }
 
@@ -381,8 +388,12 @@ class InternshipsController extends ControllerBase
     public function candidateHire(Request $request, InternshipCycle $cycle, int $jobRoleId, int $candidateId): Response
     {
         $userId = $request->getSession()->get('user_id');
-        if ($this->applicationService->hire($cycle->getId(), $userId, candidateId: $candidateId)) {
-            return new Response(null, 204);
+        try {
+            if ($this->applicationService->hire($cycle->getId(), $userId, candidateId: $candidateId))
+                return new Response(null, 204);
+        } catch (\Throwable $th) {
+            if ($th->getCode() === 1000)
+                return new Response(json_encode(['message' => $th->getMessage()]), 409);
         }
         return new Response(null, 400);
     }

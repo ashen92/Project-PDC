@@ -12,9 +12,16 @@ const table = new DataTable("#applications-table", {
     ],
 });
 
-const dialog = new Dialog("#file-viewer");
-dialog.setTitle("CV/Resume");
+const fileViewerDialog = new Dialog("#file-viewer");
+fileViewerDialog.setTitle("CV/Resume");
 const pdfViewer = $("#pdf-viewer");
+
+const errorDialog = new Dialog("#error-dialog");
+errorDialog.setTitle("Error occurred");
+errorDialog.onClose(() => {
+    location.reload(true);
+});
+let errorMessage = $("#error-dialog #error-message");
 
 let url = new URL(window.location.href);
 url.search = "";
@@ -29,8 +36,12 @@ table.on("click", "tbody", (e) => {
             fetch(`${url}/${id}/hire`, {
                 method: "PUT"
             }).then(response => {
-                if (!response.status === 204) {
-                    throw new Error("Error occurred");
+                if (!(response.status === 204)) {
+                    response.json().then(data => {
+                        errorMessage.textContent = data.message;
+                        errorDialog.open();
+                    });
+                    return;
                 }
                 location.reload(true);
             }).catch(error => {
@@ -40,7 +51,7 @@ table.on("click", "tbody", (e) => {
             fetch(`${url}/${id}/reject`, {
                 method: "PUT"
             }).then(response => {
-                if (!response.status === 204) {
+                if (!(response.status === 204)) {
                     throw new Error("Error occurred");
                 }
                 location.reload(true);
@@ -51,7 +62,7 @@ table.on("click", "tbody", (e) => {
             fetch(`${url}/${id}/reset`, {
                 method: "PUT"
             }).then(response => {
-                if (!response.status === 204) {
+                if (!(response.status === 204)) {
                     throw new Error("Error occurred");
                 }
                 location.reload(true);
@@ -59,7 +70,7 @@ table.on("click", "tbody", (e) => {
                 console.error(error);
             });
         } else if (e.target.name === "view-btn") {
-            dialog.open();
+            fileViewerDialog.open();
             const fileId = e.target.dataset.fileId;
             if (pdfViewer.dataset.fileId !== fileId) {
                 pdfViewer.data = `${url}/${id}/files/${fileId}`;
