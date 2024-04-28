@@ -80,14 +80,4 @@ class Student extends User
     {
         $this->indexNumber = $indexNumber;
     }
-
-    public function addToInternshipsApplied(Internship $internship): void
-    {
-        $this->internshipsApplied[] = $internship;
-    }
-
-    public function removeFromInternshipsApplied(Internship $internship): void
-    {
-        $this->internshipsApplied->removeElement($internship);
-    }
 }

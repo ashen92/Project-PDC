@@ -241,4 +241,22 @@ class InternshipProgramRepository implements IRepository
         $stmt->execute(['id' => $cycleId]);
         return $stmt->rowCount() > 0;
     }
+
+    public function findValueOfSetting(string $key): mixed
+    {
+        $stmt = $this->pdo->prepare(
+            'SELECT settingValue, settingValueType FROM internship_program_settings WHERE settingKey = :settingKey'
+        );
+        $stmt->execute(['settingKey' => $key]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($row === false) {
+            return null;
+        }
+        return match ($row['settingValueType']) {
+            'int' => (int) $row['settingValue'],
+            'bool' => (bool) $row['settingValue'],
+            'string' => $row['settingValue'],
+            default => null,
+        };
+    }
 }
