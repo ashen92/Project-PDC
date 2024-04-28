@@ -31,6 +31,12 @@ readonly class EventService
         return $events;
     }
 
+    public function getEventlist(): array
+    {
+        $events = $this->eventRepository->getEventlist();
+        return $events;
+    }
+
     public function getUserGroups(): array
     {
         $groups = $this->userRepository->findAllUserGroups();
@@ -59,7 +65,7 @@ readonly class EventService
 
     public function getEventById(int $id)
     {
-        //return $this->eventRepository->getEventById($id);
+        return $this->eventRepository->getEventById($id);
     }
 
     public function createEvent(CreateEventDTO $dto): void
@@ -68,11 +74,19 @@ readonly class EventService
 
     }
 
-    public function editEvent($event): void
+    /* public function updateInternship(
+        int $id,
+        ?string $title = null,
+        ?string $description = null,
+        //?bool $isPublished = null
+    ): bool {
+        // TODO: Check if internship exists
+
+        return $this->eventRepository->update($id, $title, $description);
+    } */
+    public function deleteEvent($id): bool
     {
-    }
-    public function deleteEvent($event): void
-    {
+        return $this->eventRepository->delete($id);
     }
 
     public function addParticipantToEvent(int $eventId, int $userGroupId): void
@@ -80,4 +94,6 @@ readonly class EventService
         // Add participant to the specified event
         $this->eventRepository->addParticipantToEvent($eventId, $userGroupId);
     }
+
+
 }
