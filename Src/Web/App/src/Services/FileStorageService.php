@@ -54,7 +54,7 @@ readonly class FileStorageService implements IFileStorageService
     #[Override] public function get(string $filePath): ?array
     {
         // Temporary solution
-        return null;
+        // return null;
 
         try {
             $response = $this->httpClient->request(
