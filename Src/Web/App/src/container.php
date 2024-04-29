@@ -550,6 +550,16 @@ $container->register(
     ])
     ->setPublic(true);
 
+$container->register(
+    'App\Controllers\ProfileController',
+    \App\Controllers\ProfileController::class
+)
+    ->setArguments([
+        new Reference('twig'),
+        new Reference('service.authorization'),
+    ])
+    ->setPublic(true);
+
 #endregion
 
 $container->compile();

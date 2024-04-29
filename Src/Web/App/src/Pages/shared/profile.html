@@ -1,0 +1,126 @@
+{% extends "shared/layout-left-nav.html" %}
+
+{% block title %}User Profile{% endblock %}
+
+{# {% block left_nav %} #}
+{# {% include "events/left-nav.html" %} #}
+{# {% endblock %} #}
+
+{% block content %}
+
+<class="profile-section">
+    <div class="profile-header">
+        <div class="profile-picture">
+            <input type="file" id="image-upload" accept="image/*" style="display: none;">
+            <label for="image-upload" id="change-image-btn" title="Change Picture"><span
+                    class="camera-icon">&#x1F4F7;</span></label>
+            <img src="https://picsum.photos/id/237/200/300" alt="Profile Picture">
+        </div>
+        <div class="profile-info">
+            <h1>Dewmini Liyanawatte</h1>
+            <h3>Business Analyst</h3>
+            <h5> <span class="phone-icon">&#x260E; </span> <a href="tel:+94 71 1232 2678"> +94 71 1232 2678</a> </h5>
+            <h5> <span class="icon">&#x2709;</span> <a href="mailto:user@example.com"> user@example.com</a> </h5>
+            <h5> <span class="icon">&#x1F4AC;</span> <a href="chat:user@example.com">Chat</a> </h5>
+        </div>
+        <a href="/profile/edit">
+            <button class="edit-profile-btn" type="button">Edit Profile</button>
+        </a>
+    </div>
+
+    <div class="profile-details">
+        <div class="profile-card">
+            <h3>About</h3>
+            <p>
+                I am an Information Systems Second Year Undergraduate in search of a Business Analyst Opportunity.
+            </p>
+        </div>
+    </div>
+
+    <div class="profile-tabs">
+        <button class="tab-btn" onclick="openTab('profile')">Profile</button>
+        <button class="tab-btn" onclick="openTab('Curriculam Vitae')">Curriculam Vitae</button>
+        <button class="tab-btn" onclick="openTab('Application status')">Applications</button>
+    </div>
+
+    <div id="profile-tab" class="tab-content active">
+        <div class="profile-columns">
+            <div class="profile-column">
+                <h2>Personal Information</h2>
+                <p><strong>Email:</strong> user@example.com</p>
+                <p><strong>Phone:</strong> +1234567890</p>
+                <p><strong>Location:</strong> Colombo</p>
+            </div>
+            <br> <br>
+
+            <div class="profile-column">
+                <h2>Education</h2>
+                <p>Ordinary Level</p>
+                <p>Advanced Level</p>
+                <p>University: University of Colombo</p>
+            </div>
+        </div>
+        <br> <br>
+
+        <div class="profile-columns">
+            <div class="profile-column">
+                <h2>Skills</h2>
+                <p>Communication skills</p>
+                <p>Design skills</p>
+                <p>Content writing skills</p>
+            </div>
+            <br> <br>
+
+            <div class="profile-column">
+                <h2>Work Experience</h2>
+                <p>Business Analyst Intern</p>
+                <p>Junior Business Analyst</p>
+            </div>
+        </div>
+    </div>
+    <br> <br>
+
+    <div id="Curriculam Vitae-tab" class="tab-content">
+        <h2>Curriculam Vitae</h2>
+        <p>Find my CV and Cover letter here!</p>
+        <a href="CV.pdf"> CV </a>
+    </div>
+
+    <div id="Application status-tab" class="tab-content">
+        <h2>Application status</h2>
+        <ul id="job-applications-list">
+            <!-- Placeholder for displaying job applications -->
+        </ul>
+    </div>
+
+    </div>
+
+    <script>
+        function openTab(tabName) {
+            const tabContents = document.querySelectorAll('.tab-content');
+            const tabButtons = document.querySelectorAll('.tab-btn');
+
+            tabContents.forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            tabButtons.forEach(btn => {
+                btn.classList.remove('active'); // Remove active class from all buttons
+            });
+
+            // Show the selected tab content
+            const selectedTabContent = document.getElementById(tabName + '-tab');
+            if (selectedTabContent) {
+                selectedTabContent.classList.add('active'); // Show the selected tab content
+            }
+
+            // Activate the corresponding tab button
+            const selectedTabButton = document.querySelector(`button.tab-btn[data-tab="${tabName}"]`);
+            if (selectedTabButton) {
+                selectedTabButton.classList.add('active'); // Activate the corresponding tab button
+            }
+        }
+    </script>
+
+
+    {% endblock %}

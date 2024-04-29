@@ -31,9 +31,15 @@
                 </li>
             </ul>
             <ul class="navbar-end">
+                {% if has_role('partner') %}
                 <li>
-                    <a href="">{{ app.session.get("user_first_name") }}</a>
+                    <a href="/profile/company">{{ app.session.get("user_first_name") }}</a>
                 </li>
+                {% else %}
+                <li>
+                    <a href="/profile">{{ app.session.get("user_first_name") }}</a>
+                </li>
+                {% endif %}
                 <li>
                     <a href="/logout">Sign out</a>
                 </li>

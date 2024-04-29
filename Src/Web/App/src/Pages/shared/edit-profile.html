@@ -1,0 +1,47 @@
+{% extends "shared/layout-left-nav.html" %}
+
+{% block title %}User Profile{% endblock %}
+
+{# {% block left_nav %} #}
+{# {% include "events/left-nav.html" %} #}
+{# {% endblock %} #}
+
+{% block content %}
+
+<div class="title">
+    <h2>
+        Edit Profile
+    </h2>
+</div>
+{#<form action="/events/edit/{{event.id}}" method="post">#}
+    <div class="field">
+        <label for="Name">Name: </label>
+        <input type="text" id="Name" name="Name" value="{{Name}}" required>
+    </div> <br>
+
+    <div class="field">
+        <label for="position">Position: </label>
+        <input type="text" id="position" name="position">
+    </div> <br>
+
+    <div class="field">
+        <label for="ContactNo">Contact Number: </label>
+        <input type="text" id="ContactNo" name="ContactNo" value="{{ContactNo}}" required>
+    </div> <br>
+
+    <div class="field">
+        <label for="email">E mail: </label>
+        <input type="email" id="email" name="email" required value="{{Email}}">
+    </div> <br>
+
+    <div class="field">
+        <label for="description">About you</label>
+        <textarea id="user-message" name="message" rows="4" cols="50"></textarea>
+    </div>
+
+    <div class="actions">
+        <button type="submit">Change Details</button>
+    </div>
+
+</form>
+{% endblock %}
