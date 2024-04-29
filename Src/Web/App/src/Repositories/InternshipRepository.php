@@ -26,9 +26,9 @@ class InternshipRepository implements IRepository
         $this->pdo->beginTransaction();
     }
 
-    public function commit(): void
+    public function commit(): bool
     {
-        $this->pdo->commit();
+        return $this->pdo->commit();
     }
 
     public function rollback(): void
@@ -515,5 +515,37 @@ class InternshipRepository implements IRepository
         $sql = 'DELETE FROM job_roles WHERE id = :id';
         $stmt = $this->pdo->prepare($sql);
         return $stmt->execute(['id' => $id]);
+    }
+
+    public function countSubmittedApplications(int $cycleId, int $studentId): int
+    {
+        $stmt = $this->pdo->prepare(
+            "SELECT COUNT(*) AS count
+            FROM applications a
+            INNER JOIN internships i ON a.internship_id = i.id
+            WHERE user_id = :studentId
+            AND i.internship_cycle_id = :cycleId"
+        );
+        $stmt->execute([
+            "studentId" => $studentId,
+            "cycleId" => $cycleId
+        ]);
+        return (int) $stmt->fetch(PDO::FETCH_ASSOC)['count'];
+    }
+
+    public function countSelectedJobRoles(int $cycleId, int $studentId): int
+    {
+        $stmt = $this->pdo->prepare(
+            "SELECT COUNT(*) AS count
+            FROM job_role_students jrs
+            INNER JOIN job_roles jr ON jrs.job_role_id = jr.id
+            WHERE jrs.student_id = :studentId
+            AND jr.internship_cycle_id = :cycleId"
+        );
+        $stmt->execute([
+            "studentId" => $studentId,
+            "cycleId" => $cycleId
+        ]);
+        return (int) $stmt->fetch(PDO::FETCH_ASSOC)['count'];
     }
 }

@@ -16,15 +16,16 @@ final readonly class ApplicationService
 
     }
 
-    public function hire(int $partnerId, ?int $applicationId = null, ?int $candidateId = null): bool
+    public function hire(int $cycleId, int $partnerId, ?int $applicationId = null, ?int $candidateId = null): bool
     {
-        if ($applicationId === null && $candidateId === null) {
+        if ($applicationId === null && $candidateId === null)
             throw new \InvalidArgumentException('Either applicationId or candidateId must be provided');
-        }
 
-        if ($applicationId !== null && $candidateId !== null) {
+        if ($applicationId !== null && $candidateId !== null)
             throw new \InvalidArgumentException('Only one of applicationId or candidateId must be provided');
-        }
+
+        if ($this->applicationRepository->isIntern($cycleId, $candidateId, $applicationId))
+            throw new \InvalidArgumentException('Student is already an intern', 1000);
 
         // TODO: Check if parameters exist
 
@@ -33,6 +34,7 @@ final readonly class ApplicationService
             if ($applicationId) {
                 $application = $this->applicationRepository->findApplication($applicationId);
                 $this->applicationRepository->createIntern(
+                    $cycleId,
                     $application['user_id'],
                     $partnerId,
                     null,
@@ -44,6 +46,7 @@ final readonly class ApplicationService
                 $this->requirementService->createUserRequirements($application['user_id']);
             } else {
                 $this->applicationRepository->createIntern(
+                    $cycleId,
                     $candidateId,
                     $partnerId,
                     null,

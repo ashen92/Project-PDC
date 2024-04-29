@@ -13,30 +13,49 @@
         Create a Tech Talk Session
     </h2>
 </div>
-<form class="w-96 mx-auto" action="/techtalks/create" method="post">
+<form action="/techtalks/create" method="post">
+
+    {% if error_message %}
+    <div class="alert alert-error" role="alert">
+        {{ error_message }}
+    </div>
+    {% endif %}
     <div class="field">
         <label for="sessiontitle">Session Title:</label>
-        <input type="text" id="sessiontitle" name="sessiontitle">
+        <input type="text" id="sessionTitle" name="sessionTitle">
     </div>
     <div class="field">
-        <label for="sessionDate">Session Date:</label>
-        <input type="date" id="sessionDate" name="sessionDate" required>
+        <label for="eventLocation">Event Participants</label>
+        <select name="participants" id="participants" required>
+            {% for group in groups %}
+            <option value="{{ group.id }}">{{ group.name }}</option>
+            {% endfor %}
+        </select>
     </div>
-    <div class="field">
-        <label for="startTime">Start Time:</label>
-        <input type="time" id="startTime" name="startTime" required>
+
+    <div class="fielddate">
+        <label for="startTime">Start Time</label>
+        <input type="datetime-local" id="startTime" name="startTime" required>
     </div>
-    <div class="field">
-        <label for="endTime">End Time:</label>
-        <input type="time" id="endTime" name="endTime" required>
+    <div class="fielddate">
+        <label for="endTime">End Time</label>
+        <input type="datetime-local" id="endTime" name="endTime" required>
     </div>
     <div class="field">
         <label for="sessionLocation">Session Location:</label>
         <input type="text" id="sessionLocation" name="sessionLocation" required>
     </div>
+    <div class="field">
+        <label for="description">Session Description</label>
+        <div class="text-editor-container">
+            <input type="hidden" name="description" id="description" placeholder="Put your description here.">
+            <div class="text-editor"></div>
+        </div>
+    </div>
     <div class="actions">
         <input class="btn btn-primary" type="submit" value="Schedule Session">
     </div>
 </form>
+<script src="/js/events/create.js"></script>
 
 {% endblock %}

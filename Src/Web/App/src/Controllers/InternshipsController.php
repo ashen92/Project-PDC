@@ -6,7 +6,7 @@ namespace App\Controllers;
 use App\DTOs\createInternshipDTO;
 use App\Models\Internship;
 use App\Models\InternshipCycle;
-use App\Models\InternshipProgram\createApplication;
+use App\Models\InternshipProgram\CreateApplication;
 use App\Security\Attributes\RequiredAtLeastOne;
 use App\Security\Attributes\RequiredRole;
 use App\Security\AuthorizationService;
@@ -15,6 +15,7 @@ use App\Services\InternshipService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
 
@@ -37,10 +38,15 @@ class InternshipsController extends ControllerBase
         parent::__construct($twig, $authzService);
     }
 
-    #[RequiredAtLeastOne(['Admin'], ['JobHuntFirstRound'])]
+    #[RequiredAtLeastOne(['InternshipProgramAdmin'], ['JobCollectionPhase', 'FirstRoundPhase'])]
     #[Route(['/internships'])]
     public function internships(Request $request, ?InternshipCycle $cycle): Response
     {
+        if ($this->hasRole('InternshipProgramStudent')) {
+            if (!$this->authorize('FirstRoundPhase'))
+                throw new AccessDeniedHttpException();
+        }
+
         if ($cycle === null) {
             return $this->render('internship-program/internships.html', ['section' => 'internships']);
         }
@@ -238,7 +244,7 @@ class InternshipsController extends ControllerBase
     }
 
     #[Route('/internships/{id}/apply', methods: ['POST'])]
-    public function applyPOST(Request $request, int $id): RedirectResponse
+    public function applyPOST(Request $request, InternshipCycle $cycle, int $id): RedirectResponse
     {
         $userId = $request->getSession()->get('user_id');
 
@@ -249,13 +255,18 @@ class InternshipsController extends ControllerBase
 
         // TODO: Validate data
 
-        if (!$this->internshipService->createApplication(new createApplication($id, $userId, $files))) {
-            // TODO: Set errors
+        try {
+            if (!$this->internshipService->createApplication($cycle->getId(), new CreateApplication($id, $userId, $files))) {
+                $request->getSession()->getFlashBag()->add('error', 'Error occurred. Please try again.');
+            }
+        } catch (\Throwable $th) {
+            $request->getSession()->getFlashBag()->add('error', $th->getMessage());
         }
 
         return $this->redirect('/internship-program/internships');
     }
 
+    #[RequiredAtLeastOne(['InternshipProgramAdmin'], ['SecondRoundPhase'])]
     #[Route('/round-2', methods: ['GET'])]
     public function round2GET(Request $request, InternshipCycle $cycle): Response
     {
@@ -305,13 +316,16 @@ class InternshipsController extends ControllerBase
 
     #[RequiredRole('InternshipProgramStudent')]
     #[Route('/round-2/job-roles/{id}/apply', methods: ['PUT'])]
-    public function jobRoleApply(Request $request, int $id): Response
+    public function jobRoleApply(Request $request, InternshipCycle $cycle, int $id): Response
     {
         $userId = $request->getSession()->get('user_id');
-        if ($this->internshipService->applyToJobRole($id, $userId)) {
-            return new Response(null, 204);
+        try {
+            if ($this->internshipService->applyToJobRole($cycle->getId(), $id, $userId))
+                return new Response(null, 204);
+        } catch (\Throwable $th) {
+            if ($th->getCode() === 1002)
+                return new Response(json_encode(['message' => $th->getMessage()]), 409);
         }
-
         return new Response(null, 400);
     }
 
@@ -327,6 +341,7 @@ class InternshipsController extends ControllerBase
         return new Response(null, 400);
     }
 
+    #[RequiredRole('InternshipProgramAdmin')]
     #[Route('/round-2/job-roles/add', methods: ['POST'])]
     public function jobRoleAdd(Request $request, InternshipCycle $cycle): RedirectResponse
     {
@@ -339,6 +354,7 @@ class InternshipsController extends ControllerBase
         return $this->redirect('/internship-program/round-2');
     }
 
+    #[RequiredRole('InternshipProgramAdmin')]
     #[Route('/round-2/job-roles/edit', methods: ['POST'])]
     public function jobRoleEdit(Request $request): RedirectResponse
     {
@@ -352,6 +368,7 @@ class InternshipsController extends ControllerBase
         return $this->redirect('/internship-program/round-2');
     }
 
+    #[RequiredRole('InternshipProgramAdmin')]
     #[Route('/round-2/job-roles/delete', methods: ['POST'])]
     public function jobRoleDelete(Request $request): RedirectResponse
     {
@@ -364,18 +381,24 @@ class InternshipsController extends ControllerBase
         return $this->redirect('/internship-program/round-2');
     }
 
+    #[RequiredRole('InternshipProgramPartnerAdmin')]
     #[Route('/round-2/job-roles/{jobRoleId}/candidates/{candidateId}/hire',
         requirements: ['jobRoleId' => '\d+', 'candidateId' => '\d+'],
         methods: ['PUT'])]
-    public function candidateHire(Request $request, int $jobRoleId, int $candidateId): Response
+    public function candidateHire(Request $request, InternshipCycle $cycle, int $jobRoleId, int $candidateId): Response
     {
         $userId = $request->getSession()->get('user_id');
-        if ($this->applicationService->hire($userId, candidateId: $candidateId)) {
-            return new Response(null, 204);
+        try {
+            if ($this->applicationService->hire($cycle->getId(), $userId, candidateId: $candidateId))
+                return new Response(null, 204);
+        } catch (\Throwable $th) {
+            if ($th->getCode() === 1000)
+                return new Response(json_encode(['message' => $th->getMessage()]), 409);
         }
         return new Response(null, 400);
     }
 
+    #[RequiredRole('InternshipProgramPartnerAdmin')]
     #[Route('/round-2/job-roles/{jobRoleId}/candidates/{candidateId}/cancel',
         requirements: ['jobRoleId' => '\d+', 'candidateId' => '\d+'],
         methods: ['PUT'])]

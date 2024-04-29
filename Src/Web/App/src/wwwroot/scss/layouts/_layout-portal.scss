@@ -1,0 +1,116 @@
+@use '../variables' as *;
+@use '../mixins';
+
+.layout-dash {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: max-content;
+    margin: auto;
+
+    .dash-container {
+        margin: 0rem auto;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: max-content max-content max-content;
+
+        .card {
+            min-width: 225px;
+            width: 240px;
+            height: 150px;
+            border-radius: $rounded-1;
+            padding: 13px 15px 10px 15px;
+            text-align: center;
+            box-shadow: $shadow-1;
+            background: linear-gradient(135deg, hsla(216, 100%, 97%, 0.902), 50%, hsl(206, 100%, 30%, 0.2))
+        }
+
+        >.one {
+            margin: 0rem auto auto 0rem;
+            animation: 1s anim-lineUp ease-out;
+        }
+
+        >.two {
+            margin: 0rem auto auto 1.5rem;
+            animation: 1s anim-lineUp ease-out;
+        }
+
+        >.three {
+            margin: 4rem auto auto 0rem;
+            animation: 2s anim-lineUp ease-out;
+        }
+
+        >.four {
+            margin: 4rem auto auto 1.5rem;
+            animation: 2s anim-lineUp ease-out;
+        }
+
+        >.five {
+            margin: 4rem auto auto 0rem;
+            animation: 3s anim-lineUp ease-out;
+        }
+
+
+    }
+
+    @keyframes anim-lineUp {
+        0% {
+            opacity: 0;
+            transform: translateY(80%);
+        }
+
+        20% {
+            opacity: 0;
+        }
+
+        50% {
+            opacity: 1;
+            transform: translateY(0%);
+        }
+
+        100% {
+            opacity: 1;
+            transform: translateY(0%);
+        }
+    }
+
+    .chart-container {
+        margin-left: 1rem;
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: max-content max-content;
+        //background-color: red;
+
+
+        .chart {
+            //background-color: aquamarine;
+            border-left: 2px solid #d2d3d4;
+            width: 100%;
+            display: grid;
+            place-items: center;
+
+
+        }
+
+        >.one {
+            height: 400px;
+            border-bottom: 2px solid #d2d3d4;
+
+        }
+
+        >.two {
+            height: 250px;
+            padding-top: 2rem;
+
+        }
+    }
+
+    .dash-link {
+        text-decoration: none;
+        color: black;
+    }
+
+    .dash-link:hover {
+        color: #0078b4;
+        font-weight: bold;
+    }
+}

@@ -27,9 +27,9 @@ class UserRepository implements IRepository
         $this->pdo->beginTransaction();
     }
 
-    public function commit(): void
+    public function commit(): bool
     {
-        $this->pdo->commit();
+        return $this->pdo->commit();
     }
 
     public function rollback(): void
@@ -377,5 +377,70 @@ class UserRepository implements IRepository
             "partnerId" => $partnerId,
         ]);
         return $stmt->rowCount() > 0;
+    }
+
+    public function findActiveUsers(): array
+    {
+        $sql = "SELECT * FROM users WHERE isActive = 1";
+        $stmt = $this->pdo->query($sql);
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $users = [];
+        foreach ($data as $userData) {
+            $users[] = UserMapper::map($userData);
+        }
+
+        return $users;
+    }
+
+    public function findStudentUsers(): array
+    {
+        $sql = "SELECT u.*, s.*
+                FROM users u 
+                JOIN students s ON u.id = s.id 
+                WHERE u.isActive = 1 AND u.type = 'student'";
+        $stmt = $this->pdo->query($sql);
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $users = [];
+        if ($data === false) {
+            return [];
+        }
+        return array_map(fn($user) => StudentMapper::map($user), $data);
+    }
+
+    public function findCoordinators(): array
+    {
+        $sql = "SELECT * FROM users WHERE isActive = 1 AND type ='user' AND firstName LIKE 'C%'";
+        $stmt = $this->pdo->query($sql);
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $users = [];
+        foreach ($data as $userData) {
+            $users[] = UserMapper::map($userData);
+        }
+
+        return $users;
+    }
+
+    public function delete(int $id): bool
+    {
+        $sql = 'DELETE FROM users WHERE id = :id';
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute(['id' => $id]);
+    }
+
+    public function activate(int $id): bool
+    {
+        $sql = 'UPDATE users SET isActive = 1 WHERE id = :id AND isActive = 0';
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute(['id' => $id]);
+    }
+
+    public function deactivate(int $id): bool
+    {
+        $sql = 'UPDATE users SET isActive = 0 WHERE id = :id AND isActive = 1';
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute(['id' => $id]);
     }
 }

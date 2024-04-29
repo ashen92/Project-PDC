@@ -90,4 +90,50 @@ readonly class UserService
     {
         return $this->userRepository->managePartner($managedBy, $partnerId);
     }
+
+    public function findActiveUsers(): array
+    {
+        return $this->userRepository->findActiveUsers();
+    }
+
+    public function countActiveUsers(): int
+    {
+        return count($this->userRepository->findActiveUsers());
+    }
+
+    public function findStudentUsers(): array
+    {
+        return $this->userRepository->findStudentUsers();
+    }
+
+    public function countStudentUsers(): int
+    {
+        return count($this->userRepository->findStudentUsers());
+    }
+
+    public function findCoordinators(): array
+    {
+        return $this->userRepository->findCoordinators();
+    }
+
+    public function countCoordinators(): int
+    {
+        return count($this->userRepository->findCoordinators());
+    }
+
+    public function deleteUser(int $id): bool
+    {
+        return $this->userRepository->delete($id);
+    }
+
+    public function activateUser(int $id): bool
+    {
+        return $this->userRepository->activate($id);
+    }
+
+    public function deactivateUser(int $id): bool
+    {
+        return $this->userRepository->deactivate($id);
+    }
+
 }

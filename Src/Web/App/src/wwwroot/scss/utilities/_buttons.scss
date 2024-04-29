@@ -149,7 +149,7 @@ $btn-disabled-border: #e8e8e8;
 .btn-outline {
     &-primary {
         @include mixins.button-variant(#006fc9,
-            transparent,
+            #fff,
             #006fc9,
             #006fc9,
             #46acff41,
@@ -164,7 +164,7 @@ $btn-disabled-border: #e8e8e8;
 
     &-danger {
         @include mixins.button-variant(#d13438,
-            transparent,
+            #fff,
             #d13438,
             #d13438,
             #d1343931,

@@ -1,3 +1,37 @@
-<h1>
-    Hello From Link 1
-</h1>
+{% extends "shared/layout-left-nav.html" %}
+
+{% block title %}Active Users{% endblock %}
+
+{% block left_nav %}
+{% include "portal/left-nav.html" %}
+{% endblock %}
+
+{% block content %}
+<div class="title">
+    <h2>
+        Active Users
+    </h2>
+    <p class="fs-small mb-3 capitalize">{{ activeUsers }} users found.</p>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Email</th>
+            <th>Display Name</th>
+            <th>User Type</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in users %}
+        <tr>
+            <td>{{ user.id }}</td>
+            <td>{{ user.email }}</td>
+            <td class="capitalize">{{ user.firstName ?? user.fullName }}</td>
+            <td class="capitalize">{{ user.type }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

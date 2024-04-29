@@ -22,6 +22,7 @@ class InternshipMapper implements IMapper
             $row['title'],
             $row['description'],
             Visibility::tryFrom($row['visibility']),
+            $row['isApproved'] === 1,
             $row['created_by_user_id'],
             $row['organization_id'],
             $row['internship_cycle_id'],

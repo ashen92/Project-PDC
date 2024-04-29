@@ -29,28 +29,21 @@ class PortalController extends ControllerBase
 	#[Route('')]
 	public function home(): Response
 	{
+		$studentCount = $this->userService->countStudentUsers();
+		$activeUsersCount = $this->userService->countActiveUsers();
+		$coordinatorsCount = $this->userService->countCoordinators();
+
 		return $this->render(
 			'portal/home.html',
-			['section' => 'home']
+			[
+				'section' => 'home',
+				'activeUsers' => $activeUsersCount,
+				'studentCount' => $studentCount,
+				'coordinatorsCount' => $coordinatorsCount,
+				'app_partners' => '30',
+				'pen_partners' => '27',
+			]
 		);
-	}
-
-	#[Route('/home/link1')]
-	public function homeLink1(): Response
-	{
-		return $this->render('portal/home/link1.html');
-	}
-
-	#[Route('/home/link2')]
-	public function homeLink2(): Response
-	{
-		return $this->render('portal/home/link2.html');
-	}
-
-	#[Route('/home/link3')]
-	public function homeLink3(): Response
-	{
-		return $this->render('portal/home/link3.html');
 	}
 
 	#[Route('/users')]
@@ -106,6 +99,34 @@ class PortalController extends ControllerBase
 		return $this->redirect('/portal/users/create');
 	}
 
+	#[Route('/users/{id}', requirements: ['id' => '\d+'], methods: ['DELETE'])]
+	public function delete(int $id): Response
+	{
+		$this->userService->deleteUser($id);
+		return new Response(null, 204);
+	}
+
+	#[Route('/users/{id}/activate', requirements: ['id' => '\d+'], methods: ['GET'])]
+	public function activate(int $id): Response
+	{
+		$this->userService->activateUser($id);
+		return new Response(null, 204);
+	}
+
+	#[Route('/users/{id}/deactivate', requirements: ['id' => '\d+'], methods: ['GET'])]
+	public function deactivate(int $id): Response
+	{
+		$this->userService->deactivateUser($id);
+		return new Response(null, 204);
+	}
+
+	#[Route('/users/{id}/addusertoGroup', requirements: ['id' => '\d+'], methods: ['GET'])]
+	public function add(int $id): Response
+	{
+		$this->userService->addUser($id);
+		return new Response(null, 204);
+	}
+
 	#[Route('/groups', methods: ['GET'])]
 	public function groups(): Response
 	{
@@ -117,4 +138,53 @@ class PortalController extends ControllerBase
 			]
 		);
 	}
+
+	#[Route('/home/link1')]
+	public function findUsers(): Response
+	{
+		$activeUsers = $this->userService->findActiveUsers();
+		$activeUsersCount = $this->userService->countActiveUsers();
+
+		return $this->render(
+			'portal/home/link1.html',
+			[
+				'section' => 'home',
+				'users' => $activeUsers,
+				'activeUsers' => $activeUsersCount,
+			]
+		);
+	}
+
+	#[Route('/home/link2')]
+	public function findStudents(): Response
+	{
+		$studentUsers = $this->userService->findStudentUsers();
+		$studentCount = $this->userService->countStudentUsers();
+
+		return $this->render(
+			'portal/home/link2.html',
+			[
+				'section' => 'home',
+				'users' => $studentUsers,
+				'studentCount' => $studentCount,
+			]
+		);
+	}
+
+	#[Route('/home/link3')]
+	public function findCoods(): Response
+	{
+		$coordinators = $this->userService->findCoordinators();
+		$coordinatorsCount = $this->userService->countCoordinators();
+
+		return $this->render(
+			'portal/home/link3.html',
+			[
+				'section' => 'home',
+				'users' => $coordinators,
+				'coordinatorsCount' => $coordinatorsCount,
+			]
+		);
+	}
+
 }

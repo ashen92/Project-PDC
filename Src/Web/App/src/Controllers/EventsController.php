@@ -151,7 +151,7 @@ class EventsController extends ControllerBase
 
         $event = new CreateEventDTO($Title, $startTime, $endTime, $eventLocation, $description, [$participants]);
         $this->eventService->createEvent($event);
-        
+
         return $this->render(
             'events/create.html',
             [

@@ -19,9 +19,9 @@ readonly class AuthorizationRepository implements IRepository
         $this->pdo->beginTransaction();
     }
 
-    function commit(): void
+    function commit(): bool
     {
-        $this->pdo->commit();
+        return $this->pdo->commit();
     }
 
     function rollBack(): void

@@ -25,15 +25,13 @@
 
     <table class="table table-hover">
         <colgroup>
-            <col class="w-2/5">
-            <col class="w-1/5">
+            <col class="w-3/5">
             <col class="w-1/5">
             <col class="w-1/5">
         </colgroup>
         <thead>
             <tr>
                 <th>Name</th>
-                <th>Type</th>
                 <th>Starts on</th>
                 <th>Duration</th>
             </tr>
@@ -42,14 +40,6 @@
             {% for r in requirements %}
             <tr data-href="/internship-program/requirements/{{ r.id }}">
                 <td>{{ r.name }}</td>
-                <td class="capitalize">
-                    {% set requirementType = r.requirementType %}
-                    {% if requirementType == "recurring" %}
-                    {{ requirementType }} ({{ r.repeatInterval }})
-                    {% else %}
-                    {{ requirementType }}
-                    {% endif %}
-                </td>
                 <td>{{ r.startWeekAsMonthWeek }}</td>
                 <td>{{ r.durationWeeksAsWeeks }}</td>
             </tr>

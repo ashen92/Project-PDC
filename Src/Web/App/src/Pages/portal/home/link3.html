@@ -1,3 +1,36 @@
-<h3>
-    Hello From Link 3
-</h3>
+{% extends "shared/layout-left-nav.html" %}
+
+{% block title %}PDC Assistant Coordinators{% endblock %}
+
+{% block left_nav %}
+{% include "portal/left-nav.html" %}
+{% endblock %}
+
+{% block content %}
+<div class="title">
+    <h2>
+        PDC Assistant Coordinators
+    </h2>
+    <p class="fs-small mb-3 capitalize">{{ coordinatorsCount }} users found.</p>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Email</th>
+            <th>Display Name</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in users %}
+        <tr>
+            <td>{{ user.id }}</td>
+            <td>{{ user.email }}</td>
+            <td class="capitalize">{{ user.firstName ?? user.fullName }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

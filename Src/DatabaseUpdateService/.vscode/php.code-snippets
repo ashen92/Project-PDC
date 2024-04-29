@@ -1,0 +1,12 @@
+{
+	"php": {
+		"scope": "html",
+		"prefix": "php",
+		"body": [
+			"<?php",
+			"declare(strict_types=1);",
+			"",
+			"$0"
+		]
+	}
+}

@@ -19,16 +19,34 @@
         <span>New user</span>
     </a>
     <span class="spacer"></span>
-    <button class="btn btn-regular" disabled>
+    <button class="btn btn-regular" id="addto-group-btn" disabled>
         <i class="i i-people"></i>
-        <span>Add to group</span>
+        <span id="add-to-group">Add to group</span>
     </button>
+
+    <div class="dialog-container" id="usergroup-popup">
+        <div class="dialog min-w-80">
+            <div class="mx-6 mt-2 mb-2">
+                {% for group in userGroups %}
+                <div class="checkbox">
+                    <input type="checkbox" name="{{ group.name }}" id="{{ group.id }}">
+                    <label for="{{ group.id }}">{{ group.name }}</label>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="actions">
+                <button type="button" class="btn btn-primary" id="usergroup-popup-addto-btn">Add to Group</button>
+                <button type="button" class="btn btn-secondary" id="usergroup-popup-reset-btn">Reset</button>
+            </div>
+        </div>
+    </div>
+
     <span class="spacer"></span>
-    <button class="btn btn-regular" disabled data-action="enable">
+    <button class="btn btn-regular" disabled data-action="enable" id="activate-user-btn">
         <i class="i i-check-circle"></i>
         <span>Enable</span>
     </button>
-    <button class="btn btn-regular" disabled data-action="disable">
+    <button class="btn btn-regular" disabled data-action="disable" id="deactivate-user-btn">
         <i class="i i-x-circle"></i>
         <span>Disable</span>
     </button>
@@ -37,7 +55,7 @@
         <span>Reset password</span>
     </button>
     <span class="spacer"></span>
-    <button class="btn btn-regular" disabled>
+    <button class="btn btn-regular" disabled id="remove-user-btn">
         <i class="i i-trash"></i>
         <span>Delete</span>
     </button>
@@ -84,11 +102,5 @@
     </table>
 </section>
 <script src="/js/portal/users.js" type="text/javascript"></script>
-<script>
-    table.makeRowsClickable(".table-rows-clickable");
-
-    let tbodyCheckboxes = document.querySelectorAll("tbody input[type=checkbox]");
-    table.makeRowsSelectable("thead input[type=checkbox]", tbodyCheckboxes);
-</script>
 
 {% endblock %}

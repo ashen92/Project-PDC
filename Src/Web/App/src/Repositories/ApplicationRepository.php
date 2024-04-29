@@ -3,10 +3,12 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
+use App\Interfaces\IRepository;
 use App\Models\Application;
+use DateTimeImmutable;
 use PDO;
 
-readonly class ApplicationRepository
+readonly class ApplicationRepository implements IRepository
 {
     public function __construct(
         private PDO $pdo,
@@ -41,7 +43,43 @@ readonly class ApplicationRepository
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    public function isIntern(int $cycleId, ?int $studentId, ?int $applicationId): bool
+    {
+        if ($studentId === null && $applicationId === null) {
+            throw new \InvalidArgumentException("Student ID or Application ID must be provided");
+        }
+
+        if ($studentId !== null && $applicationId !== null) {
+            throw new \InvalidArgumentException("Only one of Student ID or Application ID must be provided");
+        }
+
+        if ($studentId !== null) {
+            $sql = "SELECT COUNT(*) AS count
+            FROM interns
+            WHERE student_id = :studentId
+            AND internship_cycle_id = :cycleId";
+            $params = [
+                "studentId" => $studentId,
+                "cycleId" => $cycleId
+            ];
+        } else {
+            $sql = "SELECT COUNT(*) AS count
+            FROM interns
+            WHERE student_id = (SELECT user_id FROM applications WHERE id = :applicationId)
+            AND internship_cycle_id = :cycleId";
+            $params = [
+                "applicationId" => $applicationId,
+                "cycleId" => $cycleId
+            ];
+        }
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetch(PDO::FETCH_ASSOC)['count'] > 0;
+    }
+
     public function createIntern(
+        int $cycleId,
         int $studentId,
         int $partnerUserId,
         ?int $organizationId,
@@ -51,31 +89,35 @@ readonly class ApplicationRepository
         if ($organizationId === null) {
             $stmt = $this->pdo->prepare(
                 "INSERT INTO interns 
-                (student_id, adder_user_id, organization_id, application_id) 
+                (student_id, adder_user_id, organization_id, createdAt, application_id, internship_cycle_id) 
                 VALUES 
                 (:studentId, :adderUserId, 
                 (SELECT organization_id FROM partners WHERE id = :adderUserId), 
-                :applicationId)"
+                :createdAt, :applicationId, :cycleId)"
             );
 
             $stmt->execute([
                 "studentId" => $studentId,
                 "adderUserId" => $partnerUserId,
-                "applicationId" => $applicationId
+                "createdAt" => (new DateTimeImmutable())->format($this::DATE_TIME_FORMAT),
+                "applicationId" => $applicationId,
+                "cycleId" => $cycleId,
             ]);
             return $stmt->rowCount() === 1;
         }
         $stmt = $this->pdo->prepare(
             "INSERT INTO interns 
-            (student_id, adder_user_id, organization_id, application_id) 
+            (student_id, adder_user_id, organization_id, createdAt, application_id, internship_cycle_id) 
             VALUES 
-            (:studentId, :adderUserId, :organizationId, :applicationId)"
+            (:studentId, :adderUserId, :organizationId, :createdAt, :applicationId, :cycleId)"
         );
         $stmt->execute([
             "studentId" => $studentId,
             "adderUserId" => $partnerUserId,
             "organizationId" => $organizationId,
-            "applicationId" => $applicationId
+            "createdAt" => (new DateTimeImmutable())->format($this::DATE_TIME_FORMAT),
+            "applicationId" => $applicationId,
+            "cycleId" => $cycleId,
         ]);
         return $stmt->rowCount() === 1;
     }

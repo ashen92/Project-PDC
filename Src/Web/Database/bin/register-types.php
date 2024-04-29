@@ -2,14 +2,6 @@
 declare(strict_types=1);
 
 \Doctrine\DBAL\Types\Type::addType(
-    'requirement_type',
-    'DB\DoctrineTypes\Requirement\TypeType'
-);
-\Doctrine\DBAL\Types\Type::addType(
-    'requirement_repeat_interval',
-    'DB\DoctrineTypes\Requirement\RepeatIntervalType'
-);
-\Doctrine\DBAL\Types\Type::addType(
     'requirement_fulfill_method',
     'DB\DoctrineTypes\Requirement\FulFillMethodType'
 );
