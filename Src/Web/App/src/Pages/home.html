@@ -28,7 +28,8 @@
         <a class="card" href="/portal"> <i class="i i-person-fill-gear fs-4"></i>Admin Portal</a>
         {% endif %}
         <a class="card" href="/techtalks"><i class="i i-megaphone fs-4"></i>TechTalks</a>
-        {% if has_permission('ReadInternshipProgram') %}
+        {% if has_role('InternshipProgramAdmin') or has_role('InternshipProgramPartner') or
+        has_role('InternshipProgramStudent') %}
         <a class="card" href="/internship-program"><i class="i i-file-person fs-4"></i>Internship Program</a>
         {% endif %}
         <a class="card" href="/events"><i class="i i-card-list fs-4"></i>Events</a>
