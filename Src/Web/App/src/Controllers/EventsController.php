@@ -29,7 +29,7 @@ class EventsController extends ControllerBase
     {
         return $this->render('events/home.html', [
             'section' => 'home',
-            //'events' => $this->eventService->getEvent()
+            
         ]);
     }
 
@@ -40,20 +40,21 @@ class EventsController extends ControllerBase
         return new Response(null, 204);
     }
 
-    #[Route('/events/{id}/modify', methods: ['GET'])]
+    #[Route('/{id}/modify', methods: ['GET'])]
     public function updateGET(int $id): Response
     {
         return $this->render(
             'events/modify.html',
             [
                 'section' => 'events',
-                'events' => $this->eventService->getEventById($id)
+                'event' => $this->eventService->getEventById($id),
+                'groups' => $this->eventService->getUserGroups()
             ]
         );
     }
 
-    #[Route('/events/{id}/modify', methods: ['POST'])]
-    /* public function updatePOST(Request $request): Response|RedirectResponse
+    #[Route('/{id}/modify', methods: ['POST'])]
+    public function updatePOST(Request $request): Response|RedirectResponse
     {
         $id = (int) $request->get('id');
         $title = $request->get('title');
@@ -65,8 +66,6 @@ class EventsController extends ControllerBase
             return $this->redirect('/internship-program/internships');
         }
 
-        // TODO: Set errors
-
         return $this->render(
             'events/modify.html',
             [
@@ -74,7 +73,7 @@ class EventsController extends ControllerBase
                 'event' => $this->eventService->getEventById($id)
             ]
         );
-    } */
+    }
 
     #[Route('/{id}', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function getEventByID(Request $request, int $id): Response
@@ -114,7 +113,7 @@ class EventsController extends ControllerBase
         );
     }
 
-    #[Route('/edit/{eventId}', methods: ['GET'])]
+    /* #[Route('/edit/{eventId}', methods: ['GET'])]
     public function edit(int $eventId): Response
     {
 
@@ -127,15 +126,15 @@ class EventsController extends ControllerBase
                 'event' => $event
             ]
         );
-    }
+    } */
 
     #[Route('/create', methods: ['POST'])]
     public function createPOST(Request $request): Response
     {
         $data = $request->request->all();
         $Title = $data['eventTitle'] ?? '';
-        $startTimeString = $data['startTime'] ?? '';   //$startTime = DateTimeImmutable::createFromFormat('H:i', $data['startTime']);  
-        $endTimeString = $data['endTime'] ?? '';    //$endTime = DateTimeImmutable::createFromFormat('H:i', $data['endTime']);
+        $startTimeString = $data['startTime'] ?? '';    
+        $endTimeString = $data['endTime'] ?? '';    
         $eventLocation = $data['eventLocation'] ?? '';
         $description = $data['description'] ?? '';
         $participants = $data['participants'] ?? '';
@@ -152,7 +151,7 @@ class EventsController extends ControllerBase
 
         $event = new CreateEventDTO($Title, $startTime, $endTime, $eventLocation, $description, [$participants]);
         $this->eventService->createEvent($event);
-        
+
         return $this->render(
             'events/create.html',
             [
@@ -202,11 +201,4 @@ class EventsController extends ControllerBase
         return new Response(json_encode($res), 200, ['Content-Type' => 'application/json']);
     }
 
-    // #[Route('/{eventId}', methods:['GET'])]
-    // public function getAllEvents()
-    // {
-    //     $events = $this->eventService->getAllEvents();
-    //     header('Content-Type: application/json');
-    //     echo json_encode($events);
-    // } 
 }

@@ -120,4 +120,20 @@ readonly class UserService
     {
         return count($this->userRepository->findCoordinators());
     }
+
+    public function deleteUser(int $id): bool
+    {
+        return $this->userRepository->delete($id);
+    }
+
+    public function activateUser(int $id): bool
+    {
+        return $this->userRepository->activate($id);
+    }
+
+    public function deactivateUser(int $id): bool
+    {
+        return $this->userRepository->deactivate($id);
+    }
+
 }

@@ -1,17 +1,24 @@
 {% extends "shared/layout-left-nav.html" %}
 
-{% block title %}Events{% endblock %}
+{% block title %}TechTalks{% endblock %}
 
 {% block left_nav %}
-{% include "events/left-nav.html" %}
+{% include "techtalks/left-nav.html" %}
 {% endblock %}
 
 {% block content %}
 
 <div class="layout-job-search">
-    
+    <div class="filters">
+        <div class="search">
+            <i class="i i-search"></i>
+            <input id="search-query" class="search" type="text" placeholder="Search" autocomplete="off">
+            <button id="search-btn" class="btn btn-primary" type="button">Search</button>
+        </div>
 
-    {% if events|length == 0 %}
+    </div>
+
+    {% if sessions|length == 0 %}
 
     <div class="grid h-1/2 items-center text-center">
         <div>
@@ -24,12 +31,12 @@
 
     <div class="container">
         <div>
-            <div class="job-list-container" id="event-list">
+            <div class="job-list-container" id="session-list">
                 <div class="job-list">
-                    {% for i in events %}
-                    <div class="job" data-event-id="{{i.id}}">
+                    {% for session in sessions %}
+                    <div class="job" data-session-id="{{session.id}}">
                         <div class="job-text">
-                            <div class="title">{{i.title}}</div>
+                            <div class="title">{{session.title}}</div>
 
                         </div>
                     </div>
@@ -37,8 +44,8 @@
                 </div>
             </div>
         </div>
-        <div class="job-details" id="event-details">
-            <div class="skeleton" id="event-details-skeleton">
+        <div class="job-details" id="session-details">
+            <div class="skeleton" id="session-details-skeleton">
                 <div class="skeleton-header"></div>
                 <div class="skeleton-header last"></div>
                 <div class="skeleton-body">
@@ -58,19 +65,19 @@
                     <div class="skeleton-line"></div>
                 </div>
             </div>
-            <div class="content hidden" id="event-details-content">
+            <div class="content hidden" id="session-details-content">
                 <div class="header">
-                    <h3 class="title" id="event-title"></h3>
-                    <div class="company" id="event-company">
-                        Event
+                    <h3 class="title" id="session-title"></h3>
+                    <div class="company" id="session-company">
+                        Session
                     </div>
                     <div class="actions">
                         {% if has_role('InternshipProgramAdmin') %}
-                        <button type="button" class="btn btn-outline-primary" id="modify-event-btn">Modify</button>
+                        <button type="button" class="btn btn-outline-primary" id="modify-session-btn">Modify</button>
                         {% endif %}
 
                         {% if has_role('InternshipProgramAdmin') %}
-                        <button type="button" class="btn btn-outline-danger" id="remove-event-btn">Remove</button>
+                        <button type="button" class="btn btn-outline-danger" id="remove-session-btn">Remove</button>
                         {% endif %}
                     </div>
                 </div>
@@ -78,34 +85,30 @@
                     <div class="collapse-header">
                         <h5 class="title">Location</h5>
                     </div>
-                    <div class="collapse-content formatted-text-area" id="event-location"></div>
+                    <div class="collapse-content formatted-text-area" id="session-location"></div>
                 </div>
                 <div class="section collapse-container">
                     <div class="collapse-header">
-                        <h5 class="title">Event Starts</h5>
+                        <h5 class="title">Session Starts</h5>
                     </div>
-                    <div class="collapse-content formatted-text-area" id="event-startTime"></div>
+                    <div class="collapse-content formatted-text-area" id="session-startTime"></div>
                 </div>
                 <div class="section collapse-container">
                     <div class="collapse-header">
-                        <h5 class="title">Event Ends</h5>
+                        <h5 class="title">Session Ends</h5>
                     </div>
-                    <div class="collapse-content formatted-text-area" id="event-endTime"></div>
+                    <div class="collapse-content formatted-text-area" id="session-endTime"></div>
                 </div>
                 <div class="section collapse-container">
                     <div class="collapse-header">
-                        <h5 class="title">About the Event</h5>
+                        <h5 class="title">About the Session</h5>
                     </div>
-                    <div class="collapse-content formatted-text-area" id="event-description"></div>
+                    <div class="collapse-content formatted-text-area" id="session-description"></div>
                 </div>
             </div>
         </div>
     </div>
 
     {% endif %}
-
-
-
-    <script src="/js/events/eventlist.js" type="text/javascript"></script>
-
+    <script src="/js/techtalks/techtalklist.js" type="text/javascript"></script>
     {% endblock %}

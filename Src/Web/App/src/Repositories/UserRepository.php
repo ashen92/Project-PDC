@@ -422,4 +422,25 @@ class UserRepository implements IRepository
 
         return $users;
     }
+
+    public function delete(int $id): bool
+    {
+        $sql = 'DELETE FROM users WHERE id = :id';
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute(['id' => $id]);
+    }
+
+    public function activate(int $id): bool
+    {
+        $sql = 'UPDATE users SET isActive = 1 WHERE id = :id AND isActive = 0';
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute(['id' => $id]);
+    }
+
+    public function deactivate(int $id): bool
+    {
+        $sql = 'UPDATE users SET isActive = 0 WHERE id = :id AND isActive = 1';
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute(['id' => $id]);
+    }
 }

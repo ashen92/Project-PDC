@@ -99,6 +99,34 @@ class PortalController extends ControllerBase
 		return $this->redirect('/portal/users/create');
 	}
 
+	#[Route('/users/{id}', requirements: ['id' => '\d+'], methods: ['DELETE'])]
+	public function delete(int $id): Response
+	{
+		$this->userService->deleteUser($id);
+		return new Response(null, 204);
+	}
+
+	#[Route('/users/{id}/activate', requirements: ['id' => '\d+'], methods: ['GET'])]
+	public function activate(int $id): Response
+	{
+		$this->userService->activateUser($id);
+		return new Response(null, 204);
+	}
+
+	#[Route('/users/{id}/deactivate', requirements: ['id' => '\d+'], methods: ['GET'])]
+	public function deactivate(int $id): Response
+	{
+		$this->userService->deactivateUser($id);
+		return new Response(null, 204);
+	}
+
+	#[Route('/users/{id}/addusertoGroup', requirements: ['id' => '\d+'], methods: ['GET'])]
+	public function add(int $id): Response
+	{
+		$this->userService->addUser($id);
+		return new Response(null, 204);
+	}
+
 	#[Route('/groups', methods: ['GET'])]
 	public function groups(): Response
 	{

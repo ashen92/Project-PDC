@@ -108,14 +108,13 @@ const modifyEventBtn = $("#modify-event-btn");
 const removeEventBtn = $("#remove-event-btn");
 
 on(modifyEventBtn, "click", function () {
-    window.location.href = `${window.location.pathname}/${previouslySelectedItemCard.getAttribute("data-event-id")}/modify`;
+    window.location.href = `${window.location.origin}/events/${previouslySelectedItemCard.getAttribute("data-event-id")}/modify`;
 });
 
 on(removeEventBtn, "click", function () {
-    //console.log("Remove button clicked."); // Add this line to check if the event handler is triggered
     fetch("/events/" + previouslySelectedItemCard.getAttribute("data-event-id"), { method: "DELETE" })
         .then(() => {
-            //console.log("Event deleted successfully.");
+            
             window.location.href = `${window.location.pathname}`;
         })
         .catch(error => console.error("Error deleting event:", error));
