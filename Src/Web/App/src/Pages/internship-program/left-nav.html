@@ -22,6 +22,11 @@
     Internships
 </a>
 
+<a class="{% if section == 'round-2' %} active{% endif %}" href="/internship-program/round-2">
+    <i class="i i-2-circle"></i>
+    Second Round
+</a>
+
 {% elseif has_role('InternshipProgramPartner') and has_permission('CreateInternship') %}
 
 {% if IsAuthorized('JobCollectionPhase') or IsAuthorized('FirstRoundPhase') %}
