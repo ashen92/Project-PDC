@@ -19,7 +19,7 @@ readonly class InternshipProgramPhasePolicyHandler implements IPolicyHandler
      */
     function handle(int $userId, $policy): bool
     {
-        $cycle = $this->internshipProgramRepo->findLatestCycle();
+        $cycle = $this->internshipProgramRepo->findLatestActiveCycle();
         if ($policy->phase === InternshipProgramPhasePolicy::JobCollectionPhase && $cycle->isJobCollectionPhase()) {
             return true;
         }
