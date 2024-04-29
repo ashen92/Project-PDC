@@ -2,32 +2,67 @@
 @use '../mixins' as *;
 
 .layout-home {
+    background-color: #f1f4f6;
+
     .content {
         max-width: $webpage-max-allowed-width;
         padding-left: 50px;
         padding-right: 50px;
         margin: 0 auto;
+        //background-color: black;
     }
 }
 
-    .hero-container {
-        height: 500px;
-        background-color: #c9eee5;
-        padding: 5rem;
-        box-shadow: rgba(0, 0, 0, 0.12) 0px 0px 2px 0px, rgba(0, 0, 0, 0.14) 0px 1.008px 2px 0px;
+.layout-home .hero-container {
+    height: 500px;
+    background-image: url('/images/5.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+    //background-position: center;
+    border-bottom-left-radius: $rounded-5;
+    border-bottom-right-radius: $rounded-5;
+    padding: 5rem;
+    box-shadow: rgba(57, 76, 96, 0.15) 0px 2px 4px -1px;
+
 
         @include media-breakpoint-down(md) {
             height: 450px;
             padding: 4rem;
 
-            .hero {
-                padding: 0;
-            }
+        .hero {
+            padding: 0;
+        }
+    }
+
+    @include media-breakpoint-down(sm) {
+        height: 450px;
+        padding: 3rem 2rem;
+    }
+
+
+    .hero-text {
+        text-align: center;
+        width: 100%;
+        padding: 10px;
+        margin: 4rem auto;
+        //background-color: rgba(0, 107, 189, 0.6);
+        text-shadow: 4px 4px 4px rgba(0, 0, 0, 0.5);
+        //border-radius: $rounded-2;
+        //box-shadow: $shadow-1;
+
+
+        &-title {
+            line-height: 1.25;
+            font-size: 3rem;
+            font-weight: $fw-semibold;
+            color: #fdfdfd;
         }
 
-        @include media-breakpoint-down(sm) {
-            height: 450px;
-            padding: 3rem 2rem;
+        &-subtitle {
+            margin-top: 1.5rem;
+            font-size: 1.55rem;
+            font-weight: $fw-normal;
+            color: #fdfdfd;
         }
 
         .hero-text {
@@ -107,14 +142,15 @@
         }
     }
 
-    .layout-home .card {
-        min-width: 225px;
-        width: 250px;
-        border-radius: $rounded-1;
-        padding: 13px 15px 10px 15px;
-        text-align: center;
-        box-shadow: $shadow-1;
-        border-left: 5px solid #00588a;
+.layout-home .card-container {
+    display: grid;
+    grid-template-columns: repeat(4, auto);
+    justify-items: center;
+    justify-content: center;
+    //background-color: red;
+    row-gap: 1.75rem;
+    column-gap: 2rem;
+    margin: 6rem 0;
 
         &:hover {
             background-color: $hov-light-blue;
@@ -125,3 +161,32 @@
             background-color: $active-light-blue;
         }
     }
+
+    @include media-breakpoint-down(lg) {
+        grid-template-columns: repeat(2, auto);
+    }
+
+    @include media-breakpoint-down(sm) {
+        grid-template-columns: auto;
+    }
+}
+
+.layout-home .card {
+    min-width: 225px;
+    width: 250px;
+    border-radius: $rounded-1;
+    padding: 13px 15px 10px 15px;
+    text-align: center;
+    box-shadow: $shadow-1;
+    border-left: 5px solid #00588a;
+    background-color: #f2f2f2;
+
+    &:hover {
+        background-color: $hov-light-blue;
+        border-left: 5px solid #006bbd;
+    }
+
+    &:active {
+        background-color: $active-light-blue;
+    }
+}

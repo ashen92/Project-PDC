@@ -12,6 +12,7 @@ class Internship
         private string $title,
         private string $description,
         private Visibility $visibility,
+        private bool $isApproved,
         private int $createdByUserId,
         private int $organizationId,
         private int $internshipCycleId,
@@ -32,6 +33,16 @@ class Internship
     public function getDescription(): string
     {
         return $this->description;
+    }
+
+    public function getVisibility(): Visibility
+    {
+        return $this->visibility;
+    }
+
+    public function isApproved(): bool
+    {
+        return $this->isApproved;
     }
 
     public function getCreatedByUserId(): int

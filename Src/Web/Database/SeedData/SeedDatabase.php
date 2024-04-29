@@ -2,24 +2,20 @@
 
 use App\DTOs\CreateRequirementDTO;
 use App\Models\Internship\Visibility;
-use Database\Entities\JobRole;
+use App\Models\Requirement\FulFillMethod;
+use DB\Entities\InternshipProgramSetting;
+use DB\Entities\JobRole;
 use DB\Entities\Event;
 use DB\Entities\Internship;
 use DB\Entities\InternshipCycle;
 use DB\Entities\Organization;
 use DB\Entities\Partner;
 use DB\Entities\Permission;
-use DB\Entities\Permission\Action;
-use DB\Entities\Permission\Resource;
 use DB\Entities\Requirement;
 use DB\Entities\Role;
 use DB\Entities\Student;
 use DB\Entities\User;
 use DB\Entities\UserGroup;
-use DB\Entities\UserRequirement;
-use App\Models\Requirement\FulFillMethod;
-use App\Models\Requirement\RepeatInterval;
-use App\Models\Requirement\Type;
 
 #region Users
 
@@ -391,6 +387,31 @@ $entityManager->flush();
 
 #endregion
 
+#region Internship Program Settings
+
+echo "Done.\nAdding Internship Program Settings...";
+
+$maxInternshipApplications = new InternshipProgramSetting(
+    'MaxInternshipApplications',
+    '5',
+    'int',
+    'Maximum number of internship applications a student can submit.'
+);
+
+$entityManager->persist($maxInternshipApplications);
+
+$maxJobRoleApplications = new InternshipProgramSetting(
+    'MaxJobRoleApplications',
+    '5',
+    'int',
+    'Maximum number of job roles a student can select.'
+);
+
+$entityManager->persist($maxJobRoleApplications);
+$entityManager->flush();
+
+#endregion
+
 #region Internships
 
 echo "Done.\nAdding internships...";
@@ -505,8 +526,8 @@ for ($x = 1; $x < count($internData); $x++) {
     $i = new Internship(
         $data[0],
         $data[1],
-        $data[3] ?? Visibility::Private ,
-        $data[4] ?? true,
+        $data[3] ?? Visibility::Public ,
+        $data[4] ?? false,
         $internshipCycle,
         $data[2],
         $data[2]->getOrganization(),
@@ -561,55 +582,55 @@ $eventData = [
     [
         "Innovate IT 2023: Shaping the Future of Tech",
         "Join us at 'Innovate IT 2023,' the premier technology event of the year, where industry leaders, innovative startups, and tech enthusiasts come together to explore the future of information technology. This year's conference will feature keynote speeches from thought leaders in AI, cybersecurity, and cloud computing, interactive workshops on the latest programming techniques, and panel discussions on the ethical implications of emerging technologies. Network with peers, engage with expert speakers, and gain insights into cutting-edge IT trends and solutions that will drive your organization forward. Whether you're a seasoned IT professional or just passionate about technology, 'Innovate IT 2023' is the event you can't afford to miss. Secure your spot today and be part of the conversation that will redefine the tech landscape!",
-        new DateTime("now"),
-        new DateTime("now"),
-        new DateTime("now"),
+        new DateTimeImmutable('2024-04-21 05:00:00'),
+        new DateTimeImmutable('2024-04-21 06:00:00'),
+        new DateTimeImmutable('2024-04-21'),
         "Colombo"
     ],
     [
         "CyberSecCon 2023: Navigating the Digital Threat Landscape",
         "CyberSecCon 2023 invites cybersecurity experts and enthusiasts to delve into the dynamic world of digital security. This comprehensive conference will cover the latest strategies in protecting against cyber threats, managing risk, and ensuring compliance. Attend in-depth sessions on blockchain security, IoT vulnerabilities, and the future of encryption. Engage with hands-on demonstrations of cutting-edge security tools and network with professionals across the industry. Whether you're defending your organization's network or safeguarding personal data, CyberSecCon 2023 is your gateway to a safer digital tomorrow.",
-        new DateTime("now"),
-        new DateTime("now"),
-        new DateTime("now"),
+        new DateTimeImmutable('2024-04-22 05:00:00'),
+        new DateTimeImmutable('2024-04-22 06:00:00'),
+        new DateTimeImmutable('2024-04-22'),
         "Colombo"
     ],
     [
         "AI Revolution Summit: Transforming Business with Intelligence",
         "The AI Revolution Summit is where the brightest minds in artificial intelligence converge to discuss the role of AI in transforming business practices. Explore how machine learning algorithms can optimize operations, enhance customer experiences, and drive innovation. This summit offers a unique opportunity to network with AI developers, business leaders, and researchers. Participate in workshops on natural language processing, predictive analytics, and ethical AI. Empower your business with the knowledge and tools needed to thrive in the AI era at the AI Revolution Summit.",
-        new DateTime("now"),
-        new DateTime("now"),
-        new DateTime("now"),
+        new DateTimeImmutable('2024-04-23 05:00:00'),
+        new DateTimeImmutable('2024-04-23 06:00:00'),
+        new DateTimeImmutable('2024-04-23'),
         "Colombo"
     ],
     [
         "Cloud Expo 2023: Elevating Enterprises to the Cloud",
         "Elevate your business to new heights at Cloud Expo 2023! As cloud computing becomes the backbone of the digital economy, this event is a must-attend for IT professionals aiming to harness the power of the cloud. Discover the latest trends in cloud infrastructure, platform services, and SaaS applications. Gain insights from case studies on cloud migration, cost optimization, and security in the cloud. Connect with cloud service providers and partners to transform your IT strategy. Join us at Cloud Expo 2023 and embark on your cloud journey.",
-        new DateTime("now"),
-        new DateTime("now"),
-        new DateTime("now"),
+        new DateTimeImmutable('2024-04-24 05:00:00'),
+        new DateTimeImmutable('2024-04-24 06:00:00'),
+        new DateTimeImmutable('2024-04-24'),
         "Colombo"
     ],
     [
         "DevOps Days: Accelerating Software Delivery",
         "DevOps Days is back, bringing together the community of developers, operations, and anyone involved in the software delivery process. Learn from industry experts about the latest DevOps practices, tools, and culture. Participate in sessions on continuous integration, containerization, and site reliability engineering. Experience hands-on workshops on infrastructure as code, microservices architecture, and collaboration techniques. Network with peers and accelerate your DevOps journey at DevOps Days.",
-        new DateTime("now"),
-        new DateTime("now"),
-        new DateTime("now"),
+        new DateTimeImmutable('2024-04-25 05:00:00'),
+        new DateTimeImmutable('2024-04-25 06:00:00'),
+        new DateTimeImmutable('2024-04-25'),
         "Colombo"
     ],
     [
         "NextGen Data Science Conference: The Future of Data-Driven Decisions",
         "Data enthusiasts, rejoice! The NextGen Data Science Conference is here to explore the innovative ways data is transforming businesses and society. This event is the perfect meeting ground for data scientists, analysts, and business leaders. Immerse yourself in talks about big data analytics, the evolution of data warehousing, and the impact of data on customer experience. Engage in discussions about ethical data usage, privacy concerns, and data governance. Connect with industry pioneers and discover how to leverage data for smarter decisions at the NextGen Data Science Conference.",
-        new DateTime("now"),
-        new DateTime("now"),
-        new DateTime("now"),
+        new DateTimeImmutable('2024-04-26 05:00:00'),
+        new DateTimeImmutable('2024-04-26 06:00:00'),
+        new DateTimeImmutable('2024-04-26'),
         "Colombo"
     ]
 ];
 
-foreach ($eventData as $eventData) {
-    $event = new Event($eventData[0], $eventData[1], $eventData[3], $eventData[4], $eventData[2], $eventData[5]);
+foreach ($eventData as $event) {
+    $event = new Event($event[0], $event[1], $event[2], $event[3], $event[4], $event[5]);
     $entityManager->persist($event);
 }
 $entityManager->flush();
@@ -624,46 +645,38 @@ $requirementData = [
     new CreateRequirementDTO(
         'Internship Contract',
         'Upload the contract between you and the company.',
-        Type::ONE_TIME,
-        new DateTimeImmutable(),
-        new DateTimeImmutable('+1 month'),
-        null,
+        1,
+        2,
         FulFillMethod::FILE_UPLOAD,
-        json_encode(['pdf']),
+        ['pdf'],
         5,
         3
     ),
     new CreateRequirementDTO(
         'Monthly Report',
         'Upload a report of your progress.',
-        Type::RECURRING,
-        new DateTimeImmutable(),
-        null,
-        RepeatInterval::MONTHLY,
+        1,
+        4,
         FulFillMethod::FILE_UPLOAD,
-        json_encode(['pdf']),
+        ['pdf'],
         5,
         1
     ),
     new CreateRequirementDTO(
         'Weekly Report',
         'Upload a report of your progress.',
-        Type::RECURRING,
-        new DateTimeImmutable(),
-        null,
-        RepeatInterval::WEEKLY,
+        1,
+        1,
         FulFillMethod::FILE_UPLOAD,
-        json_encode(['pdf']),
+        ['pdf'],
         5,
         1
     ),
     new CreateRequirementDTO(
         'Your feedback about the internship',
         'What do you think about the company. How was your experience? Your feedback will not be shared with the company.',
-        Type::ONE_TIME,
-        new DateTimeImmutable(),
-        new DateTimeImmutable('+1 month'),
-        null,
+        23,
+        2,
         FulFillMethod::TEXT_INPUT,
         null,
         null,
@@ -687,32 +700,32 @@ $entityManager->flush();
 
 echo "Done.\nAdding user requirements...";
 
-$ur = new UserRequirement(
-    $studentUser0,
-    $requirements[0],
-    $requirements[0]->getStartDate(),
-    $requirements[0]->getEndBeforeDate()
-);
-$entityManager->persist($ur);
-$ur = new UserRequirement(
-    $studentUser0,
-    $requirements[3],
-    $requirements[3]->getStartDate(),
-    $requirements[3]->getEndBeforeDate()
-);
-$entityManager->persist($ur);
+// $ur = new UserRequirement(
+//     $studentUser0,
+//     $requirements[0],
+//     $requirements[0]->getStartDate(),
+//     $requirements[0]->getEndBeforeDate()
+// );
+// $entityManager->persist($ur);
+// $ur = new UserRequirement(
+//     $studentUser0,
+//     $requirements[3],
+//     $requirements[3]->getStartDate(),
+//     $requirements[3]->getEndBeforeDate()
+// );
+// $entityManager->persist($ur);
 
-$requirements[1]->createUserRequirements($studentUser0, $entityManager);
-$requirements[2]->createUserRequirements($studentUser0, $entityManager);
+// $requirements[1]->createUserRequirements($studentUser0, $entityManager);
+// $requirements[2]->createUserRequirements($studentUser0, $entityManager);
 
-$entityManager->flush();
+// $entityManager->flush();
 
-foreach ($requirements as $r) {
-    for ($i = 1; $i < 200; $i++) {
-        $r->createUserRequirements($studentUsers[$i], $entityManager);
-    }
-}
-$entityManager->flush();
+// foreach ($requirements as $r) {
+//     for ($i = 1; $i < 200; $i++) {
+//         $r->createUserRequirements($studentUsers[$i], $entityManager);
+//     }
+// }
+// $entityManager->flush();
 
 echo "Done.\nDatabase seeded successfully.\n";
 

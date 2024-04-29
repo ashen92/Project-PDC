@@ -27,6 +27,11 @@ abstract class ControllerBase
         return $this->authzService->hasRole($role);
     }
 
+    protected function authorize(string $policyName): bool
+    {
+        return $this->authzService->authorize($policyName);
+    }
+
     /**
      * @param array<mixed> $parameters
      */

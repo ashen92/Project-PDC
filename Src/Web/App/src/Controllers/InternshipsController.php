@@ -6,13 +6,17 @@ namespace App\Controllers;
 use App\DTOs\createInternshipDTO;
 use App\Models\Internship;
 use App\Models\InternshipCycle;
-use App\Models\InternshipProgram\createApplication;
+use App\Models\InternshipProgram\CreateApplication;
+use App\Security\Attributes\RequiredAtLeastOne;
 use App\Security\Attributes\RequiredRole;
 use App\Security\AuthorizationService;
+use App\Services\ApplicationService;
+use App\Services\InternshipProgramService;
 use App\Services\InternshipService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
 
@@ -30,13 +34,21 @@ class InternshipsController extends ControllerBase
         Environment $twig,
         AuthorizationService $authzService,
         private readonly InternshipService $internshipService,
+        private readonly ApplicationService $applicationService,
+        private readonly InternshipProgramService $internshipProgramService,
     ) {
         parent::__construct($twig, $authzService);
     }
 
+    #[RequiredAtLeastOne(['InternshipProgramAdmin'], ['JobCollectionPhase', 'FirstRoundPhase'])]
     #[Route(['/internships'])]
     public function internships(Request $request, ?InternshipCycle $cycle): Response
     {
+        if ($this->hasRole('InternshipProgramStudent')) {
+            if (!$this->authorize('FirstRoundPhase'))
+                throw new AccessDeniedHttpException();
+        }
+
         if ($cycle === null) {
             return $this->render('internship-program/internships.html', ['section' => 'internships']);
         }
@@ -136,9 +148,11 @@ class InternshipsController extends ControllerBase
                 );
             }
 
-            $orgs = $this->internshipService->searchInternshipsGetOrganizations(
+            $orgs = $this->internshipService->getOrganizationsForSearchQuery(
                 $cycleId,
                 $searchQuery,
+                $visibility,
+                $isApproved
             );
         }
 
@@ -231,34 +245,47 @@ class InternshipsController extends ControllerBase
         return $this->redirect('/internship-program/internships');
     }
 
-    #[Route('/internships/{id}/apply', methods: ['POST'])]
-    public function applyPOST(Request $request, int $id): RedirectResponse
+    #[Route('/internships/{internshipId}/apply', methods: ['POST'])]
+    public function applyPOST(Request $request, InternshipCycle $cycle, int $internshipId): RedirectResponse
     {
         $userId = $request->getSession()->get('user_id');
 
-        $files = $request->files->get('files-to-upload');
+        $files = $request->files->get('application-file');
         if ($files && !is_array($files)) {
             $files = [$files];
         }
 
-        // TODO: Validate data
-
-        if (!$this->internshipService->createApplication(new createApplication($id, $userId, $files))) {
-            // TODO: Set errors
+        try {
+            if (
+                !$this->applicationService->createApplication(
+                    $cycle->getId(),
+                    new CreateApplication($userId, $files, $internshipId, null)
+                )
+            ) {
+                $request->getSession()->getFlashBag()->add('error', 'Error occurred. Please try again.');
+            }
+        } catch (\Throwable $th) {
+            $request->getSession()->getFlashBag()->add('error', $th->getMessage());
         }
 
         return $this->redirect('/internship-program/internships');
     }
 
+    #[RequiredAtLeastOne(['InternshipProgramAdmin'], ['SecondRoundPhase'])]
     #[Route('/round-2', methods: ['GET'])]
-    public function round2GET(InternshipCycle $cycle): Response
+    public function round2GET(Request $request, InternshipCycle $cycle): Response
     {
         if ($this->hasRole('InternshipProgramStudent')) {
+            $userId = $request->getSession()->get('user_id');
+            $jobRolesAppliedTo = $this->applicationService->getJobRolesAppliedTo($cycle->getId(), $userId);
+            $maxApplications = $this->internshipProgramService->valueOfSetting('MaxJobRoleApplications');
             return $this->render(
                 'internship-program/round-2/home-student.html',
                 [
                     'section' => 'round-2',
                     'jobRoles' => $this->internshipService->getJobRoles($cycle->getId()),
+                    'jobRolesAppliedTo' => $jobRolesAppliedTo,
+                    'isApplicationsLimitReached' => count($jobRolesAppliedTo) >= $maxApplications
                 ]
             );
         }
@@ -282,16 +309,146 @@ class InternshipsController extends ControllerBase
         );
     }
 
+    #[RequiredRole(['InternshipProgramAdmin', 'InternshipProgramPartnerAdmin'])]
     #[Route('/round-2/job-roles/{id}', methods: ['GET'])]
     public function jobRoleStudentsGET(int $id): Response
     {
+        if ($this->hasRole('InternshipProgramPartnerAdmin')) {
+            if (!$this->authorize('SecondRoundPhase')) {
+                throw new AccessDeniedHttpException();
+            }
+        }
+
         return $this->render(
-            'internship-program/round-2/job-role/students.html',
+            'internship-program/round-2/job-role/applications.html',
             [
                 'section' => 'round-2',
                 'jobRole' => $this->internshipService->getJobRole($id),
-                'students' => $this->internshipService->getStudentsByJobRole($id),
+                'applications' => $this->applicationService->getJobRoleApplications($id),
             ]
         );
+    }
+
+    #[RequiredRole('InternshipProgramStudent')]
+    #[Route('/round-2/job-roles/{jobRoleId}/apply', methods: ['POST'])]
+    public function jobRoleApply(Request $request, InternshipCycle $cycle, int $jobRoleId): RedirectResponse
+    {
+        $userId = $request->getSession()->get('user_id');
+
+        $files = $request->files->get('application-file');
+        if ($files && !is_array($files)) {
+            $files = [$files];
+        }
+        $application = new CreateApplication($userId, $files, null, $jobRoleId);
+        try {
+            if (!$this->applicationService->createApplication($cycle->getId(), $application))
+                $request->getSession()->getFlashBag()->add('error', 'Error occurred. Please try again.');
+
+        } catch (\Throwable $th) {
+            if ($th->getCode() === 1001)
+                $request->getSession()->getFlashBag()->add('error', $th->getMessage());
+        }
+        return $this->redirect('/internship-program/round-2');
+    }
+
+    #[RequiredRole('InternshipProgramStudent')]
+    #[Route('/round-2/job-roles/{jobRoleId}/apply', methods: ['DELETE'])]
+    public function jobRoleUndoApply(Request $request, int $jobRoleId): Response
+    {
+        $userId = $request->getSession()->get('user_id');
+        if ($this->applicationService->removeApplication($userId, null, null, $jobRoleId)) {
+            return new Response(null, 204);
+        }
+
+        return new Response(null, 400);
+    }
+
+    #[RequiredRole('InternshipProgramAdmin')]
+    #[Route('/round-2/job-roles/add', methods: ['POST'])]
+    public function jobRoleAdd(Request $request, InternshipCycle $cycle): RedirectResponse
+    {
+        $name = $request->get('name');
+        // TODO: Validate data
+
+        if (!$this->internshipService->createJobRole($cycle->getId(), $name)) {
+            // TODO: Set errors
+        }
+        return $this->redirect('/internship-program/round-2');
+    }
+
+    #[RequiredRole('InternshipProgramAdmin')]
+    #[Route('/round-2/job-roles/edit', methods: ['POST'])]
+    public function jobRoleEdit(Request $request): RedirectResponse
+    {
+        $id = (int) $request->get('id');
+        $name = $request->get('name');
+        // TODO: Validate data
+
+        if (!$this->internshipService->modifyJobRole($id, $name)) {
+            // TODO: Set errors
+        }
+        return $this->redirect('/internship-program/round-2');
+    }
+
+    #[RequiredRole('InternshipProgramAdmin')]
+    #[Route('/round-2/job-roles/delete', methods: ['POST'])]
+    public function jobRoleDelete(Request $request): RedirectResponse
+    {
+        $id = (int) $request->get('id');
+        // TODO: Validate data
+
+        if (!$this->internshipService->deleteJobRole($id)) {
+            // TODO: Set errors
+        }
+        return $this->redirect('/internship-program/round-2');
+    }
+
+    #[RequiredRole('InternshipProgramPartnerAdmin')]
+    #[Route('/round-2/job-roles/{jobRoleId}/candidates/{candidateId}/hire',
+        requirements: ['jobRoleId' => '\d+', 'candidateId' => '\d+'],
+        methods: ['PUT'])]
+    public function candidateHire(Request $request, InternshipCycle $cycle, int $jobRoleId, int $candidateId): Response
+    {
+        $userId = $request->getSession()->get('user_id');
+        try {
+            if ($this->applicationService->hire($cycle->getId(), $userId, candidateId: $candidateId))
+                return new Response(null, 204);
+        } catch (\Throwable $th) {
+            if ($th->getCode() === 1000)
+                return new Response(json_encode(['message' => $th->getMessage()]), 409);
+        }
+        return new Response(null, 400);
+    }
+
+    #[RequiredRole('InternshipProgramPartnerAdmin')]
+    #[Route('/round-2/job-roles/{jobRoleId}/candidates/{candidateId}/cancel',
+        requirements: ['jobRoleId' => '\d+', 'candidateId' => '\d+'],
+        methods: ['PUT'])]
+    public function candidateCancel(Request $request, int $jobRoleId, int $candidateId): Response
+    {
+        if ($this->applicationService->cancelHire($candidateId)) {
+            return new Response(null, 204);
+        }
+        return new Response(null, 400);
+    }
+
+    #[RequiredRole('InternshipProgramAdmin')]
+    #[Route('/internships/{id}/approve', methods: ['PUT'])]
+    public function approveInternship(Request $request, int $id): Response
+    {
+        if ($this->internshipService->approveInternship($id)) {
+            return new Response(null, 204);
+        }
+        return new Response(null, 400);
+    }
+
+    #[RequiredRole('InternshipProgramAdmin')]
+    #[Route('/internships/{id}/approve', methods: ['DELETE'])]
+    public function undoApproveInternship(Request $request, int $id): Response
+    {
+        if ($this->internshipService->undoApproveInternship($id)) {
+            return new Response(null, 204);
+        }
+        return new Response(null, 400);
     }
 }

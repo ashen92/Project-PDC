@@ -6,18 +6,19 @@ namespace App\Services;
 use App\DTOs\createInternshipDTO;
 use App\Interfaces\IFileStorageService;
 use App\Models\Internship;
-use App\Models\InternshipProgram\createApplication;
+use App\Models\Internship\Visibility;
 use App\Models\InternshipSearchResult;
 use App\Models\Organization;
-use App\Models\Student;
+use App\Repositories\ApplicationRepository;
 use App\Repositories\InternshipRepository;
 
 readonly class InternshipService
 {
     public function __construct(
         private InternshipRepository $internshipRepository,
-        private InternshipProgramService $internshipCycleService,
-        private IFileStorageService $fileStorageService
+        private InternshipProgramService $internshipProgramService,
+        private IFileStorageService $fileStorageService,
+        private ApplicationRepository $applicationRepository,
     ) {
     }
 
@@ -77,13 +78,19 @@ readonly class InternshipService
     /**
      * @return array<Organization>
      */
-    public function searchInternshipsGetOrganizations(int $cycleId, ?string $searchQuery): array
-    {
+    public function getOrganizationsForSearchQuery(
+        int $cycleId,
+        ?string $searchQuery,
+        ?Visibility $visibility,
+        ?bool $isApproved
+    ): array {
         // TODO: Check if internship cycle exists
 
-        return $this->internshipRepository->searchInternshipsGetOrganizations(
+        return $this->internshipRepository->getOrganizationsForSearchQuery(
             $cycleId,
             $searchQuery,
+            $visibility,
+            $isApproved
         );
     }
 
@@ -124,27 +131,14 @@ readonly class InternshipService
         $res['title'] = $i['title'];
         $res['description'] = $i['description'];
         $res['applicationId'] = $i['application_id'] ?? null;
-
+        $res['submittedApplicationsCount'] = $this->applicationRepository->countInternshipApplicationsByStudent($i['internship_cycle_id'], $studentId);
+        $res['maximumApplicationsCount'] = $this->internshipProgramService->valueOfSetting('MaxInternshipApplications');
         return $res;
     }
 
-    /**
-     * @return array<Student>
-     */
     public function getApplications(int $internshipId): array
     {
-        $applications = $this->internshipRepository->findAllApplications($internshipId);
-        $internship = $this->internshipRepository->findInternship($internshipId);
-
-        foreach ($applications as &$application) {
-            $application["isApplicantAvailable"] = $application["isApplicantAvailable"] === 1;
-        }
-
-        $res['id'] = $internship->getId();
-        $res['title'] = $internship->getTitle();
-        $res['applications'] = $applications;
-
-        return $res;
+        return $this->internshipRepository->findAllApplications($internshipId);
     }
 
     public function deleteInternship(int $id): bool
@@ -174,39 +168,6 @@ readonly class InternshipService
         return $this->internshipRepository->updateInternship($id, $title, $description);
     }
 
-    public function createApplication(createApplication $createApplication): bool
-    {
-        // TODO: Check if internship exists
-        // TODO: Check if user exists and is a student
-
-        $fileUploadResponse = $this->fileStorageService->upload($createApplication->files);
-        if (!$fileUploadResponse) {
-            return false;
-        }
-
-        return $this->internshipRepository->createApplication(
-            $createApplication->internshipId,
-            $createApplication->userId,
-            $fileUploadResponse
-        );
-    }
-
-    public function removeApplication(int $applicationId, int $internshipId, int $userId): bool
-    {
-        // TODO: Check if internship exists
-        // TODO: Check if user exists and is a student
-
-        return $this->internshipRepository->deleteApplication($applicationId, $internshipId, $userId);
-    }
-
-    public function hasAppliedToInternship(int $internshipId, int $userId): bool
-    {
-        // TODO: Check if internship exists
-        // TODO: Check if user exists and is a student
-
-        return $this->internshipRepository->hasApplied($internshipId, $userId);
-    }
-
     public function getOrganizations(): array
     {
         return $this->internshipRepository->findOrganizations();
@@ -222,8 +183,28 @@ readonly class InternshipService
         return $this->internshipRepository->findJobRoles($cycleId);
     }
 
-    public function getStudentsByJobRole(int $jobRoleId): array
+    public function createJobRole(int $cycleId, string $jobRoleName): bool
     {
-        return $this->internshipRepository->findStudentsByJobRole($jobRoleId);
+        return $this->internshipRepository->createJobRole($cycleId, $jobRoleName);
+    }
+
+    public function modifyJobRole(int $jobRoleId, string $name): bool
+    {
+        return $this->internshipRepository->modifyJobRole($jobRoleId, $name);
+    }
+
+    public function deleteJobRole(int $jobRoleId): bool
+    {
+        return $this->internshipRepository->deleteJobRole($jobRoleId);
+    }
+
+    public function approveInternship(int $internshipId): bool
+    {
+        return $this->internshipRepository->approveInternship($internshipId);
+    }
+
+    public function undoApproveInternship(int $internshipId): bool
+    {
+        return $this->internshipRepository->undoApproveInternship($internshipId);
     }
 }

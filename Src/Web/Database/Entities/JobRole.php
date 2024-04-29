@@ -1,11 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Database\Entities;
+namespace DB\Entities;
 
 use DB\Entities\InternshipCycle;
-use DB\Entities\Student;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
@@ -23,10 +21,6 @@ class JobRole
     #[ORM\ManyToOne(targetEntity: InternshipCycle::class, inversedBy: 'internships')]
     #[ORM\JoinColumn(name: 'internship_cycle_id', referencedColumnName: 'id')]
     private InternshipCycle $internshipCycle;
-
-    #[ORM\ManyToMany(targetEntity: Student::class, inversedBy: 'jobRoles')]
-    #[ORM\JoinTable(name: 'job_role_students')]
-    private Collection $students;
 
     public function __construct(
         string $name,

@@ -2,62 +2,75 @@
 @use '../mixins';
 
 .layout-auth {
-    background-image: url('/images/bg.jpg');
+    background-image: url('/images/auth-background.png');
     background-size: cover;
     background-position: center;
     display: grid;
-    grid-template-rows: 1fr auto;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
     min-height: 100vh;
     width: 100%;
 
     >.content {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        grid-template-rows: max-content 1fr;
         width: 100%;
+        margin: auto auto;
+        padding: 4rem 2rem 2rem 2rem;
+        display: flex;
+        column-gap: 5rem;
         max-width: $authentication-page-max-width;
-        margin: 6.25rem auto 3rem auto;
     }
 
-    .hero-text {
-        grid-column: span 2;
-        margin-bottom: 2rem;
-        text-align: center;
+    .hero-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        column-gap: 4rem;
+        position: relative;
+        background: rgba(255, 255, 255, 0.25);
+        -webkit-backdrop-filter: blur(10px);
+        backdrop-filter: blur(10px);
+        max-width: max-content;
+        border-radius: 1.25rem;
+        padding: 2.5rem 4rem;
+        margin: 2rem auto;
 
-        h2 {
-            font-weight: $fw-normal;
+        .hero-logo {
+            >.logo {
+                width: 12rem;
+                height: 12rem;
+                border-radius: 11rem;
+            }
         }
 
-        h3 {
-            font-weight: $fw-light;
-            color: #0527b0;
-            padding-top: 1.25rem;
-        }
-    }
-
-    .auth-box {
-        margin: auto 3.5625rem auto 3.5625rem;
-
-        >h4 {
-            padding-bottom: 1.875rem;
-        }
-
-        >.form-wrapper {
-            width: 18rem;
-
-            &.signup {
-                width: 22rem;
+        .hero-text {
+            h3 {
+                color: #0527b0;
+                padding-top: 1.25rem;
             }
         }
     }
 
-    .logo-container {
-        margin: auto;
+    .auth-box {
+        >.form-wrapper {
+            margin: 0 auto;
+            width: 24rem;
+            padding: 3rem 2.5rem;
+            background-color: #fff;
+            border-radius: 1.25rem;
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.12), 0 4px 8px rgba(0, 0, 0, 0.14);
 
-        >.logo {
-            width: 22rem;
-            height: 22rem;
-            border-radius: 11rem;
+            position: relative;
+            background: rgba(255, 255, 255, 0.25);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+
+            >h4 {
+                margin-bottom: 2rem;
+            }
+
+            &.signup {
+                width: 28rem;
+            }
         }
     }
 

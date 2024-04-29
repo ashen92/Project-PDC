@@ -18,25 +18,13 @@
         <div class="mb-7 bg-grey-100 formatted-text-area p-5 rounded-1">{{ requirement.description|raw }}</div>
 
         <div class="grid-details">
-            <p class="label">Type</p>
+            <p class="label">Starting month and week</p>
             <p>:</p>
-            <p class="capitalize">{{ requirement.requirementType }}</p>
+            <p>{{ requirement.startWeekAsMonthWeek }}</p>
 
-            {% if requirement.requirementType.value == "recurring" %}
-            <p class="label">Repeat interval</p>
+            <p class="label">Duration</p>
             <p>:</p>
-            <p class="capitalize">{{ requirement.repeatInterval }}</p>
-            {% endif %}
-
-            <p class="label">Start date</p>
-            <p>:</p>
-            <p>{{ requirement.startDate.format("Y-m-d") }}</p>
-
-            {% if requirement.requirementType == "one-time" %}
-            <p class="label">End date (Exclusive)</p>
-            <p>:</p>
-            <p>{{ requirement.endBeforeDate.format("Y-m-d") }}</p>
-            {% endif %}
+            <p>{{ requirement.durationWeeksAsWeeks }}</p>
 
             {% set fulfillMethod = requirement.fulfillMethod %}
             <p class="label">Fulfill Method</p>

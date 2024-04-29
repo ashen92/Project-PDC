@@ -1,35 +1,37 @@
-import { Grid } from "gridjs";
+import DataTable from "datatables.net-dt";
+import { Dialog } from "../../../components/dialog";
+import { $ } from "../../../core/dom";
 
-let apiEndpoint = window.location.protocol + "//" + window.location.host;
-
-const params = new URLSearchParams(window.location.search);
-const i = parseInt(params.get("i"));
-
-if (isNaN(i)) {
-    apiEndpoint += "/api/applications";
-} else {
-    apiEndpoint += "/api/internships/" + i + "/applications";
-}
-
-const grid = new Grid({
-    columns: [
-        { name: "id", hidden: true },
-        "First name",
-        "Full name",
-        "Email",
-        "Status",
+const table = new DataTable("#applications-table", {
+    pageLength: 25,
+    columnDefs: [
+        {
+            targets: 0,
+            visible: false,
+        },
     ],
-    server: {
-        url: apiEndpoint,
-        then: data => data.applications.map(a => [a.id, a.userFirstName, a.studentFullName, a.userEmail, a.status])
-    },
-    search: {
-        server: {
-            url: (prev, keyword) => `${prev}?fullName=${keyword}`
-        }
-    },
 });
-grid.render(document.getElementById("grid-applications"));
-grid.on("rowClick", (e, row) => {
-    window.location.href = `/internship-program/applicants/applications/${row.cells[0].data}`;
+
+const dialog = new Dialog("#file-viewer");
+dialog.setTitle("CV/Resume");
+const pdfViewer = $("#pdf-viewer");
+
+let url = new URL(window.location.href);
+url.search = "";
+url = url.toString();
+
+table.on("click", "tbody", (e) => {
+    if (e.target.tagName === "BUTTON") {
+        e.target.disabled = true;
+        const id = table.row(e.target.closest("tr")).data()[0];
+        if (e.target.name === "view-btn") {
+            dialog.open();
+            const fileId = e.target.dataset.fileId;
+            if (pdfViewer.dataset.fileId !== fileId) {
+                pdfViewer.data = `${url}/${id}/files/${fileId}`;
+                pdfViewer.dataset.fileId = fileId;
+            }
+            e.target.disabled = false;
+        }
+    }
 });

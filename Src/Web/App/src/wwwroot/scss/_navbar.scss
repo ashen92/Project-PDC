@@ -16,8 +16,8 @@
         }
 
         img {
-            width: 42px;
-            height: 42px;
+            width: 35px;
+            height: 35px;
             border-radius: 50%;
         }
     }
@@ -101,8 +101,8 @@
             width: 100%;
             height: 100%;
             display: block;
-            padding: 0.7rem 1rem 0.7rem 1rem;
-            border-radius: $rounded-1 - 2;
+            padding: 0.5rem 1rem 0.5rem 1rem;
+            border-radius: $rounded-2;
             transition: background-color .1s cubic-bezier(0.02, 1, 1, 1);
 
             &:hover {

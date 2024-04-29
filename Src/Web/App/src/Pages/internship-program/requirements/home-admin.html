@@ -10,7 +10,7 @@
 
 <div class="title">
     <h2>Requirements to be fulfilled</h2>
-    <p>Manage requirements that students and partners must complete.</p>
+    <p>Manage requirements that students must complete.</p>
 </div>
 
 <div class="actions mb-5">
@@ -32,23 +32,16 @@
         <thead>
             <tr>
                 <th>Name</th>
-                <th>Type</th>
-                <th>Start Date</th>
+                <th>Starts on</th>
+                <th>Duration</th>
             </tr>
         </thead>
         <tbody class="table-rows-clickable">
             {% for r in requirements %}
             <tr data-href="/internship-program/requirements/{{ r.id }}">
                 <td>{{ r.name }}</td>
-                <td class="capitalize">
-                    {% set requirementType = r.requirementType %}
-                    {% if requirementType == "recurring" %}
-                    {{ requirementType }} ({{ r.repeatInterval }})
-                    {% else %}
-                    {{ requirementType }}
-                    {% endif %}
-                </td>
-                <td>{{ r.startDate.format("Y-m-d") }}</td>
+                <td>{{ r.startWeekAsMonthWeek }}</td>
+                <td>{{ r.durationWeeksAsWeeks }}</td>
             </tr>
             {% endfor %}
         </tbody>

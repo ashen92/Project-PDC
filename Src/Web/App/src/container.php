@@ -97,6 +97,12 @@ $container->register(
 )
     ->setArguments([new Reference('pdo_mysql_connection'),]);
 
+$container->register(
+    'repository.event',
+    App\Repositories\EventRepository::class
+)
+    ->setArguments([new Reference('pdo_mysql_connection'),]);
+
 #endregion
 
 #region Twig -----------------------------------------------------------------------
@@ -167,16 +173,22 @@ $container->register(
     ->setArguments(['unemployed']);
 
 $container->register(
-    'security.policy.job_hunt_round_1',
-    App\Security\Policies\JobHuntRoundPolicy::class
+    'security.policy.internship_program_phase.job_collection',
+    App\Security\Policies\InternshipProgramPhasePolicy::class
 )
-    ->setArguments([1]);
+    ->setArguments(['JobCollectionPhase']);
 
 $container->register(
-    'security.policy.job_hunt_round_2',
-    App\Security\Policies\JobHuntRoundPolicy::class
+    'security.policy.internship_program_phase.first_round',
+    App\Security\Policies\InternshipProgramPhasePolicy::class
 )
-    ->setArguments([2]);
+    ->setArguments(['FirstRoundPhase']);
+
+$container->register(
+    'security.policy.internship_program_phase.second_round',
+    App\Security\Policies\InternshipProgramPhasePolicy::class
+)
+    ->setArguments(['SecondRoundPhase']);
 
 // Policy handlers
 
@@ -189,9 +201,12 @@ $container->register(
     ]);
 
 $container->register(
-    'security.policy_handler.job_hunt_round',
-    App\Security\PolicyHandlers\JobHuntRoundPolicyHandler::class
-);
+    'security.policy_handler.internship_program_phase',
+    App\Security\PolicyHandlers\InternshipProgramPhasePolicyHandler::class
+)
+    ->setArguments([
+        new Reference('repository.internship_program'),
+    ]);
 
 $container->register(
     'service.authorization',
@@ -220,17 +235,24 @@ $container->register(
     ->addMethodCall(
         'addPolicyHandler',
         [
-            'JobHuntRound1',
-            new Reference('security.policy.job_hunt_round_1'),
-            new Reference('security.policy_handler.job_hunt_round')
+            'JobCollectionPhase',
+            new Reference('security.policy.internship_program_phase.job_collection'),
+            new Reference('security.policy_handler.internship_program_phase')
+        ]
+    )->addMethodCall(
+        'addPolicyHandler',
+        [
+            'FirstRoundPhase',
+            new Reference('security.policy.internship_program_phase.first_round'),
+            new Reference('security.policy_handler.internship_program_phase')
         ]
     )
     ->addMethodCall(
         'addPolicyHandler',
         [
-            'JobHuntRound2',
-            new Reference('security.policy.job_hunt_round_2'),
-            new Reference('security.policy_handler.job_hunt_round')
+            'SecondRoundPhase',
+            new Reference('security.policy.internship_program_phase.second_round'),
+            new Reference('security.policy_handler.internship_program_phase')
         ]
     );
 
@@ -251,7 +273,8 @@ $container->register(
     ->setArguments([
         new Reference('repository.internship'),
         new Reference('service.internship_program'),
-        new Reference('service.file_storage')
+        new Reference('service.file_storage'),
+        new Reference('repository.application'),
     ]);
 
 $container->register(
@@ -290,6 +313,9 @@ $container->register(
     ->setArguments([
         new Reference('repository.application'),
         new Reference('service.file_storage'),
+        new Reference('service.requirement'),
+        new Reference('service.internship_program'),
+        new Reference('repository.user'),
     ]);
 
 $container->register(
@@ -297,6 +323,8 @@ $container->register(
     App\Services\EventService::class
 )
     ->setArguments([
+        new Reference('repository.event'),
+        new Reference('repository.user'),
     ]);
 
 $container->register(
@@ -372,17 +400,7 @@ $container->register(
         new Reference('twig'),
         new Reference('service.authorization'),
         new Reference('service.internship'),
-    ])
-    ->setPublic(true);
-
-$container->register(
-    'App\Controllers\API\ApplicationsAPIController',
-    \App\Controllers\API\ApplicationsAPIController::class
-)
-    ->setArguments([
-        new Reference('twig'),
-        new Reference('service.authorization'),
-        new Reference('service.application'),
+        new Reference('repository.application'),
     ])
     ->setPublic(true);
 
@@ -482,7 +500,8 @@ $container->register(
         new Reference('twig'),
         new Reference('service.authorization'),
         new Reference('service.internship'),
-        new Reference('service.user')
+        new Reference('service.application'),
+        new Reference('service.internship_program'),
     ])
     ->setPublic(true);
 

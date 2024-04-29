@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\EventListeners;
 
+use App\Security\Attributes\RequiredAtLeastOne;
 use App\Security\Attributes\RequiredPolicy;
 use App\Security\Attributes\RequiredRole;
 use App\Security\AuthorizationService;
@@ -75,6 +76,27 @@ readonly class AuthorizationListener implements EventSubscriberInterface
             if (!$this->authzService->authorize($policyName)) {
                 throw new AccessDeniedHttpException();
             }
+        }
+
+        $requiredAtLeastOneAttributes = $reflector->getAttributes(RequiredAtLeastOne::class);
+
+        if (!empty($requiredAtLeastOneAttributes)) {
+            $roles = $requiredAtLeastOneAttributes[0]->newInstance()->roles;
+            $policies = $requiredAtLeastOneAttributes[0]->newInstance()->policies;
+
+            foreach ($roles as $role) {
+                if ($this->authzService->hasRole($role)) {
+                    return;
+                }
+            }
+
+            foreach ($policies as $policy) {
+                if ($this->authzService->authorize($policy)) {
+                    return;
+                }
+            }
+
+            throw new AccessDeniedHttpException();
         }
     }
 

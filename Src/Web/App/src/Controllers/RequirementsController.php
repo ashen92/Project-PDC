@@ -7,12 +7,9 @@ use App\DTOs\CreateRequirementDTO;
 use App\DTOs\UserRequirementFulfillmentDTO;
 use App\Models\InternshipCycle;
 use App\Models\Requirement\FulFillMethod;
-use App\Models\Requirement\RepeatInterval;
-use App\Models\Requirement\Type;
 use App\Security\Attributes\RequiredRole;
 use App\Security\AuthorizationService;
 use App\Services\RequirementService;
-use DateTimeImmutable;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -36,6 +33,7 @@ class RequirementsController extends ControllerBase
         parent::__construct($twig, $authzService);
     }
 
+    #[RequiredRole(['InternshipProgramAdmin', 'InternshipProgramStudent'])]
     #[Route([''], methods: ['GET'])]
     public function requirements(Request $request, InternshipCycle $cycle): Response
     {
@@ -119,15 +117,11 @@ class RequirementsController extends ControllerBase
         }
 
         try {
-            $repeatInterval = $request->get('repeat-interval');
-
             $requirementDTO = new CreateRequirementDTO(
                 $request->get('name'),
                 $request->get('description'),
-                Type::tryFrom($request->get('type')),
-                new DateTimeImmutable($request->get('start-date')),
-                new DateTimeImmutable($request->get('end-before')),
-                $repeatInterval ? RepeatInterval::tryFrom($repeatInterval) : null,
+                (int) $request->get('start-week'),
+                (int) $request->get('duration-weeks'),
                 FulFillMethod::tryFrom($request->get('fulfill-method')),
                 $fileTypes,
                 (int) $request->get('max-file-size'),

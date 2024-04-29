@@ -3,22 +3,4 @@
     "git.openRepositoryInParentFolders": "always",
     "git.suggestSmartCommit": false,
     "editor.formatOnSave": true,
-    "sqltools.connections": [
-        {
-            "mysqlOptions": {
-                "authProtocol": "default",
-                "enableSsl": "Disabled"
-            },
-            "previewLimit": 50,
-            "server": "localhost",
-            "port": 3306,
-            "driver": "MySQL",
-            "name": "MySQL-GroupProject",
-            "database": "pdc",
-            "username": "root"
-        }
-    ],
-    "[python]": {
-        "editor.defaultFormatter": "ms-python.autopep8"
-    }
 }

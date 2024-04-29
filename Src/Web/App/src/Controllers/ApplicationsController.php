@@ -31,11 +31,13 @@ class ApplicationsController extends ControllerBase
     public function applications(Request $request): Response
     {
         $userId = $request->getSession()->get('user_id');
+        $applications = $this->applicationService->getApplicationsByStudent($userId);
         return $this->render(
-            'internship-program/applications/student/home.html',
+            'internship-program/applications/home.html',
             [
                 'section' => 'applications',
-                'applications' => $this->applicationService->getStudentApplications($userId),
+                'internshipApplications' => $applications['internship'],
+                'jobRoleApplications' => $applications['jobRole'],
             ]
         );
     }
@@ -89,22 +91,73 @@ class ApplicationsController extends ControllerBase
         // TODO: Validate
 
         if (!$internshipId || $internshipId < 1) {
-            return $this->render(
-                'internship-program/applicants/applications.html',
-                [
-                    'section' => 'applicants',
-                    'internship' => null,
-                ]
-            );
+            return $this->redirect('/internship-program/applicants');
         }
 
+        $internship = $this->internshipService->getInternship($internshipId);
         return $this->render(
             'internship-program/applicants/applications.html',
             [
                 'section' => 'applicants',
-                'internship' => $this->internshipService
-                    ->getInternship($internshipId),
+                'internship' => $internship,
+                'applications' => $this->internshipService->getApplications($internship->getId()),
             ]
         );
+    }
+
+    #[RequiredRole([
+        'InternshipProgramAdmin',
+        'InternshipProgramPartnerAdmin'
+    ])]
+    #[Route('/applicants/applications/{id}/hire', requirements: ['id' => '\d+'], methods: ['PUT'])]
+    public function applicantHire(Request $request, InternshipCycle $cycle, int $id): Response
+    {
+        $userId = $request->getSession()->get('user_id');
+        try {
+            if ($this->applicationService->hire($cycle->getId(), $userId, $id))
+                return new Response(null, 204);
+        } catch (\Throwable $th) {
+            if ($th->getCode() === 1000)
+                return new Response(json_encode(['message' => $th->getMessage()]), 409);
+        }
+        return new Response(null, 400);
+    }
+
+    #[RequiredRole([
+        'InternshipProgramAdmin',
+        'InternshipProgramPartnerAdmin'
+    ])]
+    #[Route('/applicants/applications/{id}/reject', requirements: ['id' => '\d+'], methods: ['PUT'])]
+    public function applicantReject(Request $request, int $id): Response
+    {
+        if ($this->applicationService->reject($id)) {
+            return new Response(null, 204);
+        }
+        return new Response(null, 400);
+    }
+
+    #[RequiredRole([
+        'InternshipProgramAdmin',
+        'InternshipProgramPartnerAdmin'
+    ])]
+    #[Route('/applicants/applications/{id}/reset', requirements: ['id' => '\d+'], methods: ['PUT'])]
+    public function applicantReset(Request $request, int $id): Response
+    {
+        if ($this->applicationService->resetApplicationStatus($id)) {
+            return new Response(null, 204);
+        }
+        return new Response(null, 400);
+    }
+
+    #[RequiredRole([
+        'InternshipProgramAdmin',
+        'InternshipProgramPartnerAdmin'
+    ])]
+    #[Route('/applicants/applications/{applicationId}/files/{fileId}',
+        requirements: ['applicationId' => '\d+', 'fileId' => '\d+'],
+        methods: ['GET'])]
+    public function applicantFile(Request $request, int $applicationId, int $fileId): Response
+    {
+        return $this->applicationFile($applicationId, $fileId);
     }
 }

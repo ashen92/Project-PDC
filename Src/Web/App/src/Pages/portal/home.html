@@ -10,23 +10,82 @@
 
 <div class="title">
     <h2>Admin Portal</h2>
-</div>
-<section>
-    <div class="flex top-navigation" id="top-navigation">
-        <a class="link mr-2" href="/portal/home/link1">
-            Tab 1
-        </a>
-        <a class=" link mr-2" href="/portal/home/link2">
-            Tab 2
-        </a>
-        <a class="link" href="/portal/home/link3">
-            Tab 3
-        </a>
-    </div>
-    <div class="page" id="page">
+    <p>
+        You can view the status of the system.
+    </p>
 
+</div>
+
+<div class="layout-dash">
+
+    <div class="dash-container">
+
+        <div class="card one">
+            <a class="dash-link" href="/portal/home/link1">
+                <h3>
+                    {{ activeUsers }}
+                </h3>
+                <p>Active Users</p>
+            </a>
+        </div>
+
+
+        <div class="card two">
+            <a class="dash-link" href="/portal/home/link2">
+                <h3>
+                    {{ studentCount }}
+                </h3>
+                <p> Students</p>
+            </a>
+        </div>
+
+        <div class="card three">
+            <h3>
+                {{app_partners}}
+            </h3>
+            <p> Approved Partners</p>
+        </div>
+
+        <div class="card four">
+            <h3>
+                {{pen_partners}}
+            </h3>
+            <p>Pending Partners</p>
+        </div>
+
+        <div class="card five">
+            <a class="dash-link" href="/portal/home/link3">
+                <h3>
+                    {{ coordinatorsCount }}
+                </h3>
+                <p> PDC Assistant Coordinators</p>
+            </a>
+        </div>
     </div>
-</section>
+
+    <div class="hidden" id="studentCount">{{ studentCount }}</div>
+    <div class="hidden" id="coordinatorsCount">{{ coordinatorsCount }}</div>
+
+    <div class="chart-container">
+        <div class="chart one">
+            <canvas id="piechart"></canvas>
+        </div>
+
+        <div class="chart two">
+            <canvas id="barchart"></canvas>
+        </div>
+    </div>
+
+
+
+</div>
+
+
+
+
+
+</div>
+
 <script src="/js/portal.js"></script>
 
 {% endblock %}

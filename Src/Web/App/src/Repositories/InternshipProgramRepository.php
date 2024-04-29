@@ -21,9 +21,9 @@ class InternshipProgramRepository implements IRepository
         $this->pdo->beginTransaction();
     }
 
-    public function commit(): void
+    public function commit(): bool
     {
-        $this->pdo->commit();
+        return $this->pdo->commit();
     }
 
     public function rollBack(): void
@@ -82,7 +82,7 @@ class InternshipProgramRepository implements IRepository
         return (int) $stmt->fetchColumn();
     }
 
-    public function findLatestCycle(): ?InternshipCycle
+    public function findLatestCycle(): InternshipCycle
     {
         $sql = "SELECT ic.*, GROUP_CONCAT(icpg.usergroup_id SEPARATOR ',') AS partner_group_ids
                 FROM internship_cycles ic
@@ -94,7 +94,7 @@ class InternshipProgramRepository implements IRepository
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         if ($result === false) {
-            return null;
+            throw new \Exception();
         }
         return InternshipCycleMapper::map($result);
     }
@@ -240,5 +240,23 @@ class InternshipProgramRepository implements IRepository
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['id' => $cycleId]);
         return $stmt->rowCount() > 0;
+    }
+
+    public function findValueOfSetting(string $key): mixed
+    {
+        $stmt = $this->pdo->prepare(
+            'SELECT settingValue, settingValueType FROM internship_program_settings WHERE settingKey = :settingKey'
+        );
+        $stmt->execute(['settingKey' => $key]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($row === false) {
+            return null;
+        }
+        return match ($row['settingValueType']) {
+            'int' => (int) $row['settingValue'],
+            'bool' => (bool) $row['settingValue'],
+            'string' => $row['settingValue'],
+            default => null,
+        };
     }
 }

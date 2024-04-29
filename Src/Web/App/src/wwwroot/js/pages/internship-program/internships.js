@@ -2,6 +2,7 @@ import { $, $all } from "../../core/dom";
 import { on } from "../../core/events";
 import { Dialog } from "../../components/dialog";
 import { Collapse } from "../../components/collapse";
+import { FileUpload } from "../../components/file-upload";
 
 const params = new URLSearchParams(window.location.search);
 
@@ -49,6 +50,35 @@ let isLoading = false;
 
 const applyBtn = $("#btn-apply");
 const undoApplyBtn = $("#btn-undo-apply");
+const applyLimitText = $("#apply-limit-text");
+
+const onPendingApproval = $("#on-pending-approval");
+const onApproval = $("#on-approval");
+const notYetApproved = $("#not-yet-approved");
+const approved = $("#approved");
+const undoApproveBtn = $("#undo-approve-btn");
+
+if (onPendingApproval && onApproval) {
+    on(onPendingApproval, "click", function () {
+        fetch("/internship-program/internships/" + previouslySelectedItemCard.getAttribute("data-job-id") + "/approve", { method: "PUT" })
+            .then(response => {
+                if (response.status === 204) {
+                    window.location.href = `${window.location.pathname}`;
+                }
+            })
+            .catch(error => console.error("Error approving job:", error));
+    });
+
+    on(undoApproveBtn, "click", function () {
+        fetch("/internship-program/internships/" + previouslySelectedItemCard.getAttribute("data-job-id") + "/approve", { method: "DELETE" })
+            .then(response => {
+                if (response.status === 204) {
+                    window.location.href = `${window.location.pathname}`;
+                }
+            })
+            .catch(error => console.error("Error undoing approval for job:", error));
+    });
+}
 
 function fetchJobDetails(jobId) {
     fetch(`/api/internships/${jobId}`, { method: "GET" })
@@ -59,15 +89,41 @@ function fetchJobDetails(jobId) {
             jobDetailsSkeleton.classList.toggle("hidden");
             jobDetailsContent.classList.toggle("hidden");
 
-            if ('applicationId' in data) {
+            if ("applicationId" in data) {
                 if (data["applicationId"] !== null) {
                     applyBtn.classList.add("hidden");
+                    applyLimitText.classList.add("hidden");
                     undoApplyBtn.classList.remove("hidden");
                     undoApplyBtn.setAttribute("data-application-id", data["applicationId"]);
                 } else {
-                    applyBtn.classList.remove("hidden");
-                    undoApplyBtn.classList.add("hidden");
-                    undoApplyBtn.removeAttribute("data-application-id");
+                    if (data.submittedApplicationsCount < data.maximumApplicationsCount) {
+                        applyBtn.classList.remove("hidden");
+                        undoApplyBtn.classList.add("hidden");
+                        applyLimitText.classList.add("hidden");
+                        undoApplyBtn.removeAttribute("data-application-id");
+                    } else {
+                        applyBtn.classList.add("hidden");
+                        undoApplyBtn.classList.add("hidden");
+                        applyLimitText.classList.remove("hidden");
+                    }
+                }
+            } else {
+                if (data.isApproved === true) {
+                    if (onPendingApproval && onApproval) {
+                        onPendingApproval.classList.add("hidden");
+                        onApproval.classList.remove("hidden");
+                    } else {
+                        notYetApproved.classList.add("hidden");
+                        approved.classList.remove("hidden");
+                    }
+                } else {
+                    if (onPendingApproval && onApproval) {
+                        onPendingApproval.classList.remove("hidden");
+                        onApproval.classList.add("hidden");
+                    } else {
+                        notYetApproved.classList.remove("hidden");
+                        approved.classList.add("hidden");
+                    }
                 }
             }
         })
@@ -151,6 +207,12 @@ on(undoApplyBtn, "click", function () {
         .catch(error => console.error("Error undoing application for job:", error));
 });
 
+const fileUpload = new FileUpload(
+    $("#file-upload-container"),
+    $("#file-upload-container input[type=file]"),
+    $("#file-upload-container label")
+);
+
 const applicationDialog = new Dialog("#application-dialog");
 applicationDialog.setTitle("Upload CV or Resume");
 
@@ -172,83 +234,86 @@ on(fileUploadForm, "submit", function (e) {
 
 // Filter by company
 const filterByCompany = $("#filter-by-company");
-const companyDialog = new Dialog("#company-popup");
-companyDialog.setTitle("Filter by Company");
+if (filterByCompany) {
+    const companyDialog = new Dialog("#company-popup");
+    companyDialog.setTitle("Filter by Company");
 
-on(filterByCompany, "click", function () {
-    companyDialog.open();
-});
-
-const companyMultiSelectApplyBtn = $("#company-popup-apply-btn");
-const companyMultiSelectResetBtn = $("#company-popup-reset-btn");
-
-let companyCheckboxes = $all("#company-popup input[type=checkbox]");
-
-on(companyMultiSelectResetBtn, "click", function () {
-    companyCheckboxes.forEach(checkbox => {
-        checkbox.checked = false;
+    on(filterByCompany, "click", function () {
+        companyDialog.open();
     });
-});
 
-on(companyMultiSelectApplyBtn, "click", function () {
-    let companies = [];
-    companyCheckboxes.forEach(checkbox => {
-        if (checkbox.checked) {
-            companies.push(checkbox.getAttribute("id"));
+    const companyMultiSelectApplyBtn = $("#company-popup-apply-btn");
+    const companyMultiSelectResetBtn = $("#company-popup-reset-btn");
+
+    const companyCheckboxes = $all("#company-popup input[type=checkbox]");
+
+    on(companyMultiSelectResetBtn, "click", function () {
+        companyCheckboxes.forEach(checkbox => {
+            checkbox.checked = false;
+        });
+    });
+
+    on(companyMultiSelectApplyBtn, "click", function () {
+        let companies = [];
+        companyCheckboxes.forEach(checkbox => {
+            if (checkbox.checked) {
+                companies.push(checkbox.getAttribute("id"));
+            }
+        });
+
+        if (companies.length > 0) {
+            params.set("c", companies.join(","));
+        } else {
+            params.delete("c");
         }
+
+        window.location.href = `${window.location.pathname}?${params.toString()}`;
     });
-
-    if (companies.length > 0) {
-        params.set("c", companies.join(","));
-    } else {
-        params.delete("c");
-    }
-
-    window.location.href = `${window.location.pathname}?${params.toString()}`;
-});
+}
 
 // Filter by visibility
 const filterByVisibility = $("#filter-by-visibility");
-const visibilityRadioButtons = $all("#visibility-popup input[type=radio]");
-const visibilityDialog = new Dialog("#visibility-popup");
-visibilityDialog.setTitle("Filter by Visibility");
+if (filterByVisibility) {
+    const visibilityDialog = new Dialog("#visibility-popup");
+    visibilityDialog.setTitle("Filter by Visibility");
 
-on(filterByVisibility, "click", function () {
-    visibilityDialog.open();
-});
+    on(filterByVisibility, "click", function () {
+        visibilityDialog.open();
+    });
 
+    on($("#visibility-popup-apply-btn"), "click", () => {
+        let visibility = $("#visibility-popup input[type=radio]:checked").value;
+        if (visibility === "all") {
+            params.delete("v");
+        } else {
+            params.set("v", visibility);
+        }
 
-on($("#visibility-popup-apply-btn"), "click", function (e) {
-    let visibility = $("#visibility-popup input[type=radio]:checked").value;
-    if (visibility === "all") {
-        params.delete("v");
-    } else {
-        params.set("v", visibility);
-    }
-
-    window.location.href = `${window.location.pathname}?${params.toString()}`;
-});
+        window.location.href = `${window.location.pathname}?${params.toString()}`;
+    });
+}
 
 // Filter by approval
 const filterByApproval = $("#filter-by-approval");
-const approvalRadioButtons = $all("#approval-popup input[type=radio]");
-const approvalDialog = new Dialog("#approval-popup");
-approvalDialog.setTitle("Filter by Approval");
+if (filterByApproval) {
+    const approvalDialog = new Dialog("#approval-popup");
+    approvalDialog.setTitle("Filter by Approval");
 
-on(filterByApproval, "click", function () {
-    approvalDialog.open();
-});
+    on(filterByApproval, "click", function () {
+        approvalDialog.open();
+    });
 
-on($("#approval-popup-apply-btn"), "click", function (e) {
-    let approval = $("#approval-popup input[type=radio]:checked").value;
-    if (approval === "all") {
-        params.delete("a");
-    } else {
-        params.set("a", approval);
-    }
+    on($("#approval-popup-apply-btn"), "click", () => {
+        let approval = $("#approval-popup input[type=radio]:checked").value;
+        if (approval === "all") {
+            params.delete("a");
+        } else {
+            params.set("a", approval);
+        }
 
-    window.location.href = `${window.location.pathname}?${params.toString()}`;
-});
+        window.location.href = `${window.location.pathname}?${params.toString()}`;
+    });
+}
 
 // Default behavior on page load
 
@@ -268,7 +333,8 @@ let filterByVisibilityParam = params.get("v");
 let filterByApprovalParam = params.get("a");
 
 on(document, "DOMContentLoaded", function () {
-    if (filterByCompanyParam) {
+    if (filterByCompany && filterByCompanyParam) {
+        const companyCheckboxes = $all("#company-popup input[type=checkbox]");
         filterByCompany.classList.add("selected");
         companyCheckboxes.forEach(checkbox => {
             if (filterByCompanyParam.includes(parseInt(checkbox.getAttribute("id")))) {
@@ -277,7 +343,8 @@ on(document, "DOMContentLoaded", function () {
         });
     }
 
-    if (filterByVisibilityParam) {
+    if (filterByVisibility && filterByVisibilityParam) {
+        const visibilityRadioButtons = $all("#visibility-popup input[type=radio]");
         filterByVisibility.classList.add("selected");
         visibilityRadioButtons.forEach(radio => {
             if (radio.value === filterByVisibilityParam) {
@@ -286,7 +353,8 @@ on(document, "DOMContentLoaded", function () {
         });
     }
 
-    if (filterByApprovalParam) {
+    if (filterByApproval && filterByApprovalParam) {
+        const approvalRadioButtons = $all("#approval-popup input[type=radio]");
         filterByApproval.classList.add("selected");
         approvalRadioButtons.forEach(radio => {
             if (radio.value === filterByApprovalParam) {
