@@ -55,7 +55,7 @@ class EventRepository implements IRepository
             "startTime" => $dto->startTime->format($this::DATE_TIME_FORMAT),
             "endTime" => $dto->endTime->format($this::DATE_TIME_FORMAT),
             "eventLocation" => $dto->eventLocation,
-            "description" => $dto->description,
+            "description" => $dto->description
 
         ]);
 
@@ -80,13 +80,27 @@ class EventRepository implements IRepository
         ]);
     }
 
+    public function updateParticipantToEvent(int $eventId, int $userGroupId): void
+    {
+        $sql = "UPDATE event_participants SET usergroup_id=:userGroupId WHERE event_id=:eventId"; 
+        $statement = $this->pdo->prepare($sql);
+        $statement->execute([
+            'eventId' => $eventId,
+            'userGroupId' => $userGroupId,
+        ]);
+    }
+
     public function updateEvents(
         int $id,
         ?string $title = null,
         ?string $description = null,
+        ?string $eventLocation = null,
+        ?DateTimeImmutable $startTime = null,
+        ?DateTimeImmutable $endTime = null,
+        //?array $participants = null
         
     ): bool {
-        if ($title === null && $description === null) {
+        if ($title === null && $description === null && $eventLocation === null && $startTime === null && $endTime === null) {
             return true;
         }
 
@@ -103,9 +117,38 @@ class EventRepository implements IRepository
             $sql .= 'description = :description';
             $params['description'] = $description;
         }
+        if ($eventLocation !== null) {
+            if (count($params) > 0) {
+                $sql .= ', ';
+            }
+            $sql .= 'eventLocation = :eventLocation';
+            $params['eventLocation'] = $eventLocation;
+        }
+        if ($startTime !== null) {
+            if (count($params) > 0) {
+                $sql .= ', ';
+            }
+            $sql .= 'startTime = :startTime';
+            $params['startTime'] = $startTime->format($this::DATE_TIME_FORMAT);
+        }
+        if ($endTime !== null) {
+            if (count($params) > 0) {
+                $sql .= ', ';
+            }
+            $sql .= 'endTime = :endTime';
+            $params['endTime'] = $endTime->format($this::DATE_TIME_FORMAT);
+        }
+        /* if ($participants !== null) {
+            if (count($params) > 0) {
+                $sql .= ', ';
+            }
+            $sql .= 'participants = :participants';
+            $params['participants'] = $participants;
+        } */
        
         $sql .= ' WHERE id = :id';
         $params['id'] = $id;
+        var_dump($sql);
         $stmt = $this->pdo->prepare($sql);
         return $stmt->execute($params);
     }

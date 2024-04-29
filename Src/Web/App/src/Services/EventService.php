@@ -70,19 +70,25 @@ readonly class EventService
 
     public function createEvent(CreateEventDTO $dto): void
     {
-        $this->eventRepository->createEvent($dto);
+        $eventId =  $this->eventRepository->createEvent($dto);
+        $this->eventRepository->addParticipantToEvent($eventId, intval($dto->participants[0]));
 
     }
 
     public function updateEvents(
         int $id,
         ?string $title = null,
-        ?string $description = null
+        ?string $description = null,
+        ?string $eventLocation = null,
+        ?DateTimeImmutable $startTime = null,
+        ?DateTimeImmutable $endTime = null,
+        ?array $participants = null
        
     ): bool {
         
 
-        return $this->eventRepository->updateEvents($id, $title, $description);
+        return $this->eventRepository->updateEvents($id, $title, $description, $eventLocation, $startTime, $endTime);
+        return $this->eventRepository->updateParticipantToEvent($id, intval($participants[0]));
     }
     public function deleteEvent($id): bool
     {

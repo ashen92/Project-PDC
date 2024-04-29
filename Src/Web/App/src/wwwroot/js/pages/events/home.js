@@ -19,8 +19,12 @@ const calendar = new Calendar($("#calendar-view"), {
     eventClick: function (info) {
         var eventObj = info.event;
         var eventId= eventObj.id;
-    
-        if (eventObj.url) {
+        
+        let url= `events/${eventId}/eventdetails`;
+
+        window.open(url);
+
+        /* if (eventObj.url) {
             alert(
                 "Clicked " + eventObj.title + ".\n" +
                 "Will open " + eventObj.url + " in a new tab",
@@ -31,7 +35,7 @@ const calendar = new Calendar($("#calendar-view"), {
             info.jsEvent.preventDefault(); // prevents browser from following link in current tab.
         } else {
             alert("Clicked " + eventObj.title);
-        }
+        } */
     },
     // eventContent: function (arg) {
     //     return {

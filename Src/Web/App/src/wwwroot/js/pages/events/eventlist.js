@@ -9,7 +9,7 @@ const params = new URLSearchParams(window.location.search);
 //#region
 // This section handles the search bar
 
-const searchBtn = $("#search-btn");
+/* const searchBtn = $("#search-btn");
 const searchQueryElement = $("#search-query");
 
 on(searchBtn, "click", function () {
@@ -32,7 +32,7 @@ const query = params.get("q");
 
 if (query) {
     searchQueryElement.value = query;
-}
+} */
 
 //#endregion
 
