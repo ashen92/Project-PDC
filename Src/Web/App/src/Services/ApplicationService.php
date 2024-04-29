@@ -4,7 +4,9 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Models\Application;
+use App\Models\InternshipProgram\CreateApplication;
 use App\Repositories\ApplicationRepository;
+use App\Repositories\UserRepository;
 
 final readonly class ApplicationService
 {
@@ -12,8 +14,69 @@ final readonly class ApplicationService
         private ApplicationRepository $applicationRepository,
         private FileStorageService $fileStorageService,
         private RequirementService $requirementService,
+        private InternshipProgramService $internshipProgramService,
+        private UserRepository $userRepository,
     ) {
 
+    }
+
+    public function createApplication(int $cycleId, CreateApplication $createApplication): bool
+    {
+        $user = $this->userRepository->findUser($createApplication->userId);
+        if ($user === null) {
+            throw new \BadMethodCallException('User not found', 1004);
+        }
+
+        if ($createApplication->internshipId === null && $createApplication->jobRoleId === null) {
+            throw new \InvalidArgumentException('Either internshipId or jobRoleId must be provided', 1005);
+        }
+
+        if ($createApplication->internshipId !== null && $createApplication->jobRoleId !== null) {
+            throw new \InvalidArgumentException('Only one of internshipId or jobRoleId must be provided', 1006);
+        }
+
+        if ($createApplication->jobRoleId === null) {
+            $maxApplications = $this->internshipProgramService->valueOfSetting('MaxInternshipApplications');
+            $studentApplications = $this->applicationRepository->countInternshipApplicationsByStudent($cycleId, $createApplication->userId);
+
+            if ($studentApplications >= $maxApplications) {
+                throw new \InvalidArgumentException('Maximum number of applications reached', 1001);
+            }
+        } else {
+            $maxApplications = $this->internshipProgramService->valueOfSetting('MaxJobRoleApplications');
+            $studentApplications = $this->applicationRepository->countJobRoleApplicationsByStudent($cycleId, $createApplication->userId);
+
+            if ($studentApplications >= $maxApplications) {
+                throw new \InvalidArgumentException('Maximum number of applications reached', 1001);
+            }
+        }
+
+        $fileUploadResponse = $this->fileStorageService->upload($createApplication->files);
+        if (!$fileUploadResponse) {
+            return false;
+        }
+
+        return $this->applicationRepository->createApplication(
+            $createApplication->userId,
+            $fileUploadResponse,
+            $createApplication->internshipId,
+            $createApplication->jobRoleId
+        );
+    }
+
+    public function removeApplication(int $userId, ?int $applicationId, ?int $internshipId, ?int $jobRoleId): bool
+    {
+        return $this->applicationRepository->deleteApplication($userId, $applicationId, $internshipId, $jobRoleId);
+    }
+
+    public function getJobRoleApplications(int $jobRoleId): array
+    {
+        return $this->applicationRepository->findAllApplicationsByJobRole($jobRoleId);
+    }
+
+    public function countInternshipApplicationsByStudent(int $cycleId, int $studentId): int
+    {
+        return $this->applicationRepository->countInternshipApplicationsByStudent($cycleId, $studentId);
     }
 
     public function hire(int $cycleId, int $partnerId, ?int $applicationId = null, ?int $candidateId = null): bool
@@ -113,13 +176,22 @@ final readonly class ApplicationService
         }
     }
 
-    public function getStudentApplications(int $studentId): array
+    public function getApplicationsByStudent(int $studentId): array
     {
         $applications = $this->applicationRepository->findAllApplicationsByStudent($studentId);
+        $array = [
+            'internship' => [],
+            'jobRole' => []
+        ];
         foreach ($applications as &$application) {
             $application['fileIds'] = json_decode($application['fileIds']);
+            if ($application['internshipId'] !== null) {
+                $array['internship'][] = $application;
+            } else {
+                $array['jobRole'][] = $application;
+            }
         }
-        return $applications;
+        return $array;
     }
 
     public function getApplicationFile(int $applicationId, int $fileId): ?array
@@ -133,5 +205,10 @@ final readonly class ApplicationService
         $file = $this->fileStorageService->get($fileMetadata['path']);
         $file['name'] = $fileMetadata['name'];
         return $file;
+    }
+
+    public function getJobRolesAppliedTo(int $cycleId, int $studentId): array
+    {
+        return $this->applicationRepository->findJobRolesAppliedTo($cycleId, $studentId);
     }
 }

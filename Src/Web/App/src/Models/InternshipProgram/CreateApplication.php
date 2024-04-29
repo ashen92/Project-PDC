@@ -9,9 +9,10 @@ readonly class CreateApplication
      * @param array<\Symfony\Component\HttpFoundation\File\UploadedFile> $files
      */
     public function __construct(
-        public int $internshipId,
         public int $userId,
         public array $files,
+        public ?int $internshipId,
+        public ?int $jobRoleId,
     ) {
 
     }

@@ -56,6 +56,29 @@ const onPendingApproval = $("#on-pending-approval");
 const onApproval = $("#on-approval");
 const notYetApproved = $("#not-yet-approved");
 const approved = $("#approved");
+const undoApproveBtn = $("#undo-approve-btn");
+
+if (onPendingApproval && onApproval) {
+    on(onPendingApproval, "click", function () {
+        fetch("/internship-program/internships/" + previouslySelectedItemCard.getAttribute("data-job-id") + "/approve", { method: "PUT" })
+            .then(response => {
+                if (response.status === 204) {
+                    window.location.href = `${window.location.pathname}`;
+                }
+            })
+            .catch(error => console.error("Error approving job:", error));
+    });
+
+    on(undoApproveBtn, "click", function () {
+        fetch("/internship-program/internships/" + previouslySelectedItemCard.getAttribute("data-job-id") + "/approve", { method: "DELETE" })
+            .then(response => {
+                if (response.status === 204) {
+                    window.location.href = `${window.location.pathname}`;
+                }
+            })
+            .catch(error => console.error("Error undoing approval for job:", error));
+    });
+}
 
 function fetchJobDetails(jobId) {
     fetch(`/api/internships/${jobId}`, { method: "GET" })

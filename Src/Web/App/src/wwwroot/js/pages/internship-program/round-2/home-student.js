@@ -1,74 +1,47 @@
 import { $, $all } from "../../../core/dom";
+import { on } from "../../../core/events";
+import { Dialog } from "../../../components/dialog";
+import { FileUpload } from "../../../components/file-upload";
 
-const jobRoleCheckboxes = $all("#job-roles-container input[type=checkbox]");
+const fileUploadDialog = new Dialog("#file-upload-dialog");
+fileUploadDialog.setTitle("Upload your CV or resume");
 
-jobRoleCheckboxes.forEach((checkbox) => {
-    checkbox.addEventListener("change", () => {
-        if (checkbox.checked) {
-            toggleCheckboxes(true);
-            applyToJobRole(checkbox.id);
-        } else {
-            toggleCheckboxes(true);
-            removeFromJobRole(checkbox.id);
-        }
+const applyBtns = $all("#job-roles-container .btn-container [name='apply-btn']");
+
+let lastClickedApplyBtn = null;
+
+applyBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+        lastClickedApplyBtn = btn;
+        fileUploadDialog.open();
     });
 });
 
-function applyToJobRole(jobRoleId) {
-    fetch(`${window.location.href}/job-roles/${jobRoleId}/apply`, {
-        method: "PUT",
-    }).then((response) => {
-        toggleCheckboxes(false);
-        if (response.status === 204) {
-            showFlashMessage(true);
-        } else {
-            showFlashMessage(false);
-            console.error("Failed to apply to job role");
-        }
-    });
-}
+const fileUpload = new FileUpload(
+    $("#file-upload-container"),
+    $("#file-upload-container input[type=file]"),
+    $("#file-upload-container label")
+);
 
-function removeFromJobRole(jobRoleId) {
-    fetch(`${window.location.href}/job-roles/${jobRoleId}/apply`, {
-        method: "DELETE",
-    }).then((response) => {
-        toggleCheckboxes(false);
-        if (response.status === 204) {
-            showFlashMessage(true);
-        } else {
-            showFlashMessage(false);
-            console.error("Failed to remove from job role");
-        }
-    });
-}
+const fileUploadForm = $("#file-upload-form");
+on(fileUploadForm, "submit", function (e) {
+    e.preventDefault();
+    fileUploadForm.action = `${window.location.href}/job-roles/${lastClickedApplyBtn.id}/apply`;
+    fileUploadForm.submit();
+});
 
-const alertContainer = $("#alert-container");
-const alertSuccess = $("#alert-container #alert-success");
-const alertError = $("#alert-container #alert-error");
-function showFlashMessage(isSuccess, duration = 3000) {
-    if (isSuccess) {
-        alertSuccess.innerText = "Changes saved successfully";
-        alertSuccess.classList.remove("hidden");
-        alertContainer.classList.remove("hidden");
-        setTimeout(() => {
-            alertSuccess.innerText = "";
-            alertSuccess.classList.add("hidden");
-            alertContainer.classList.add("hidden");
-        }, duration);
-    } else {
-        alertError.innerText = "An error occurred. Please try again.";
-        alertError.classList.remove("hidden");
-        alertContainer.classList.remove("hidden");
-        setTimeout(() => {
-            alertError.innerText = "";
-            alertError.classList.add("hidden");
-            alertContainer.classList.add("hidden");
-        }, duration);
-    }
-}
+const removeBtns = $all("#job-roles-container .btn-container [name='remove-btn']");
 
-function toggleCheckboxes(isDisabled) {
-    jobRoleCheckboxes.forEach(checkbox => {
-        checkbox.disabled = isDisabled;
+removeBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+        fetch(`${window.location.href}/job-roles/${btn.id}/apply`, {
+            method: "DELETE",
+        }).then((response) => {
+            if (response.status === 204) {
+                window.location.reload();
+            } else {
+                console.error("Failed to remove from job role");
+            }
+        });
     });
-}
+});

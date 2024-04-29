@@ -31,11 +31,13 @@ class ApplicationsController extends ControllerBase
     public function applications(Request $request): Response
     {
         $userId = $request->getSession()->get('user_id');
+        $applications = $this->applicationService->getApplicationsByStudent($userId);
         return $this->render(
-            'internship-program/applications/student/home.html',
+            'internship-program/applications/home.html',
             [
                 'section' => 'applications',
-                'applications' => $this->applicationService->getStudentApplications($userId),
+                'internshipApplications' => $applications['internship'],
+                'jobRoleApplications' => $applications['jobRole'],
             ]
         );
     }

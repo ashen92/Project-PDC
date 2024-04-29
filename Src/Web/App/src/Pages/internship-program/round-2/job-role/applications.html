@@ -1,0 +1,110 @@
+{% extends "shared/layout-left-nav.html" %}
+
+{% block title %}Students{% endblock %}
+
+{% block left_nav %}
+{% include "internship-program/left-nav.html" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="title">
+    <h4>
+        {{ jobRole.name }}
+    </h4>
+    <p>
+        Undergraduates who are interested in this job role
+    </p>
+</div>
+
+<section>
+    <table class="hover row-border" id="applications-table">
+        <thead>
+            <tr>
+                <th class="hidden"></th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>
+                    <span>Availability</span>
+                    <i class="i i-question-circle-fill"
+                        title="Indicates if the applicant is already hired or not available for hiring."></i>
+                </th>
+                <th>Status</th>
+                {% if has_role('InternshipProgramPartnerAdmin') %}
+                <th>Hire</th>
+                <th>Reject</th>
+                <th>
+                    <span>Reset</span>
+                    <i class="i i-question-circle-fill"
+                        title="Reset the hired or rejected status of the application"></i>
+                </th>
+                {% endif %}
+                <th>CV/Resume</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in applications %}
+            <tr>
+                <td class="hidden">{{ i.id }}</td>
+                <td>{{ i.user.firstName ~ ' ' ~ i.user.lastName }}</td>
+                <td>{{ i.user.email }}</td>
+                <td>
+                    {% if i.isApplicantAvailable %}
+                    <span class='fs-6 i i-check-circle text-success'></span><span>Available</span>
+                    {% elseif i.status == 'hired' %}
+                    <span class='fs-6 i i-check-circle-fill text-success'></span><span>Hired</span>
+                    {% else %}
+                    <span class='fs-6 i i-x-circle text-danger'></span><span>Not available</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if i.status == 'pending' %}
+                    <span class='fs-6 i i-dash-circle text-warning'></span><span>Pending</span>
+                    {% elseif i.status == 'hired' %}
+                    <span class='fs-6 i i-check-circle-fill text-success'></span><span>Hired</span>
+                    {% else %}
+                    <span class='fs-6 i i-x-circle text-danger'></span><span>Rejected</span>
+                    {% endif %}
+                </td>
+                {% if has_role('InternshipProgramPartnerAdmin') %}
+                <td>
+                    <button class="btn btn-sm btn-primary" name="hire-btn" type="button" {% if not
+                        i.isApplicantAvailable %}disabled{% endif %}>Hire</button>
+                </td>
+                <td>
+                    <button class="btn btn-sm btn-outline-danger" name="reject-btn" type="button" {% if
+                        i.status=='rejected' %}disabled{% endif %}>Reject</button>
+                </td>
+                <td>
+                    <button class="btn btn-sm btn-secondary" name="reset-btn" type="button" {% if i.status=='pending'
+                        %}disabled{% endif %}>Reset</button>
+                </td>
+                {% endif %}
+                <td>
+                    <button class="btn btn-sm btn-primary" name="view-btn" type="button"
+                        data-file-id="{{ i.files[0].id }}">View</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="dialog-container" id="file-viewer">
+        <div class="dialog w-4/5 h-5/6">
+            <object class="pdf-viewer" id="pdf-viewer" data="" data-file-id type="application/pdf">
+                Your browser does not support this feature.
+            </object>
+        </div>
+    </div>
+    <div class="dialog-container" id="error-dialog">
+        <div class="dialog">
+            <p id="error-message"></p>
+        </div>
+    </div>
+</section>
+
+{% if has_role('InternshipProgramAdmin') %}
+<script src="/js/internship-program/round-2/job-role/applications-admin.js"></script>
+{% else %}
+<script src="/js/internship-program/round-2/job-role/applications.js"></script>
+{% endif %}
+{% endblock %}

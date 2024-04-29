@@ -261,88 +261,6 @@ class InternshipRepository implements IRepository
         return $res;
     }
 
-    /**
-     * @param array<array<string, string>> $files
-     */
-    public function createApplication(int $internshipId, int $userId, array $files): bool
-    {
-        $this->pdo->beginTransaction();
-        try {
-            $sql = 'INSERT INTO applications (internship_id, user_id, status)
-                VALUES (:internshipId, :userId, :status)';
-            $stmt = $this->pdo->prepare($sql);
-            if (
-                !$stmt->execute([
-                    'internshipId' => $internshipId,
-                    'userId' => $userId,
-                    'status' => 'pending',
-                ])
-            ) {
-                throw new \Exception('Failed to create application');
-            }
-
-            $applicationId = $this->pdo->lastInsertId();
-
-            $sql = 'INSERT INTO application_files (application_id, name, path) VALUES ';
-            $sql .= implode(
-                ',',
-                array_map(
-                    fn($file) => "($applicationId, '{$file['name']}', '{$file['path']}')",
-                    $files
-                )
-            );
-            $stmt = $this->pdo->prepare($sql);
-            if (!$stmt->execute()) {
-                throw new \Exception('Failed to create application files');
-            }
-
-            return $this->pdo->commit();
-        } catch (\Throwable $th) {
-            $this->pdo->rollBack();
-            return false;
-        }
-    }
-
-    public function deleteApplication(int $applicationId, int $internshipId, int $userId): bool
-    {
-        $this->pdo->beginTransaction();
-        try {
-            $sql = 'DELETE FROM application_files WHERE application_id = :applicationId';
-            $stmt = $this->pdo->prepare($sql);
-            if (!$stmt->execute(['applicationId' => $applicationId])) {
-                throw new \Exception('Failed to delete application files');
-            }
-
-            $sql = 'DELETE FROM applications WHERE internship_id = :internshipId AND user_id = :userId';
-            $stmt = $this->pdo->prepare($sql);
-            if (
-                !$stmt->execute([
-                    'internshipId' => $internshipId,
-                    'userId' => $userId,
-                ])
-            ) {
-                throw new \Exception('Failed to delete application');
-            }
-
-            return $this->pdo->commit();
-        } catch (\Throwable $th) {
-            $this->pdo->rollBack();
-            return false;
-        }
-    }
-
-    public function hasApplied(int $internshipId, int $userId): bool
-    {
-        $sql = 'SELECT COUNT(*) FROM applications WHERE internship_id = :internshipId AND user_id = :userId';
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([
-            'internshipId' => $internshipId,
-            'userId' => $userId,
-        ]);
-        $result = $stmt->fetch(PDO::FETCH_COLUMN);
-        return $result > 0;
-    }
-
     public function delete(int $id): bool
     {
         $sql = 'DELETE FROM internships WHERE id = :id';
@@ -449,53 +367,6 @@ class InternshipRepository implements IRepository
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function findJobRolesAppliedTo(int $cycleId, int $studentId): array
-    {
-        $sql = 'SELECT jr.id, jr.name
-                FROM job_roles jr
-                INNER JOIN job_role_students jrs ON jr.id = jrs.jobrole_id
-                WHERE jr.internship_cycle_id = :cycleId AND jrs.student_id = :studentId';
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute(['cycleId' => $cycleId, 'studentId' => $studentId]);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-
-    public function findStudentsByJobRole(int $jobRoleId): array
-    {
-        $sql = 'SELECT u.*, s.*,
-                CASE
-                    WHEN interns.student_id IS NOT NULL THEN 0
-                    ELSE 1
-                END AS isApplicantAvailable
-                FROM users u
-                INNER JOIN students s ON u.id = s.id
-                INNER JOIN job_role_students jrs ON u.id = jrs.student_id
-                LEFT JOIN interns ON u.id = interns.student_id
-                WHERE jrs.jobrole_id = :jobRoleId
-                GROUP BY u.id';
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute(['jobRoleId' => $jobRoleId]);
-        $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        foreach ($res as &$r) {
-            $r["isApplicantAvailable"] = $r["isApplicantAvailable"] === 1;
-        }
-        return $res;
-    }
-
-    public function applyToJobRole(int $jobRoleId, int $studentId): bool
-    {
-        $sql = 'INSERT INTO job_role_students (student_id, jobrole_id) VALUES (:studentId, :jobRoleId)';
-        $stmt = $this->pdo->prepare($sql);
-        return $stmt->execute(['studentId' => $studentId, 'jobRoleId' => $jobRoleId]);
-    }
-
-    public function removeFromJobRole(int $jobRoleId, int $studentId): bool
-    {
-        $sql = 'DELETE FROM job_role_students WHERE student_id = :studentId AND jobrole_id = :jobRoleId';
-        $stmt = $this->pdo->prepare($sql);
-        return $stmt->execute(['studentId' => $studentId, 'jobRoleId' => $jobRoleId]);
-    }
-
     public function createJobRole(int $cycleId, string $name): bool
     {
         $sql = 'INSERT INTO job_roles (internship_cycle_id, name) VALUES (:cycleId, :name)';
@@ -517,35 +388,17 @@ class InternshipRepository implements IRepository
         return $stmt->execute(['id' => $id]);
     }
 
-    public function countSubmittedApplications(int $cycleId, int $studentId): int
+    public function approveInternship(int $id): bool
     {
-        $stmt = $this->pdo->prepare(
-            "SELECT COUNT(*) AS count
-            FROM applications a
-            INNER JOIN internships i ON a.internship_id = i.id
-            WHERE user_id = :studentId
-            AND i.internship_cycle_id = :cycleId"
-        );
-        $stmt->execute([
-            "studentId" => $studentId,
-            "cycleId" => $cycleId
-        ]);
-        return (int) $stmt->fetch(PDO::FETCH_ASSOC)['count'];
+        $sql = 'UPDATE internships SET isApproved = 1 WHERE id = :id';
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute(['id' => $id]);
     }
 
-    public function countSelectedJobRoles(int $cycleId, int $studentId): int
+    public function undoApproveInternship(int $id): bool
     {
-        $stmt = $this->pdo->prepare(
-            "SELECT COUNT(*) AS count
-            FROM job_role_students jrs
-            INNER JOIN job_roles jr ON jrs.job_role_id = jr.id
-            WHERE jrs.student_id = :studentId
-            AND jr.internship_cycle_id = :cycleId"
-        );
-        $stmt->execute([
-            "studentId" => $studentId,
-            "cycleId" => $cycleId
-        ]);
-        return (int) $stmt->fetch(PDO::FETCH_ASSOC)['count'];
+        $sql = 'UPDATE internships SET isApproved = 0 WHERE id = :id';
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute(['id' => $id]);
     }
 }
