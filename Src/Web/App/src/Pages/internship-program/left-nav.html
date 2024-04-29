@@ -24,18 +24,26 @@
 
 {% elseif has_role('InternshipProgramPartner') and has_permission('CreateInternship') %}
 
+{% if IsAuthorized('JobCollectionPhase') or IsAuthorized('FirstRoundPhase') %}
 <a class="{% if section == 'internships' %} active{% endif %}" href="/internship-program/internships">
     <i class="i i-briefcase"></i>
     Your Internships
 </a>
-
-{% if has_role('InternshipProgramPartnerAdmin') %}
-
 <a class="{% if section == 'applicants' %} active{% endif %}" href="/internship-program/applicants">
     <i class="i i-person-vcard"></i>
     Applicants
 </a>
+{% endif %}
 
+{% if IsAuthorized('SecondRoundPhase') %}
+<a class="{% if section == 'round-2' %} active{% endif %}" href="/internship-program/round-2">
+    <i class="i i-2-circle"></i>
+    Second Round
+</a>
+<a class="{% if section == 'applicants' %} active{% endif %}" href="/internship-program/applicants">
+    <i class="i i-person-vcard"></i>
+    Applicants
+</a>
 {% endif %}
 
 {% elseif has_role('InternshipProgramStudent') %}
@@ -45,6 +53,8 @@
     <i class="i i-person-square"></i>
     Your Profile
 </a>
+
+{% if IsAuthorized('FirstRoundPhase') %}
 <div class="separator"></div>
 <a class="{% if section == 'internships' %} active{% endif %}" href="/internship-program/internships">
     <i class="i i-briefcase"></i>
@@ -54,15 +64,24 @@
     <i class="i i-journal-text"></i>
     Your Applications
 </a>
+{% endif %}
 
+{% if IsAuthorized('SecondRoundPhase') %}
+<a class="{% if section == 'round-2' %} active{% endif %}" href="/internship-program/round-2">
+    <i class="i i-2-circle"></i>
+    Second Round
+</a>
+<a class="{% if section == 'applications' %} active{% endif %}" href="/internship-program/applications">
+    <i class="i i-journal-text"></i>
+    Your Applications
+</a>
+{% endif %}
+
+{% if IsAuthorized('Employed') %}
 <a class="{% if section == 'requirements' %} active{% endif %}" href="/internship-program/requirements">
     <i class="i i-clipboard-check"></i>
     Requirements
 </a>
-
 {% endif %}
 
-<a class="{% if section == 'round-2' %} active{% endif %}" href="/internship-program/round-2">
-    <i class="i i-2-circle"></i>
-    Round 2
-</a>
+{% endif %}
