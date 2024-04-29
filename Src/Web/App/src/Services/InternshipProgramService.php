@@ -112,6 +112,8 @@ readonly class InternshipProgramService
             $this->userRepository
                 ->addRoleToUserGroup($partnerGroup->getId(), 'InternshipProgramPartnerAdmin');
             $this->userRepository
+                ->addRoleToUserGroup($partnerGroup->getId(), 'InternshipProgramPartner');
+            $this->userRepository
                 ->addRoleToUserGroup($studentGroup->getId(), 'InternshipProgramStudent');
 
             $this->userRepository
