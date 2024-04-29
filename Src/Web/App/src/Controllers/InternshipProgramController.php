@@ -54,7 +54,6 @@ class InternshipProgramController extends ControllerBase
                 'internship-program/home-partner.html',
                 [
                     'section' => 'home',
-                    'users' => $this->userService->getManagedUsers($userId),
                 ]
             );
         }

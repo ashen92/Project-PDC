@@ -17,7 +17,8 @@
                         TechTalks
                     </a>
                 </li>
-                {% if has_permission('ReadInternshipProgram') %}
+                {% if has_role('InternshipProgramAdmin') or has_role('InternshipProgramPartner') or
+                has_role('InternshipProgramStudent') %}
                 <li>
                     <a href="/internship-program">
                         Internship Program

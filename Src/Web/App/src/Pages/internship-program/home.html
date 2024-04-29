@@ -12,9 +12,6 @@
     <h2>
         Internship Program
     </h2>
-    <p>
-        Subtitle here.
-    </p>
 </div>
 
 {% if has_permission('CreateInternship') %}
@@ -28,7 +25,12 @@
     <div class="title">
         <h5>Important notices</h5>
     </div>
-
+    {% if IsAuthorized('JobCollectionPhase') or IsAuthorized('FirstRoundPhase') or IsAuthorized('SecondRoundPhase')
+    %}
+    <p>Internship Program has been started.</p>
+    {% else %}
+    <p>Internship Program hasn't been started yet. Please check again later.</p>
+    {% endif %}
 </section>
 
 {% endblock %}

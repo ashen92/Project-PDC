@@ -16,56 +16,23 @@
     </p>
 </div>
 
+{% if IsAuthorized('JobCollectionPhase') or IsAuthorized('FirstRoundPhase') %}
 <div class="info-card">
     <a class="btn btn-primary" role="button" href="/internship-program/internships/create">Post an internship</a>
 </div>
+{% endif %}
 
 <section>
     <div class="title">
-        <h5>
-            User Accounts
-        </h5>
-        <p>
-            All the user accounts created by you. <br>
-            You can assign multiple applicants to a user. So, they can complete
-            requirements related to a specific applicant.
-        </p>
-        <br>
+        <h5>Important notices</h5>
+        {% if IsAuthorized('JobCollectionPhase') or IsAuthorized('FirstRoundPhase') or IsAuthorized('SecondRoundPhase')
+        %}
+        <p>Internship Program has been started.</p>
+        {% else %}
+        <p>Internship Program hasn't been started yet. Please check again later.</p>
+        {% endif %}
     </div>
 
-    <div class="mb-4">
-        <a class="btn btn-secondary" role="button" href="/internship-program/users/create">
-            <i class="i i-plus-lg"></i>
-            <span>New User</span>
-        </a>
-    </div>
-
-    {% if users is empty %}
-    <p>No users found.</p>
-    {% else %}
-
-    <table class="table table-compact table-hover">
-        <colgroup>
-            <col class="w-1/5">
-            <col class="w-4/5">
-        </colgroup>
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Email</th>
-            </tr>
-        </thead>
-        <tbody class="table-rows-clickable">
-            {% for i in users %}
-            <tr data-href="?u={{ i.id }}">
-                <td>{{ i.firstName }}</td>
-                <td>{{ i.email }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-
-    {% endif %}
 </section>
 <script src="/js/internship-program/home-partner.js"></script>
 {% endblock %}

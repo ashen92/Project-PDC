@@ -22,6 +22,11 @@
     Internships
 </a>
 
+<a class="{% if section == 'round-2' %} active{% endif %}" href="/internship-program/round-2">
+    <i class="i i-2-circle"></i>
+    Second Round
+</a>
+
 {% elseif has_role('InternshipProgramPartner') and has_permission('CreateInternship') %}
 
 {% if IsAuthorized('JobCollectionPhase') or IsAuthorized('FirstRoundPhase') %}
@@ -66,6 +71,8 @@
 </a>
 {% endif %}
 
+{% if IsAuthorized('Unemployed') %}
+
 {% if IsAuthorized('SecondRoundPhase') %}
 <a class="{% if section == 'round-2' %} active{% endif %}" href="/internship-program/round-2">
     <i class="i i-2-circle"></i>
@@ -75,6 +82,8 @@
     <i class="i i-journal-text"></i>
     Your Applications
 </a>
+{% endif %}
+
 {% endif %}
 
 {% if IsAuthorized('Employed') %}

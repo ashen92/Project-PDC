@@ -6,7 +6,6 @@ import { $ } from "../../../core/dom";
 
 const table = new DataTable("#job-roles-table", {
     paging: false,
-    ordering: false,
     info: false,
     select: {
         info: false,
