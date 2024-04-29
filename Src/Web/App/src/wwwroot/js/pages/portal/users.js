@@ -1,5 +1,6 @@
 import { $, $all } from "../../core/dom";
 import { on } from "../../core/events";
+import { Dialog } from "../../components/dialog";
 
 const commandBarButtons = $all(".command-bar button");
 
@@ -78,3 +79,92 @@ commandBarButtons.forEach((button) => {
         }
     });
 });
+
+
+
+const removeUserBtn = $("#remove-user-btn");
+const activateUserBtn = $("#activate-user-btn");
+const deactivateUserBtn = $("#deactivate-user-btn");
+const addtoGroupBtn = $("#addto-group-btn");
+
+on(removeUserBtn, "click", function () {
+    const checkedRows = $all("tbody input[type='checkbox']:checked");
+
+
+    checkedRows.forEach((checkbox) => {
+        fetch(`/portal/users/${checkbox.id}`, { method: "DELETE" })
+            .then(() => {
+                window.location.href = `${window.location.pathname}`;
+            })
+            .catch(error => console.error("Error deleting User:", error));
+    });
+});
+
+on(activateUserBtn, "click", function () {
+    const checkedRows = $all("tbody input[type='checkbox']:checked");
+
+
+    checkedRows.forEach((checkbox) => {
+        fetch(`/portal/users/${checkbox.id}/activate`, { method: "GET" })
+            .then(() => {
+                window.location.href = `${window.location.pathname}`;
+            })
+            .catch(error => console.error("Error activating User:", error));
+    });
+});
+
+on(deactivateUserBtn, "click", function () {
+    const checkedRows = $all("tbody input[type='checkbox']:checked");
+
+
+    checkedRows.forEach((checkbox) => {
+        fetch(`/portal/users/${checkbox.id}/deactivate`, { method: "GET" })
+            .then(() => {
+                window.location.href = `${window.location.pathname}`;
+            })
+            .catch(error => console.error("Error deactivating User:", error));
+    });
+});
+
+if (addtoGroupBtn) {
+    const usergroupDialog = new Dialog("#usergroup-popup");
+    usergroupDialog.setTitle("Add a user to group");
+
+    on(addtoGroupBtn, "click", function () {
+        usergroupDialog.open();
+    });
+
+    const usergroupMultiSelectAddtoBtn = $("#usergroup-popup-addto-btn");
+    const usergroupMultiSelectResetBtn = $("#usergroup-popup-reset-btn");
+
+    const usergroupCheckboxes = $all("#usergroup-popup input[type=checkbox]");
+
+    on(usergroupMultiSelectResetBtn, "click", function () {
+        usergroupCheckboxes.forEach(checkbox => {
+            checkbox.checked = false;
+        });
+    });
+
+    on(usergroupMultiSelectAddtoBtn, "click", function () {
+        let usergroups = [];
+        usergroupCheckboxes.forEach(checkbox => {
+            if (checkbox.checked) {
+                usergroups.push(checkbox.getAttribute("id"));
+            }
+        });
+
+        checkedRows.forEach((checkbox) => {
+            fetch(`/portal/user-groups/${checkbox.id}/addusertoGroup`, { method: "PUT" })
+                .then(() => {
+                    window.location.href = `${window.location.pathname}`;
+                })
+                .catch(error => console.error("Error adding user to a group:", error));
+        });
+    });
+}
+
+
+
+
+
+

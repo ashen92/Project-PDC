@@ -1,6 +1,16 @@
 <a class="nav-link {% if section == 'home' %} active{% endif %}" href="/techtalks">
-    Techtalk
+    <i class="i i-calendar2"></i>
+    Techtalks
 </a>
+
+{% if has_role('Admin') %}
 <a class="nav-link {% if section == 'techtalks' %} active{% endif %}" href="/techtalks/create">
-    Create TechTalk Session
+    <i class="i i-calendar2-plus"></i>
+    Create a Session
 </a>
+
+<a class="nav-link {% if section == 'techtalks' %} active{% endif %}" href="/techtalks/techtalklist">
+    <i class="i i-card-list"></i>
+    Techtalks List
+</a>
+{% endif %}

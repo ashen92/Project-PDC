@@ -103,6 +103,13 @@ $container->register(
 )
     ->setArguments([new Reference('pdo_mysql_connection'),]);
 
+$container->register(
+    'repository.techtalks',
+    App\Repositories\TechtalksRepository::class
+)
+    ->setArguments([new Reference('pdo_mysql_connection'),]);
+
+
 #endregion
 
 #region Twig -----------------------------------------------------------------------
@@ -325,6 +332,15 @@ $container->register(
     ]);
 
 $container->register(
+    'service.techtalks',
+    App\Services\TechtalksService::class
+)
+    ->setArguments([
+        new Reference('repository.techtalks'),
+        new Reference('repository.user'),
+    ]);
+
+$container->register(
     'service.email',
     App\Services\EmailService::class
 )
@@ -460,6 +476,7 @@ $container->register(
     ->setArguments([
         new Reference('twig'),
         new Reference('service.authorization'),
+        new Reference('service.techtalks')
     ])
     ->setPublic(true);
 
