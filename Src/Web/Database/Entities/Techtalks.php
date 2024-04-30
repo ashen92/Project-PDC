@@ -42,7 +42,11 @@ class Techtalks
     #[ORM\JoinTable(name: 'session_participants')]
     private Collection $participants;
 
-    public function __construct(string $companyname, string $title, string $description,string $techtalksessionnumber, DateTimeImmutable $startTime, DateTimeImmutable $endTime, string $sessionLocation)
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'created_by_user_id', referencedColumnName: 'id')]
+    private User $createdBy;
+
+    public function __construct(string $companyname, string $title, string $description,string $techtalksessionnumber, DateTimeImmutable $startTime, DateTimeImmutable $endTime, string $sessionLocation,User $createdBy)
     {
         $this->companyname = $companyname;
         $this->title = $title;
@@ -51,6 +55,8 @@ class Techtalks
         $this->startTime = $startTime;
         $this->endTime = $endTime;
         $this->sessionLocation = $sessionLocation;
+        $this->createdBy = $createdBy;
+        //$this->organization = $organization;
         $this->participants = new ArrayCollection();
     }
 

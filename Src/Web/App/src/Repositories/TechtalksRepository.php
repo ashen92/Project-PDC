@@ -62,18 +62,20 @@ class TechtalksRepository implements IRepository
     }
 
     public function createSessionTitle(
-        CreateSessionTitleDTO $dto, int $sessionId
+        CreateSessionTitleDTO $dto, int $sessionId, int $userId
     ): void {
         $sql = "UPDATE techtalks 
                 SET
                 companyname = :companyname,
                 title = :title,
-                description = :description
+                description = :description,
+                created_by_user_id = :userId
                 WHERE
                 id = $sessionId";
         /* var_dump($sql);die(); */
         $statement = $this->pdo->prepare($sql);
         $statement->execute([
+            "userId" => $userId,
             "companyname" => $dto->companyname,
             "title" => $dto->title,
             "description" => $dto->description
@@ -236,6 +238,22 @@ class TechtalksRepository implements IRepository
         $sql = "SELECT  *
                 FROM techtalks
                 WHERE title IS NOT NULL";
+
+
+        $statement = $this->pdo->prepare($sql);
+        $statement->execute();
+
+        $session = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        return $session;
+    }
+
+    public function getSessionlistCompany($userId): array
+    {
+
+        $sql = "SELECT  *
+                FROM techtalks
+                WHERE  created_by_user_id = $userId";
 
 
         $statement = $this->pdo->prepare($sql);
