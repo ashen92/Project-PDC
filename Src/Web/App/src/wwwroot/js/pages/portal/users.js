@@ -1,6 +1,17 @@
 import { $, $all } from "../../core/dom";
 import { on } from "../../core/events";
 import { Dialog } from "../../components/dialog";
+import DataTable from "datatables.net-dt";
+
+const table = new DataTable("#users-table");
+
+table.on("click", "tbody", function (e) {
+    const row = e.target.closest("td");
+    if (row) {
+        const id = row.dataset.id;
+        window.location.href = `${window.location.href}/${id}`;
+    }
+});
 
 const commandBarButtons = $all(".command-bar button");
 
@@ -128,16 +139,19 @@ on(deactivateUserBtn, "click", function () {
 
 if (addtoGroupBtn) {
     const usergroupDialog = new Dialog("#usergroup-popup");
-    usergroupDialog.setTitle("Add a user to group");
+    usergroupDialog.setTitle("Add selected users to group");
 
     on(addtoGroupBtn, "click", function () {
         usergroupDialog.open();
+
     });
 
     const usergroupMultiSelectAddtoBtn = $("#usergroup-popup-addto-btn");
     const usergroupMultiSelectResetBtn = $("#usergroup-popup-reset-btn");
 
     const usergroupCheckboxes = $all("#usergroup-popup input[type=checkbox]");
+    const checkedRows = $all("#usergroup-popup input[type='checkbox']:checked");
+
 
     on(usergroupMultiSelectResetBtn, "click", function () {
         usergroupCheckboxes.forEach(checkbox => {
@@ -146,22 +160,38 @@ if (addtoGroupBtn) {
     });
 
     on(usergroupMultiSelectAddtoBtn, "click", function () {
+        const checkedUsersRows = $all("#user-table input[type='checkbox']")
+        let userRowsArray = Array.from(checkedUsersRows);
         let usergroups = [];
+        let userids = [];
+        userRowsArray.forEach(checkbox => {
+            if (checkbox.checked) {
+                userids.push(checkbox.getAttribute("id"));
+            }
+        })
         usergroupCheckboxes.forEach(checkbox => {
             if (checkbox.checked) {
                 usergroups.push(checkbox.getAttribute("id"));
             }
         });
 
-        checkedRows.forEach((checkbox) => {
-            fetch(`/portal/user-groups/${checkbox.id}/addusertoGroup`, { method: "PUT" })
-                .then(() => {
-                    window.location.href = `${window.location.pathname}`;
-                })
-                .catch(error => console.error("Error adding user to a group:", error));
+        usergroups.forEach((groupid) => {
+            userids.forEach((userid) => {
+                fetch(`/portal/user-add-member/${userid}/${groupid}`, { method: "GET" })
+                    .then(() => {
+                        window.location.href = `${window.location.pathname}`;
+                    })
+                    .catch(error => console.error("Error adding user to a group:", error));
+            })
         });
     });
 }
+
+
+
+
+
+
 
 
 

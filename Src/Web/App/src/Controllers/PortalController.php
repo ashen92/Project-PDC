@@ -54,7 +54,17 @@ class PortalController extends ControllerBase
 			[
 				'section' => 'users',
 				'users' => $this->userService->searchUsers(null, null),
+				'groups' => $this->userService->searchGroups(null, null),
 			]
+		);
+	}
+
+	#[Route('/groups/create', methods: ['GET'])]
+	public function createGroup(): Response
+	{
+		return $this->render(
+			'portal/groups/create.html',
+			['section' => 'groups']
 		);
 	}
 
@@ -99,6 +109,64 @@ class PortalController extends ControllerBase
 		return $this->redirect('/portal/users/create');
 	}
 
+	#[Route('/groups/add', methods: ['POST'])]
+	public function createNewGroup(Request $request): Response|RedirectResponse
+	{
+		$groupname = $request->request->get('group-name');
+
+		try {
+			$this->userService->createGroup($groupname);
+		} catch (UserExistsException) {
+
+			// TODO: Set error message
+
+			return $this->render(
+				'portal/groups/create.html',
+				['section' => 'groups']
+			);
+		}
+
+		return $this->redirect('/portal/groups');
+	}
+
+	#[Route('/partners')]
+	public function partners(): Response
+	{
+		return $this->render(
+			'portal/partners/home.html',
+			[
+				'section' => 'partners',
+				'partners' => $this->userService->findAllPartners(),
+			]
+		);
+	}
+
+	#[Route('/students')]
+	public function students(): Response
+	{
+		return $this->render(
+			'portal/students/home.html',
+			[
+				'section' => 'students',
+				'students' => $this->userService->findStudentUsers(),
+
+			]
+		);
+	}
+
+	#[Route('/groups/view/{groupid}')]
+	public function viewGroupNames(int $groupid): Response
+	{
+		return $this->render(
+			'portal/groups/view.html',
+			[
+				'section' => 'groups',
+				'title' => $this->userService->findGroupName($groupid),
+				'users' => $this->userService->findGroupUsers($groupid),
+			]
+		);
+	}
+
 	#[Route('/users/{id}', requirements: ['id' => '\d+'], methods: ['DELETE'])]
 	public function delete(int $id): Response
 	{
@@ -120,12 +188,22 @@ class PortalController extends ControllerBase
 		return new Response(null, 204);
 	}
 
-	#[Route('/users/{id}/addusertoGroup', requirements: ['id' => '\d+'], methods: ['GET'])]
-	public function add(int $id): Response
+	#[Route('/user-add-member/{userid}/{groupid}', requirements: ['userid' => '\d+', 'groupid' => '\d+'], methods: ['GET'])]
+	public function userAddMember(int $userid, int $groupid): Response
 	{
-		$this->userService->addUser($id);
-		return new Response(null, 204);
+		$res = $this->userService->addUserGroupMember($userid, $groupid);
+		return new Response(null, 201);
 	}
+
+	#[Route('/user-groups', methods: ['GET'])]
+	public function getusergroups(Request $request): Response
+	{
+		$res = $this->userService->searchGroups(null, null);
+		// print_r(new Response(json_encode($res), 200, ['Content-Type' => 'application/json']));
+		return new Response(json_encode($res), 200, ['Content-Type' => 'application/json']);
+
+	}
+
 
 	#[Route('/groups', methods: ['GET'])]
 	public function groups(): Response

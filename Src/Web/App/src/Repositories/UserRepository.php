@@ -291,6 +291,19 @@ class UserRepository implements IRepository
         ]);
     }
 
+    public function checkUserGroupMember(int $userid, int $groupid): bool
+    {
+        $sql = "SELECT * FROM user_group_membership WHERE user_id = :userid AND usergroup_id = :groupid";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(["userid" => $userid, "groupid" => $groupid]);
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($data === false) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public function addRoleToUserGroup(int $groupId, string $role): bool
     {
         // TODO: Move this to authorization service. This is not a user repository concern
@@ -343,6 +356,7 @@ class UserRepository implements IRepository
         }
         return array_map(fn($user) => UserStudentPartnerMapper::map($user), $data);
     }
+
 
     public function searchGroups(?int $numberOfResults, ?int $offsetBy): array
     {
@@ -408,7 +422,6 @@ class UserRepository implements IRepository
         }
         return array_map(fn($user) => StudentMapper::map($user), $data);
     }
-
     public function findCoordinators(): array
     {
         $sql = "SELECT * FROM users WHERE isActive = 1 AND type ='user' AND firstName LIKE 'C%'";
@@ -442,5 +455,45 @@ class UserRepository implements IRepository
         $sql = 'UPDATE users SET isActive = 0 WHERE id = :id AND isActive = 1';
         $stmt = $this->pdo->prepare($sql);
         return $stmt->execute(['id' => $id]);
+    }
+
+    public function findAllPartners(): array
+    {
+        $sql = "SELECT o.*, p.* FROM organizations o
+                JOIN partners p ON o.id = p.organization_id";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        if ($data === false) {
+            return [];
+        }
+        return $data;
+    }
+
+    public function getGroupName($groupid)
+    {
+        $sql = "SELECT * FROM user_groups 
+                WHERE id = :groupid";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['groupid' => $groupid]);
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        if ($data === false) {
+            return [];
+        }
+        return $data;
+    }
+
+    public function getGroupUsers($groupid)
+    {
+        $sql = "SELECT m.*, u.* FROM user_group_membership m
+                JOIN users u ON m.user_id = u.id
+                WHERE m.usergroup_id = :groupid";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['groupid' => $groupid]);
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        if ($data === false) {
+            return [];
+        }
+        return $data;
     }
 }

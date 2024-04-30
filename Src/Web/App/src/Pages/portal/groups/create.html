@@ -1,0 +1,32 @@
+{% extends "shared/layout-left-nav.html" %}
+
+{% block title %}Create new group{% endblock %}
+
+{% block left_nav %}
+{% include "portal/left-nav.html" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="title">
+    <h4>Create New Group</h4>
+</div>
+
+
+<section>
+    <form action="/portal/groups/add" method="POST">
+        <div class="field-group">
+            <div class="field row">
+                <label for="first-name">Group Name</label>
+                <input type="text" name="group-name" id="first-name" placeholder="Group Name" autocomplete="off"
+                    required>
+            </div>
+
+            <div class="actions">
+                <input class="btn btn-primary" type="submit" value="Add">
+            </div>
+        </div>
+    </form>
+</section>
+
+{% endblock %}
