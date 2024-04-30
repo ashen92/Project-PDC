@@ -8,11 +8,12 @@ use DateTimeImmutable;
 readonly class CreateSessionDTO
 {
     public function __construct(
-        public string $title,
+        //public string $companyname,
+        public string $techtalksessionnumber,
         public DateTimeImmutable $startTime,
         public DateTimeImmutable $endTime,
         public string $sessionLocation,
-        public string $description,
+        //public string $description,
         public array $participants
     ) {
     }

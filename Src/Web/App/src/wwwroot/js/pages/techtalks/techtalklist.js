@@ -7,35 +7,7 @@ import { on } from "../../core/events";
 
 const params = new URLSearchParams(window.location.search);
 
-//#region
-// This section handles the search bar
 
-const searchBtn = $("#search-btn");
-const searchQueryElement = $("#search-query");
-
-on(searchBtn, "click", function () {
-    const searchQuery = searchQueryElement.value;
-    if (searchQuery) {
-        params.set("q", searchQuery);
-        window.location.href = `${window.location.pathname}?${params.toString()}`;
-    } else {
-        window.location.href = `${window.location.pathname}`;
-    }
-});
-
-on(searchQueryElement, "keyup", function (session) {
-    if (session.key === "Enter") {
-        searchBtn.click();
-    }
-});
-
-const query = params.get("q");
-
-if (query) {
-    searchQueryElement.value = query;
-}
-
-//#endregion
 
 //#region
 // This section handles the job list
@@ -48,19 +20,23 @@ const sessionDescription = $("#session-description");
 const sessionLocation = $("#session-location");
 const sessionstartTime = $("#session-startTime");
 const sessionendTime = $("#session-endTime");
+const sessioncompanyname = $("#session-companyname");
 
 let previouslySelectedItemCard = null;
 let isLoading = false;
 
 function fetchSessionDetails(sessionid) {
+    console.log("Fetching session details...");
     fetch(`/techtalks/${sessionid}`, { method: "GET" })
         .then(response => response.json())
         .then(data => {
+            console.log(data);
             sessionTitle.innerHTML = data.title;
             sessionLocation.innerHTML = data.sessionLocation;
             sessionstartTime.innerHTML = data.startTime;
             sessionendTime.innerHTML = data.endTime;
             sessionDescription.innerHTML = data.description;
+            sessioncompanyname.innerHTML = data.companyname;
             sessionDetailsSkeleton.classList.toggle("hidden");
             sessionDetailsContent.classList.toggle("hidden");
         })
@@ -110,8 +86,9 @@ const modifysessionBtn = $("#modify-session-btn");
 const removesessionBtn = $("#remove-session-btn");
 
 on(modifysessionBtn, "click", function () {
-    window.location.href = `${window.location.pathname}/${previouslySelectedItemCard.getAttribute("data-session-id")}/modify`;
+    window.location.href = `${window.location.origin}/techtalks/${previouslySelectedItemCard.getAttribute("data-session-id")}/modify`;
 });
+
 
 on(removesessionBtn, "click", function () {
     //console.log("Remove button clicked."); // Add this line to check if the event handler is triggered

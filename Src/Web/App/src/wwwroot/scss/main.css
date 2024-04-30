@@ -4215,6 +4215,9 @@ select {
 .text-danger {
   color: #dc3545;
 }
+.text-info {
+  color: #0067c0;
+}
 
 .title {
   margin-bottom: 1rem;
@@ -6707,7 +6710,7 @@ h6 {
 
 .btn-outline-primary {
   color: #006fc9;
-  background-color: transparent;
+  background-color: #fff;
   border-color: #006fc9;
 }
 .btn-outline-primary:hover {
@@ -6732,7 +6735,7 @@ h6 {
 }
 .btn-outline-danger {
   color: #d13438;
-  background-color: transparent;
+  background-color: #fff;
   border-color: #d13438;
 }
 .btn-outline-danger:hover {
@@ -7210,11 +7213,13 @@ th.gridjs-th .i {
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
 }
 .layout-job-search > .container .job-details > .content > .header {
+  border-radius: 10px 10px 0 0;
   padding: 2.5rem;
   background-color: #f6f8fa;
 }
 .layout-job-search > .container .job-details > .content > .header > .title {
-  font-weight: 600;
+  display: flex;
+  justify-content: space-between;
 }
 .layout-job-search > .container .job-details > .content > .header > .company {
   margin: 1.5rem 0;
@@ -7291,61 +7296,66 @@ th.gridjs-th .i {
 }
 
 .layout-auth {
+  background-image: url("/images/auth-background.png");
+  background-size: cover;
+  background-position: center;
   display: grid;
-  grid-template-rows: 1fr auto;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
   min-height: 100vh;
   width: 100%;
-  background-image: linear-gradient(hsla(218, 100%, 90%, 0.75), 40%, hsla(0, 0%, 92%, 0.7)), url("/images/6.jpeg");
-  background-size: cover;
 }
 .layout-auth > .content {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: max-content 1fr;
   width: 100%;
+  margin: auto auto;
+  padding: 4rem 2rem 2rem 2rem;
+  display: flex;
+  -moz-column-gap: 5rem;
+       column-gap: 5rem;
   max-width: 1200px;
-  margin: 6.25rem auto 3rem auto;
 }
-.layout-auth .hero-text {
-  margin: 2rem;
-  text-align: center;
-  text-shadow: 1.2px 1.2px 1px rgba(0, 0, 0, 0.2);
+.layout-auth .hero-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  -moz-column-gap: 4rem;
+       column-gap: 4rem;
+  position: relative;
+  background: rgba(255, 255, 255, 0.25);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  max-width: -moz-max-content;
+  max-width: max-content;
+  border-radius: 1.25rem;
+  padding: 2.5rem 4rem;
+  margin: 2rem auto;
 }
-.layout-auth .hero-text h3 {
-  font-weight: 400;
+.layout-auth .hero-container .hero-logo > .logo {
+  width: 12rem;
+  height: 12rem;
+  border-radius: 11rem;
 }
-.layout-auth .hero-text h5 {
-  font-weight: 400;
+.layout-auth .hero-container .hero-text h3 {
   color: #0527b0;
-  padding-top: 1 rem;
-}
-.layout-auth .auth-box {
-  margin: auto 3.5625rem auto 2rem;
-  box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
-  border-radius: 10px;
-  padding: 20px;
-  background-color: #f0f0f0;
-}
-.layout-auth .auth-box > h4 {
-  padding-bottom: 1.875rem;
+  padding-top: 1.25rem;
 }
 .layout-auth .auth-box > .form-wrapper {
-  width: 30rem;
+  margin: 0 auto;
+  width: 24rem;
+  padding: 3rem 2.5rem;
+  background-color: #fff;
+  border-radius: 1.25rem;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.12), 0 4px 8px rgba(0, 0, 0, 0.14);
+  position: relative;
+  background: rgba(255, 255, 255, 0.25);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+.layout-auth .auth-box > .form-wrapper > h4 {
+  margin-bottom: 2rem;
 }
 .layout-auth .auth-box > .form-wrapper.signup {
-  width: 30rem;
-}
-.layout-auth .logo-container {
-  margin: auto;
-  display: grid;
-  place-items: center;
-  border-radius: 10px;
-  padding: 14px;
-}
-.layout-auth .logo-container > .logo {
-  width: 10rem;
-  height: 10rem;
-  border-radius: 11rem;
+  width: 28rem;
 }
 
 .layout-dash {
@@ -7632,6 +7642,14 @@ th.gridjs-th .i {
   content: "\f4cb";
 }
 
+.i-check2-circle::before {
+  content: "\f270";
+}
+
+.i-hourglass::before {
+  content: "\f421";
+}
+
 .navbar-container {
   height: 3.75rem;
   box-shadow: rgba(57, 76, 96, 0.15) 0px 2px 4px -1px;
@@ -7759,7 +7777,7 @@ th.gridjs-th .i {
   margin: 0 auto;
 }
 
-.hero-container {
+.layout-home .hero-container {
   height: 500px;
   background-image: url("/images/5.jpg");
   background-size: cover;
@@ -7770,68 +7788,68 @@ th.gridjs-th .i {
   box-shadow: rgba(57, 76, 96, 0.15) 0px 2px 4px -1px;
 }
 @media (max-width: 767.98px) {
-  .hero-container {
+  .layout-home .hero-container {
     height: 450px;
     padding: 4rem;
   }
-  .hero-container .hero {
+  .layout-home .hero-container .hero {
     padding: 0;
   }
 }
 @media (max-width: 575.98px) {
-  .hero-container {
+  .layout-home .hero-container {
     height: 450px;
     padding: 3rem 2rem;
   }
 }
-.hero-container .hero-text {
+.layout-home .hero-container .hero-text {
   text-align: center;
   width: 100%;
   padding: 10px;
   margin: 4rem auto;
   text-shadow: 4px 4px 4px rgba(0, 0, 0, 0.5);
 }
-.hero-container .hero-text-title {
+.layout-home .hero-container .hero-text-title {
   line-height: 1.25;
   font-size: 3rem;
   font-weight: 600;
   color: #fdfdfd;
 }
-.hero-container .hero-text-subtitle {
+.layout-home .hero-container .hero-text-subtitle {
   margin-top: 1.5rem;
   font-size: 1.55rem;
   font-weight: 400;
   color: #fdfdfd;
 }
 @media (max-width: 1399.98px) {
-  .hero-container .hero-text-title {
+  .layout-home .hero-container .hero-text-title {
     font-size: 3.5rem;
   }
-  .hero-container .hero-text-subtitle {
+  .layout-home .hero-container .hero-text-subtitle {
     font-size: 1.3rem;
   }
 }
 @media (max-width: 1199.98px) {
-  .hero-container .hero-text {
+  .layout-home .hero-container .hero-text {
     width: 75%;
   }
 }
 @media (max-width: 991.98px) {
-  .hero-container .hero-text {
+  .layout-home .hero-container .hero-text {
     width: 100%;
   }
-  .hero-container .hero-text-title {
+  .layout-home .hero-container .hero-text-title {
     font-size: 3rem;
   }
-  .hero-container .hero-text-subtitle {
+  .layout-home .hero-container .hero-text-subtitle {
     font-size: 1.25rem;
   }
 }
 @media (max-width: 767.98px) {
-  .hero-container .hero-text-title {
+  .layout-home .hero-container .hero-text-title {
     font-size: 2.5rem;
   }
-  .hero-container .hero-text-subtitle {
+  .layout-home .hero-container .hero-text-subtitle {
     font-size: 1.2rem;
   }
 }
