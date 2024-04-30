@@ -74,7 +74,8 @@ readonly class InternshipProgramAPIController
     {
         $this->internshipProgramService->resetInternshipCycleDates(
             $cycle->getId(),
-            resetJobHuntRound1End: true
+            resetJobHuntRound1End: true,
+            resetJobHuntRound2Start: true,
         );
         return new Response('', 204);
     }
@@ -84,6 +85,7 @@ readonly class InternshipProgramAPIController
     {
         $this->internshipProgramService->modifyInternshipCycleDates(
             $cycle->getId(),
+            jobHuntRound1End: new \DateTimeImmutable(),
             jobHuntRound2Start: new \DateTimeImmutable()
         );
         return new Response('', 204);

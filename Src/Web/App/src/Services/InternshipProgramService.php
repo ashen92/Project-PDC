@@ -189,6 +189,7 @@ readonly class InternshipProgramService
         int $cycleId,
         bool $resetJobCollectionEnd = false,
         bool $resetJobHuntRound1End = false,
+        bool $resetJobHuntRound2Start = false,
         bool $resetJobHuntRound2End = false,
     ): void {
         $this->internshipProgramRepository->resetInternshipCycleDates(
@@ -197,7 +198,7 @@ readonly class InternshipProgramService
             $resetJobCollectionEnd,
             false,
             $resetJobHuntRound1End,
-            false,
+            $resetJobHuntRound2Start,
             $resetJobHuntRound2End,
         );
     }
