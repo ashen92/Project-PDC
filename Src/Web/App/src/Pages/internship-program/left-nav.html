@@ -45,6 +45,10 @@
     <i class="i i-2-circle"></i>
     Second Round
 </a>
+<a class="{% if section == 'applicants' %} active{% endif %}" href="/internship-program/applicants">
+    <i class="i i-person-vcard"></i>
+    Applicants
+</a>
 {% endif %}
 
 {% elseif has_role('InternshipProgramStudent') %}
