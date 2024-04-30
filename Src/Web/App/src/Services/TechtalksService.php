@@ -38,6 +38,12 @@ readonly class TechtalksService
         return $sessions;
     }
 
+    public function getSessionlistCompany($userId): array
+    {
+        $sessions = $this->techtalksRepository->getSessionlistCompany($userId);
+        return $sessions;
+    }
+
     public function getUserGroups(): array
     {
         $groups = $this->userRepository->findAllUserGroups();
@@ -66,9 +72,9 @@ readonly class TechtalksService
 
     }
 
-    public function createSessionTitle(CreateSessionTitleDTO $dto, $sessionId): void
+    public function createSessionTitle(CreateSessionTitleDTO $dto, $sessionId, $userId): void
     {
-        $this->techtalksRepository->createSessionTitle($dto, $sessionId);
+        $this->techtalksRepository->createSessionTitle($dto, $sessionId, $userId);
 
     }
     public function sessionExists(DateTimeImmutable $startTime, string $sessionLocation): bool

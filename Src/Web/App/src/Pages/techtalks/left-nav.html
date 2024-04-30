@@ -5,7 +5,7 @@
 
 
 {% if has_role('Admin') %}
-<a class="nav-link {% if section == 'techtalks' %} active{% endif %}" href="/techtalks/schedulesession">
+<a class="nav-link {% if section == 'create' %} active{% endif %}" href="/techtalks/schedulesession">
     <i class="i i-calendar2-plus"></i>
     Create a Session
 </a>
@@ -17,13 +17,21 @@
     Schedule Title
 </a> #}
 
-<a class="nav-link {% if section == 'home' %} active{% endif %}" href="/techtalks/booksession">
+<a class="nav-link {% if section == 'booksession' %} active{% endif %}" href="/techtalks/booksession">
     <i class="i i-calendar2"></i>
     Book Session
 </a>
 {% endif %}
-<a class="nav-link {% if section == 'techtalks' %} active{% endif %}" href="/techtalks/techtalklist">
+{% if has_role('Admin') %}
+<a class="nav-link {% if section == 'list' %} active{% endif %}" href="/techtalks/techtalklist">
     <i class="i i-card-list"></i>
     Techtalks List
 </a>
+{% endif %}
+{% if has_role('Partner') %}
+<a class="nav-link {% if section == 'list' %} active{% endif %}" href="/techtalks/techtalklistcompany">
+    <i class="i i-card-list"></i>
+    My Booked Sessions
+</a>
+{% endif %}
 

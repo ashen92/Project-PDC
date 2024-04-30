@@ -41,7 +41,7 @@ class TechTalksController extends ControllerBase
     public function booksession(): Response
     {
         return $this->render('techtalks/booksession.html', [
-            'section' => 'home',
+            'section' => 'booksession',
         ]);
     }
 
@@ -101,7 +101,7 @@ class TechTalksController extends ControllerBase
         return $this->render(
             'events/modify.html',
             [
-                'section' => 'events',
+                /* 'section' => 'events', */
                 'event' => $this->techtalksService->getSessionById($id)
             ]
         );
@@ -163,6 +163,20 @@ class TechTalksController extends ControllerBase
         );
     }
 
+    #[Route('/techtalklistcompany', methods: ['GET'])]
+    public function companylist(Request $request): Response
+    {
+        $userId = $request->getSession()->get('user_id');
+        $sessions = $this->techtalksService->getSessionlistCompany($userId);
+        
+        return $this->render(
+            'techtalks/techtalklistcompany.html',
+            [
+                'section' => 'list',
+                'sessions' => $sessions
+            ]
+        );
+    }
     
 
 
@@ -185,6 +199,7 @@ class TechTalksController extends ControllerBase
     #[Route('/{id}/scheduletitle', methods: ['POST'])]
     public function createPOST2(Request $request): Response
     {
+        $userId = $request->getSession()->get('user_id');
         $data = $request->request->all();
         $companyname = $data['companyname'] ?? '';
         $Title = $data['sessionTitle'] ?? '';
@@ -194,7 +209,7 @@ class TechTalksController extends ControllerBase
         $id= (int) $request->get('id');
 
         $session = new CreateSessionTitleDTO($companyname,$Title,$description);
-        $this->techtalksService->createSessionTitle($session, $id);
+        $this->techtalksService->createSessionTitle($session, $id, $userId);
 
         return $this->render(
             'techtalks/home.html',

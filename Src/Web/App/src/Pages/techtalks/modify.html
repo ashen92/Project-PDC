@@ -15,6 +15,7 @@
 </div>
 <form action="/techtalks/{{ session.id }}/modify" method="POST">
     <input type="hidden" name="id" value="{{ session.id }}">
+
     {% if has_role('Admin') %}
     <div class="fielddate">
         <label for="startTime">Tech Talk Session Number</label>
@@ -51,6 +52,11 @@
         <label for="sessiontitle">Company Name</label>
         <input type="text" id="companyname" name="companyname" value="{{ session.companyname }}">
     </div> 
+
+    <div class="actions mb-3">
+        <button type="button" class="btn btn-outline-danger" id="remove-session-btn">Remove</button>
+    </div>
+
     <div class="field">
         <label for="sessiontitle">Session Title</label>
         <input type="text" id="sessionTitle" name="sessionTitle" value="{{ session.title }}">
@@ -62,14 +68,33 @@
             <div class="text-editor"></div>
         </div>
     </div>
-    <div class="actions mb-3">
-        <button type="button" class="btn btn-outline-danger" id="remove-session-btn">Remove</button>
+
+    {% endif %}
+
+    {% if has_role('Partner') %}
+    <div class="field">
+        <label for="sessiontitle">Session Title</label>
+        <input type="text" id="sessionTitle" name="sessionTitle" value="{{ session.title }}">
+    </div>    
+    <div class="field">
+        <label for="description">Session Description</label>
+        <div class="text-editor-container">
+            <input type="hidden" name="description" id="description" placeholder="Put your description here." value="{{ session.description }}">
+            <div class="text-editor"></div>
+        </div>
     </div>
+    
+    
+    
     {% endif %}
     
     <div class="actions">
         <input class="btn btn-primary" type="submit" value="Modify">
     </div>
 </form>
+{% if has_role('Admin') %}
 <script src="/js/events/modify.js"></script>
+{% endif %}
+{% if has_role('Partner') %}
+<script src="/js/events/modifycompany.js"></script>
 {% endblock %}
