@@ -178,8 +178,8 @@ $groupCycleStudents = new UserGroup(
 );
 $entityManager->persist($groupCycleStudents);
 
-for ($i = 1; $i < 3; $i++) {
-    $groupCycleStudents->addUser($studentUsers[$i]);
+foreach ($studentUsers as $user) {
+    $groupCycleStudents->addUser($user);
 }
 
 $groupCyclePartnerAdmins = new UserGroup(
