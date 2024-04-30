@@ -81,6 +81,8 @@ readonly class UserService
         return $this->userRepository->searchUsers($numberOfResults ?? 50, $offsetBy ?? 0);
     }
 
+
+
     public function searchGroups(?int $numberOfResults, ?int $offsetBy): array
     {
         return $this->userRepository->searchGroups($numberOfResults, $offsetBy);
@@ -134,6 +136,36 @@ readonly class UserService
     public function deactivateUser(int $id): bool
     {
         return $this->userRepository->deactivate($id);
+    }
+
+    public function addUserGroupMember(int $userid, int $groupid): bool
+    {
+        $res = $this->userRepository->checkUserGroupMember($userid, $groupid);
+        if ($res) {
+            $this->userRepository->addToUserGroup($userid, $groupid);
+        }
+        return true;
+
+    }
+
+    public function createGroup(string $group)
+    {
+        return $this->userRepository->createUserGroup($group);
+    }
+
+    public function findAllPartners(): array
+    {
+        return $this->userRepository->findAllPartners();
+    }
+
+    public function findGroupName($groupid): array
+    {
+        return $this->userRepository->getGroupName($groupid);
+    }
+
+    public function findGroupUsers($groupid): array
+    {
+        return $this->userRepository->getGroupUsers($groupid);
     }
 
 }

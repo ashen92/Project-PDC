@@ -20,15 +20,6 @@
     </a>
     <span class="spacer"></span>
     <a class="btn btn-regular" href="">
-        <i class="i i-people"></i>
-        <span>Add users</span>
-    </a>
-    <a class="btn btn-regular" href="">
-        <i class="i i-person-bounding-box"></i>
-        <span>Assign roles</span>
-    </a>
-    <span class="spacer"></span>
-    <a class="btn btn-regular" href="">
         <i class="i i-trash"></i>
         <span>Delete</span>
     </a>
@@ -46,7 +37,7 @@
             <tr>
                 <th><input type="checkbox" title="Select All"></th>
                 <th>Group name</th>
-                <th>Assigned roles</th>
+
                 <th></th>
             </tr>
         </thead>
@@ -54,7 +45,7 @@
             {% for i in groups %}
             <tr data-href="groups?g={{ i.id }}">
                 <td><input type="checkbox" id="{{ i.id }}" title="Select"></td>
-                <td>{{ i.name }}</td>
+                <td> <a href="/portal/groups/view/{{ i.id }}">{{ i.name }}</td>
                 <td>{{ i.role }}</td>
                 <td></td>
             </tr>

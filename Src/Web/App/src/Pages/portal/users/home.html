@@ -26,14 +26,14 @@
 
     <div class="dialog-container" id="usergroup-popup">
         <div class="dialog min-w-80">
+            {% for group in groups %}
             <div class="mx-6 mt-2 mb-2">
-                {% for group in userGroups %}
                 <div class="checkbox">
                     <input type="checkbox" name="{{ group.name }}" id="{{ group.id }}">
                     <label for="{{ group.id }}">{{ group.name }}</label>
                 </div>
-                {% endfor %}
             </div>
+            {%endfor%}
             <div class="actions">
                 <button type="button" class="btn btn-primary" id="usergroup-popup-addto-btn">Add to Group</button>
                 <button type="button" class="btn btn-secondary" id="usergroup-popup-reset-btn">Reset</button>
@@ -50,10 +50,6 @@
         <i class="i i-x-circle"></i>
         <span>Disable</span>
     </button>
-    <button class="btn btn-regular" disabled data-action="reset">
-        <i class="i i-arrow-repeat"></i>
-        <span>Reset password</span>
-    </button>
     <span class="spacer"></span>
     <button class="btn btn-regular" disabled id="remove-user-btn">
         <i class="i i-trash"></i>
@@ -62,7 +58,7 @@
 </div>
 <section>
     <p class="fs-small mb-3">{{ users|length }} users found.</p>
-    <table class="table border-0 table-hover table-compact rows-selectable">
+    <table class="table border-0 table-hover table-compact ">
         <colgroup>
             <col class="w-10">
             <col class="w-2/12">
@@ -81,7 +77,7 @@
                 <th></th>
             </tr>
         </thead>
-        <tbody class="table-rows-clickable">
+        <tbody class="table-rows-clickable" id="user-table">
             {% for i in users %}
             <tr data-href="users?u={{ i.id }}">
                 <td><input type="checkbox" id="{{ i.id }}" title="Select"></td>

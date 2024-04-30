@@ -1,0 +1,62 @@
+{% extends "shared/layout-left-nav.html" %}
+
+{% block title %}Students{% endblock %}
+
+{% block left_nav %}
+{% include "portal/left-nav.html" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="title">
+    <h2>Students</h2>
+    <p>All Students</p>
+</div>
+
+<section>
+    <p class="fs-small mb-3">{{ students|length }} users found.</p>
+    <table class="table border-0 table-hover table-compact " id="students-table">
+        <colgroup>
+            {#
+            <col class="w-10"> #}
+            <col class="w-25">
+            <col class="w-25">
+            <col class="w-25">
+            <col class="w-25">
+            {#
+            <col class="w-5/12"> #}
+        </colgroup>
+
+        <thead>
+            <tr>
+                {# <th><input type="checkbox" title="Select All"></th> #}
+                <th>Name</th>
+                <th>Student Email</th>
+                <th>Registration Number</th>
+                <th>Index Number</th>
+
+            </tr>
+        </thead>
+        <tbody class="table-rows-clickable" id="user-table">
+            {% for i in students %}
+            <tr data-href="partners?u={{ i.id }}">
+
+                <td class="capitalize">{{ i.fullName }}</td>
+                <td>{{ i.studentEmail }}</td>
+                <td class="capitalize">{{ i.registrationNumber }}</td>
+                <td class="capitalize">{{ i.indexNumber }}</td>
+                {# <td>
+                    <span class="spacer"></span>
+                    <button class="btn btn-regular" disabled id="remove-partner-btn">
+                        <i class="i i-trash"></i>
+                        <span>Delete</span>
+                    </button>
+                </td> #}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+
+<script src="/js/internship-program/monitoring/students.js"></script>
+{% endblock %}
