@@ -9,15 +9,6 @@
 {% block content %}
 
 <div class="layout-job-search">
-    <div class="filters">
-        <div class="search">
-            <i class="i i-search"></i>
-            <input id="search-query" class="search" type="text" placeholder="Search" autocomplete="off">
-            <button id="search-btn" class="btn btn-primary" type="button">Search</button>
-        </div>
-
-    </div>
-
     {% if sessions|length == 0 %}
 
     <div class="grid h-1/2 items-center text-center">
@@ -72,7 +63,7 @@
                         Session
                     </div>
                     <div class="actions">
-                        {% if has_role('InternshipProgramAdmin') %}
+                        {% if has_role('InternshipProgramAdmin') or has_role('Partner')%}
                         <button type="button" class="btn btn-outline-primary" id="modify-session-btn">Modify</button>
                         {% endif %}
 
@@ -98,6 +89,12 @@
                         <h5 class="title">Session Ends</h5>
                     </div>
                     <div class="collapse-content formatted-text-area" id="session-endTime"></div>
+                </div>
+                <div class="section collapse-container">
+                    <div class="collapse-header">
+                        <h5 class="title">Company</h5>
+                    </div>
+                    <div class="collapse-content formatted-text-area" id="session-companyname"></div>
                 </div>
                 <div class="section collapse-container">
                     <div class="collapse-header">

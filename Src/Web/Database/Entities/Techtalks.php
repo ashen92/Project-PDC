@@ -17,11 +17,17 @@ class Techtalks
     #[ORM\Column(type: "integer")]
     private int $id;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
+    private string $companyname;
+
+    #[ORM\Column(nullable: true)]
     private string $title;
 
-    #[ORM\Column(type: 'text')]
+    #[ORM\Column(type: 'text',nullable: true)]
     private string $description;
+
+    #[ORM\Column(type: 'text')]
+    private string $techtalksessionnumber;
 
     #[ORM\Column(type: "datetime_immutable")]
     private DateTimeImmutable $startTime;
@@ -33,14 +39,15 @@ class Techtalks
     private string $sessionLocation;
 
     #[ORM\ManyToMany(targetEntity: UserGroup::class)]
-    //#[ORM\JoinColumn(name: 'usergroup_id', referencedColumnName: 'id')]
     #[ORM\JoinTable(name: 'session_participants')]
     private Collection $participants;
 
-    public function __construct(string $title, string $description, DateTimeImmutable $startTime, DateTimeImmutable $endTime, string $sessionLocation)
+    public function __construct(string $companyname, string $title, string $description,string $techtalksessionnumber, DateTimeImmutable $startTime, DateTimeImmutable $endTime, string $sessionLocation)
     {
+        $this->companyname = $companyname;
         $this->title = $title;
         $this->description = $description;
+        $this->techtalksessionnumber = $techtalksessionnumber;
         $this->startTime = $startTime;
         $this->endTime = $endTime;
         $this->sessionLocation = $sessionLocation;

@@ -13,16 +13,11 @@
         Create a Tech Talk Session
     </h2>
 </div>
-<form action="/techtalks/create" method="post">
+<form action="/techtalks/createsession" method="post">
 
-    {% if error_message %}
-    <div class="alert alert-error" role="alert">
-        {{ error_message }}
-    </div>
-    {% endif %}
-    <div class="field">
-        <label for="sessiontitle">Session Title:</label>
-        <input type="text" id="sessionTitle" name="sessionTitle">
+    <div class="fielddate">
+        <label for="startTime">Tech Talk Session Number</label>
+        <input type="text" id="techtalkSessionNumber" name="techtalkSessionNumber" required>
     </div>
     <div class="field">
         <label for="eventLocation">Event Participants</label>
@@ -32,7 +27,6 @@
             {% endfor %}
         </select>
     </div>
-
     <div class="fielddate">
         <label for="startTime">Start Time</label>
         <input type="datetime-local" id="startTime" name="startTime" required>
@@ -45,17 +39,17 @@
         <label for="sessionLocation">Session Location:</label>
         <input type="text" id="sessionLocation" name="sessionLocation" required>
     </div>
-    <div class="field">
+    {# <div class="field">
         <label for="description">Session Description</label>
         <div class="text-editor-container">
             <input type="hidden" name="description" id="description" placeholder="Put your description here.">
             <div class="text-editor"></div>
         </div>
-    </div>
+    </div> #}
     <div class="actions">
         <input class="btn btn-primary" type="submit" value="Schedule Session">
     </div>
 </form>
-<script src="/js/events/create.js"></script>
+<script src="/js/techtalks/create.js"></script>
 
 {% endblock %}

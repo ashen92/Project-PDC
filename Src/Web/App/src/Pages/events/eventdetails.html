@@ -1,0 +1,52 @@
+{% extends "shared/layout-left-nav.html" %}
+
+{% block title %}Event Details{% endblock %}
+
+{% block left_nav %}
+{% include "events/left-nav.html" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="title">
+    
+</div>
+    <input type="hidden" name="id" value="{{ event.id }}">
+
+    <div>
+        <div class="fw-semibold fs-6 mb-3">Event Title</div>
+        <div class="mb-3"> {{ event.title }} </div>
+    </div>
+
+    {# <div class="field">
+        <div>Event Participants</div>
+       
+            {% for group in groups %}
+            <div>"{{ group.id }}">{{ group.name }}</div>
+            {% endfor %}
+        
+    </div> #}
+
+    <div>
+        <div class="fw-semibold fs-6 mb-3">Start Time</div>
+        <div class="mb-3"> {{ event.startTime }} </div>
+    </div>
+
+    <div>
+        <div class="fw-semibold fs-6 mb-3">Start Time</div>
+        <div class="mb-3"> {{ event.endTime }} </div>
+    </div>
+
+
+    <div>
+        <div class="fw-semibold fs-6 mb-3">Event Location</div>
+        <div class="mb-3"> {{ event.eventLocation }} </div>
+    </div>
+
+
+    <div>
+        <div class="fw-semibold fs-6 mb-3">Event Description</div>
+        <div class="mb-3"> {{ event.description }} </div>
+    </div>
+
+{% endblock %}
