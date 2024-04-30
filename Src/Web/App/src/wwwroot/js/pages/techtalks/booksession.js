@@ -18,18 +18,18 @@ const calendar = new Calendar($("#calendar-view"), {
         }
     },
 
-    /* eventClick: function (info) {
+    eventClick: function (info) {
         var sessionObj = info.event;
         var sessionId = sessionObj.id;
         
         if (sessionObj.title == "null") {
-            let url = `techtalks/${sessionId}/scheduletitle`;
+            let url = `${sessionId}/scheduletitle`;
             window.open(url);
         }
 
 
 
-    }, */
+    },
 
     headerToolbar: {
         left: "prev,next today",

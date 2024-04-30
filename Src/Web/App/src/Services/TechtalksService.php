@@ -7,6 +7,7 @@ use App\Repositories\TechtalksRepository;
 use App\Repositories\UserRepository;
 use App\Models\UserGroup;
 use App\DTOs\CreateSessionDTO;
+use App\DTOs\CreateSessionTitleDTO;
 use DateTimeImmutable;
 
 readonly class TechtalksService
@@ -65,15 +66,41 @@ readonly class TechtalksService
 
     }
 
+    public function createSessionTitle(CreateSessionTitleDTO $dto, $sessionId): void
+    {
+        $this->techtalksRepository->createSessionTitle($dto, $sessionId);
+
+    }
     public function sessionExists(DateTimeImmutable $startTime, string $sessionLocation): bool
     {
         return $this->techtalksRepository->sessionExists($startTime, $sessionLocation);
+    }
+
+    public function updateSession(
+        int $id,
+        ?string $title = null,
+        ?string $description = null,
+        ?string $sessionLocation = null,
+        ?DateTimeImmutable $startTime = null,
+        ?DateTimeImmutable $endTime = null,
+        ?array $participants = null
+       
+    ): bool {
+        
+
+        return $this->techtalksRepository->updateSessions($id, $title, $description, $sessionLocation, $startTime, $endTime);
+        //return $this->techtalksRepository->updateParticipantToEvent($id, intval($participants[0]));
     }
 
     public function deleteSession($id): bool
     {
         return $this->techtalksRepository->delete($id);
     }
+
+    /* public function deleteCompanyData($id): bool
+    {
+        return $this->techtalksRepository->deleteCompanyData($id);
+    } */
 
     public function addParticipantToSession(int $sessionId, int $userGroupId): void
     {

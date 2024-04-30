@@ -1,0 +1,75 @@
+{% extends "shared/layout-left-nav.html" %}
+
+{% block title %}Modify TechTalk Session{% endblock %}
+
+{% block left_nav %}
+{% include "techtalks/left-nav.html" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="title">
+    <h4>
+        Modify the Tech Talk Session
+    </h4>
+</div>
+<form action="/techtalks/{{ session.id }}/modify" method="POST">
+    <input type="hidden" name="id" value="{{ session.id }}">
+    {% if has_role('Admin') %}
+    <div class="fielddate">
+        <label for="startTime">Tech Talk Session Number</label>
+        <input type="text" id="techtalkSessionNumber" name="techtalkSessionNumber" value="{{ session.id }}">
+    </div>
+
+    <div class="field">
+        <label for="eventLocation">Session Participants</label>
+        <select name="participants" id="participants" value="{{ session.pariticapants }}" required>
+            {% for group in groups %}
+            <option value="{{ group.id }}">{{ group.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="fielddate">
+        <label for="startTime">Session Time</label>
+        <input type="datetime-local" id="startTime" name="startTime" value="{{ session.startTime }}" required>
+    </div>
+
+    <div class="fielddate">
+        <label for="endTime">Session Time</label>
+        <input type="datetime-local" id="endTime" name="endTime" value="{{ session.endTime }}" required>
+    </div>
+
+    <div class="field">
+        <label for="eventLocation">Session Location</label>
+        <input type="text" id="sessionLocation" name="sessionLocation" value="{{ session.sessionLocation }}" required>
+    </div>
+   {#  {% endif %}
+    {% if has_role('Partner') %} #}
+    
+    <div class="field">
+        <label for="sessiontitle">Company Name</label>
+        <input type="text" id="companyname" name="companyname" value="{{ session.companyname }}">
+    </div> 
+    <div class="field">
+        <label for="sessiontitle">Session Title</label>
+        <input type="text" id="sessionTitle" name="sessionTitle" value="{{ session.title }}">
+    </div>    
+    <div class="field">
+        <label for="description">Session Description</label>
+        <div class="text-editor-container">
+            <input type="hidden" name="description" id="description" placeholder="Put your description here." value="{{ session.description }}">
+            <div class="text-editor"></div>
+        </div>
+    </div>
+    <div class="actions mb-3">
+        <button type="button" class="btn btn-outline-danger" id="remove-session-btn">Remove</button>
+    </div>
+    {% endif %}
+    
+    <div class="actions">
+        <input class="btn btn-primary" type="submit" value="Modify">
+    </div>
+</form>
+<script src="/js/events/modify.js"></script>
+{% endblock %}
